@@ -1,0 +1,49 @@
+= Premailer CHANGELOG
+
+== Version 1.5.2
+ * released to GitHub
+ * fixed handling of mailto links
+ * various minor updates
+
+== Version 1.5.1
+ * bugfix (http://code.google.com/p/premailer/issues/detail?id=1 and http://code.google.com/p/premailer/issues/detail?id=2) thanks to Russell Norris 
+ * bugfix (http://code.google.com/p/premailer/issues/detail?id=4) thanks to Dave Holmes 
+
+== Version 1.5.0
+ * preview release of Ruby gem
+
+== Version 1.4
+ * incremental parsing improvements
+ * respect <tt>@media</tt> rule (http://www.w3.org/TR/CSS21/media.html#at-media-rule)
+ * better quote escaping
+
+== Version 1.3
+ * separate CSS parser into its own library
+ * handle <tt>background: red url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4%2F58BAAT%2FAf9jgNErAAAAAElFTkSuQmCC);</tt>
+ * preserve <tt>:hover</tt> etc... in head styles
+
+== Version 1.2
+ * respect <tt>LINK</tt> media types
+ * better style folding
+ * incremental parsing improvements
+
+== Version 1.1
+ * proper calculation of selector specificity per CSS 2.1 spec
+ * support for <tt>@import</tt>
+ * preliminary support for shorthand CSS properties (<tt>margin</tt>, <tt>padding</tt>)
+ * preliminary separation of CSS parser
+
+== Version 1.0
+ * ported web interface to eRuby
+ * incremental parsing improvements
+
+== Version 0.9
+ * initial proof-of-concept
+ * PHP web version
+
+== TODO: Future
+ * complete shorthand properties support (<tt>border-width</tt>, <tt>font</tt>, <tt>background</tt>)
+ * UTF-8 and other charsets (test page: http://kianga.kcore.de/2004/09/21/utf8_test)
+ * make warnings for <tt>border</tt> match <tt>border-left</tt>, etc...
+ * Integrate CSS validator
+ * Remove unused classes and IDs

@@ -1,0 +1,66 @@
+= Premailer README
+
+=== What is this?
+
+For the best HTML e-mail delivery results, CSS should be inline. This is a 
+huge pain and a simple newsletter becomes un-managable very quickly. This 
+script is my solution.
+
+* CSS styles are converted to inline style attributes
+  Checks style and link[rel=stylesheet] tags and preserves existing inline attributes
+* Relative paths are converted to absolute paths
+  Checks links in href, src and CSS url('')
+* CSS properties are checked against e-mail client capabilities
+  Based on the Email Standards Project’s guides
+* A plain text version is created
+  Optional
+
+
+=== Installation
+
+Download the Premailer gem from GitHub.
+
+    gem sources -a http://gems.github.com
+    sudo gem install alexdunae-premailer
+
+=== Example
+  premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
+
+  # Write the HTML output
+  fout = File.open("output.html", "w")
+  fout.puts premailer.to_inline_css
+  fout.close
+
+  # Write the plain-text output
+  fout = File.open("ouput.txt", "w")
+  fout.puts premailer.to_plain_text
+  fout.close
+
+  # Output any CSS warnings
+  premailer.warnings.each do |w|
+    puts "#{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
+  end
+
+=== Contributions
+
+Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Pull and patch to your heart's content.
+
+A few areas that are particularly in need of love:
+* Testing suite
+  There were unit tests but they were so funky that it was better to just strip them out.
+* Test running Premailer on local files
+* Create a binary file for easing command line use, allowing the output to be piped in *nix systems
+* Ruby 1.9 testing
+* Test with Rails
+* Move un-repeated background images defined in CSS to +<td background="">+ for Outlook
+* Correctly parse http://www.webstandards.org/files/acid2/test.html
+
+=== Credits and code
+
+Premailer is written in Ruby.  
+
+The web interface can be found at http://premailer.dialect.ca/ .
+
+The source code can be found at http://github.com/alexdunae/premailer .
+
+Written by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-2009.
