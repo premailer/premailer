@@ -1,6 +1,4 @@
 require 'rake'
-require 'rake/rdoctask'
-require 'rake/gempackagetask'
 require 'fileutils'
 require 'lib/premailer'
 
@@ -42,17 +40,3 @@ task :text do
   
   puts "Succesfully parsed '#{url}' into '#{output}'"
 end
-
-desc 'Generate documentation for Premailer.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'doc'
-  rdoc.title    = 'Premailer'
-  rdoc.options << '--all'
-  rdoc.options << '--inline-source'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('LICENSE.rdoc')
-  rdoc.rdoc_files.include('CHANGELOG.rdoc')
-  rdoc.rdoc_files.include('lib/*.rb')
-end
-

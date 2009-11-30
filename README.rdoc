@@ -11,17 +11,17 @@ script is my solution.
 * Relative paths are converted to absolute paths
   Checks links in href, src and CSS url('')
 * CSS properties are checked against e-mail client capabilities
-  Based on the Email Standards Project’s guides
+  Based on the Email Standards Project's guides
 * A plain text version is created
   Optional
 
 
 === Installation
 
-Download the Premailer gem from GitHub.
+Download the Premailer gem from GemCutter.
 
-    gem sources -a http://gems.github.com
-    sudo gem install alexdunae-premailer
+    gem sources -a http://gemcutter.org
+    sudo gem install premailer
 
 === Example
   premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
@@ -52,7 +52,7 @@ A few areas that are particularly in need of love:
 * Create a binary file for easing command line use, allowing the output to be piped in *nix systems
 * Ruby 1.9 testing
 * Test with Rails
-* Move un-repeated background images defined in CSS to +<td background="">+ for Outlook
+* Move un-repeated background images defined in CSS to <tt><td background=""></tt> for Outlook
 * Correctly parse http://www.webstandards.org/files/acid2/test.html
 
 === Credits and code
