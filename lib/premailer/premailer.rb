@@ -265,7 +265,6 @@ protected
       next if tags.empty?
 
       tags.each do |tag|
-
         # skip links that look like they have merge tags
         # and mailto, ftp, etc...
         if tag.attributes[attribute] =~ /^(\{|\[|<|\#|mailto:|ftp:|gopher:)/i
@@ -329,15 +328,15 @@ protected
 
   # from http://www.ruby-forum.com/topic/140101
   def self.canonicalize(uri) # :nodoc:
-     u = uri.kind_of?(URI) ? uri : URI.parse(uri.to_s)
-     u.normalize!
-     newpath = u.path
-     while newpath.gsub!(%r{([^/]+)/\.\./?}) { |match|
-                $1 == '..' ? match : ''
-              } do end
-     newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
-     u.path = newpath
-     u.to_s
+    u = uri.kind_of?(URI) ? uri : URI.parse(uri.to_s)
+    u.normalize!
+    newpath = u.path
+    while newpath.gsub!(%r{([^/]+)/\.\./?}) { |match|
+      $1 == '..' ? match : ''
+    } do end
+    newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
+    u.path = newpath
+    u.to_s
   end
 
   # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
