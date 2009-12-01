@@ -42,7 +42,9 @@ class Premailer
   # should also exclude :first-letter, etc...
 
   # URI of the HTML file used
-  attr_reader   :html_file            
+  attr_reader   :html_file
+  
+  attr_reader   :processed_doc
 
   module Warnings
     NONE = 0
@@ -174,6 +176,8 @@ class Premailer
     doc = write_unmergable_css_rules(doc, unmergable_rules)
 
     doc.search('*').remove_class if @options[:remove_classes]  
+
+    @processed_doc = doc
 
     doc.to_html
   end
