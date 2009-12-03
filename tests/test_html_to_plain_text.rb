@@ -29,6 +29,12 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     assert_plaintext "Test text\n\nTest text", "<p>Test text</p><p>Test text</p>"
     assert_plaintext "Test text\n\nTest text", "\n<p>Test text</p>\n\n\n\t<p>Test text</p>\n"
   end
+  
+  def test_headings
+      assert_plaintext "****\nTest\n****", "<h1>Test</h1>"
+      assert_plaintext "----\nTest\n----", "<h2>Test\n</h2>"
+      assert_plaintext "Test\n----", "<h3> <span class='a'>Test </span></h3>"
+  end
 
   def test_links
     # basic

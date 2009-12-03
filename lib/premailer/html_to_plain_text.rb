@@ -19,9 +19,9 @@ module HtmlToPlainText
 
     txt = he.decode(txt)
 
-    txt.gsub!(/<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/i) do |s|  # handle headings
+    txt.gsub!(/<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/im) do |s|  # handle headings
       hlevel = $1.to_i
-      htext = $2.gsub(/<\/?[^>]*>/i, '')                  # remove tags inside headings
+      htext = $2.gsub(/<\/?[^>]*>/i, '').strip                  # remove tags inside headings
       hlength = (htext.length > line_length ? 
                   line_length : 
                   htext.length)
