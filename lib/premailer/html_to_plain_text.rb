@@ -47,8 +47,9 @@ module HtmlToPlainText
     txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')
     txt.gsub!(/<\/li>[\s]*(?![\n])/i, "\n")  # list not followed by a newline
     
-    
-    txt.gsub!(/<\/p>/i, "\n\n")                           # paragraphs
+    # paragraphs and line breaks
+    txt.gsub!(/<\/p>/i, "\n\n")
+    txt.gsub!(/<br[\/ ]*>/i, "\n")
     
     txt.gsub!(/<\/?[^>]*>/, '')                           # strip remaining tags
     

@@ -25,9 +25,12 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     assert_plaintext 'test text', "<p class=\"123'45 , att\" att=tester>test <span class='te\"st'>text</span>\n"
   end
 
-  def test_paragraphs
+  def test_paragraphs_and_breaks
     assert_plaintext "Test text\n\nTest text", "<p>Test text</p><p>Test text</p>"
     assert_plaintext "Test text\n\nTest text", "\n<p>Test text</p>\n\n\n\t<p>Test text</p>\n"
+    assert_plaintext "Test text\nTest text", "\n<p>Test text<br/>Test text</p>\n"
+    assert_plaintext "Test text\nTest text", "\n<p>Test text<br> \tTest text<br></p>\n"
+    assert_plaintext "Test text\n\nTest text", "Test text<br><BR />Test text"
   end
   
   def test_headings
