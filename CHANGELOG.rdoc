@@ -1,5 +1,8 @@
 = Premailer CHANGELOG
 
+== Version 1.5.3
+ * improved plaintext conversion
+
 == Version 1.5.2
  * released to GitHub
  * fixed handling of mailto links

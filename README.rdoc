@@ -7,9 +7,9 @@ huge pain and a simple newsletter becomes un-managable very quickly. This
 script is my solution.
 
 * CSS styles are converted to inline style attributes
-  Checks style and link[rel=stylesheet] tags and preserves existing inline attributes
+  Checks <tt>style</tt> and <tt>link[rel=stylesheet]</tt> tags and preserves existing inline attributes
 * Relative paths are converted to absolute paths
-  Checks links in href, src and CSS url('')
+  Checks links in <tt>href</tt>, <tt>src</tt> and CSS <tt>url('')</tt>
 * CSS properties are checked against e-mail client capabilities
   Based on the Email Standards Project's guides
 * A plain text version is created
@@ -59,7 +59,7 @@ A few areas that are particularly in need of love:
 
 Premailer is written in Ruby.  
 
-The web interface can be found at http://premailer.dialect.ca/ .
+The web interface can be found at http://premailer.dialect.ca .
 
 The source code can be found at http://github.com/alexdunae/premailer .
 
