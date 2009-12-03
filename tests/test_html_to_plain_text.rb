@@ -11,6 +11,11 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     assert_plaintext "text\ntext", "  \ttext\ntext\n"
   end
 
+  def test_line_breaks
+    assert_plaintext "Test text\nTest text", "Test text\r\nTest text"
+    assert_plaintext "Test text\nTest text", "Test text\rTest text"
+  end
+
   def test_lists
     assert_plaintext "* item 1\n* item 2", "<li class='123'>item 1</li> <li>item 2</li>\n"
     assert_plaintext "* item 1\n* item 2\n* item 3", "<li>item 1</li> \t\n <li>item 2</li> <li> item 3</li>\n"
@@ -22,6 +27,7 @@ class TestHtmlToPlainText < Test::Unit::TestCase
 
   def test_paragraphs
     assert_plaintext "Test text\n\nTest text", "<p>Test text</p><p>Test text</p>"
+    assert_plaintext "Test text\n\nTest text", "\n<p>Test text</p>\n\n\n\t<p>Test text</p>\n"
   end
 
   def test_links

@@ -36,28 +36,37 @@ module HtmlToPlainText
       end
     end
 
-    txt.gsub!(/<a.*href=\"([^\"]*)\"[^>]*>(.*)<\/a>/i) do |s|   # links
+    # links
+    txt.gsub!(/<a.*href=\"([^\"]*)\"[^>]*>(.*)<\/a>/i) do |s|
       $2.strip + ' ( ' + $1.strip + ' )'
     end
 
-    txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')                     # unordered LIsts
+    # lists -- TODO: should handle ordered lists
+    txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')
     txt.gsub!(/<\/li>[\s]*(?![\n])/i, "\n")  # list not followed by a newline
+    
+    
     txt.gsub!(/<\/p>/i, "\n\n")                           # paragraphs
     
     txt.gsub!(/<\/?[^>]*>/, '')                           # strip remaining tags
-    txt.gsub!(/\A[\s]+|[\s]+\Z|^[ \t]+/m, '')             # strip extra spaces
-    txt.gsub!(/[\n]{3,}/m, "\n\n")                        # tighten line breaks
+    
+    #txt.gsub!(/\A[\s]+|[\s]+\Z|^[ \t]+/m, '')             # strip extra spaces
+    #txt.gsub!(/[\n]{3,}/m, "\n\n")                        # tighten line breaks
 
     txt = r.format(('[' * line_length), txt)   # wrap text
-    txt.gsub!(/^[\*][\s]/m, '  * ')                        # add spaces back to lists
+    #txt.gsub!(/^[\*][\s]/m, '  * ')                        # add spaces back to lists
   
-    txt.gsub!(/^\s+$/, "\n")                    # \r\n and \r -> \n
+    #txt.gsub!(/^\s+$/, "\n")                    # \r\n and \r -> \n
+    
+    # remove linefeeds
     txt.gsub!(/\r\n?/, "\n")                    # \r\n and \r -> \n
-    txt.gsub!(/[\n]{3,}/, "\n")
+    
+    # no more than two consecutive newlines
+    txt.gsub!(/[\n]{3,}/, "\n\n")
     
     
-    txt.gsub!(/^\s+/, '') # space at start of lines
-    txt.gsub!(/\s+$/, '') # space at end of lines
+    txt.gsub!(/^[ \t]+/m, '') # space at start of lines
+    txt.gsub!(/[ \t]+$/m, '') # space at end of lines
     txt.strip
   end
 end
