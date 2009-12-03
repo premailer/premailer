@@ -20,6 +20,10 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     assert_plaintext 'test text', "<p class=\"123'45 , att\" att=tester>test <span class='te\"st'>text</span>\n"
   end
 
+  def test_paragraphs
+    assert_plaintext "Test text\n\nTest text", "<p>Test text</p><p>Test text</p>"
+  end
+
   def test_links
     # basic
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/">Link</a>'
