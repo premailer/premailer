@@ -15,8 +15,8 @@ module HtmlToPlainText
 
     txt = html
     
-    he = HTMLEntities.new                                 # decode HTML entities
-
+    # decode HTML entities
+    he = HTMLEntities.new
     txt = he.decode(txt)
 
     # handle headings (H1-H6)
@@ -45,31 +45,30 @@ module HtmlToPlainText
 
     # lists -- TODO: should handle ordered lists
     txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')
-    txt.gsub!(/<\/li>[\s]*(?![\n])/i, "\n")  # list not followed by a newline
+    # list not followed by a newline
+    txt.gsub!(/<\/li>[\s]*(?![\n])/i, "\n")
     
     # paragraphs and line breaks
     txt.gsub!(/<\/p>/i, "\n\n")
     txt.gsub!(/<br[\/ ]*>/i, "\n")
     
-    txt.gsub!(/<\/?[^>]*>/, '')                           # strip remaining tags
-    
-    #txt.gsub!(/\A[\s]+|[\s]+\Z|^[ \t]+/m, '')             # strip extra spaces
-    #txt.gsub!(/[\n]{3,}/m, "\n\n")                        # tighten line breaks
+    # strip remaining tags
+    txt.gsub!(/<\/?[^>]*>/, '')
 
-    txt = r.format(('[' * line_length), txt)   # wrap text
-    #txt.gsub!(/^[\*][\s]/m, '  * ')                        # add spaces back to lists
-  
-    #txt.gsub!(/^\s+$/, "\n")                    # \r\n and \r -> \n
+    # wrap text
+    txt = r.format(('[' * line_length), txt)
     
-    # remove linefeeds
-    txt.gsub!(/\r\n?/, "\n")                    # \r\n and \r -> \n
+    # remove linefeeds (\r\n and \r -> \n)
+    txt.gsub!(/\r\n?/, "\n")
     
+    # strip extra spaces
+    txt.gsub!(/\302\240+/, " ") # non-breaking spaces -> spaces
+    txt.gsub!(/\n[ \t]+/, "\n") # space at start of lines
+    txt.gsub!(/[ \t]+\n/, "\n") # space at end of lines
+
     # no more than two consecutive newlines
     txt.gsub!(/[\n]{3,}/, "\n\n")
-    
-    
-    txt.gsub!(/^[ \t]+/m, '') # space at start of lines
-    txt.gsub!(/[ \t]+$/m, '') # space at end of lines
+
     txt.strip
   end
 end

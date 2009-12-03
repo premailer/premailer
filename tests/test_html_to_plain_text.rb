@@ -9,6 +9,9 @@ class TestHtmlToPlainText < Test::Unit::TestCase
 
   def test_stripping_whitespace
     assert_plaintext "text\ntext", "  \ttext\ntext\n"
+    assert_plaintext "a\na", "  \na \n a \t"
+    assert_plaintext "a\n\na", "  \na \n\t \n \n a \t"
+    assert_plaintext "test text", "test text&nbsp;"
   end
 
   def test_line_breaks
