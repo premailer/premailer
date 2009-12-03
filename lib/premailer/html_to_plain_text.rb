@@ -37,7 +37,7 @@ module HtmlToPlainText
     end
 
     txt.gsub!(/<a.*href=\"([^\"]*)\"[^>]*>(.*)<\/a>/i) do |s|   # links
-      $2 + ' [' + $1 + ']'
+      $2.strip + ' ( ' + $1.strip + ' )'
     end
 
     txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')                     # unordered LIsts
