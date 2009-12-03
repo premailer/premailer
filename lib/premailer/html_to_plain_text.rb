@@ -8,7 +8,7 @@ module HtmlToPlainText
   #
   # TODO:
   #  - add support for DL, OL
-  def convert_to_text(html, line_length, from_charset = 'UTF-8')
+  def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     r = Text::Reform.new(:trim => true, 
                          :squeeze => false, 
                          :break => Text::Reform.break_wrap)
@@ -40,7 +40,8 @@ module HtmlToPlainText
       $2 + ' [' + $1 + ']'
     end
 
-    txt.gsub!(/(<li[\s]+[^>]*>|<li>)/i, '  * ')                     # unordered LIsts
+    txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')                     # unordered LIsts
+    txt.gsub!(/<\/li>[\s]*(?![\n])/i, "\n")  # list not followed by a newline
     txt.gsub!(/<\/p>/i, "\n\n")                           # paragraphs
     
     txt.gsub!(/<\/?[^>]*>/, '')                           # strip remaining tags
@@ -53,6 +54,10 @@ module HtmlToPlainText
     txt.gsub!(/^\s+$/, "\n")                    # \r\n and \r -> \n
     txt.gsub!(/\r\n?/, "\n")                    # \r\n and \r -> \n
     txt.gsub!(/[\n]{3,}/, "\n")
-    txt
+    
+    
+    txt.gsub!(/^\s+/, '') # space at start of lines
+    txt.gsub!(/\s+$/, '') # space at end of lines
+    txt.strip
   end
 end
