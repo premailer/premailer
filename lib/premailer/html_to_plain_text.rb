@@ -19,19 +19,21 @@ module HtmlToPlainText
 
     txt = he.decode(txt)
 
-    txt.gsub!(/<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/im) do |s|  # handle headings
+    # handle headings (H1-H6)
+    txt.gsub!(/<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/im) do |s|
       hlevel = $1.to_i
-      htext = $2.gsub(/<\/?[^>]*>/i, '').strip                  # remove tags inside headings
+      # cleanup text inside of headings
+      htext = $2.gsub(/<\/?[^>]*>/i, '').strip
       hlength = (htext.length > line_length ? 
                   line_length : 
                   htext.length)
 
       case hlevel
-        when 1                                            # H1
+        when 1   # H1, asterisks above and below
           ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength) + "\n"
-        when 2                                            # H2
+        when 2   # H1, dashes above and below
           ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength) + "\n"
-        else                                              # H3-H6 are styled the same
+        else     # H3-H6, dashes below
           htext + "\n" + ('-' * htext.length) + "\n"
       end
     end
