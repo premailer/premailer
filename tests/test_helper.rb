@@ -1,2 +1,2 @@
 require 'test/unit'
-require '../lib/premailer'
+require File.dirname(__FILE__) + '/../lib/premailer'

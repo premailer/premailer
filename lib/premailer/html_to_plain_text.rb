@@ -20,7 +20,7 @@ module HtmlToPlainText
     txt = he.decode(txt)
 
     # handle headings (H1-H6)
-    txt.gsub!(/<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/im) do |s|
+    txt.gsub!(/[ \t]*<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/i) do |s|
       hlevel = $1.to_i
       # cleanup text inside of headings
       htext = $2.gsub(/<\/?[^>]*>/i, '').strip

@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestHtmlToPlainText < Test::Unit::TestCase
   include HtmlToPlainText
@@ -35,7 +35,7 @@ class TestHtmlToPlainText < Test::Unit::TestCase
   
   def test_headings
       assert_plaintext "****\nTest\n****", "<h1>Test</h1>"
-      assert_plaintext "----\nTest\n----", "<h2>Test\n</h2>"
+      assert_plaintext "----\nTest\n----", "<h2>Test</h2>"
       assert_plaintext "Test\n----", "<h3> <span class='a'>Test </span></h3>"
   end
 
