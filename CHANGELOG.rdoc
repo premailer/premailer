@@ -1,5 +1,10 @@
 = Premailer CHANGELOG
 
+== Version 1.5.4
+* new bin/premailer script
+* added missing htmlentities depenency to gemspec (thanks to http://github.com/usefulthink )
+* fixed handling of unspecified <link> media types
+
 == Version 1.5.3
  * improved plaintext conversion
 
