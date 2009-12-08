@@ -226,6 +226,7 @@ protected
   end
 
   def media_type_ok?(media_types) # :nodoc:
+    return true if media_types.nil? or media_types.empty?
     return media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   rescue
     return true
