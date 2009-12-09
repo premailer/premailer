@@ -44,7 +44,11 @@ class Premailer
   # URI of the HTML file used
   attr_reader   :html_file
   
+  # processed HTML document (Hpricot)
   attr_reader   :processed_doc
+  
+  # source HTML document (Hpricot)
+  attr_reader   :doc
 
   module Warnings
     NONE = 0
@@ -87,11 +91,12 @@ class Premailer
                                         })
     
     @doc, @html_charset = load_html(@html_file)
+    @processed_doc = @doc
     
     if @is_local_file and @options[:base_url]
-      @doc = convert_inline_links(@doc, @options[:base_url])
+      @processed_doc = convert_inline_links(@processed_doc, @options[:base_url])
     elsif not @is_local_file
-      @doc = convert_inline_links(@doc, @html_file)
+      @processed_doc = convert_inline_links(@processed_doc, @html_file)
     end
     load_css_from_html!
   end
@@ -125,7 +130,7 @@ class Premailer
   #
   # Returns a string.
   def to_inline_css
-    doc = @doc
+    doc = @processed_doc
     unmergable_rules = CssParser::Parser.new
     
     # Give all styles already in style attributes a specificity of 1000 
@@ -352,7 +357,7 @@ protected
     properties = []
     
     # Get a list off CSS properties
-    @doc.search("*[@style]").each do |el|
+    @processed_doc.search("*[@style]").each do |el|
       style_url = el.attributes['style'].gsub(/([\w\-]+)[\s]*\:/i) do |s|
         properties.push($1)
       end
