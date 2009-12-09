@@ -20,4 +20,22 @@ class TestLinkResolver < Test::Unit::TestCase
     base_uri = URI.parse('https://example.net:80/~basedir/')
     assert_equal 'https://example.net:80/~basedir/test.html?var=1#anchor', Premailer.resolve_link('test/../test/../test.html?var=1#anchor', base_uri)
   end
+
+  def test_resolving_urls_in_doc
+    base_file = File.dirname(__FILE__) + '/files/base.html'
+    base_url = 'https://my.example.com:8080/test-path.html'
+    premailer = Premailer.new(base_file, :base_url => base_url)
+    premailer.to_inline_css
+    pdoc = premailer.processed_doc
+    doc = premailer.doc
+
+    # unchanged links
+    ['#l02', '#l03', '#l05', '#l06', '#l07', '#l08', 
+     '#l09', '#l10', '#l11', '#l12', '#l13'].each do |link_id|
+      assert_equal doc.at(link_id).attributes['href'], pdoc.at(link_id).attributes['href'], link_id
+    end
+    
+    assert_equal 'https://my.example.com:8080/', pdoc.at('#l01').attributes['href']
+    assert_equal 'https://my.example.com:8080/images/', pdoc.at('#l04').attributes['href']
+  end
 end
