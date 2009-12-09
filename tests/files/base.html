@@ -11,12 +11,15 @@
 	<title>Premailer Test</title>
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<style type="text/css">
+		@import "import.css" screen, handheld;
+	</style>
+	<style type="text/css">
 		@import "noimport.css" print;
 	</style>
 </head>
 <body>
 <div id="wrapper">
-<p class="hide">This line should be hidden.</p>
+<p class="hide" id="hide01">This line should be hidden.</p>
 <table width="646" class="container" cellspacing="0" cellpadding="0">
 <tr><td id="webversion" colspan="6">Having trouble reading this newsletter? <webversion>Click here to see it in your browser</webversion></td></tr>
 

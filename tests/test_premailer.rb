@@ -26,4 +26,12 @@ class TestPremailer < Test::Unit::TestCase
     str = %q{url('/images/\"test.png');}
     assert_equal("url(\'/images/\'test.png\');", Premailer.escape_string(str))
   end
+  
+  def test_importing_css
+    # noimport.css (print stylesheet) sets body { background } to red
+    assert_no_match /red/, @doc.at('body').attributes['style']
+    
+    # import.css sets .hide to { display: none } 
+    assert_match /display: none/, @doc.at('#hide01').attributes['style']
+  end
 end
