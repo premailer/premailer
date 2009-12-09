@@ -39,7 +39,27 @@ class Premailer
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
   
-  # should also exclude :first-letter, etc...
+  # list of CSS attributes that can be rendered as HTML attributes
+  #
+  # TODO: too much repetition
+  # TODO: background=""
+  RELATED_ATTRIBUTES = { 
+    'h1' => {'text-align' => 'align'},
+    'h2' => {'text-align' => 'align'},
+    'h3' => {'text-align' => 'align'},
+    'h4' => {'text-align' => 'align'},
+    'h5' => {'text-align' => 'align'},
+    'h6' => {'text-align' => 'align'},
+    'p' => {'text-align' => 'align'},
+    'div' => {'text-align' => 'align'},
+    'blockquote' => {'text-align' => 'align'},
+    'body' => {'background-color' => 'bgcolor'},
+    'table' => {'background-color' => 'bgcolor'},
+    'tr' => {'text-align' => 'align', 'background-color' => 'bgcolor'},
+    'th' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
+    'td' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
+    'img' => {'float' => 'align'}
+  }
 
   # URI of the HTML file used
   attr_reader   :html_file
@@ -70,12 +90,14 @@ class Premailer
   # [+warn_level+] What level of CSS compatibility warnings to show (see Warnings).
   # [+link_query_string+] A string to append to every <a href=""> link. Do not include the initial +?+.
   # [+base_url+] Used to calculate absolute URLs for local files.
+  # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
   def initialize(path, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
                 :link_query_string => nil, 
                 :base_url => nil,
-                :remove_classes => false}.merge(options)
+                :remove_classes => false,
+                :css_to_attributes => true}.merge(options)
     @html_file = path
    
     @is_local_file = true
@@ -161,7 +183,7 @@ class Premailer
       end
     end
 
-    # Read <style> attributes and perform folding
+    # Read STYLE attributes and perform folding
     doc.search("*[@style]").each do |el|
       style = el.attributes['style'].to_s
       
@@ -172,9 +194,18 @@ class Premailer
         declarations << rs
       end
 
-      # Perform style folding and save
+      # Perform style folding
       merged = CssParser.merge(declarations)
+      merged.expand_shorthand!
+      
+      # Duplicate CSS attributes as HTML attributes
+      if RELATED_ATTRIBUTES.has_key?(el.name)       
+        RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
+          el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil?
+        end
+      end
 
+      # write the inline STYLE attribute
       el['style'] = Premailer.escape_string(merged.declarations_to_s)
     end
 

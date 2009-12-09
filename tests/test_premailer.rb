@@ -1,10 +1,11 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestPremailer < Test::Unit::TestCase
   def setup
     base_file = File.dirname(__FILE__) + '/files/base.html'  
     premailer = Premailer.new(base_file)
     premailer.to_inline_css
+    puts Premailer::VERSION
 
     @doc = premailer.processed_doc
   end
@@ -33,5 +34,22 @@ class TestPremailer < Test::Unit::TestCase
     
     # import.css sets .hide to { display: none } 
     assert_match /display: none/, @doc.at('#hide01').attributes['style']
+  end
+
+  def test_related_attributes
+    # h1 { text-align: center; }
+    assert_equal 'center', @doc.at('h1')['align']
+    
+    # td { vertical-align: top; }
+    assert_equal 'top', @doc.at('td')['valign']
+    
+    # p { vertical-align: top; } -- not allowed
+    assert_nil @doc.at('p')['valign']
+    
+    # .contact { background: #9EC03B url("contact_bg.png") repeat 0 0; }
+    assert_equal '#9EC03B', @doc.at('td.contact')['bgcolor']
+    
+    # body { background-color: #9EBF00; }
+    assert_equal '#9EBF00', @doc.at('body')['bgcolor']
   end
 end

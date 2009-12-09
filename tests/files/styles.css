@@ -65,7 +65,7 @@ blockquote, blockquote p { font: italic 16px/145% "Georgia", serif; }
 
 p, blockquote { color: #999; }
 
-p { margin: 0 0 1em; font: normal 100%/158% "Arial", sans-serif; }
+p { margin: 0 0 1em; font: normal 100%/158% "Arial", sans-serif; vertical-align: top; }
 
 
 .hide { text-align: center; color: red; font-size: 150%; }
