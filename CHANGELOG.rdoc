@@ -1,6 +1,7 @@
 = Premailer CHANGELOG
 
 == Version NEXT
+* strip @import rules from local CSS until CssParser is updated
 * copy related CSS attributes to HTML (inspired by http://github.com/peterbe/premailer/commit/c4f2634a99fc5005011ffde54ae0336ea1497ef5)
 
 == Version 1.5.4

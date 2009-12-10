@@ -247,6 +247,11 @@ protected
                   css_block << line
                 end
               end
+              
+              # Strip @import rules for local files
+              # This is a temporary fix until the CssParser is updated
+              css_block.gsub!(CssParser::Parser::RE_AT_IMPORT_RULE, '')
+              
               @css_parser.add_block!(css_block, {:base_uri => @html_file})
             rescue; end
           else

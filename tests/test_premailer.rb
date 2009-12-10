@@ -5,8 +5,6 @@ class TestPremailer < Test::Unit::TestCase
     base_file = File.dirname(__FILE__) + '/files/base.html'  
     premailer = Premailer.new(base_file)
     premailer.to_inline_css
-    puts Premailer::VERSION
-
     @doc = premailer.processed_doc
   end
 
