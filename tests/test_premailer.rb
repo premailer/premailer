@@ -63,15 +63,32 @@ class TestPremailer < Test::Unit::TestCase
     assert_equal '#9EBF00', @doc.at('body')['bgcolor']
   end
   
+  def test_merging_cellpadding
+    flunk 'Not implemented'
+    local_setup({:prefer_cellpadding => false})
+    assert_equal '', @doc.at('#contact_info')['cellpadding']
+  end
+  
+  def test_not_merging_cellpadding
+    flunk 'Not implemented'
+    local_setup({:prefer_cellpadding => true})
+    assert_equal '5', @doc.at('#contact_info')['cellpadding']
+    assert_no_match /padding\:/i, @doc.at('#contact_info')['style']
+    
+    # padding on all four sides is not equal, so no cellpadding
+    assert_equal '', @doc.at('#credit')['cellpadding']
+    assert_match /padding\:/i, @doc.at('#contact_info')['style']
+  end
+  
 protected
-  def local_setup
+  def local_setup(opts = {})
     base_file = File.dirname(__FILE__) + '/files/base.html'  
-    premailer = Premailer.new(base_file)
+    premailer = Premailer.new(base_file, opts)
     premailer.to_inline_css
     @doc = premailer.processed_doc
   end
   
-  def remote_setup
+  def remote_setup(opts = {})
     # from http://nullref.se/blog/2006/5/17/testing-with-webrick
     uri_base = 'http://localhost:12000'
     www_root = File.dirname(__FILE__) + '/files/'
@@ -88,7 +105,7 @@ protected
 
     sleep 1 # ensure the server has time to load
     
-    premailer = Premailer.new(uri_base + '/base.html')
+    premailer = Premailer.new(uri_base + '/base.html', opts)
     premailer.to_inline_css
     @doc = premailer.processed_doc
   end

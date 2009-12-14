@@ -98,3 +98,5 @@ img.right { float: right; margin: 0 0 30px 20px; }
 	font: normal 10px/13px "Verdana", sans-serif;
 	text-align: center;
 }
+
+#contact_info { padding: 5px; }
