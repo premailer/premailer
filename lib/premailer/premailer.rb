@@ -33,7 +33,7 @@ class Premailer
   include HtmlToPlainText
   include CssParser
 
-  VERSION = '1.5.4'
+  VERSION = '1.5.5'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
@@ -91,13 +91,15 @@ class Premailer
   # [+link_query_string+] A string to append to every <a href=""> link. Do not include the initial +?+.
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
+  # [+prefer_cellpadding+] Move CSS +padding+ to a +cellpadding+ attribute for table cells
   def initialize(path, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
                 :link_query_string => nil, 
                 :base_url => nil,
                 :remove_classes => false,
-                :css_to_attributes => true}.merge(options)
+                :css_to_attributes => true,
+                :prefer_cellpadding => false}.merge(options)
     @html_file = path
    
     @is_local_file = true
@@ -198,12 +200,24 @@ class Premailer
       merged = CssParser.merge(declarations)
       merged.expand_shorthand!
       
+      if @options[:prefer_cellpadding] and (el.name == 'td' or el.name == 'th') and el['cellpadding'].nil?
+        if cellpadding = equivalent_cellpadding(merged)
+          el['cellpadding'] = cellpadding
+          merged['padding-left'] = nil
+          merged['padding-right'] = nil
+          merged['padding-top'] = nil
+          merged['padding-bottom'] = nil
+        end
+      end
+      
       # Duplicate CSS attributes as HTML attributes
       if RELATED_ATTRIBUTES.has_key?(el.name)       
         RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
           el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil?
         end
       end
+      
+      merged.create_dimensions_shorthand!
 
       # write the inline STYLE attribute
       el['style'] = Premailer.escape_string(merged.declarations_to_s)
@@ -290,6 +304,24 @@ protected
       doc.search("head").append(style_tag)
     end
     doc
+  end
+  
+  # Check a CssParser::RuleSet for padding declarations that are equal on all four sides.
+  #
+  # Used for moving CSS <tt>padding</tt> attributes to <tt>cellpadding</tt> HTML attributes.
+  #
+  # TODO: check units
+  # Returns nil or an integer.
+  def equivalent_cellpadding(ruleset)
+    padding = ruleset['padding-left'].chomp(';')
+
+    return nil if padding.to_i == 0
+    
+    equal = ['padding-right', 'padding-top', 'padding-bottom'].all? do |c|
+      ruleset[c].chomp(';') == padding
+    end
+    
+    return equal ? padding.to_i : nil
   end
 
   # Convert relative links to absolute links.

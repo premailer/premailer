@@ -63,21 +63,19 @@ class TestPremailer < Test::Unit::TestCase
     assert_equal '#9EBF00', @doc.at('body')['bgcolor']
   end
   
-  def test_merging_cellpadding
-    flunk 'Not implemented'
+  def test_not_merging_cellpadding
     local_setup({:prefer_cellpadding => false})
-    assert_equal '', @doc.at('#contact_info')['cellpadding']
+    assert_nil @doc.at('#contact_info')['cellpadding']
   end
   
-  def test_not_merging_cellpadding
-    flunk 'Not implemented'
+  def test_merging_cellpadding
     local_setup({:prefer_cellpadding => true})
     assert_equal '5', @doc.at('#contact_info')['cellpadding']
     assert_no_match /padding\:/i, @doc.at('#contact_info')['style']
     
     # padding on all four sides is not equal, so no cellpadding
-    assert_equal '', @doc.at('#credit')['cellpadding']
-    assert_match /padding\:/i, @doc.at('#contact_info')['style']
+    assert_nil @doc.at('#credit')['cellpadding']
+    assert_match /padding\:/i, @doc.at('#credit')['style']
   end
   
 protected
