@@ -91,7 +91,7 @@ class Premailer
   # [+link_query_string+] A string to append to every <a href=""> link. Do not include the initial +?+.
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
-  # [+prefer_cellpadding+] Move CSS +padding+ to a +cellpadding+ attribute for table cells
+  # [+prefer_cellpadding+] Move CSS +padding+ to a +cellpadding+ attribute for table cells. (IN DEVELOPMENT, currently disabled.)
   def initialize(path, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
@@ -200,15 +200,15 @@ class Premailer
       merged = CssParser.merge(declarations)
       merged.expand_shorthand!
       
-      if @options[:prefer_cellpadding] and (el.name == 'td' or el.name == 'th') and el['cellpadding'].nil?
-        if cellpadding = equivalent_cellpadding(merged)
-          el['cellpadding'] = cellpadding
-          merged['padding-left'] = nil
-          merged['padding-right'] = nil
-          merged['padding-top'] = nil
-          merged['padding-bottom'] = nil
-        end
-      end
+      #if @options[:prefer_cellpadding] and (el.name == 'td' or el.name == 'th') and el['cellpadding'].nil?
+      #  if cellpadding = equivalent_cellpadding(merged)
+      #    el['cellpadding'] = cellpadding
+      #    merged['padding-left'] = nil
+      #    merged['padding-right'] = nil
+      #    merged['padding-top'] = nil
+      #    merged['padding-bottom'] = nil
+      #  end
+      #end
       
       # Duplicate CSS attributes as HTML attributes
       if RELATED_ATTRIBUTES.has_key?(el.name)       
