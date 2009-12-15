@@ -62,25 +62,26 @@ class TestPremailer < Test::Unit::TestCase
     # body { background-color: #9EBF00; }
     assert_equal '#9EBF00', @doc.at('body')['bgcolor']
   end
-  
-  def test_not_merging_cellpadding
-    local_setup({:prefer_cellpadding => false})
-    assert_nil @doc.at('#contact_info')['cellpadding']
-  end
-  
+
   def test_merging_cellpadding
-    local_setup({:prefer_cellpadding => true})
-    assert_equal '5', @doc.at('#contact_info')['cellpadding']
-    assert_no_match /padding\:/i, @doc.at('#contact_info')['style']
+    local_setup('cellpadding.html', {:prefer_cellpadding => true})
+    assert_equal '0', @doc.at('#t1')['cellpadding']
+    assert_match /padding\:/i, @doc.at('#t1 td')['style']
+
+    assert_equal '5', @doc.at('#t2')['cellpadding']
+    assert_no_match /padding\:/i, @doc.at('#t2 td')['style']
     
-    # padding on all four sides is not equal, so no cellpadding
-    assert_nil @doc.at('#credit')['cellpadding']
-    assert_match /padding\:/i, @doc.at('#credit')['style']
+    assert_nil, @doc.at('#t3')['cellpadding']
+    assert_match /padding\:/i, @doc.at('#t3 td')['style']
+
+    assert_nil, @doc.at('#t4')['cellpadding']
+    assert_match /padding\:/i, @doc.at('#t4a')['style']
+    assert_match /padding\:/i, @doc.at('#t4b')['style']
   end
   
 protected
-  def local_setup(opts = {})
-    base_file = File.dirname(__FILE__) + '/files/base.html'  
+  def local_setup(f = 'base.html', opts = {})
+    base_file = File.dirname(__FILE__) + '/files/ + f
     premailer = Premailer.new(base_file, opts)
     premailer.to_inline_css
     @doc = premailer.processed_doc
