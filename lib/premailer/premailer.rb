@@ -390,6 +390,7 @@ protected
   end
   
   def self.resolve_link(path, base_path) # :nodoc:
+    path.strip!
     resolved = nil
     if base_path.kind_of?(URI)
       resolved = base_path.merge(path)

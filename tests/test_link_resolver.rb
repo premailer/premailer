@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestLinkResolver < Test::Unit::TestCase
   def test_resolving_urls_from_string
@@ -19,6 +19,14 @@ class TestLinkResolver < Test::Unit::TestCase
 
     base_uri = URI.parse('https://example.net:80/~basedir/')
     assert_equal 'https://example.net:80/~basedir/test.html?var=1#anchor', Premailer.resolve_link('test/../test/../test.html?var=1#anchor', base_uri)
+    
+    # base URI with a query string
+    base_uri = URI.parse('http://example.com/dir/index.cfm?newsletterID=16')
+    assert_equal 'http://example.com/dir/index.cfm?link=15', Premailer.resolve_link('?link=15', base_uri)
+    
+    # URI preceded by a space
+    base_uri = URI.parse('http://example.com/')
+    assert_equal 'http://example.com/path', Premailer.resolve_link(' path', base_uri)
   end
 
   def test_resolving_urls_in_doc
