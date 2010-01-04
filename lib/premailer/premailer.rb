@@ -90,22 +90,21 @@ class Premailer
   # [+warn_level+] What level of CSS compatibility warnings to show (see Warnings).
   # [+link_query_string+] A string to append to every <a href=""> link. Do not include the initial +?+.
   # [+base_url+] Used to calculate absolute URLs for local files.
+  # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
-  # [+prefer_cellpadding+] Move CSS +padding+ to a +cellpadding+ attribute for table cells. (IN DEVELOPMENT, currently disabled.)
   def initialize(path, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
                 :link_query_string => nil, 
                 :base_url => nil,
                 :remove_classes => false,
-                :css_to_attributes => true,
-                :prefer_cellpadding => false}.merge(options)
+                :css => [],
+                :css_to_attributes => true}.merge(options)
     @html_file = path
    
-    @is_local_file = true
-    if path =~ /^(http|https|ftp)\:\/\//i
-      @is_local_file = false
-    end
+    @is_local_file = local_uri?(path)
+
+    @css_files = @options[:css]
 
     @css_warnings = []
 
@@ -122,7 +121,16 @@ class Premailer
     elsif not @is_local_file
       @processed_doc = convert_inline_links(@processed_doc, @html_file)
     end
+    load_css_from_options!
     load_css_from_html!
+  end
+
+  def local_uri?(uri)
+    if uri =~ /^(http|https|ftp)\:\/\//i
+      return false
+    else
+      return true
+    end
   end
 
   # Array containing a hash of CSS warnings.
@@ -244,7 +252,29 @@ protected
       Hpricot(open(path))
     end
   end
-  
+
+  def load_css_from_local_file!(path)
+    css_block = ''
+    begin
+      File.open(path, "r") do |file|
+        while line = file.gets
+          css_block << line
+        end
+      end
+      @css_parser.add_block!(css_block, {:base_uri => @html_file})
+    rescue; end
+  end
+
+  def load_css_from_options! # :nodoc:
+    @css_files.each do |css_file|
+      if local_uri?(css_file)
+        load_css_from_local_file!(css_file)
+      else
+        @css_parser.load_uri!(css_file)
+      end
+    end
+  end
+
   # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
@@ -254,20 +284,7 @@ protected
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           if @is_local_file
-            css_block = ''
-            begin
-              File.open(link_uri, "r") do |file|
-                while line = file.gets
-                  css_block << line
-                end
-              end
-              
-              # Strip @import rules for local files
-              # This is a temporary fix until the CssParser is updated
-              css_block.gsub!(CssParser::Parser::RE_AT_IMPORT_RULE, '')
-              
-              @css_parser.add_block!(css_block, {:base_uri => @html_file})
-            rescue; end
+            load_css_from_local_file!(link_uri)
           else
             @css_parser.load_uri!(link_uri)
           end
@@ -304,24 +321,6 @@ protected
       doc.search("head").append(style_tag)
     end
     doc
-  end
-  
-  # Check a CssParser::RuleSet for padding declarations that are equal on all four sides.
-  #
-  # Used for moving CSS <tt>padding</tt> attributes to <tt>cellpadding</tt> HTML attributes.
-  #
-  # TODO: check units
-  # Returns nil or an integer.
-  def equivalent_cellpadding(ruleset)
-    padding = ruleset['padding-left'].chomp(';')
-
-    return nil if padding.to_i == 0
-    
-    equal = ['padding-right', 'padding-top', 'padding-bottom'].all? do |c|
-      ruleset[c].chomp(';') == padding
-    end
-    
-    return equal ? padding.to_i : nil
   end
 
   # Convert relative links to absolute links.

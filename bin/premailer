@@ -23,6 +23,7 @@ EOS
   opt :query_string, "Query string to append to links", :type => String, :short => 'q'
   opt :line_length, "Length of lines when creating plaintext version", :type => :int, :default => 65, :short => 'l'
   opt :remove_classes, "Remove classes from the HTML document?", :default => false
+  opt :css, "Manually specify css stylesheets", :type => String, :multi => true
   opt :verbose, '', :default => false, :short => 'v'
 end
 
@@ -38,7 +39,8 @@ premailer_opts = {
   :query_string => opts[:query_string],
   :show_warnings => opts[:show_warnings] ? Premailer::Warnings::SAFE : Premailer::Warnings::NONE,
   :line_length => opts[:line_length],
-  :remove_classes => opts[:remove_classes]
+  :remove_classes => opts[:remove_classes],
+  :css => opts[:css]
 }
 
 premailer = Premailer.new(inputfile, premailer_opts)
