@@ -64,6 +64,7 @@ class TestPremailer < Test::Unit::TestCase
   end
 
   def test_merging_cellpadding
+    flunk
     local_setup('cellpadding.html', {:prefer_cellpadding => true})
     assert_equal '0', @doc.at('#t1')['cellpadding']
     assert_match /padding\:/i, @doc.at('#t1 td')['style']
@@ -71,17 +72,17 @@ class TestPremailer < Test::Unit::TestCase
     assert_equal '5', @doc.at('#t2')['cellpadding']
     assert_no_match /padding\:/i, @doc.at('#t2 td')['style']
     
-    assert_nil, @doc.at('#t3')['cellpadding']
+    assert_nil @doc.at('#t3')['cellpadding']
     assert_match /padding\:/i, @doc.at('#t3 td')['style']
 
-    assert_nil, @doc.at('#t4')['cellpadding']
+    assert_nil @doc.at('#t4')['cellpadding']
     assert_match /padding\:/i, @doc.at('#t4a')['style']
     assert_match /padding\:/i, @doc.at('#t4b')['style']
   end
   
 protected
   def local_setup(f = 'base.html', opts = {})
-    base_file = File.dirname(__FILE__) + '/files/ + f
+    base_file = File.dirname(__FILE__) + '/files/' + f
     premailer = Premailer.new(base_file, opts)
     premailer.to_inline_css
     @doc = premailer.processed_doc
