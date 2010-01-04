@@ -213,7 +213,7 @@ class Premailer
       # Duplicate CSS attributes as HTML attributes
       if RELATED_ATTRIBUTES.has_key?(el.name)       
         RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
-          el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil?
+          el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
         end
       end
       

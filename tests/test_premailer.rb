@@ -18,6 +18,7 @@ class TestPremailer < Test::Unit::TestCase
   end
   
   def test_importing_local_css
+    flunk
     local_setup
   
     # noimport.css (print stylesheet) sets body { background } to red
@@ -28,6 +29,7 @@ class TestPremailer < Test::Unit::TestCase
   end
 
   def test_importing_remote_css
+    flunk
     remote_setup
   
     # noimport.css (print stylesheet) sets body { background } to red
@@ -49,6 +51,9 @@ class TestPremailer < Test::Unit::TestCase
     
     # p { vertical-align: top; } -- not allowed
     assert_nil @doc.at('p')['valign']
+    
+    # no align attr is specified for <p> elements, so it should not appear
+    assert_nil @doc.at('p.unaligned')['align']
     
     # .contact { background: #9EC03B url("contact_bg.png") repeat 0 0; }
     assert_equal '#9EC03B', @doc.at('td.contact')['bgcolor']
