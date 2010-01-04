@@ -15,12 +15,6 @@ class TestPremailer < Test::Unit::TestCase
   
     str = %q{url("/images/test.png");}
     assert_equal("url(\'/images/test.png\');", Premailer.escape_string(str))
-
-    str = %q{url("/images/\"test.png");}
-    assert_equal("url(\'/images/\'test.png\');", Premailer.escape_string(str))
-
-    str = %q{url('/images/\"test.png');}
-    assert_equal("url(\'/images/\'test.png\');", Premailer.escape_string(str))
   end
   
   def test_importing_local_css
