@@ -1,7 +1,7 @@
 = Premailer CHANGELOG
 
-== Version NEXT
-* strip @import rules from local CSS until CssParser is updated
+== Version 1.6.0
+* --css option for specifying additional stylesheets
 * copy related CSS attributes to HTML (inspired by http://github.com/peterbe/premailer/commit/c4f2634a99fc5005011ffde54ae0336ea1497ef5)
 * ignore spaces around links in HREFs
 

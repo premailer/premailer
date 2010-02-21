@@ -79,6 +79,11 @@ class TestPremailer < Test::Unit::TestCase
     assert_match /padding\:/i, @doc.at('#t4b')['style']
   end
   
+  def test_preserving_media_queries
+    local_setup
+    assert_match /display\: none/i, @doc.at('#iphone')['style']
+  end
+  
 protected
   def local_setup(f = 'base.html', opts = {})
     base_file = File.dirname(__FILE__) + '/files/' + f
