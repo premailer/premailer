@@ -39,7 +39,7 @@ class Premailer
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
 
-  RE_MEDIA_QUERY = /[\w]+([\s]+(and)[\s]+(\([\w:\s\-\/]+)\))+/i
+  RE_MEDIA_QUERY = /(only[\s]+|not[\s]+)?([\w]+([\s]+)?(and)[\s]+(\([\w\:\s\-\/\<\>]+)\))+/i
   
   # list of CSS attributes that can be rendered as HTML attributes
   #
