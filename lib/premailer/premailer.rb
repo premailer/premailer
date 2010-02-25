@@ -255,7 +255,7 @@ protected
     end
   end
 
-  def load_css_from_local_file!(path)
+  def read_css_from_local_file(path)
     css_block = ''
     begin
       File.open(path, "r") do |file|
@@ -263,14 +263,15 @@ protected
           css_block << line
         end
       end
-      @css_parser.add_block!(css_block, {:base_uri => @html_file})
+      return css_block
     rescue; end
   end
 
   def load_css_from_options! # :nodoc:
     @css_files.each do |css_file|
       if local_uri?(css_file)
-        load_css_from_local_file!(css_file)
+        css_block = read_css_from_local_file(css_file)
+        @css_parser.add_block!(css_block, {:base_uri => @html_file})
       else
         @css_parser.load_uri!(css_file)
       end
@@ -282,16 +283,29 @@ protected
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
 
-        if tag.to_s.strip =~ /^\<link/i and tag.attributes['href'] and media_type_ok?(tag.attributes['media'])
-
+        # <link>s
+        if tag.to_s.strip =~ /^\<link/i and tag.attributes['href']
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+
+          if tag.attributes['media'] =~ RE_MEDIA_QUERY
+            if @is_local_file
+              css_block = read_css_from_local_file(link_uri)
+            else
+              css_block = Net::HTTP.get_print URI.parse(link_uri)
+            end
+            tag.before("<style type=\"text/css\"> #{css_block} </style>")
+          end
+        
+          next if not media_type_ok?(tag.attributes['media'])
+
           if @is_local_file
-            load_css_from_local_file!(link_uri)
+            css_block = read_css_from_local_file(link_uri)
+            @css_parser.add_block!(css_block, {:base_uri => @html_file})
           else
             @css_parser.load_uri!(link_uri)
           end
 
-        elsif tag.to_s.strip =~ /^\<style/i          
+        elsif tag.to_s.strip =~ /^\<style/i
           @css_parser.add_block!(tag.innerHTML, :base_uri => URI.parse(@html_file))
         end
       end

@@ -97,6 +97,7 @@ class TestPremailer < Test::Unit::TestCase
 
   def test_preserving_media_queries
     local_setup
+    assert @doc.search('style').any? { |el| el.inner_html =~ /\#mq1 / }
     assert_match /display\: none/i, @doc.at('#iphone')['style']
   end
   
