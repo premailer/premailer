@@ -78,7 +78,22 @@ class TestPremailer < Test::Unit::TestCase
     assert_match /padding\:/i, @doc.at('#t4a')['style']
     assert_match /padding\:/i, @doc.at('#t4b')['style']
   end
-  
+
+  def test_media_query_matching
+    # tests from http://www.w3.org/TR/css3-mediaqueries/
+    ['aural and (device-aspect-ratio: 16/9)',
+     'speech and (min-device-width: 800px)',
+     'screen and (color), projection and (color)',
+     'print and (min-width: 25cm)',
+     'screen and (min-width: 400px) and (max-width: 700px)',
+     "handheld and (min-width: 20em), \nscreen and (min-width: 20em)",
+     'all and (orientation:portrait)'
+    ].each do |mq|
+      assert_match Premailer::RE_MEDIA_QUERY, mq
+    end
+    
+  end
+
   def test_preserving_media_queries
     local_setup
     assert_match /display\: none/i, @doc.at('#iphone')['style']

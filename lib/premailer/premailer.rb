@@ -38,6 +38,8 @@ class Premailer
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
+
+  RE_MEDIA_QUERY = /[\w]+([\s]+(and)[\s]+(\([\w:\s\-\/]+)\))+/i
   
   # list of CSS attributes that can be rendered as HTML attributes
   #
