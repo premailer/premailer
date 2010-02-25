@@ -87,7 +87,8 @@ class TestPremailer < Test::Unit::TestCase
      'print and (min-width: 25cm)',
      'screen and (min-width: 400px) and (max-width: 700px)',
      "handheld and (min-width: 20em), \nscreen and (min-width: 20em)",
-     'all and (orientation:portrait)'
+     'all and (orientation:portrait)',
+     'print and (resolution > 90dpi)'
     ].each do |mq|
       assert_match Premailer::RE_MEDIA_QUERY, mq
     end
