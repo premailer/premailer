@@ -255,7 +255,7 @@ protected
     end
   end
 
-  def read_css_from_local_file(path)
+  def read_from_local_file(path)
     css_block = ''
     begin
       File.open(path, "r") do |file|
@@ -267,10 +267,16 @@ protected
     rescue; end
   end
 
+  def read_from_remote_file(uri)
+    begin
+      return Net::HTTP.get_print(uri)
+    rescue; end
+  end
+
   def load_css_from_options! # :nodoc:
     @css_files.each do |css_file|
       if local_uri?(css_file)
-        css_block = read_css_from_local_file(css_file)
+        css_block = read_from_local_file(css_file)
         @css_parser.add_block!(css_block, {:base_uri => @html_file})
       else
         @css_parser.load_uri!(css_file)
@@ -287,25 +293,24 @@ protected
         if tag.to_s.strip =~ /^\<link/i and tag.attributes['href']
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
 
+          # media query found in an attribute, convert to a <style> block
           if tag.attributes['media'] =~ RE_MEDIA_QUERY
-            if @is_local_file
-              css_block = read_css_from_local_file(link_uri)
-            else
-              css_block = Net::HTTP.get_print URI.parse(link_uri)
-            end
+            css_block = @is_local_file ? read_from_local_file(link_uri) : read_from_remote_file(URI.parse(link_uri))
             tag.before("<style type=\"text/css\"> #{css_block} </style>")
+            next
           end
         
+          # unusable media type
           next if not media_type_ok?(tag.attributes['media'])
+           
+          css_block = @is_local_file ? read_from_local_file(link_uri) : read_from_remote_file(URI.parse(link_uri))
 
-          if @is_local_file
-            css_block = read_css_from_local_file(link_uri)
-            @css_parser.add_block!(css_block, {:base_uri => @html_file})
-          else
-            @css_parser.load_uri!(link_uri)
-          end
+          # TODO: check for media query in CSS block
+          
+          @css_parser.add_block!(css_block, {:base_uri => @html_file})
 
         elsif tag.to_s.strip =~ /^\<style/i
+          # TODO: check for media query in CSS block
           @css_parser.add_block!(tag.innerHTML, :base_uri => URI.parse(@html_file))
         end
       end
