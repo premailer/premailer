@@ -18,7 +18,6 @@ class TestPremailer < Test::Unit::TestCase
   end
   
   def test_importing_local_css
-    flunk
     local_setup
   
     # noimport.css (print stylesheet) sets body { background } to red
@@ -97,6 +96,8 @@ class TestPremailer < Test::Unit::TestCase
 
   def test_preserving_media_queries
     local_setup
+    File.open('out.html', 'w') {|f| f.write(@doc.to_s) }
+
     assert @doc.search('style').any? { |el| el.inner_html =~ /\#mq1 / }
     assert_match /display\: none/i, @doc.at('#iphone')['style']
   end
