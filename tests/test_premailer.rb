@@ -96,7 +96,7 @@ class TestPremailer < Test::Unit::TestCase
 
   def test_preserving_media_queries
     local_setup
-    File.open('out.html', 'w') {|f| f.write(@doc.to_s) }
+    #File.open('out.html', 'w') {|f| f.write(@doc.to_s) }
 
     assert @doc.search('style').any? { |el| el.inner_html =~ /\#mq1 / }
     assert_match /display\: none/i, @doc.at('#iphone')['style']

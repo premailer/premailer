@@ -128,11 +128,7 @@ class Premailer
   end
 
   def local_uri?(uri)
-    if uri =~ /^(http|https|ftp)\:\/\//i
-      return false
-    else
-      return true
-    end
+    return uri =~ /^(http|https|ftp)\:\/\//i ? false : true
   end
 
   # Array containing a hash of CSS warnings.
@@ -209,16 +205,6 @@ class Premailer
       # Perform style folding
       merged = CssParser.merge(declarations)
       merged.expand_shorthand!
-      
-      #if @options[:prefer_cellpadding] and (el.name == 'td' or el.name == 'th') and el['cellpadding'].nil?
-      #  if cellpadding = equivalent_cellpadding(merged)
-      #    el['cellpadding'] = cellpadding
-      #    merged['padding-left'] = nil
-      #    merged['padding-right'] = nil
-      #    merged['padding-top'] = nil
-      #    merged['padding-bottom'] = nil
-      #  end
-      #end
       
       # Duplicate CSS attributes as HTML attributes
       if RELATED_ATTRIBUTES.has_key?(el.name)       
