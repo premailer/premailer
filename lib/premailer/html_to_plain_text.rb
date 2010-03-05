@@ -20,22 +20,29 @@ module HtmlToPlainText
     txt = he.decode(txt)
 
     # handle headings (H1-H6)
-    txt.gsub!(/[ \t]*<h([0-9]+)[^>]*>(.*)<\/h[0-9]+>/i) do |s|
+    txt.gsub!(/(<\/h[1-6]>)/i, "\n\\1") # move closing tags to new lines
+    txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |s|
       hlevel = $1.to_i
-      # cleanup text inside of headings
-      htext = $2.gsub(/<\/?[^>]*>/i, '').strip
-      hlength = (htext.length > line_length ? 
-                  line_length : 
-                  htext.length)
+
+      htext = $2      
+      htext.gsub!(/<br[\s]*\/?>/i, "\n") # handle <br>s
+      htext.gsub!(/<\/?[^>]*>/i, '') # strip tags
+
+      # determine maximum line length
+      hlength = 0
+      htext.each { |l| llength = l.strip.length; hlength = llength if llength > hlength }
+      hlength = line_length if hlength > line_length
 
       case hlevel
         when 1   # H1, asterisks above and below
-          ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength) + "\n"
+          htext = ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength)
         when 2   # H1, dashes above and below
-          ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength) + "\n"
+          htext = ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength)
         else     # H3-H6, dashes below
-          htext + "\n" + ('-' * htext.length) + "\n"
+          htext = htext + "\n" + ('-' * hlength)
       end
+      
+      "\n\n" + htext + "\n\n"
     end
 
     # links
