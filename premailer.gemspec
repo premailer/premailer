@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.rdoc_options << '--all' << '--inline-source' << '--line-numbers' << '--charset' << 'utf-8'
   s.files = FileList['*.rb', 'lib/premailer.rb', 'lib/**/*', '*.rdoc', 'misc/client_support.yaml', 'bin/*', 'test/*', 'test/**/*'].to_a
   s.executables = 'premailer'
-  s.add_dependency('hpricot', '>= 0.6')
+  s.add_dependency('nokogiri', '>= 1.4.0')
   s.add_dependency('css_parser', '>= 0.9.1')
-  s.add_dependency('text-reform', '>= 0.2.0')
+  #s.add_dependency('text-reform', '>= 0.2.0')
   s.add_dependency('htmlentities', '>= 4.0.0')
 end

@@ -94,33 +94,38 @@ class Premailer
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
   def initialize(path, options = {})
     @options = {:warn_level => Warnings::SAFE, 
-                :line_length => 65, 
-                :link_query_string => nil, 
-                :base_url => nil,
-                :remove_classes => false,
-                :css => [],
-                :css_to_attributes => true}.merge(options)
+      :line_length => 65,
+      :link_query_string => nil,
+      :base_url => nil,
+      :remove_classes => false,
+      :css => [],
+      :css_to_attributes => true,
+      :inline => true}.merge(options)
     @html_file = path
    
-    @is_local_file = local_uri?(path)
+    @is_local_file = @options[:inline] ? true : local_uri?(path)
 
     @css_files = @options[:css]
 
     @css_warnings = []
 
-    @css_parser = CssParser::Parser.new({:absolute_paths => true,
-                                         :import => true,
-                                         :io_exceptions => false
-                                        })
-    
-    @doc, @html_charset = load_html(@html_file)
-    @processed_doc = @doc
-    
+    @base_url = nil
     if @is_local_file and @options[:base_url]
-      @processed_doc = convert_inline_links(@processed_doc, @options[:base_url])
+      @base_url = @options[:base_url]
     elsif not @is_local_file
-      @processed_doc = convert_inline_links(@processed_doc, @html_file)
+      @html_file
     end
+
+    @css_parser = CssParser::Parser.new({
+        :absolute_paths => true,
+        :import => true,
+        :io_exceptions => false
+      })
+    
+    @doc = load_html(@html_file)
+    @html_charset = @doc.encoding
+    @processed_doc = @doc
+    @processed_doc = convert_inline_links(@processed_doc, @base_url) if @base_url
     load_css_from_options!
     load_css_from_html!
   end
@@ -151,7 +156,7 @@ class Premailer
   def to_plain_text
     html_src = ''
     begin
-      html_src = @doc.search("body").innerHTML
+      html_src = @doc.search("body").inner_html
     rescue
       html_src = @doc.to_html
     end
@@ -183,7 +188,7 @@ class Premailer
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration))
       else
         
-        doc.search(selector) do |el|
+        doc.css(selector).each do |el|
           if el.elem?
             # Add a style attribute or append to the existing one  
             block = "[SPEC=#{specificity}[#{declaration}]]"
@@ -241,15 +246,19 @@ class Premailer
   end
 
 
-protected  
+  protected
   # Load the HTML file and convert it into an Hpricot document.
   #
   # Returns an Hpricot document and a string with the HTML file's character set.
   def load_html(path) # :nodoc:
-    if @is_local_file
-        Hpricot(File.open(path, "r") {|f| f.read })
+    if @options[:inline]
+      Nokogiri::HTML(path)
     else
-      Hpricot(open(path))
+      if @is_local_file
+        Nokogiri::HTML(File.open(path, "r") {|f| f.read })
+      else
+        Nokogiri::HTML(open(path))
+      end
     end
   end
 
@@ -261,7 +270,7 @@ protected
           css_block << line
         end
       end
-      @css_parser.add_block!(css_block, {:base_uri => @html_file})
+      @css_parser.add_block!(css_block, {:base_uri => @base_url})
     rescue; end
   end
 
@@ -290,7 +299,7 @@ protected
           end
 
         elsif tag.to_s.strip =~ /^\<style/i          
-          @css_parser.add_block!(tag.innerHTML, :base_uri => URI.parse(@html_file))
+          @css_parser.add_block!(tag.inner_html, :base_uri => @base_url)
         end
       end
       tags.remove
@@ -410,61 +419,61 @@ protected
     u.normalize!
     newpath = u.path
     while newpath.gsub!(%r{([^/]+)/\.\./?}) { |match|
-      $1 == '..' ? match : ''
-    } do end
-    newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
-    u.path = newpath
-    u.to_s
-  end
+        $1 == '..' ? match : ''
+      } do end
+      newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
+      u.path = newpath
+      u.to_s
+    end
 
-  # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
-  def check_client_support # :nodoc:
-    @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
+    # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
+    def check_client_support # :nodoc:
+      @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
 
-    warnings = []
-    properties = []
+      warnings = []
+      properties = []
     
-    # Get a list off CSS properties
-    @processed_doc.search("*[@style]").each do |el|
-      style_url = el.attributes['style'].gsub(/([\w\-]+)[\s]*\:/i) do |s|
-        properties.push($1)
+      # Get a list off CSS properties
+      @processed_doc.search("*[@style]").each do |el|
+        style_url = el.attributes['style'].gsub(/([\w\-]+)[\s]*\:/i) do |s|
+          properties.push($1)
+        end
       end
-    end
 
-    properties.uniq!
+      properties.uniq!
 
-    property_support = @client_support['css_properties']
-    properties.each do |prop|
-      if property_support.include?(prop) and 
-         property_support[prop].include?('support') and 
-         property_support[prop]['support'] >= @options[:warn_level]
-        warnings.push({:message => "#{prop} CSS property", 
-                       :level => WARN_LABEL[property_support[prop]['support']], 
-                       :clients => property_support[prop]['unsupported_in'].join(', ')})
+      property_support = @client_support['css_properties']
+      properties.each do |prop|
+        if property_support.include?(prop) and
+            property_support[prop].include?('support') and
+            property_support[prop]['support'] >= @options[:warn_level]
+          warnings.push({:message => "#{prop} CSS property",
+              :level => WARN_LABEL[property_support[prop]['support']],
+              :clients => property_support[prop]['unsupported_in'].join(', ')})
+        end
       end
-    end
 
-    @client_support['attributes'].each do |attribute, data|
-      next unless data['support'] >= @options[:warn_level]
-      if @doc.search("*[@#{attribute}]").length > 0
-        warnings.push({:message => "#{attribute} HTML attribute", 
-                       :level => WARN_LABEL[property_support[prop]['support']], 
-                       :clients => property_support[prop]['unsupported_in'].join(', ')})
+      @client_support['attributes'].each do |attribute, data|
+        next unless data['support'] >= @options[:warn_level]
+        if @doc.search("*[@#{attribute}]").length > 0
+          warnings.push({:message => "#{attribute} HTML attribute",
+              :level => WARN_LABEL[property_support[prop]['support']],
+              :clients => property_support[prop]['unsupported_in'].join(', ')})
+        end
       end
-    end
 
-    @client_support['elements'].each do |element, data|
-      next unless data['support'] >= @options[:warn_level]
-      if @doc.search("element").length > 0
-        warnings.push({:message => "#{element} HTML element", 
-                       :level => WARN_LABEL[property_support[prop]['support']], 
-                       :clients => property_support[prop]['unsupported_in'].join(', ')})
+      @client_support['elements'].each do |element, data|
+        next unless data['support'] >= @options[:warn_level]
+        if @doc.search("element").length > 0
+          warnings.push({:message => "#{element} HTML element",
+              :level => WARN_LABEL[property_support[prop]['support']],
+              :clients => property_support[prop]['unsupported_in'].join(', ')})
+        end
       end
-    end
 
-    return warnings
+      return warnings
+    end
   end
-end
 
 
 
