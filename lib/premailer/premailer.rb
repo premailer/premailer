@@ -100,7 +100,7 @@ class Premailer
       :remove_classes => false,
       :css => [],
       :css_to_attributes => true,
-      :inline => true}.merge(options)
+      :inline => false}.merge(options)
     @html_file = path
    
     @is_local_file = @options[:inline] ? true : local_uri?(path)
