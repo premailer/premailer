@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   ]  
   s.files = [
     "init.rb",
+    "bin/premailer",
+    "bin/trollop.rb",
     "lib/premailer.rb",
     "lib/premailer/html_to_plain_text.rb",
     "lib/premailer/premailer.rb",
