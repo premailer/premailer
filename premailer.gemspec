@@ -9,7 +9,18 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.author  = "Alex Dunae"
   s.rdoc_options << '--all' << '--inline-source' << '--line-numbers' << '--charset' << 'utf-8'
-  s.files = FileList['*.rb', 'lib/premailer.rb', 'lib/**/*', '*.rdoc', 'misc/client_support.yaml', 'bin/*', 'test/*', 'test/**/*'].to_a
+  s.extra_rdoc_files = [
+    "CHANGELOG.rdoc",
+    "README.rdoc",
+    "README.rdoc"
+  ]  
+  s.files = [
+    "init.rb",
+    "lib/premailer.rb",
+    "lib/premailer/html_to_plain_text.rb",
+    "lib/premailer/premailer.rb",
+    "misc/client_support.yaml"
+  ],
   s.executables = 'premailer'
   s.add_dependency('nokogiri', '>= 1.4.0')
   s.add_dependency('css_parser', '>= 0.9.1')
