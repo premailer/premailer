@@ -1,5 +1,3 @@
-require 'rake'
-
 Gem::Specification.new do |s|
   s.name     = "premailer"
   s.version  = "1.5.5"
