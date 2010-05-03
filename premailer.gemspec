@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
     "lib/premailer/html_to_plain_text.rb",
     "lib/premailer/premailer.rb",
     "misc/client_support.yaml"
-  ],
+  ]
   s.executables = 'premailer'
   s.add_dependency('nokogiri', '>= 1.4.0')
   s.add_dependency('css_parser', '>= 0.9.1')
