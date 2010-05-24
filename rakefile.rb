@@ -1,6 +1,6 @@
 require 'rake'
 require 'fileutils'
-require 'lib/premailer'
+require File.expand_path '../lib/premailer', __FILE__
 
 desc 'Default: parse a URL.'
 task :default => [:inline]
