@@ -295,8 +295,12 @@ protected
             @css_parser.load_uri!(link_uri)
           end
 
-        elsif tag.to_s.strip =~ /^\<style/i          
-          @css_parser.add_block!(tag.innerHTML, :base_uri => URI.parse(@html_file))
+        elsif tag.to_s.strip =~ /^\<style/i
+          if @html_file.is_a?(IO) || @html_file.is_a?(StringIO)
+            @css_parser.add_block!(tag.innerHTML)
+          else
+            @css_parser.add_block!(tag.innerHTML, :base_uri => URI.parse(@html_file))
+          end
         end
       end
       tags.remove
