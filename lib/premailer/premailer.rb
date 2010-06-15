@@ -126,7 +126,9 @@ class Premailer
   end
 
   def local_uri?(uri)
-    if uri =~ /^(http|https|ftp)\:\/\//i
+    if uri.is_a?(IO) || uri.is_a?(StringIO)
+      return true
+    elsif uri =~ /^(http|https|ftp)\:\/\//i
       return false
     else
       return true
@@ -247,7 +249,11 @@ protected
   # Returns an Hpricot document and a string with the HTML file's character set.
   def load_html(path) # :nodoc:
     if @is_local_file
+      if path.is_a?(IO) || path.is_a?(StringIO)
+        Hpricot(path.read)
+      else
         Hpricot(File.open(path, "r") {|f| f.read })
+      end
     else
       Hpricot(open(path))
     end

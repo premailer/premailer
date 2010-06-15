@@ -84,6 +84,12 @@ class TestPremailer < Test::Unit::TestCase
     assert_match /display\: none/i, @doc.at('#iphone')['style']
   end
   
+  def test_initialize_can_accept_io_object
+    io = StringIO.new('hi mom')
+    premailer = Premailer.new(io)
+    assert_equal premailer.to_inline_css, 'hi mom'
+  end
+
 protected
   def local_setup(f = 'base.html', opts = {})
     base_file = File.dirname(__FILE__) + '/files/' + f
