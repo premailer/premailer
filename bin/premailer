@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 #
 # = Premailer
-require 'trollop'
+require 'rubygems'
+require File.join(File.dirname(__FILE__), 'trollop')
 require File.join(File.dirname(__FILE__), '../lib/premailer')
 
 opts = Trollop::options do
@@ -25,6 +26,7 @@ EOS
   opt :remove_classes, "Remove classes from the HTML document?", :default => false
   opt :css, "Manually specify css stylesheets", :type => String, :multi => true
   opt :verbose, '', :default => false, :short => 'v'
+  opt :io_exceptions, "Abort on I/O errors loading style resources", :default => false, :short => 'e'
 end
 
 inputfile    = ARGV.shift
@@ -40,7 +42,9 @@ premailer_opts = {
   :show_warnings => opts[:show_warnings] ? Premailer::Warnings::SAFE : Premailer::Warnings::NONE,
   :line_length => opts[:line_length],
   :remove_classes => opts[:remove_classes],
-  :css => opts[:css]
+  :css => opts[:css],
+  :verbose => opts[:verbose],
+  :io_exceptions => opts[:io_exceptions],
 }
 
 premailer = Premailer.new(inputfile, premailer_opts)
