@@ -99,7 +99,9 @@ class Premailer
                 :base_url => nil,
                 :remove_classes => false,
                 :css => [],
-                :css_to_attributes => true}.merge(options)
+                :css_to_attributes => true,
+                :verbose => false,
+                :io_exceptions => false}.merge(options)
     @html_file = path
    
     @is_local_file = local_uri?(path)
@@ -110,7 +112,8 @@ class Premailer
 
     @css_parser = CssParser::Parser.new({:absolute_paths => true,
                                          :import => true,
-                                         :io_exceptions => false
+                                         :io_exceptions =>
+                                         @options[:io_exceptions]
                                         })
     
     @doc, @html_charset = load_html(@html_file)
@@ -289,9 +292,11 @@ protected
         if tag.to_s.strip =~ /^\<link/i and tag.attributes['href'] and media_type_ok?(tag.attributes['media'])
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
-          if @is_local_file
+          if local_uri?(link_uri)
+            puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
           else
+            puts "Loading css from uri: " + link_uri if @options[:verbose]
             @css_parser.load_uri!(link_uri)
           end
 
@@ -401,7 +406,10 @@ protected
   def self.resolve_link(path, base_path) # :nodoc:
     path.strip!
     resolved = nil
-    if base_path.kind_of?(URI)
+    if path =~ /(http[s]?|ftp):\/\//i
+      resolved = path
+      return Premailer.canonicalize(resolved)
+    elsif base_path.kind_of?(URI)
       resolved = base_path.merge(path)
       return Premailer.canonicalize(resolved)    
     elsif base_path.kind_of?(String) and base_path =~ /^(http[s]?|ftp):\/\//i
