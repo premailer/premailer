@@ -389,6 +389,16 @@ protected
     doc
   end
 
+# here be deprecated methods
+public
+
+  def local_uri?(uri) # :nodoc:
+    warn "[DEPRECATION] `local_uri?` is deprecated.  Please use `Premailer.local_data?` instead."
+    Premailer.local_data?(uri)
+  end
+
+# here be instance methods
+
   def self.escape_string(str) # :nodoc:
     str.gsub(/"/, "'")
   end
