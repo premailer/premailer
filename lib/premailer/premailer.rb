@@ -82,7 +82,7 @@ class Premailer
 
   # Create a new Premailer object.
   #
-  # +path+ is the path to the HTML file to process. Can be either the URL of a 
+  # +html+ is the HTML data to process. Can be either an IO object, the URL of a 
   # remote file or a local path.
   #
   # ==== Options
@@ -92,7 +92,7 @@ class Premailer
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
-  def initialize(path, options = {})
+  def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
                 :link_query_string => nil, 
@@ -102,9 +102,9 @@ class Premailer
                 :css_to_attributes => true,
                 :verbose => false,
                 :io_exceptions => false}.merge(options)
-    @html_file = path
+    @html_file = html
    
-    @is_local_file = local_uri?(path)
+    @is_local_file = Premailer.local_data?(html)
 
     @css_files = @options[:css]
 
@@ -126,16 +126,6 @@ class Premailer
     end
     load_css_from_options!
     load_css_from_html!
-  end
-
-  def local_uri?(uri)
-    if uri.is_a?(IO) || uri.is_a?(StringIO)
-      return true
-    elsif uri =~ /^(http|https|ftp)\:\/\//i
-      return false
-    else
-      return true
-    end
   end
 
   # Array containing a hash of CSS warnings.
@@ -276,7 +266,7 @@ protected
 
   def load_css_from_options! # :nodoc:
     @css_files.each do |css_file|
-      if local_uri?(css_file)
+      if Premailer.local_data?(css_file)
         load_css_from_local_file!(css_file)
       else
         @css_parser.load_uri!(css_file)
@@ -292,7 +282,7 @@ protected
         if tag.to_s.strip =~ /^\<link/i and tag.attributes['href'] and media_type_ok?(tag.attributes['media'])
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
-          if local_uri?(link_uri)
+          if Premailer.local_data?(link_uri)
             puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
           else
@@ -421,6 +411,20 @@ protected
       return File.expand_path(path, File.dirname(base_path))
     end
   end
+  
+
+  # Test the passed variable to see if we are in local or remote mode.
+  #
+  # IO objects return true, as do strings that look like URLs.
+  def self.local_data?(data)
+    if data.is_a?(IO) || data.is_a?(StringIO)
+      return true
+    elsif data =~ /^(http|https|ftp)\:\/\//i
+      return false
+    else
+      return true
+    end
+  end  
 
   # from http://www.ruby-forum.com/topic/140101
   def self.canonicalize(uri) # :nodoc:

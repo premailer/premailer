@@ -86,6 +86,12 @@ class TestPremailer < Test::Unit::TestCase
     assert_match /display\: none/i, @doc.at('#iphone')['style']
   end
   
+  def test_local_remote_check
+    assert Premailer.local_data?( StringIO.new('a') )
+    assert Premailer.local_data?( '/path/' )
+    assert !Premailer.local_data?( 'http://example.com/path/' )
+  end
+  
   def test_initialize_can_accept_io_object
     io = StringIO.new('hi mom')
     premailer = Premailer.new(io)
