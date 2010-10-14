@@ -43,6 +43,7 @@ class TestPremailer < Test::Unit::TestCase
 
 
   def test_related_attributes
+    flunk 'Not implemented'
     local_setup
     
     # h1 { text-align: center; }
@@ -65,7 +66,7 @@ class TestPremailer < Test::Unit::TestCase
   end
 
   def test_merging_cellpadding
-    flunk
+    flunk 'Not implemented'
     local_setup('cellpadding.html', {:prefer_cellpadding => true})
     assert_equal '0', @doc.at('#t1')['cellpadding']
     assert_match /padding\:/i, @doc.at('#t1 td')['style']
@@ -82,6 +83,7 @@ class TestPremailer < Test::Unit::TestCase
   end
   
   def test_preserving_media_queries
+    flunk 'Not implemented'
     local_setup
     assert_match /display\: none/i, @doc.at('#iphone')['style']
   end
