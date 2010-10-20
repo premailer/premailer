@@ -9,7 +9,7 @@ class TestPremailer < Test::Unit::TestCase
   def test_accents
     local_setup
 
-    assert_equal 'cédille c&eacute; garçon gar&#231;on à &agrave;', @doc.at('#accents').inner_html
+    assert_equal 'cédille cé &amp; garçon garçon à à', @doc.at('#specialchars').inner_html
   end
   
   def test_escaping_strings

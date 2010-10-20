@@ -4,8 +4,8 @@ require File.dirname(__FILE__) + '/test_helper'
 class TestHtmlToPlainText < Test::Unit::TestCase
   include HtmlToPlainText
 
-  def test_accents
-    assert_plaintext 'cédille garçon à ñ', 'c&eacute;dille gar&#231;on &agrave; &ntilde;'
+  def test_specialchars
+    assert_plaintext 'cédille garçon & à ñ', 'c&eacute;dille gar&#231;on &amp; &agrave; &ntilde;'
   end
 
   def test_stripping_whitespace
