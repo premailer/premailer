@@ -238,9 +238,9 @@ class Premailer
 
 
 protected  
-  # Load the HTML file and convert it into an Hpricot document.
+  # Load the HTML file and convert it into an Nokogiri document.
   #
-  # Returns an Hpricot document and a string with the HTML file's character set.
+  # Returns an Nokogiri document and a string with the HTML file's character set.
   def load_html(path) # :nodoc:
     if @options[:inline]
       Nokogiri::HTML(path)
@@ -317,9 +317,9 @@ protected
   # Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
   # and write it into the <tt>body</tt>.
   #
-  # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
+  # <tt>doc</tt> is an Nokogiri document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
   #
-  # Returns an Hpricot document.
+  # Returns an Nokogiri document.
   def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
     styles = ''
     unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
@@ -338,9 +338,9 @@ protected
   # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes 
   # as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.
   #
-  # <tt>doc</tt> is an Hpricot document and <tt>base_uri</tt> is either a string or a URI.
+  # <tt>doc</tt> is an Nokogiri document and <tt>base_uri</tt> is either a string or a URI.
   #
-  # Returns an Hpricot document.
+  # Returns an Nokogiri document.
   def convert_inline_links(doc, base_uri) # :nodoc:
     base_uri = URI.parse(base_uri) unless base_uri.kind_of?(URI)
 
