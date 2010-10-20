@@ -64,10 +64,10 @@ class Premailer
   # URI of the HTML file used
   attr_reader   :html_file
   
-  # processed HTML document (Hpricot)
+  # processed HTML document (Nokogiri)
   attr_reader   :processed_doc
   
-  # source HTML document (Hpricot)
+  # source HTML document (Nokogiri)
   attr_reader   :doc
 
   module Warnings
@@ -110,20 +110,21 @@ class Premailer
 
     @css_warnings = []
 
-    @css_parser = CssParser::Parser.new({:absolute_paths => true,
-                                         :import => true,
-                                         :io_exceptions =>
-                                         @options[:io_exceptions]
-                                        })
-    
-    @doc, @html_charset = load_html(@html_file)
-    @processed_doc = @doc
-    
     if @is_local_file and @options[:base_url]
-      @processed_doc = convert_inline_links(@processed_doc, @options[:base_url])
+      @base_url = @options[:base_url]
     elsif not @is_local_file
-      @processed_doc = convert_inline_links(@processed_doc, @html_file)
+      @html_file
     end
+    @css_parser = CssParser::Parser.new({
+      :absolute_paths => true,
+      :import => true,
+      :io_exceptions => @options[:io_exceptions]
+    })
+    
+    @doc = load_html(@html_file)
+    @html_charset = @doc.encoding
+    @processed_doc = @doc
+    @processed_doc = convert_inline_links(@processed_doc, @base_url) if @base_url
     load_css_from_options!
     load_css_from_html!
   end
@@ -146,7 +147,7 @@ class Premailer
   def to_plain_text
     html_src = ''
     begin
-      html_src = @doc.search("body").innerHTML
+      html_src = @doc.search("body").inner_html
     rescue
       html_src = @doc.to_html
     end
@@ -178,11 +179,11 @@ class Premailer
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration))
       else
         
-        doc.search(selector) do |el|
+        doc.css(selector).each do |el|
           if el.elem?
             # Add a style attribute or append to the existing one  
             block = "[SPEC=#{specificity}[#{declaration}]]"
-            el['style'] = (el.attributes['style'] ||= '') + ' ' + block
+            el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
           end
         end
       end
@@ -241,14 +242,18 @@ protected
   #
   # Returns an Hpricot document and a string with the HTML file's character set.
   def load_html(path) # :nodoc:
-    if @is_local_file
-      if path.is_a?(IO) || path.is_a?(StringIO)
-        Hpricot(path.read)
-      else
-        Hpricot(File.open(path, "r") {|f| f.read })
-      end
+    if @options[:inline]
+      Nokogiri::HTML(path)
     else
-      Hpricot(open(path))
+      if @is_local_file
+        if path.is_a?(IO) || path.is_a?(StringIO)
+          Nokogiri::HTML(path.read)
+        else
+          Nokogiri::HTML(File.open(path, "r") {|f| f.read })
+        end
+      else
+        Nokogiri::HTML(open(path))
+      end
     end
   end
 
@@ -260,7 +265,7 @@ protected
           css_block << line
         end
       end
-      @css_parser.add_block!(css_block, {:base_uri => @html_file})
+      @css_parser.add_block!(css_block, {:base_uri => @base_url})
     rescue; end
   end
 
@@ -292,9 +297,9 @@ protected
 
         elsif tag.to_s.strip =~ /^\<style/i
           if @html_file.is_a?(IO) || @html_file.is_a?(StringIO)
-            @css_parser.add_block!(tag.innerHTML)
+            @css_parser.add_block!(tag.inner_html)
           else
-            @css_parser.add_block!(tag.innerHTML, :base_uri => URI.parse(@html_file))
+            @css_parser.add_block!(tag.inner_html, :base_uri => URI.parse(@html_file))
           end
         end
       end
@@ -323,7 +328,7 @@ protected
 
     unless styles.empty?
       style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-      doc.search("head").append(style_tag)
+      doc.css("head").children.last.after(style_tag)
     end
     doc
   end
@@ -421,7 +426,6 @@ public
       return File.expand_path(path, File.dirname(base_path))
     end
   end
-  
 
   # Test the passed variable to see if we are in local or remote mode.
   #
@@ -442,61 +446,61 @@ public
     u.normalize!
     newpath = u.path
     while newpath.gsub!(%r{([^/]+)/\.\./?}) { |match|
-      $1 == '..' ? match : ''
-    } do end
-    newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
-    u.path = newpath
-    u.to_s
-  end
+        $1 == '..' ? match : ''
+      } do end
+      newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
+      u.path = newpath
+      u.to_s
+    end
 
-  # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
-  def check_client_support # :nodoc:
-    @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
+    # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
+    def check_client_support # :nodoc:
+      @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
 
-    warnings = []
-    properties = []
+      warnings = []
+      properties = []
     
-    # Get a list off CSS properties
-    @processed_doc.search("*[@style]").each do |el|
-      style_url = el.attributes['style'].gsub(/([\w\-]+)[\s]*\:/i) do |s|
-        properties.push($1)
+      # Get a list off CSS properties
+      @processed_doc.search("*[@style]").each do |el|
+        style_url = el.attributes['style'].gsub(/([\w\-]+)[\s]*\:/i) do |s|
+          properties.push($1)
+        end
       end
-    end
 
-    properties.uniq!
+      properties.uniq!
 
-    property_support = @client_support['css_properties']
-    properties.each do |prop|
-      if property_support.include?(prop) and 
-         property_support[prop].include?('support') and 
-         property_support[prop]['support'] >= @options[:warn_level]
-        warnings.push({:message => "#{prop} CSS property", 
-                       :level => WARN_LABEL[property_support[prop]['support']], 
-                       :clients => property_support[prop]['unsupported_in'].join(', ')})
+      property_support = @client_support['css_properties']
+      properties.each do |prop|
+        if property_support.include?(prop) and
+            property_support[prop].include?('support') and
+            property_support[prop]['support'] >= @options[:warn_level]
+          warnings.push({:message => "#{prop} CSS property",
+              :level => WARN_LABEL[property_support[prop]['support']],
+              :clients => property_support[prop]['unsupported_in'].join(', ')})
+        end
       end
-    end
 
-    @client_support['attributes'].each do |attribute, data|
-      next unless data['support'] >= @options[:warn_level]
-      if @doc.search("*[@#{attribute}]").length > 0
-        warnings.push({:message => "#{attribute} HTML attribute", 
-                       :level => WARN_LABEL[property_support[prop]['support']], 
-                       :clients => property_support[prop]['unsupported_in'].join(', ')})
+      @client_support['attributes'].each do |attribute, data|
+        next unless data['support'] >= @options[:warn_level]
+        if @doc.search("*[@#{attribute}]").length > 0
+          warnings.push({:message => "#{attribute} HTML attribute",
+              :level => WARN_LABEL[property_support[prop]['support']],
+              :clients => property_support[prop]['unsupported_in'].join(', ')})
+        end
       end
-    end
 
-    @client_support['elements'].each do |element, data|
-      next unless data['support'] >= @options[:warn_level]
-      if @doc.search("element").length > 0
-        warnings.push({:message => "#{element} HTML element", 
-                       :level => WARN_LABEL[property_support[prop]['support']], 
-                       :clients => property_support[prop]['unsupported_in'].join(', ')})
+      @client_support['elements'].each do |element, data|
+        next unless data['support'] >= @options[:warn_level]
+        if @doc.search("element").length > 0
+          warnings.push({:message => "#{element} HTML element",
+              :level => WARN_LABEL[property_support[prop]['support']],
+              :clients => property_support[prop]['unsupported_in'].join(', ')})
+        end
       end
-    end
 
-    return warnings
+      return warnings
+    end
   end
-end
 
 
 

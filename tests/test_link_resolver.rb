@@ -43,7 +43,7 @@ class TestLinkResolver < Test::Unit::TestCase
       assert_equal doc.at(link_id).attributes['href'], pdoc.at(link_id).attributes['href'], link_id
     end
     
-    assert_equal 'https://my.example.com:8080/', pdoc.at('#l01').attributes['href']
-    assert_equal 'https://my.example.com:8080/images/', pdoc.at('#l04').attributes['href']
+    assert_equal 'https://my.example.com:8080/', pdoc.at('#l01').attributes['href'].to_s
+    assert_equal 'https://my.example.com:8080/images/', pdoc.at('#l04').attributes['href'].to_s
   end
 end

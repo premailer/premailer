@@ -101,7 +101,7 @@ class TestPremailer < Test::Unit::TestCase
   def test_initialize_can_accept_io_object
     io = StringIO.new('hi mom')
     premailer = Premailer.new(io)
-    assert_equal premailer.to_inline_css, 'hi mom'
+    assert_match premailer.to_inline_css, /hi mom/
   end
 
 protected

@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'yaml'
 require 'open-uri'
-require 'hpricot'
+require 'nokogiri'
 require 'css_parser'
 
 require File.dirname(__FILE__) + "/premailer/html_to_plain_text"

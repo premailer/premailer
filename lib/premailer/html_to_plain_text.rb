@@ -1,4 +1,5 @@
-require 'text/reform'
+# coding: utf-8
+#require 'text/reform'
 require 'htmlentities'
 
 # Support functions for Premailer
@@ -9,9 +10,9 @@ module HtmlToPlainText
   # TODO:
   #  - add support for DL, OL
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
-    r = Text::Reform.new(:trim => true, 
-                         :squeeze => false, 
-                         :break => Text::Reform.break_wrap)
+    #r = Text::Reform.new(:trim => true,
+    #                     :squeeze => false,
+    #                     :break => Text::Reform.break_wrap)
 
     txt = html
     
@@ -30,7 +31,7 @@ module HtmlToPlainText
 
       # determine maximum line length
       hlength = 0
-      htext.each { |l| llength = l.strip.length; hlength = llength if llength > hlength }
+      htext.each_line { |l| llength = l.strip.length; hlength = llength if llength > hlength }
       hlength = line_length if hlength > line_length
 
       case hlevel
@@ -63,7 +64,7 @@ module HtmlToPlainText
     txt.gsub!(/<\/?[^>]*>/, '')
 
     # wrap text
-    txt = r.format(('[' * line_length), txt)
+    #txt = r.format(('[' * line_length), txt)
     
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
