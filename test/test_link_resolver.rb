@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 
 class TestLinkResolver < Test::Unit::TestCase
   def test_resolving_urls_from_string

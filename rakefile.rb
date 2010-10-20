@@ -1,6 +1,9 @@
+$:.unshift File.expand_path('../lib', __FILE__)
+
 require 'rake'
+require 'rake/testtask'
 require 'fileutils'
-require File.expand_path '../lib/premailer', __FILE__
+require 'premailer'
 
 desc 'Default: parse a URL.'
 task :default => [:inline]
@@ -39,4 +42,9 @@ task :text do
   fout.close
   
   puts "Succesfully parsed '#{url}' into '#{output}'"
+end
+
+Rake::TestTask.new do |t|
+  t.test_files = FileList['test/test_premailer*.rb']
+  t.verbose = false
 end

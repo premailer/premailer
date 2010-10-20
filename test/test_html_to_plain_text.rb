@@ -1,5 +1,5 @@
-# coding: utf-8
-require File.dirname(__FILE__) + '/test_helper'
+# encoding: utf-8
+require File.dirname(__FILE__) + '/helper'
 
 class TestHtmlToPlainText < Test::Unit::TestCase
   include HtmlToPlainText

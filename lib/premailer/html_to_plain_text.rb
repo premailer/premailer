@@ -1,5 +1,4 @@
 # coding: utf-8
-#require 'text/reform'
 require 'htmlentities'
 
 # Support functions for Premailer
