@@ -82,8 +82,9 @@ class Premailer
 
   # Create a new Premailer object.
   #
-  # +html+ is the HTML data to process. Can be either an IO object, the URL of a 
-  # remote file or a local path.
+  # +html+ is the HTML data to process. It can be either an IO object, the URL of a 
+  # remote file, a local path or a raw HTML string.  If passing an HTML string you 
+  # must set the +:with_html_string+ option to +true+.
   #
   # ==== Options
   # [+line_length+] Line length used by to_plain_text. Boolean, default is 65.
@@ -92,6 +93,7 @@ class Premailer
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
+  # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
@@ -100,11 +102,12 @@ class Premailer
                 :remove_classes => false,
                 :css => [],
                 :css_to_attributes => true,
+                :with_html_string => false,
                 :verbose => false,
                 :io_exceptions => false}.merge(options)
-    @html_file = html
-   
-    @is_local_file = Premailer.local_data?(html)
+
+    @html_file = html 
+    @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
 
     @css_files = @options[:css]
 
@@ -113,8 +116,9 @@ class Premailer
     if @is_local_file and @options[:base_url]
       @base_url = @options[:base_url]
     elsif not @is_local_file
-      @html_file
+      @base_url = @html_file
     end
+
     @css_parser = CssParser::Parser.new({
       :absolute_paths => true,
       :import => true,
@@ -240,9 +244,11 @@ class Premailer
 protected  
   # Load the HTML file and convert it into an Nokogiri document.
   #
-  # Returns an Nokogiri document and a string with the HTML file's character set.
+  # Returns an Nokogiri document.
   def load_html(path) # :nodoc:
-    if @options[:inline]
+    if @options[:with_html_string]
+      Nokogiri::HTML.parse(path)
+    elsif @options[:inline]
       Nokogiri::HTML(path)
     else
       if @is_local_file

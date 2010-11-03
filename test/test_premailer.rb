@@ -52,6 +52,11 @@ class TestPremailer < Test::Unit::TestCase
     premailer = Premailer.new(io)
     assert_match premailer.to_inline_css, /hi mom/
   end
+  
+  def test_initialize_can_accept_html_string
+    premailer = Premailer.new('<p>test</p>', :with_html_string => true)
+    assert_match premailer.to_inline_css, /test/
+  end
 
 protected
   def local_setup(f = 'base.html', opts = {})
