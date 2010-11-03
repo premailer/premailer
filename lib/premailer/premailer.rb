@@ -113,10 +113,11 @@ class Premailer
 
     @css_warnings = []
 
-    if @is_local_file and @options[:base_url]
-      @base_url = @options[:base_url]
+    @base_url = nil
+    if @options[:base_url]
+      @base_url = URI.parse(@options.delete[:base_url])
     elsif not @is_local_file
-      @base_url = @html_file
+      @base_url = URI.parse(@html_file)
     end
 
     @css_parser = CssParser::Parser.new({
@@ -305,7 +306,7 @@ protected
           if @html_file.is_a?(IO) || @html_file.is_a?(StringIO)
             @css_parser.add_block!(tag.inner_html)
           else
-            @css_parser.add_block!(tag.inner_html, :base_uri => URI.parse(@html_file))
+            @css_parser.add_block!(tag.inner_html, :base_uri => @base_url)
           end
         end
       end
