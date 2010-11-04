@@ -10,30 +10,31 @@ class TestPremailer < Test::Unit::TestCase
     assert_equal 'cédille cé &amp; garçon garçon à à', @doc.at('#specialchars').inner_html
   end
   
-  def test_self_closing_xhtml
-    html = <<END_HTML
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html>
-    <body>
-    <br/>
-    </body>
-		</html>
-END_HTML
-
-		premailer = Premailer.new(html, :with_html_string => true)
-    assert_match /<br[\s]*\/>/, premailer.to_s
+  def test_detecting_html
+    remote_setup('base.html')
+    assert !@premailer.is_xhtml?
   end
-  
+
+  def test_detecting_xhtml
+    remote_setup('xhtml.html')
+    assert true, @premailer.is_xhtml?
+  end
+
+  def test_self_closing_xhtml_tags
+    remote_setup('xhtml.html')
+    assert_match /<br[\s]*\/>/, @premailer.to_s
+  end
+
   def test_preserving_html_entities
     html = '<p>&nbsp; &amp;</p>'
 		premailer = Premailer.new(html, :with_html_string => true)
 		premailer.to_inline_css
-		assert_match /<p>&nbsp; &amp;<\/p>/, premailer.to_s
+		assert_match /<p>&nbsp; &amp;<\/p>/, premailer.processed_doc.at('p').inner_html
   end
 
   def test_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    remote_setup(:link_query_string => qs)
+    remote_setup('base.html', :link_query_string => qs)
     
     @doc.search('a').each do |el|
       href = el.attributes['href'].to_s
@@ -113,7 +114,7 @@ protected
     @doc = premailer.processed_doc
   end
   
-  def remote_setup(opts = {})
+  def remote_setup(f = 'base.html', opts = {})
     # from http://nullref.se/blog/2006/5/17/testing-with-webrick
     uri_base = 'http://localhost:12000'
     www_root = File.dirname(__FILE__) + '/files/'
@@ -130,9 +131,9 @@ protected
 
     sleep 1 # ensure the server has time to load
     
-    premailer = Premailer.new(uri_base + '/base.html', opts)
-    premailer.to_inline_css
-    @doc = premailer.processed_doc
+    @premailer = Premailer.new(uri_base + "/#{f}", opts)
+    @premailer.to_inline_css
+    @doc = @premailer.processed_doc
   end
 
   def teardown

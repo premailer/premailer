@@ -154,10 +154,10 @@ class Premailer
     @css_warnings = check_client_support if @css_warnings.empty?
     @css_warnings
   end
-
+  
   # Returns the original HTML as a string.
   def to_s
-    @doc.to_html
+    is_xhtml? ? @doc.to_xhtml : @doc.to_html
   end
 
   # Converts the HTML document to a format suitable for plain-text e-mail.
@@ -258,6 +258,11 @@ class Premailer
     doc.to_html
   end
 
+  # Check for an XHTML doctype
+  def is_xhtml?
+    intro = @doc.to_s.strip.split("\n")[0..2].join(' ')
+    intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i
+  end
 
 protected  
   # Load the HTML file and convert it into an Nokogiri document.
