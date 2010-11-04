@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "premailer"
-  s.version  = "1.5.5"
-  s.date     = "2009-12-03"
+  s.version  = "1.5.6"
+  s.date     = "2010-11-03"
   s.summary  = "Preflight for HTML e-mail."
   s.email    = "code@dunae.ca"
   s.homepage = "http://premailer.dialect.ca/"
@@ -9,11 +9,7 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.author  = "Alex Dunae"
   s.rdoc_options << '--all' << '--inline-source' << '--line-numbers' << '--charset' << 'utf-8'
-  s.extra_rdoc_files = [
-    "CHANGELOG.rdoc",
-    "README.rdoc",
-    "README.rdoc"
-  ]  
+  s.extra_rdoc_files = ["README.rdoc"]  
   s.files = [
     "init.rb",
     "bin/premailer",
@@ -25,7 +21,7 @@ Gem::Specification.new do |s|
   ]
   s.executables = 'premailer'
   s.add_dependency('nokogiri', '>= 1.4.0')
-  s.add_dependency('css_parser', '>= 0.9.1')
+  s.add_dependency('css_parser', '>= 1.1.3')
   #s.add_dependency('text-reform', '>= 0.2.0')
   s.add_dependency('htmlentities', '>= 4.0.0')
 end

@@ -20,7 +20,6 @@ script is my solution.
 
 Download the Premailer gem from GemCutter.
 
-    gem sources -a http://gemcutter.org
     sudo gem install premailer
 
 === Example
@@ -48,19 +47,20 @@ Contributions are most welcome.  Premailer was rotting away in a private SVN rep
 A few areas that are particularly in need of love:
 * Testing suite
   There were unit tests but they were so funky that it was better to just strip them out.
-* Test running Premailer on local files
 * Create a binary file for easing command line use, allowing the output to be piped in *nix systems
-* Ruby 1.9 testing
 * Test with Rails
 * Move un-repeated background images defined in CSS to <tt><td background=""></tt> for Outlook
 * Correctly parse http://www.webstandards.org/files/acid2/test.html
 
 === Credits and code
 
-Premailer is written in Ruby.  
+Thanks to {all the wonderful contributors}[http://github.com/alexdunae/premailer/contributors] for their updates.
+
+Thanks to {Greenhood + Company}[http://www.greenhood.com/] for sponsoring some of the 1.5.6 updates, 
+and to {Campaign Monitor}[http://www.campaignmonitor.com] for supporting the web interface.
 
 The web interface can be found at http://premailer.dialect.ca .
 
 The source code can be found at http://github.com/alexdunae/premailer .
 
-Written by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-2009.
+Written by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-2010.
