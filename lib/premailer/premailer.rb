@@ -265,7 +265,8 @@ protected
   # Returns an Nokogiri document.
   def load_html(path) # :nodoc:
     if @options[:with_html_string]
-      Nokogiri::HTML.parse(path)
+      puts 'using opts'
+      Nokogiri::HTML(path, nil, nil, nil)
     elsif @options[:inline]
       Nokogiri::HTML(path)
     else
