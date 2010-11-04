@@ -9,6 +9,18 @@ class TestPremailer < Test::Unit::TestCase
 
     assert_equal 'cédille cé &amp; garçon garçon à à', @doc.at('#specialchars').inner_html
   end
+
+  def test_link_query_string
+    qs = 'utm_source=1234&tracking=good&amp;doublescape'
+    remote_setup(:link_query_string => qs)
+    
+    @doc.search('a').each do |el|
+      href = el.attributes['href'].to_s
+      next if href.nil? or href.empty?
+      uri = URI.parse(href)
+      assert_match qs, uri.query, "missing query string for #{el.to_s}"
+    end
+  end
   
   def test_escaping_strings
     local_setup

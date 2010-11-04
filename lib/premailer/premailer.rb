@@ -64,6 +64,13 @@ class Premailer
   # URI of the HTML file used
   attr_reader   :html_file
   
+  # base URL used to resolve links
+  attr_reader   :base_url
+
+  # base directory used to resolve links for local files
+  attr_reader   :base_dir
+
+  
   # processed HTML document (Nokogiri)
   attr_reader   :processed_doc
   
@@ -114,6 +121,8 @@ class Premailer
     @css_warnings = []
 
     @base_url = nil
+    @base_dir = nil
+
     if @options[:base_url]
       @base_url = URI.parse(@options.delete[:base_url])
     elsif not @is_local_file
@@ -127,9 +136,13 @@ class Premailer
     })
     
     @doc = load_html(@html_file)
+        
     @html_charset = @doc.encoding
     @processed_doc = @doc
     @processed_doc = convert_inline_links(@processed_doc, @base_url) if @base_url
+    if options[:link_query_string]
+      @processed_doc = append_query_string(@processed_doc, options[:link_query_string])
+    end
     load_css_from_options!
     load_css_from_html!
   end
@@ -256,6 +269,7 @@ protected
         if path.is_a?(IO) || path.is_a?(StringIO)
           Nokogiri::HTML(path.read)
         else
+          @base_dir = File.dirname(path)
           Nokogiri::HTML(File.open(path, "r") {|f| f.read })
         end
       else
@@ -272,7 +286,7 @@ protected
           css_block << line
         end
       end
-      @css_parser.add_block!(css_block, {:base_uri => @base_url})
+      @css_parser.add_block!(css_block, {:base_uri => @base_url, :base_dir => @base_dir})
     rescue; end
   end
 
@@ -290,7 +304,6 @@ protected
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
-
         if tag.to_s.strip =~ /^\<link/i and tag.attributes['href'] and media_type_ok?(tag.attributes['media'])
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
@@ -302,12 +315,8 @@ protected
             @css_parser.load_uri!(link_uri)
           end
 
-        elsif tag.to_s.strip =~ /^\<style/i
-          if @html_file.is_a?(IO) || @html_file.is_a?(StringIO)
-            @css_parser.add_block!(tag.inner_html)
-          else
-            @css_parser.add_block!(tag.inner_html, :base_uri => @base_url)
-          end
+        elsif tag.to_s.strip =~ /^\<style/i      
+          @css_parser.add_block!(tag.inner_html, :base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld])
         end
       end
       tags.remove
@@ -340,6 +349,25 @@ protected
     doc
   end
 
+  def append_query_string(doc, qs)
+    doc.search('a').each do|el|
+      href = el.attributes['href'].to_s
+      next if href.nil? or href.empty?
+      
+      href = URI.parse(href)
+    
+      if href.query
+        href.query = href.query + '&amp' + qs
+      else
+        href.query = qs
+      end
+    
+      el['href'] = href.to_s
+
+    end
+    doc
+  end
+
   # Convert relative links to absolute links.
   #
   # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes 
@@ -351,7 +379,7 @@ protected
   def convert_inline_links(doc, base_uri) # :nodoc:
     base_uri = URI.parse(base_uri) unless base_uri.kind_of?(URI)
 
-    append_qs = @options[:link_query_string] ||= ''
+    append_qs = @options[:link_query_string] || ''
 
     ['href', 'src', 'background'].each do |attribute|
       tags = doc.search("*[@#{attribute}]")
@@ -381,17 +409,7 @@ protected
 
         # make sure 'merged' is a URI
         merged = URI.parse(merged.to_s) unless merged.kind_of?(URI)
-
-        # only append a querystring to <a> tags
-        if tag.name =~ /^a$/i and not append_qs.empty?
-          if merged.query
-            merged.query = merged.query + '&' + append_qs
-          else
-            merged.query = append_qs
-          end
-        end
         tag[attribute] = merged.to_s
-
       end # end of each tag
     end # end of each attrs
 
