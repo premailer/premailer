@@ -96,11 +96,12 @@ class Premailer
   # ==== Options
   # [+line_length+] Line length used by to_plain_text. Boolean, default is 65.
   # [+warn_level+] What level of CSS compatibility warnings to show (see Warnings).
-  # [+link_query_string+] A string to append to every <a href=""> link. Do not include the initial +?+.
+  # [+link_query_string+] A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
+  # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
@@ -196,13 +197,16 @@ class Premailer
       if selector =~ RE_UNMERGABLE_SELECTORS
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration))
       else
-        
-        doc.css(selector).each do |el|
-          if el.elem?
-            # Add a style attribute or append to the existing one  
-            block = "[SPEC=#{specificity}[#{declaration}]]"
-            el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
+        begin
+          doc.css(selector).each do |el|
+            if el.elem?
+              # Add a style attribute or append to the existing one  
+              block = "[SPEC=#{specificity}[#{declaration}]]"
+              el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
+            end
           end
+        rescue Nokogiri::CSS::SyntaxError
+          $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
         end
       end
     end
@@ -308,10 +312,10 @@ protected
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           if Premailer.local_data?(link_uri)
-            puts "Loading css from local file: " + link_uri if @options[:verbose]
+            $stderr.puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
           else
-            puts "Loading css from uri: " + link_uri if @options[:verbose]
+            $stderr.puts "Loading css from uri: " + link_uri if @options[:verbose]
             @css_parser.load_uri!(link_uri)
           end
 
