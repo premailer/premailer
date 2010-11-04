@@ -263,23 +263,20 @@ protected
   # Load the HTML file and convert it into an Nokogiri document.
   #
   # Returns an Nokogiri document.
-  def load_html(path) # :nodoc:
-    if @options[:with_html_string]
-      Nokogiri::HTML(path, nil, nil, nil)
-    elsif @options[:inline]
-      Nokogiri::HTML(path)
+  def load_html(input) # :nodoc:
+    thing = nil
+
+    # TODO: duplicate options
+    if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
+      thing = input
+    elsif @is_local_file
+      @base_dir = File.dirname(input)
+      thing = File.open(input, 'r')
     else
-      if @is_local_file
-        if path.is_a?(IO) || path.is_a?(StringIO)
-          Nokogiri::HTML(path.read)
-        else
-          @base_dir = File.dirname(path)
-          Nokogiri::HTML(File.open(path, "r") {|f| f.read })
-        end
-      else
-        Nokogiri::HTML(open(path))
-      end
+      thing = open(input)
     end
+    
+    thing ? Nokogiri::HTML(thing) : nil  
   end
 
   def load_css_from_local_file!(path)
