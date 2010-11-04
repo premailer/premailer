@@ -358,7 +358,11 @@ protected
       href = el.attributes['href'].to_s
       next if href.nil? or href.empty?
       
-      href = URI.parse(href)
+      begin
+        href = URI.parse(href)
+      rescue URI::InvalidURIError
+        next
+      end
     
       if href.query
         href.query = href.query + '&amp' + qs

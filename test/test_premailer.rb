@@ -22,6 +22,20 @@ class TestPremailer < Test::Unit::TestCase
     end
   end
   
+  def test_mailtos_with_query_strings
+    html = <<END_HTML
+    <html>
+		<a href="mailto:info@example.com?subject=Programmübersicht&amp;body=Lorem ipsum dolor sit amet.">Test</a>
+		</html>
+END_HTML
+
+    qs = 'testing=123'
+
+		premailer = Premailer.new(html, :with_html_string => true, :link_query_string => qs)
+		premailer.to_inline_css
+	  assert_no_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s    
+  end
+  
   def test_escaping_strings
     local_setup
   
