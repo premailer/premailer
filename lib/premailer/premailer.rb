@@ -205,7 +205,7 @@ class Premailer
               el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
             end
           end
-        rescue Nokogiri::CSS::SyntaxError
+        rescue Nokogiri::SyntaxError
           $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
         end
       end
