@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   ]
   s.executables = 'premailer'
   s.add_dependency('nokogiri', '>= 1.4.0')
+  s.add_dependency('optparse')
   s.add_dependency('css_parser', '>= 1.1.3')
   #s.add_dependency('text-reform', '>= 0.2.0')
   s.add_dependency('htmlentities', '>= 4.0.0')

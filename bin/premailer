@@ -1,76 +1,100 @@
 #!/usr/bin/env ruby
-#
-# = Premailer
+
+require 'optparse'
 require 'rubygems'
-require File.join(File.dirname(__FILE__), 'trollop')
-require File.join(File.dirname(__FILE__), '../lib/premailer')
+require 'premailer'
+require 'fcntl'
 
-opts = Trollop::options do
-  version "Premailer #{Premailer::VERSION} (c) 2008-2009 Alex Dunae"
-  banner <<-EOS
-Improve the rendering of HTML emails by making CSS inline, converting links and warning about unsupported code.
-
-Usage:
-  premailer [options] inputfile [outputfile] [warningsfile]
-
-Example
-  premailer http://example.com/
-  premailer http://example.com/ out.html out.txt warnings.txt
-  premailer --base-url=http://example.com/ src.html out.html
-
-Options:
-EOS
-  opt :base_url, "Manually set the base URL, useful for local files", :type => String
-  opt :query_string, "Query string to append to links", :type => String, :short => 'q'
-  opt :line_length, "Length of lines when creating plaintext version", :type => :int, :default => 65, :short => 'l'
-  opt :remove_classes, "Remove classes from the HTML document?", :default => false
-  opt :css, "Manually specify css stylesheets", :type => String, :multi => true
-  opt :verbose, '', :default => false, :short => 'v'
-  opt :io_exceptions, "Abort on I/O errors loading style resources", :default => false, :short => 'e'
-end
-
-inputfile    = ARGV.shift
-outfile      = ARGV.shift
-txtfile      = ARGV.shift
-warningsfile = ARGV.shift
-
-Trollop::die "inputfile is missing" if inputfile.nil?
-
-premailer_opts = {
-  :base_url => opts[:base_url],
-  :query_string => opts[:query_string],
-  :show_warnings => opts[:show_warnings] ? Premailer::Warnings::SAFE : Premailer::Warnings::NONE,
-  :line_length => opts[:line_length],
-  :remove_classes => opts[:remove_classes],
-  :css => opts[:css],
-  :verbose => opts[:verbose],
-  :io_exceptions => opts[:io_exceptions],
+# defaults
+options = {
+  :base_url => nil,
+  :link_query_string => nil,
+  :remove_classes => false,
+  :verbose => false,
+  :line_length => 65
 }
 
-premailer = Premailer.new(inputfile, premailer_opts)
+mode = :html
 
-# html output
-if outfile
-  fout = File.open(outfile, 'w')
-  fout.puts premailer.to_inline_css
-  fout.close
+opts = OptionParser.new do |opts|
+  opts.banner = "Improve the rendering of HTML emails by making CSS inline, converting links and warning about unsupported code."
+  opts.define_head "Usage: premailer <uri|path> [options]"
+  opts.separator ""
+  opts.separator "Examples:"
+  opts.separator "  premailer http://example.com/ > out.html"
+  opts.separator "  premailer http://example.com/ --mode txt > out.txt"
+  opts.separator "  cat input.html | premailer -q src=email > out.html"
+  opts.separator "  premailer ./public/index.html"
+  opts.separator ""
+  opts.separator "Options:"
+
+  opts.on("--mode [MODE]", [:html, :txt], "Output type: either html or txt") do |v|
+    mode = v
+  end
+
+  opts.on("-b", "--base-url", String, "Manually set the base URL, useful for local files") do |v|
+    options[:base_url] = v
+  end
+
+  opts.on("-q", "--query-string STRING", String, "Query string to append to links (do not include the ?)") do |v|
+    options[:link_query_string] = v
+  end
+
+  opts.on("--css FILE,FILE", Array, "Additional CSS stylesheets") do |v|
+    options[:css] = v
+  end
+
+  opts.on("-r", "--remove-classes", "Remove classes from the HTML document?") do |v|
+    options[:remove_classes] = v
+  end
+
+  opts.on("-l", "--line-length N", Integer, "Length of lines when creating plaintext version (default: #{options[:line_length].to_s})") do |v|
+    options[:line_length] = v
+  end
+
+  opts.on("-d", "--io-exceptions", "Abort on I/O errors") do |v|
+    options[:io_exceptions] = v
+  end
+
+  opts.on("-v", "--verbose", "Print additional information at runtime") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on_tail("-?", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+  opts.on_tail("-V", "--version", "Show version") do
+    puts "Premailer #{Premailer::VERSION} (c) 2008-2010 Alex Dunae"
+    exit
+  end
+end
+opts.parse!
+
+$stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
+
+premailer = nil
+
+# check for input from STDIN
+if STDIN.fcntl(Fcntl::F_GETFL, 0) == 0
+  io = STDIN.to_io
+  premailer = Premailer.new(io, options)
+else
+  uri = ARGV.shift
+
+  if uri.to_s.strip.empty?
+    puts opts
+    exit 1
+  end
+
+  premailer = Premailer.new(uri, options)
+end
+
+if mode == :txt
+  p premailer.to_plain_text
 else
   p premailer.to_inline_css
-  exit
 end
 
-# plaintext output
-if txtfile
-  fout = File.open(txtfile, 'w')
-  fout.puts premailer.to_plain_text
-  fout.close
-end
-
-# warnings output
-if warningsfile
-  fout = File.open(warningsfile, 'w')
-  premailer.warnings.each do |w|
-    fout.puts "- #{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
-  end
-  fout.close
-end
+exit
