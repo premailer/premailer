@@ -356,23 +356,30 @@ protected
   end
 
   def append_query_string(doc, qs)
+    return doc if qs.nil?
+
+    qs.to_s.strip!
+    return doc if qs.empty?
+
+    $stderr.puts "Attempting to append_query_string: #{qs}" if @options[:verbose]
+    
     doc.search('a').each do|el|
-      href = el.attributes['href'].to_s
-      next if href.nil? or href.empty?
-      
+      href = el.attributes['href'].to_s.strip
+      next if href.nil? or href.empty?      
+
       begin
         href = URI.parse(href)
-      rescue URI::InvalidURIError
+        if href.query
+          href.query = href.query + '&amp' + qs
+        else
+          href.query = qs
+        end
+    
+        el['href'] = href.to_s
+      rescue URI::Error => e
+        $stderr.puts "Skipping append_query_string for: #{href.to_s} (#{e.message})" if @options[:verbose]
         next
       end
-    
-      if href.query
-        href.query = href.query + '&amp' + qs
-      else
-        href.query = qs
-      end
-    
-      el['href'] = href.to_s
 
     end
     doc

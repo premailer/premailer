@@ -32,6 +32,13 @@ class TestPremailer < Test::Unit::TestCase
 		assert_match /<p>&nbsp; &amp;<\/p>/, premailer.processed_doc.at('p').inner_html
   end
 
+  def test_empty_query_string
+    qs = ' '
+    assert_nothing_raised do
+		  remote_setup('base.html', :link_query_string => qs)
+		end
+  end
+
   def test_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
     remote_setup('base.html', :link_query_string => qs)
