@@ -15,7 +15,25 @@ class TestMisc < Test::Unit::TestCase
     premailer = Premailer.new(io)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
-  
+
+  # in response to https://github.com/alexdunae/premailer/issues#issue/7
+  def test_ignoring_link_pseudo_selectors
+    html = <<END_HTML
+    <html>
+    <style type="text/css"> td a:link.top_links { color: red; } </style>
+    <body>
+		<td><a class="top_links">Test</td>
+		</body>
+		</html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+    assert_nothing_raised do
+		  premailer.to_inline_css
+	  end
+	  assert_match /color: red/, premailer.processed_doc.at('a').attributes['style'].to_s
+  end
+
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
   def test_parsing_bad_markup_around_tables
     html = <<END_HTML

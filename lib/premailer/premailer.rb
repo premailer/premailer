@@ -189,11 +189,11 @@ class Premailer
     # Iterate through the rules and merge them into the HTML
     @css_parser.each_selector(:all) do |selector, declaration, specificity|
       # Save un-mergable rules separately
-      selector.gsub!(/:link([\s]|$)+/i, '')
+      selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
 
       # Convert element names to lower case
       selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
-
+      
       if selector =~ RE_UNMERGABLE_SELECTORS
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration))
       else
@@ -205,7 +205,7 @@ class Premailer
               el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
             end
           end
-        rescue Nokogiri::SyntaxError
+        rescue Nokogiri::SyntaxError, RuntimeError
           $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
         end
       end
