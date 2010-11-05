@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 #
-# Premailer by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-09
+# Premailer by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-10
 #
 # Premailer processes HTML and CSS to improve e-mail deliverability.
 #
@@ -33,7 +33,7 @@ class Premailer
   include HtmlToPlainText
   include CssParser
 
-  VERSION = '1.5.6'
+  VERSION = '1.5.7'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
