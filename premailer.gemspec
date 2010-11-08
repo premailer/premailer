@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "premailer"
-  s.version  = "1.5.7"
+  s.version  = "1.5.8"
   s.date     = "2010-11-05"
   s.summary  = "Preflight for HTML e-mail."
   s.email    = "code@dunae.ca"
@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.files = [
     "init.rb",
     "bin/premailer",
-    "bin/trollop.rb",
     "lib/premailer.rb",
     "lib/premailer/html_to_plain_text.rb",
     "lib/premailer/premailer.rb",
