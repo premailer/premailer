@@ -8,7 +8,7 @@ class TestMisc < Test::Unit::TestCase
   include WEBrick
 
   # in response to http://github.com/alexdunae/premailer/issues#issue/4
-  def atest_parsing_extra_quotes
+  def test_parsing_extra_quotes
     io = StringIO.new('<p></p>
     <h3 "id="WAR"><a name="WAR"></a>Writes and Resources</h3>
     <table></table>')
@@ -28,7 +28,7 @@ END_HTML
 	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
-  def atest_unmergable_rules_with_no_head
+  def test_unmergable_rules_with_no_head
     html = <<END_HTML
     <html> <body> 
     <style type="text/css"> a:hover { color: red; } </style>
@@ -43,7 +43,7 @@ END_HTML
 	  assert_nil premailer.processed_doc.at('head')
   end
 
-  def atest_unmergable_rules_with_empty_head
+  def test_unmergable_rules_with_empty_head
     html = <<END_HTML
     <html> <head></head>
     <body> 
@@ -60,7 +60,7 @@ END_HTML
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
-  def atest_ignoring_link_pseudo_selectors
+  def test_ignoring_link_pseudo_selectors
     html = <<END_HTML
     <html>
     <style type="text/css"> td a:link.top_links { color: red; } </style>
@@ -78,7 +78,7 @@ END_HTML
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
-  def atest_parsing_bad_markup_around_tables
+  def test_parsing_bad_markup_around_tables
     html = <<END_HTML
     <html>
     <style type="text/css"> 
