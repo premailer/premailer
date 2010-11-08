@@ -16,6 +16,37 @@ class TestMisc < Test::Unit::TestCase
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
 
+  def test_unmergable_rules_with_no_head
+    html = <<END_HTML
+    <html> <body> 
+    <style type="text/css"> a:hover { color: red; } </style>
+		<p><a>Test</p> 
+		</body> </html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+    assert_nothing_raised do
+		  premailer.to_inline_css
+	  end
+	  assert_nil premailer.processed_doc.at('head')
+  end
+
+  def test_unmergable_rules_with_empty_head
+    html = <<END_HTML
+    <html> <head></head>
+    <body> 
+    <style type="text/css"> a:hover { color: red; } </style>
+		<p><a>Test</p> 
+		</body> </html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+    assert_nothing_raised do
+		  premailer.to_inline_css
+	  end
+	  assert_not_nil premailer.processed_doc.at('head style')
+  end
+
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
   def test_ignoring_link_pseudo_selectors
     html = <<END_HTML

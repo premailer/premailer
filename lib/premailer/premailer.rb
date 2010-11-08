@@ -343,14 +343,18 @@ protected
   #
   # Returns an Nokogiri document.
   def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-    styles = ''
-    unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
-      styles += "#{selector} { #{declarations} }\n"
-    end    
+    if head = doc.at('head')
+      styles = ''
+      unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
+        styles += "#{selector} { #{declarations} }\n"
+      end    
 
-    unless styles.empty?
-      style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-      doc.css("head").children.last.after(style_tag)
+      unless styles.empty?
+        style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
+        head.add_child(style_tag)
+      end
+    else
+      $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]
     end
     doc
   end
