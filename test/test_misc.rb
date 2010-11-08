@@ -8,19 +8,31 @@ class TestMisc < Test::Unit::TestCase
   include WEBrick
 
   # in response to http://github.com/alexdunae/premailer/issues#issue/4
-  def test_parsing_extra_quotes
+  def atest_parsing_extra_quotes
     io = StringIO.new('<p></p>
     <h3 "id="WAR"><a name="WAR"></a>Writes and Resources</h3>
     <table></table>')
     premailer = Premailer.new(io)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
+  
+  def test_unmergable_rules
+    html = <<END_HTML
+    <html> <head> <style type="text/css"> a { color:blue; } a:hover { color: red; } </style> </head>
+		<p><a>Test</a></p> 
+		</body> </html>
+END_HTML
 
-  def test_unmergable_rules_with_no_head
+		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
+		premailer.to_inline_css
+	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+  end
+
+  def atest_unmergable_rules_with_no_head
     html = <<END_HTML
     <html> <body> 
     <style type="text/css"> a:hover { color: red; } </style>
-		<p><a>Test</p> 
+		<p><a>Test</a></p> 
 		</body> </html>
 END_HTML
 
@@ -31,12 +43,12 @@ END_HTML
 	  assert_nil premailer.processed_doc.at('head')
   end
 
-  def test_unmergable_rules_with_empty_head
+  def atest_unmergable_rules_with_empty_head
     html = <<END_HTML
     <html> <head></head>
     <body> 
     <style type="text/css"> a:hover { color: red; } </style>
-		<p><a>Test</p> 
+		<p><a>Test</a></p> 
 		</body> </html>
 END_HTML
 
@@ -48,12 +60,12 @@ END_HTML
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
-  def test_ignoring_link_pseudo_selectors
+  def atest_ignoring_link_pseudo_selectors
     html = <<END_HTML
     <html>
     <style type="text/css"> td a:link.top_links { color: red; } </style>
     <body>
-		<td><a class="top_links">Test</td>
+		<td><a class="top_links">Test</a></td>
 		</body>
 		</html>
 END_HTML
@@ -66,7 +78,7 @@ END_HTML
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
-  def test_parsing_bad_markup_around_tables
+  def atest_parsing_bad_markup_around_tables
     html = <<END_HTML
     <html>
     <style type="text/css"> 
