@@ -255,7 +255,7 @@ class Premailer
 
     @processed_doc = doc
 
-    doc.to_html
+    is_xhtml? ? doc.to_xhtml : doc.to_html
   end
 
   # Check for an XHTML doctype

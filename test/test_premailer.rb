@@ -23,6 +23,13 @@ class TestPremailer < Test::Unit::TestCase
   def test_self_closing_xhtml_tags
     remote_setup('xhtml.html')
     assert_match /<br[\s]*\/>/, @premailer.to_s
+    assert_match /<br[\s]*\/>/, @premailer.to_inline_css
+  end
+
+  def test_non_self_closing_html_tags
+    remote_setup('html4.html')
+    assert_match /<br>/, @premailer.to_s
+    assert_match /<br>/, @premailer.to_inline_css
   end
 
   def test_preserving_html_entities
