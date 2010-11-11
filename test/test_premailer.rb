@@ -4,10 +4,11 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 class TestPremailer < Test::Unit::TestCase
   include WEBrick
 
-  def test_accents
-    local_setup
-
-    assert_equal 'cédille cé &amp; garçon garçon à à', @doc.at('#specialchars').inner_html
+  def test_preserving_special_characters
+    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
+    premailer = Premailer.new(html, :with_html_string => true)
+		premailer.to_inline_css
+    assert_equal 'cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
   end
   
   def test_detecting_html
@@ -17,7 +18,7 @@ class TestPremailer < Test::Unit::TestCase
 
   def test_detecting_xhtml
     remote_setup('xhtml.html')
-    assert true, @premailer.is_xhtml?
+    assert @premailer.is_xhtml?
   end
 
   def test_self_closing_xhtml_tags
@@ -30,32 +31,6 @@ class TestPremailer < Test::Unit::TestCase
     remote_setup('html4.html')
     assert_match /<br>/, @premailer.to_s
     assert_match /<br>/, @premailer.to_inline_css
-  end
-
-  def test_preserving_html_entities
-    html = '<p>&nbsp; &amp;</p>'
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
-		assert_match /<p>&nbsp; &amp;<\/p>/, premailer.processed_doc.at('p').inner_html
-  end
-
-  def test_empty_query_string
-    qs = ' '
-    assert_nothing_raised do
-		  remote_setup('base.html', :link_query_string => qs)
-		end
-  end
-
-  def test_link_query_string
-    qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    remote_setup('base.html', :link_query_string => qs)
-    
-    @doc.search('a').each do |el|
-      href = el.attributes['href'].to_s
-      next if href.nil? or href.empty?
-      uri = URI.parse(href)
-      assert_match qs, uri.query, "missing query string for #{el.to_s}"
-    end
   end
   
   def test_mailtos_with_query_strings

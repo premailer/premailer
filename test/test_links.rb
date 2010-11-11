@@ -1,6 +1,63 @@
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestLinkResolver < Test::Unit::TestCase
+class TestLinks < Test::Unit::TestCase
+  #def test_empty_query_string
+  #  qs = ' '
+  #  assert_nothing_raised do
+#		  remote_setup('base.html', :link_query_string => qs)
+#		end
+ # end
+
+  def test_appending_link_query_string
+    qs = 'utm_source=1234&tracking=good&amp;doublescape'
+    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true}
+    
+    appendable = [
+      '/', 
+      opts[:base_url], 
+      'https://example.com/tester',
+      'images/',
+      "#{opts[:base_url]}test.html?cn=tf&amp;c=20&amp;ord=random",
+      '?query=string',
+    ]
+      
+    not_appendable = [
+      '{DONOTCONVERT}',
+      '[DONOTCONVERT]',
+      '<DONOTCONVERT>',
+      '#relative', 
+      'http://example.net/',
+      'mailto:premailer@example.com',
+      'ftp://example.com',
+      'gopher://gopher.floodgap.com/1/fun/twitpher'
+    ]
+    
+    html = appendable.collect {|url| "<a href='#{url}'>Link</a>" }
+
+    premailer = Premailer.new(html.to_s, opts)
+    premailer.to_inline_css
+    
+    premailer.processed_doc.search('a').each do |el|
+      href = el.attributes['href'].to_s
+      next if href.nil? or href.empty?
+      uri = URI.parse(href)
+      assert_match qs, uri.query, "missing query string for #{el.to_s}"
+    end
+
+
+    html = not_appendable.collect {|url| "<a href='#{url}'>Link</a>" }
+
+    premailer = Premailer.new(html.to_s, opts)
+    premailer.to_inline_css
+    
+    premailer.processed_doc.search('a').each do |el|
+      href = el.attributes['href']
+      next if href.nil? or href.empty?
+      assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable.to_s}"
+    end
+
+  end
+
   def test_resolving_urls_from_string
     ['test.html', '/test.html', './test.html', 
      'test/../test.html', 'test/../test/../test.html'].each do |q|

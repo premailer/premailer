@@ -125,7 +125,7 @@ class Premailer
     @base_dir = nil
 
     if @options[:base_url]
-      @base_url = URI.parse(@options.delete[:base_url])
+      @base_url = URI.parse(@options.delete(:base_url))
     elsif not @is_local_file
       @base_url = URI.parse(@html_file)
     end
@@ -369,19 +369,37 @@ protected
 
     qs.to_s.strip!
     return doc if qs.empty?
+    
+    begin
+      current_host = @base_url.host
+    rescue
+      current_host = nil
+    end
 
     $stderr.puts "Attempting to append_query_string: #{qs}" if @options[:verbose]
     
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?      
+      next if href[0] == '#' # don't bother with anchors
 
       begin
         href = URI.parse(href)
+
+        if current_host and href.host != nil and href.host != current_host
+          $stderr.puts "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
+          next 
+        end
+
+        if href.scheme and href.scheme != 'http' and href.scheme != 'https'
+          puts "Skipping append_query_string for: #{href.to_s} because scheme is no good" if @options[:verbose]
+          next
+        end
+        
         if href.query
           href.query = href.query + '&amp' + qs
         else
-          href.query = qs
+          href.query = '?' + qs
         end
     
         el['href'] = href.to_s
