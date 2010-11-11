@@ -397,7 +397,7 @@ protected
         end
         
         if href.query
-          href.query = href.query + '&amp' + qs
+          href.query = href.query + '&amp;' + qs
         else
           href.query = '?' + qs
         end

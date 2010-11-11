@@ -45,7 +45,6 @@ class TestLinks < Test::Unit::TestCase
       assert_match qs, uri.query, "missing query string for #{el.to_s}"
     end
 
-
     html = not_appendable.collect {|url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
@@ -56,6 +55,20 @@ class TestLinks < Test::Unit::TestCase
       next if href.nil? or href.empty?
       assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable.to_s}"
     end
+  end
+
+  def test_preserving_links
+    html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
+    premailer = Premailer.new(html.to_s, :link_query_string => '', :with_html_string => true)
+    premailer.to_inline_css
+    
+    assert_equal 'http://example.com/index.php?pram1=one&pram2=two', premailer.processed_doc.at('a').attributes['href']
+
+    html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
+    premailer = Premailer.new(html.to_s, :link_query_string => 'qs', :with_html_string => true)
+    premailer.to_inline_css
+    
+    assert_equal 'http://example.com/index.php?pram1=one&pram2=two&amp;qs', premailer.processed_doc.at('a').attributes['href']
 
   end
 
