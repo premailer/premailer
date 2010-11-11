@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestLinks < Test::Unit::TestCase
-  #def test_empty_query_string
-  #  qs = ' '
-  #  assert_nothing_raised do
-#		  remote_setup('base.html', :link_query_string => qs)
-#		end
- # end
+  def test_empty_query_string
+    assert_nothing_raised do
+      premailer = Premailer.new('<p>Test</p>', :link_query_string => ' ')
+      premailer.to_inline_css
+    end
+  end
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
