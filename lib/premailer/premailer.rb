@@ -33,7 +33,7 @@ class Premailer
   include HtmlToPlainText
   include CssParser
 
-  VERSION = '1.5.8'
+  VERSION = '1.6.0'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
@@ -270,7 +270,7 @@ class Premailer
   end
 
 protected  
-  # Load the HTML file and convert it into an Nokogiri document.
+  # Load the HTML file and convert it into an Hpricot document.
   #
   # Returns an Hpricot document.
   def load_html(input) # :nodoc:
@@ -417,9 +417,9 @@ protected
   # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes 
   # as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.
   #
-  # <tt>doc</tt> is an Nokogiri document and <tt>base_uri</tt> is either a string or a URI.
+  # <tt>doc</tt> is an Hpricot document and <tt>base_uri</tt> is either a string or a URI.
   #
-  # Returns an Nokogiri document.
+  # Returns an Hpricot document.
   def convert_inline_links(doc, base_uri) # :nodoc:
     base_uri = URI.parse(base_uri) unless base_uri.kind_of?(URI)
 

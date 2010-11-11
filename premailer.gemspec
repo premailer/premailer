@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "premailer"
-  s.version  = "1.5.8"
-  s.date     = "2010-11-05"
+  s.version  = "1.6.0"
+  s.date     = "2010-11-11"
   s.summary  = "Preflight for HTML e-mail."
   s.email    = "code@dunae.ca"
   s.homepage = "http://premailer.dialect.ca/"
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
     "misc/client_support.yaml"
   ]
   s.executables = 'premailer'
-  s.add_dependency('nokogiri', '>= 1.4.0')
+  s.add_dependency('hpricot', '>= 0.8.3')
   s.add_dependency('css_parser', '>= 1.1.3')
   #s.add_dependency('text-reform', '>= 0.2.0')
   s.add_dependency('htmlentities', '>= 4.0.0')
