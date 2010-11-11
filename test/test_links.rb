@@ -25,6 +25,7 @@ class TestLinks < Test::Unit::TestCase
       '{DONOTCONVERT}',
       '[DONOTCONVERT]',
       '<DONOTCONVERT>',
+      '{@msg-txturl}',
       '[[!unsubscribe]]',
       '#relative', 
       'http://example.net/',

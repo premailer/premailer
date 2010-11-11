@@ -97,7 +97,7 @@ END_HTML
 
 protected
   def local_setup(f = 'base.html', opts = {})
-    base_file = File.dirname(__FILE__) + '/files/' + f
+    base_file = File.expand_path(File.dirname(__FILE__)) + '/files/' + f
     premailer = Premailer.new(base_file, opts)
     premailer.to_inline_css
     @doc = premailer.processed_doc
@@ -106,7 +106,7 @@ protected
   def remote_setup(f = 'base.html', opts = {})
     # from http://nullref.se/blog/2006/5/17/testing-with-webrick
     uri_base = 'http://localhost:12000'
-    www_root = File.dirname(__FILE__) + '/files/'
+    www_root = File.expand_path(File.dirname(__FILE__)) + '/files/'
 
     @server_thread = Thread.new do
       s = WEBrick::HTTPServer.new(:Port => 12000, :DocumentRoot => www_root, :Logger => Log.new(nil, BasicLog::ERROR), :AccessLog => [])
