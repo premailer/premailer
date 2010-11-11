@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 class TestLinks < Test::Unit::TestCase
   def test_empty_query_string
     assert_nothing_raised do
-      premailer = Premailer.new('<p>Test</p>', :link_query_string => ' ')
+      premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
       premailer.to_inline_css
     end
   end
@@ -18,13 +18,14 @@ class TestLinks < Test::Unit::TestCase
       'https://example.com/tester',
       'images/',
       "#{opts[:base_url]}test.html?cn=tf&amp;c=20&amp;ord=random",
-      '?query=string',
+      '?query=string'
     ]
       
     not_appendable = [
       '{DONOTCONVERT}',
       '[DONOTCONVERT]',
       '<DONOTCONVERT>',
+      '[[!unsubscribe]]',
       '#relative', 
       'http://example.net/',
       'mailto:premailer@example.com',

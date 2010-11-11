@@ -66,6 +66,9 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     assert_plaintext 'Link ( %%LINK%% )', '<a href="%%LINK%%">Link</a>'
     assert_plaintext 'Link ( [LINK] )', '<a href="[LINK]">Link</a>'
     assert_plaintext 'Link ( {LINK} )', '<a href="{LINK}">Link</a>'
+    
+    # unsubscribe
+    assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
   end
 
   def assert_plaintext(out, raw, msg = nil)
