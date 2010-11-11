@@ -71,10 +71,10 @@ class Premailer
   attr_reader   :base_dir
 
   
-  # processed HTML document (Nokogiri)
+  # processed HTML document (Hpricot)
   attr_reader   :processed_doc
   
-  # source HTML document (Nokogiri)
+  # source HTML document (Hpricot)
   attr_reader   :doc
 
   module Warnings
@@ -137,8 +137,8 @@ class Premailer
     })
     
     @doc = load_html(@html_file)
-        
-    @html_charset = @doc.encoding
+    # TODO
+    @html_charset = nil # @doc.encoding || nil
     @processed_doc = @doc
     @processed_doc = convert_inline_links(@processed_doc, @base_url) if @base_url
     if options[:link_query_string]
@@ -157,7 +157,8 @@ class Premailer
   
   # Returns the original HTML as a string.
   def to_s
-    is_xhtml? ? @doc.to_xhtml : @doc.to_html
+    #is_xhtml? ? @doc.to_xhtml : @doc.to_html
+    @doc.to_html
   end
 
   # Converts the HTML document to a format suitable for plain-text e-mail.
@@ -198,14 +199,14 @@ class Premailer
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration))
       else
         begin
-          doc.css(selector).each do |el|
+          doc.search(selector).each do |el|
             if el.elem?
               # Add a style attribute or append to the existing one  
               block = "[SPEC=#{specificity}[#{declaration}]]"
               el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
             end
           end
-        rescue Nokogiri::SyntaxError, RuntimeError
+        rescue Hpricot::Error, RuntimeError
           $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
         end
       end
@@ -255,19 +256,23 @@ class Premailer
 
     @processed_doc = doc
 
-    is_xhtml? ? doc.to_xhtml : doc.to_html
+    #is_xhtml? ? doc.to_xhtml : doc.to_html
+    @processed_doc.to_html
   end
 
   # Check for an XHTML doctype
   def is_xhtml?
     intro = @doc.to_s.strip.split("\n")[0..2].join(' ')
-    intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i
+    is_xhtml = (intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
+    is_xhtml = is_xhtml ? true : false
+    $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:verbose]
+    is_xhtml
   end
 
 protected  
   # Load the HTML file and convert it into an Nokogiri document.
   #
-  # Returns an Nokogiri document.
+  # Returns an Hpricot document.
   def load_html(input) # :nodoc:
     thing = nil
 
@@ -281,7 +286,7 @@ protected
       thing = open(input)
     end
     
-    thing ? Nokogiri::HTML(thing) : nil  
+    thing ? Hpricot(thing) : nil  
   end
 
   def load_css_from_local_file!(path)
@@ -339,11 +344,11 @@ protected
   # Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
   # and write it into the <tt>body</tt>.
   #
-  # <tt>doc</tt> is an Nokogiri document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
+  # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
   #
-  # Returns an Nokogiri document.
+  # Returns an Hpricot document.
   def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-    if head = doc.at('head')
+    if head = doc.search('head')
       styles = ''
       unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
         styles += "#{selector} { #{declarations} }\n"
@@ -351,7 +356,7 @@ protected
 
       unless styles.empty?
         style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-        head.add_child(style_tag)
+        head.append(style_tag)
       end
     else
       $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]

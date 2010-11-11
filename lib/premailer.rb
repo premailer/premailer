@@ -1,7 +1,7 @@
 require 'yaml'
 require 'open-uri'
 require 'cgi'
-require 'nokogiri'
+require 'hpricot'
 require 'css_parser'
 require 'premailer/html_to_plain_text'
 require 'premailer/premailer'

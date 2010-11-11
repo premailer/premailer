@@ -18,7 +18,7 @@ task :inline do
     exit
   end
 
-  premailer = Premailer.new(url, :warn_level => Premailer::Warnings::SAFE)
+  premailer = Premailer.new(url, :warn_level => Premailer::Warnings::SAFE, :verbose => true)
   fout = File.open(output, "w")
   fout.puts premailer.to_inline_css
   fout.close
