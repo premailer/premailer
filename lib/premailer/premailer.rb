@@ -112,6 +112,7 @@ class Premailer
                 :css_to_attributes => true,
                 :with_html_string => false,
                 :verbose => false,
+                :debug => false,
                 :io_exceptions => false}.merge(options)
 
     @html_file = html 
@@ -157,7 +158,6 @@ class Premailer
   
   # Returns the original HTML as a string.
   def to_s
-    #is_xhtml? ? @doc.to_xhtml : @doc.to_html
     @doc.to_html
   end
 
@@ -257,7 +257,6 @@ class Premailer
 
     @processed_doc = doc
 
-    #is_xhtml? ? doc.to_xhtml : doc.to_html
     @processed_doc.to_html
   end
 
@@ -266,7 +265,7 @@ class Premailer
     intro = @doc.to_s.strip.split("\n")[0..2].join(' ')
     is_xhtml = (intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
     is_xhtml = is_xhtml ? true : false
-    $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:verbose]
+    $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
     is_xhtml
   end
 
