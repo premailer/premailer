@@ -28,6 +28,7 @@ class TestLinks < Test::Unit::TestCase
       '{@msg-txturl}',
       '[[!unsubscribe]]',
       '#relative', 
+      'tel:5555551212',
       'http://example.net/',
       'mailto:premailer@example.com',
       'ftp://example.com',

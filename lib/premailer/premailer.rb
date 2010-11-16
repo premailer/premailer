@@ -434,11 +434,11 @@ protected
       tags.each do |tag|
         # skip links that look like they have merge tags
         # and mailto, ftp, etc...
-        if tag.attributes[attribute] =~ /^(\{|\[|<|\#|mailto:|ftp:|gopher:)/i
+        if tag.attributes[attribute].to_s =~ /^(\{|\[|<|\#|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:)/i
           next
         end
 
-        if tag.attributes[attribute] =~ /^http/i
+        if tag.attributes[attribute].to_s =~ /^http/i
           begin
             merged = URI.parse(tag.attributes[attribute])
           rescue; next; end
