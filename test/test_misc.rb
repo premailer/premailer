@@ -8,7 +8,11 @@ class TestMisc < Test::Unit::TestCase
   include WEBrick
 
   # in response to http://github.com/alexdunae/premailer/issues#issue/4
+  #
+  # NB: 2010-11-16 -- after reverting to Hpricot this test can no longer pass.
+  # It's too much of an edge case to get any dev time.
   def test_parsing_extra_quotes
+    flunk 'Known and accepted regression'
     io = StringIO.new('<p></p>
     <h3 "id="WAR"><a name="WAR"></a>Writes and Resources</h3>
     <table></table>')
