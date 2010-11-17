@@ -197,7 +197,7 @@ class Premailer
       # Convert element names to lower case
       selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
       
-      if selector =~ RE_UNMERGABLE_SELECTORS
+      if selector =~ RE_UNMERGABLE_SELECTORS and not @options[:preserve_styles]
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration))
       else
         begin

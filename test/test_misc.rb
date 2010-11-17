@@ -34,12 +34,15 @@ class TestMisc < Test::Unit::TestCase
 END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true)
-	  assert_not_nil premailer.processed_doc.at('head link')
-	  assert_not_nil premailer.processed_doc.at('head style')
+		premailer.to_inline_css
+	  assert_equal 1, premailer.processed_doc.search('head link').length
+	  assert_equal 1, premailer.processed_doc.search('head style').length
+	  puts premailer.processed_doc.to_s
 
 		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false)
+		premailer.to_inline_css
 	  assert_nil premailer.processed_doc.at('head link')
-	  assert_nil premailer.processed_doc.at('head style')
+	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
   end
 
   def test_unmergable_rules
