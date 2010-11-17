@@ -45,6 +45,6 @@ task :text do
 end
 
 Rake::TestTask.new do |t|
-  t.test_files = FileList['test/test_premailer*.rb']
+  t.test_files = FileList['test/test_*.rb']
   t.verbose = false
 end
