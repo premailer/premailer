@@ -287,7 +287,8 @@ protected
     else
       thing = open(input)
     end
-    
+
+    # TODO: deal with Hpricot seg faults on empty input
     thing ? Hpricot(thing) : nil  
   end
 
