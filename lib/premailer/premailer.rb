@@ -160,7 +160,7 @@ class Premailer
   
   # Returns the original HTML as a string.
   def to_s
-    @doc.to_html
+    @doc.to_original_html
   end
 
   # Converts the HTML document to a format suitable for plain-text e-mail.
@@ -259,7 +259,7 @@ class Premailer
 
     @processed_doc = doc
 
-    @processed_doc.to_html
+    @processed_doc.to_original_html
   end
 
   # Check for an XHTML doctype
