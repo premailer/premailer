@@ -15,7 +15,29 @@ class TestMisc < Test::Unit::TestCase
     premailer = Premailer.new(io)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
-  
+
+  def test_preserving_styles
+    html = <<END_HTML
+    <html> 
+    <head>
+    <link rel="stylesheet" href="#">
+    <style type="text/css"> a:hover { color: red; } </style>
+    </head>
+    <body> 
+		<p><a>Test</a></p> 
+		</body>
+		</html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true)
+	  assert_not_nil premailer.processed_doc.at('head link')
+	  assert_not_nil premailer.processed_doc.at('head style')
+
+		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false)
+	  assert_nil premailer.processed_doc.at('head link')
+	  assert_nil premailer.processed_doc.at('head style')
+  end
+
   def test_unmergable_rules
     html = <<END_HTML
     <html> <head> <style type="text/css"> a { color:blue; } a:hover { color: red; } </style> </head>

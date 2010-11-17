@@ -100,6 +100,7 @@ class Premailer
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
+  # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
   def initialize(html, options = {})
@@ -111,6 +112,7 @@ class Premailer
                 :css => [],
                 :css_to_attributes => true,
                 :with_html_string => false,
+                :preserve_styles => false,
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false}.merge(options)
@@ -330,7 +332,7 @@ protected
           @css_parser.add_block!(tag.inner_html, :base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld])
         end
       end
-      tags.remove
+      tags.remove unless @options[:preserve_styles]
     end
   end
 
