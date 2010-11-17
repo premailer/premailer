@@ -382,8 +382,8 @@ protected
     
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
-      next if href.nil? or href.empty?      
-      next if href[0] == '#' # don't bother with anchors
+      next if href.nil? or href.empty?    
+      next if href[0,1] == '#' # don't bother with anchors
 
       begin
         href = URI.parse(href)
