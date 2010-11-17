@@ -59,6 +59,23 @@ class TestLinks < Test::Unit::TestCase
     end
   end
 
+  def test_stripping_extra_question_marks_from_query_string
+    qs = '??utm_source=1234'
+
+    premailer = Premailer.new("<a href='/test/?'>Link</a> <a href='/test/'>Link</a>", :link_query_string => qs, :with_html_string => true)
+    premailer.to_inline_css
+    
+    premailer.processed_doc.search('a').each do |a|
+      assert_equal '/test/?utm_source=1234', a['href'].to_s
+    end
+
+    premailer = Premailer.new("<a href='/test/?123&456'>Link</a>", :link_query_string => qs, :with_html_string => true)
+    premailer.to_inline_css
+    
+    assert_equal '/test/?123&456&amp;utm_source=1234', premailer.processed_doc.at('a')['href']
+  end
+
+
   def test_preserving_links
     html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
     premailer = Premailer.new(html.to_s, :link_query_string => '', :with_html_string => true)

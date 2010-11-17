@@ -369,7 +369,7 @@ protected
   def append_query_string(doc, qs)
     return doc if qs.nil?
 
-    qs.to_s.strip!
+    qs.to_s.gsub!(/^[\?]*/, '').strip!
     return doc if qs.empty?
     
     begin
@@ -397,11 +397,11 @@ protected
           puts "Skipping append_query_string for: #{href.to_s} because scheme is no good" if @options[:verbose]
           next
         end
-        
-        if href.query
+
+        if href.query and not href.query.empty?
           href.query = href.query + '&amp;' + qs
         else
-          href.query = '?' + qs
+          href.query = qs
         end
     
         el['href'] = href.to_s
