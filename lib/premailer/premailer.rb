@@ -358,7 +358,7 @@ protected
 
       unless styles.empty?
         style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-        head.append(style_tag)
+        head.html.empty? ? head.inner_html(style_tag) : head.append(style_tag)
       end
     else
       $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]
