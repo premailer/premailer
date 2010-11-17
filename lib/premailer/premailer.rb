@@ -202,7 +202,7 @@ class Premailer
       else
         begin
           doc.search(selector).each do |el|
-            if el.elem?
+            if el.elem? and (el.name != 'head' and el.parent.name != 'head')
               # Add a style attribute or append to the existing one  
               block = "[SPEC=#{specificity}[#{declaration}]]"
               el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block

@@ -20,6 +20,29 @@ class TestMisc < Test::Unit::TestCase
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
 
+  def test_not_applying_styles_to_the_head
+    html = <<END_HTML
+    <html> 
+    <head>
+    <title>Title</title>
+    <style type="text/css"> * { color: red; } </style>
+    </head>
+    <body> 
+		<p><a>Test</a></p> 
+		</body>
+		</html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+		premailer.to_inline_css
+
+	  h = premailer.processed_doc.at('head')
+	  assert_nil h['style']
+
+	  t = premailer.processed_doc.at('title')
+	  assert_nil t['style']
+  end
+
   def test_preserving_styles
     html = <<END_HTML
     <html> 
@@ -37,7 +60,6 @@ END_HTML
 		premailer.to_inline_css
 	  assert_equal 1, premailer.processed_doc.search('head link').length
 	  assert_equal 1, premailer.processed_doc.search('head style').length
-	  puts premailer.processed_doc.to_s
 
 		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false)
 		premailer.to_inline_css
