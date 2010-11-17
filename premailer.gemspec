@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "premailer"
-  s.version  = "1.6.0"
-  s.date     = "2010-11-11"
+  s.version  = "1.6.1"
+  s.date     = "2010-11-16"
   s.summary  = "Preflight for HTML e-mail."
   s.email    = "code@dunae.ca"
   s.homepage = "http://premailer.dialect.ca/"
