@@ -87,12 +87,12 @@ END_HTML
   def test_initialize_can_accept_io_object
     io = StringIO.new('hi mom')
     premailer = Premailer.new(io)
-    assert_match premailer.to_inline_css, /hi mom/
+    assert_match /hi mom/, premailer.to_inline_css
   end
   
   def test_initialize_can_accept_html_string
     premailer = Premailer.new('<p>test</p>', :with_html_string => true)
-    assert_match premailer.to_inline_css, /test/
+    assert_match /test/, premailer.to_inline_css
   end
 
 protected
