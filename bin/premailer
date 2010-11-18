@@ -2,8 +2,8 @@
 
 require 'optparse'
 require 'rubygems'
-require 'premailer'
-require 'fcntl'
+require File.expand_path(File.join(__FILE__) + '/../../lib/premailer.rb')
+puts File.expand_path(File.join(__FILE__) + '/../../lib/premailer.rb')
 
 # defaults
 options = {
@@ -75,20 +75,20 @@ opts.parse!
 $stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
 
 premailer = nil
+input = nil
 
-# check for input from STDIN
-if STDIN.fcntl(Fcntl::F_GETFL, 0) == 0
-  io = STDIN.to_io
-  premailer = Premailer.new(io, options)
+if $stdin.tty?
+  input = ARGV.shift
 else
-  uri = ARGV.shift
+  input = $stdin
+  options[:with_html_string] = true
+end
 
-  if uri.to_s.strip.empty?
-    puts opts
-    exit 1
-  end
-
-  premailer = Premailer.new(uri, options)
+if input
+  premailer = Premailer.new(input, options)
+else
+  puts opts
+  exit 1
 end
 
 if mode == :txt
