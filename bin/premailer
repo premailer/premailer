@@ -3,7 +3,6 @@
 require 'optparse'
 require 'rubygems'
 require File.expand_path(File.join(__FILE__) + '/../../lib/premailer.rb')
-puts File.expand_path(File.join(__FILE__) + '/../../lib/premailer.rb')
 
 # defaults
 options = {
@@ -17,8 +16,8 @@ options = {
 mode = :html
 
 opts = OptionParser.new do |opts|
-  opts.banner = "Improve the rendering of HTML emails by making CSS inline, converting links and warning about unsupported code."
-  opts.define_head "Usage: premailer <uri|path> [options]"
+  opts.banner = "Improve the rendering of HTML emails by making CSS inline among other things. Takes a path to a local file, a URL or a pipe as input.\n\n"
+  opts.define_head "Usage: premailer <optional uri|optional path> [options]"
   opts.separator ""
   opts.separator "Examples:"
   opts.separator "  premailer http://example.com/ > out.html"
@@ -28,15 +27,15 @@ opts = OptionParser.new do |opts|
   opts.separator ""
   opts.separator "Options:"
 
-  opts.on("--mode [MODE]", [:html, :txt], "Output type: either html or txt") do |v|
+  opts.on("--mode MODE", [:html, :txt], "Output: html or txt") do |v|
     mode = v
   end
 
-  opts.on("-b", "--base-url", String, "Manually set the base URL, useful for local files") do |v|
+  opts.on("-b", "--base-url", String, "Base URL, useful for local files") do |v|
     options[:base_url] = v
   end
 
-  opts.on("-q", "--query-string STRING", String, "Query string to append to links (do not include the ?)") do |v|
+  opts.on("-q", "--query-string STRING", String, "Query string to append to links") do |v|
     options[:link_query_string] = v
   end
 
@@ -44,11 +43,11 @@ opts = OptionParser.new do |opts|
     options[:css] = v
   end
 
-  opts.on("-r", "--remove-classes", "Remove classes from the HTML document?") do |v|
+  opts.on("-r", "--remove-classes", "Remove HTML classes") do |v|
     options[:remove_classes] = v
   end
 
-  opts.on("-l", "--line-length N", Integer, "Length of lines when creating plaintext version (default: #{options[:line_length].to_s})") do |v|
+  opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length].to_s})") do |v|
     options[:line_length] = v
   end
 
