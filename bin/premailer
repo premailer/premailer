@@ -92,9 +92,9 @@ else
 end
 
 if mode == :txt
-  p premailer.to_plain_text
+  print premailer.to_plain_text
 else
-  p premailer.to_inline_css
+  print premailer.to_inline_css
 end
 
 exit
