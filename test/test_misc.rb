@@ -19,6 +19,38 @@ class TestMisc < Test::Unit::TestCase
     premailer = Premailer.new(io)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
+  
+  def test_styles_in_the_body
+    html = <<END_HTML
+    <html> 
+    <body> 
+    <style type="text/css"> p { color: red; } </style>
+		<p>Test</p> 
+		</body>
+		</html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+		premailer.to_inline_css
+
+	  assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
+  end
+  
+  def test_commented_out_styles_in_the_body
+    html = <<END_HTML
+    <html> 
+    <body> 
+    <style type="text/css"> <!-- p { color: red; } --> </style>
+		<p>Test</p> 
+		</body>
+		</html>
+END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+		premailer.to_inline_css
+
+	  assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
+  end
 
   def test_not_applying_styles_to_the_head
     html = <<END_HTML
