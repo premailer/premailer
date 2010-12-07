@@ -75,6 +75,26 @@ END_HTML
 	  assert_nil t['style']
   end
 
+  def test_multiple_identical_ids
+    html = <<-END_HTML
+    <html> 
+    <head>
+    <style type="text/css"> #the_id { color: red; } </style>
+    </head>
+    <body> 
+		<p id="the_id">Test</p> 
+		<p id="the_id">Test</p> 
+		</body>
+		</html>
+    END_HTML
+
+		premailer = Premailer.new(html, :with_html_string => true)
+		premailer.to_inline_css
+    premailer.processed_doc.search('p').each do |el|
+      assert_match /red/i, el['style']
+    end
+  end
+
   def test_preserving_styles
     html = <<END_HTML
     <html> 
