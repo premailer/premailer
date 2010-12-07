@@ -201,6 +201,10 @@ class Premailer
         unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
       else
         begin
+          # Change single ID CSS selectors into xpath so that we can match more 
+          # than one element.  Added to work around dodgy generated code.
+          selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
+
           doc.search(selector).each do |el|
             if el.elem? and (el.name != 'head' and el.parent.name != 'head')
               # Add a style attribute or append to the existing one  
