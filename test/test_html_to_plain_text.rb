@@ -45,6 +45,17 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     assert_plaintext "----\nTest\n----", "<h2>Test</h2>"
     assert_plaintext "Test\n----", "<h3> <span class='a'>Test </span></h3>"
   end
+  
+  def test_wrapping_lines
+    raw = ''
+    100.times { raw += 'test ' }
+
+    txt = convert_to_text(raw, 20)
+
+    lens = []
+    txt.each_line { |l| lens << l.length }
+    assert lens.max <= 20
+  end
 
   def test_links
     # basic

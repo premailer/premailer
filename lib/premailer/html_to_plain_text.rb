@@ -62,9 +62,8 @@ module HtmlToPlainText
     # strip remaining tags
     txt.gsub!(/<\/?[^>]*>/, '')
 
-    # wrap text
-    #txt = r.format(('[' * line_length), txt)
-    
+    txt = word_wrap(txt, line_length)
+
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
     
@@ -77,5 +76,12 @@ module HtmlToPlainText
     txt.gsub!(/[\n]{3,}/, "\n\n")
 
     txt.strip
+  end
+
+  # Taken from Rails' word_wrap helper (http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap)
+  def word_wrap(txt, line_length)
+    txt.split("\n").collect do |line|
+      line.length > line_length ? line.gsub(/(.{1,#{line_length}})(\s+|$)/, "\\1\n").strip : line
+    end * "\n"
   end
 end
