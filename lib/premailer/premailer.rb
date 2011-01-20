@@ -165,7 +165,7 @@ class Premailer
 
   # Converts the HTML document to a format suitable for plain-text e-mail.
   #
-  # If presenet, uses the <body> element as its base; otherwise uses the whole document.
+  # If present, uses the <body> element as its base; otherwise uses the whole document.
   #
   # Returns a string.
   def to_plain_text
