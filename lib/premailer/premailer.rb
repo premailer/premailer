@@ -165,14 +165,16 @@ class Premailer
 
   # Converts the HTML document to a format suitable for plain-text e-mail.
   #
+  # If presenet, uses the <body> element as its base; otherwise uses the whole document.
+  #
   # Returns a string.
   def to_plain_text
     html_src = ''
     begin
       html_src = @doc.search("body").inner_html
-    rescue
-      html_src = @doc.to_html
-    end
+    rescue; end
+
+    html_src = @doc.to_html unless html_src and not html_src.empty?
     convert_to_text(html_src, @options[:line_length], @html_charset)
   end
 

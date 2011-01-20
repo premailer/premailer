@@ -9,10 +9,6 @@ module HtmlToPlainText
   # TODO:
   #  - add support for DL, OL
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
-    #r = Text::Reform.new(:trim => true,
-    #                     :squeeze => false,
-    #                     :break => Text::Reform.break_wrap)
-
     txt = html
     
     # decode HTML entities

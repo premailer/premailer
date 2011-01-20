@@ -4,6 +4,37 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 class TestHtmlToPlainText < Test::Unit::TestCase
   include HtmlToPlainText
 
+  def test_to_plain_text_with_fragment
+    premailer = Premailer.new('<p>Test</p>', :with_html_string => true)
+    assert_match /Test/, premailer.to_plain_text
+  end
+
+  def test_to_plain_text_with_body
+    html = <<END_HTML
+    <html>
+    <title>Ignore me</title>
+    <body>
+		<p>Test</p>
+		</body>
+		</html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+    assert_match /Test/, premailer.to_plain_text
+  end
+
+  def test_to_plain_text_with_malformed_body
+    html = <<END_HTML
+    <html>
+    <title>Ignore me</title>
+    <body>
+		<p>Test
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+    assert_match /Test/, premailer.to_plain_text
+  end
+
   def test_specialchars
     assert_plaintext 'cédille garçon & à ñ', 'c&eacute;dille gar&#231;on &amp; &agrave; &ntilde;'
   end
