@@ -31,7 +31,7 @@ opts = OptionParser.new do |opts|
     mode = v
   end
 
-  opts.on("-b", "--base-url", String, "Base URL, useful for local files") do |v|
+  opts.on("-b", "--base-url STRING", String, "Base URL, useful for local files") do |v|
     options[:base_url] = v
   end
 
