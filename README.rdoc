@@ -18,7 +18,7 @@ script is my solution.
 
 === Installation
 
-Download the Premailer gem from GemCutter.
+Download the Premailer gem from RubyGems.
 
     sudo gem install premailer
 
@@ -42,7 +42,7 @@ Download the Premailer gem from GemCutter.
 
 === Contributions
 
-Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Pull and patch to your heart's content.
+Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Fork and patch to your heart's content.  Please don't increment the version numbers, though.
 
 A few areas that are particularly in need of love:
 * Testing suite
@@ -54,13 +54,13 @@ A few areas that are particularly in need of love:
 
 === Credits and code
 
-Thanks to {all the wonderful contributors}[http://github.com/alexdunae/premailer/contributors] for their updates.
+Thanks to {all the wonderful contributors}[https://github.com/alexdunae/premailer/contributors] for their updates.
 
 Thanks to {Greenhood + Company}[http://www.greenhood.com/] for sponsoring some of the 1.5.6 updates, 
 and to {Campaign Monitor}[http://www.campaignmonitor.com] for supporting the web interface.
 
-The web interface can be found at http://premailer.dialect.ca .
+The web interface can be found at {premailer.dialect.ca}[http://premailer.dialect.ca].
 
-The source code can be found at http://github.com/alexdunae/premailer .
+The source code can be found on {GitHub}[https://github.com/alexdunae/premailer].
 
-Written by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-2010.
+Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2011.  See LICENSE.rdoc for license details.git co

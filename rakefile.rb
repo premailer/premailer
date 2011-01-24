@@ -2,6 +2,7 @@ $:.unshift File.expand_path('../lib', __FILE__)
 
 require 'rake'
 require 'rake/testtask'
+require 'rake/rdoctask'
 require 'fileutils'
 require 'premailer'
 
@@ -47,4 +48,10 @@ end
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/test_*.rb']
   t.verbose = false
+end
+
+Rake::RDocTask.new do |rd|
+  rd.main = "README.rdoc"
+  rd.rdoc_files.include("README.rdoc", "LICENSE.rdoc", "lib/**/*.rb")
+  rd.title = 'Premailer Documentation'
 end

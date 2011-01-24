@@ -6,8 +6,7 @@ module HtmlToPlainText
 
   # Returns the text in UTF-8 format with all HTML tags removed
   #
-  # TODO:
-  #  - add support for DL, OL
+  # TODO: add support for DL, OL
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     txt = html
     
