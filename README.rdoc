@@ -63,4 +63,4 @@ The web interface can be found at {premailer.dialect.ca}[http://premailer.dialec
 
 The source code can be found on {GitHub}[https://github.com/alexdunae/premailer].
 
-Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2011.  See LICENSE.rdoc for license details.git co
+Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2011.  See LICENSE.rdoc for license details.
