@@ -70,6 +70,8 @@ class Premailer
   # base directory used to resolve links for local files
   attr_reader   :base_dir
 
+  # Original encoding
+  attr_reader   :html_encoding
   
   # processed HTML document (Hpricot)
   attr_reader   :processed_doc
@@ -140,8 +142,18 @@ class Premailer
     })
     
     @doc = load_html(@html_file)
-    # TODO
-    @html_charset = nil # @doc.encoding || nil
+
+    # TODO: Ruby 1.8 version
+    if ''.respond_to?(:encode)
+      @html_encoding = Premailer.detect_encoding(@doc)
+        
+      if @html_encoding
+        # re-open with the proper encoding
+        $stderr.puts "Re-opening as #{@html_encoding}" if @options[:verbose]
+        @doc = load_html(@html_file, @html_encoding)
+      end
+    end      
+
     @processed_doc = @doc
     @processed_doc = convert_inline_links(@processed_doc, @base_url) if @base_url
     if options[:link_query_string]
@@ -160,7 +172,11 @@ class Premailer
   
   # Returns the original HTML as a string.
   def to_s
-    @doc.to_original_html
+    if @html_encoding
+      @doc.to_original_html.encode(@html_encoding)
+    else
+      @doc.to_original_html
+    end
   end
 
   # Converts the HTML document to a format suitable for plain-text e-mail.
@@ -175,7 +191,7 @@ class Premailer
     rescue; end
 
     html_src = @doc.to_html unless html_src and not html_src.empty?
-    convert_to_text(html_src, @options[:line_length], @html_charset)
+    convert_to_text(html_src, @options[:line_length], @html_encoding)
   end
 
   # Merge CSS into the HTML document.
@@ -281,22 +297,34 @@ protected
   # Load the HTML file and convert it into an Hpricot document.
   #
   # Returns an Hpricot document.
-  def load_html(input) # :nodoc:
+  def load_html(input, encoding = nil) # :nodoc:
     thing = nil
+
+    # TODO: Ruby 1.8
 
     # TODO: duplicate options
     if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
       thing = input
     elsif @is_local_file
       @base_dir = File.dirname(input)
-      thing = File.open(input, 'r')
+
+      if encoding
+        thing = File.open(input, "r:#{encoding}:utf-8")
+      else
+        thing = File.open(input, 'r')
+      end
     else
-      thing = open(input)
+      if encoding
+        thing = open(input, "r:#{encoding}:utf-8")
+      else
+        thing = open(input)
+      end    
     end
 
-    # TODO: deal with Hpricot seg faults on empty input
-    thing ? Hpricot(thing) : nil  
+    doc = thing ? Hpricot(thing) : nil      
   end
+  
+  
 
   def load_css_from_local_file!(path)
     css_block = ''
@@ -481,6 +509,16 @@ public
   end
 
 # here be instance methods
+
+  def self.detect_encoding(doc)
+    enc = ''
+    # TODO: shouldn't be case sensitive
+    doc.search("meta[@name=Content-type]") do |meta|
+      enc = meta['http-equiv'].match(/charset=([a-z0-9_\-]+)/i)[1]
+    end
+    
+    enc.upcase
+  end
 
   def self.escape_string(str) # :nodoc:
     str.gsub(/"/, "'")
