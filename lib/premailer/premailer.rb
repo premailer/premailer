@@ -100,6 +100,7 @@ class Premailer
   # [+base_url+] Used to calculate absolute URLs for local files.
   # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
+  # [+css_string+] Pass CSS as a string
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
@@ -112,6 +113,7 @@ class Premailer
                 :css => [],
                 :css_to_attributes => true,
                 :with_html_string => false,
+                :css_string => nil,
                 :preserve_styles => false,
                 :verbose => false,
                 :debug => false,
@@ -306,11 +308,17 @@ protected
           css_block << line
         end
       end
-      @css_parser.add_block!(css_block, {:base_uri => @base_url, :base_dir => @base_dir})
+      load_css_from_string(css_block)
     rescue; end
   end
 
+  def load_css_from_string(css_string)
+    @css_parser.add_block!(css_string, {:base_uri => @base_url, :base_dir => @base_dir})
+  end
+
   def load_css_from_options! # :nodoc:
+    load_css_from_string(@options[:css_string]) if @options[:css_string]
+
     @css_files.each do |css_file|
       if Premailer.local_data?(css_file)
         load_css_from_local_file!(css_file)

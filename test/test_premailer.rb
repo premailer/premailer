@@ -74,6 +74,19 @@ END_HTML
     assert_match /display: none/, @doc.at('#hide01').attributes['style']
   end
 
+  def test_importing_css_as_string
+    files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
+
+    css_string = IO.read(File.join(files_base, 'import.css'))
+
+    premailer = Premailer.new(File.join(files_base, 'no_css.html'), {:css_string => css_string})
+    premailer.to_inline_css
+    @doc = premailer.processed_doc
+
+    # import.css sets .hide to { display: none }
+    assert_match /display: none/, @doc.at('#hide01').attributes['style']
+  end
+
   def test_local_remote_check
     assert Premailer.local_data?( StringIO.new('a') )
     assert Premailer.local_data?( '/path/' )
