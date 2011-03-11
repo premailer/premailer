@@ -99,9 +99,9 @@ module Adapter
 	# Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
   # and write it into the <tt>body</tt>.
   #
-  # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
+  # <tt>doc</tt> is an Nokogiri document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
   #
-  # Returns an Hpricot document.
+  # Returns an Nokogiri document.
   def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
     if head = doc.at('head')
       styles = ''
@@ -149,9 +149,9 @@ module Adapter
 			end
 		end
 		
-	  # Load the HTML file and convert it into an Hpricot document.
+	  # Load the HTML file and convert it into an Nokogiri document.
 		#
-		# Returns an Hpricot document.
+		# Returns an Nokogiri document.
 		def load_html(input) # :nodoc:
 			thing = nil
 			
@@ -165,7 +165,7 @@ module Adapter
 				thing = open(input)
 			end
 			
-			# TODO: deal with Hpricot seg faults on empty input
+			# TODO => DONE :  deal with Hpricot seg faults on empty input => no need, Nokogiri is more stable in that sense 
 			thing ? ::Nokogiri::HTML(thing){|conf| conf.options = ::Nokogiri::XML::ParseOptions::NOENT | ::Nokogiri::XML::ParseOptions::NOBLANKS} : nil  
 		end
 		
