@@ -115,7 +115,8 @@ class Premailer
                 :preserve_styles => false,
                 :verbose => false,
                 :debug => false,
-                :io_exceptions => false}.merge(options)
+                :io_exceptions => false,
+                :adapter => Adapter.use}.merge(options)
 
     @html_file = html 
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
@@ -138,8 +139,15 @@ class Premailer
       :import => true,
       :io_exceptions => @options[:io_exceptions]
     })
-    
-    @doc = load_html(@html_file)
+		
+		@adapter_name = @options[:adapter]
+		@adapter_name, @adapter_class = Adapter.find @adapter_name
+		
+		self.class.send(:include, @adapter_class)
+
+		# class << self; include Adapter::Hpricot; end
+		
+		@doc = load_html(@html_file)
     # TODO
     @html_charset = nil # @doc.encoding || nil
     @processed_doc = @doc
@@ -158,145 +166,8 @@ class Premailer
     @css_warnings
   end
   
-  # Returns the original HTML as a string.
-  def to_s
-    @doc.to_original_html
-  end
-
-  # Converts the HTML document to a format suitable for plain-text e-mail.
-  #
-  # If present, uses the <body> element as its base; otherwise uses the whole document.
-  #
-  # Returns a string.
-  def to_plain_text
-    html_src = ''
-    begin
-      html_src = @doc.search("body").inner_html
-    rescue; end
-
-    html_src = @doc.to_html unless html_src and not html_src.empty?
-    convert_to_text(html_src, @options[:line_length], @html_charset)
-  end
-
-  # Merge CSS into the HTML document.
-  #
-  # Returns a string.
-  def to_inline_css
-    doc = @processed_doc
-    unmergable_rules = CssParser::Parser.new
-    
-    # Give all styles already in style attributes a specificity of 1000 
-    # per http://www.w3.org/TR/CSS21/cascade.html#specificity
-    doc.search("*[@style]").each do |el| 
-      el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
-    end
-
-    # Iterate through the rules and merge them into the HTML
-    @css_parser.each_selector(:all) do |selector, declaration, specificity|
-      # Save un-mergable rules separately
-      selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
-
-      # Convert element names to lower case
-      selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
-      
-      if selector =~ RE_UNMERGABLE_SELECTORS
-        unmergable_rules.add_rule_set!(RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
-      else
-        begin
-          # Change single ID CSS selectors into xpath so that we can match more 
-          # than one element.  Added to work around dodgy generated code.
-          selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
-
-          doc.search(selector).each do |el|
-            if el.elem? and (el.name != 'head' and el.parent.name != 'head')
-              # Add a style attribute or append to the existing one  
-              block = "[SPEC=#{specificity}[#{declaration}]]"
-              el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
-            end
-          end
-        rescue Hpricot::Error, RuntimeError, ArgumentError
-          $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
-          next
-        end
-      end
-    end
-
-    # Read STYLE attributes and perform folding
-    doc.search("*[@style]").each do |el|
-      style = el.attributes['style'].to_s
-      
-      declarations = []
-
-      style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
-        rs = RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
-        declarations << rs
-      end
-
-      # Perform style folding
-      merged = CssParser.merge(declarations)
-      merged.expand_shorthand!
-      
-      #if @options[:prefer_cellpadding] and (el.name == 'td' or el.name == 'th') and el['cellpadding'].nil?
-      #  if cellpadding = equivalent_cellpadding(merged)
-      #    el['cellpadding'] = cellpadding
-      #    merged['padding-left'] = nil
-      #    merged['padding-right'] = nil
-      #    merged['padding-top'] = nil
-      #    merged['padding-bottom'] = nil
-      #  end
-      #end
-      
-      # Duplicate CSS attributes as HTML attributes
-      if RELATED_ATTRIBUTES.has_key?(el.name)       
-        RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
-          el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
-        end
-      end
-      
-      merged.create_dimensions_shorthand!
-
-      # write the inline STYLE attribute
-      el['style'] = Premailer.escape_string(merged.declarations_to_s)
-    end
-
-    doc = write_unmergable_css_rules(doc, unmergable_rules)
-
-    doc.search('*').remove_class if @options[:remove_classes]  
-
-    @processed_doc = doc
-
-    @processed_doc.to_original_html
-  end
-
-  # Check for an XHTML doctype
-  def is_xhtml?
-    intro = @doc.to_s.strip.split("\n")[0..2].join(' ')
-    is_xhtml = (intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
-    is_xhtml = is_xhtml ? true : false
-    $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
-    is_xhtml
-  end
-
 protected  
-  # Load the HTML file and convert it into an Hpricot document.
-  #
-  # Returns an Hpricot document.
-  def load_html(input) # :nodoc:
-    thing = nil
 
-    # TODO: duplicate options
-    if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
-      thing = input
-    elsif @is_local_file
-      @base_dir = File.dirname(input)
-      thing = File.open(input, 'r')
-    else
-      thing = open(input)
-    end
-
-    # TODO: deal with Hpricot seg faults on empty input
-    thing ? Hpricot(thing) : nil  
-  end
 
   def load_css_from_local_file!(path)
     css_block = ''
@@ -319,8 +190,8 @@ protected
       end
     end
   end
-
-  # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
+  
+	  # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
@@ -343,37 +214,26 @@ protected
     end
   end
 
+
+
+# here be deprecated methods
+public
+
+  def local_uri?(uri) # :nodoc:
+    warn "[DEPRECATION] `local_uri?` is deprecated.  Please use `Premailer.local_data?` instead."
+    Premailer.local_data?(uri)
+  end
+
+# here be instance methods
+
   def media_type_ok?(media_types) # :nodoc:
     return true if media_types.nil? or media_types.empty?
     return media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   rescue
     return true
   end
-
-  # Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
-  # and write it into the <tt>body</tt>.
-  #
-  # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
-  #
-  # Returns an Hpricot document.
-  def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-    if head = doc.search('head')
-      styles = ''
-      unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
-        styles += "#{selector} { #{declarations} }\n"
-      end    
-
-      unless styles.empty?
-        style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-        head.html.empty? ? head.inner_html(style_tag) : head.append(style_tag)
-      end
-    else
-      $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]
-    end
-    doc
-  end
-
-  def append_query_string(doc, qs)
+	
+	def append_query_string(doc, qs)
     return doc if qs.nil?
 
     qs.to_s.gsub!(/^[\?]*/, '').strip!
@@ -421,7 +281,16 @@ protected
     doc
   end
 
-  # Convert relative links to absolute links.
+	  # Check for an XHTML doctype
+  def is_xhtml?
+    intro = @doc.to_s.strip.split("\n")[0..2].join(' ')
+    is_xhtml = (intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
+    is_xhtml = is_xhtml ? true : false
+    $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
+    is_xhtml
+  end
+	
+	  # Convert relative links to absolute links.
   #
   # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes 
   # as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.
@@ -472,18 +341,9 @@ protected
     doc
   end
 
-# here be deprecated methods
-public
-
-  def local_uri?(uri) # :nodoc:
-    warn "[DEPRECATION] `local_uri?` is deprecated.  Please use `Premailer.local_data?` instead."
-    Premailer.local_data?(uri)
-  end
-
-# here be instance methods
 
   def self.escape_string(str) # :nodoc:
-    str.gsub(/"/, "'")
+    str.gsub(/"/ , "'")
   end
   
   def self.resolve_link(path, base_path) # :nodoc:

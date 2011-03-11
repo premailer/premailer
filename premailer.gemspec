@@ -13,9 +13,12 @@ Gem::Specification.new do |s|
   s.files = [
     "init.rb",
     "bin/premailer",
-    "lib/premailer.rb",
-    "lib/premailer/html_to_plain_text.rb",
-    "lib/premailer/premailer.rb",
+    "lib/ts_premailer.rb",
+    "lib/ts_premailer/html_to_plain_text.rb",
+    "lib/ts_premailer/premailer.rb",
+    "lib/ts_premailer/adapter.rb",
+    "lib/ts_premailer/adapter/hpricot.rb",
+    "lib/ts_premailer/adapter/nokogiri.rb",
     "misc/client_support.yaml"
   ]
   s.executables = 'premailer'

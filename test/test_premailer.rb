@@ -68,10 +68,10 @@ END_HTML
     remote_setup
   
     # noimport.css (print stylesheet) sets body { background } to red
-    assert_no_match /red/, @doc.at('body').attributes['style']
+    assert_no_match /red/, @doc.at('body')['style']
     
     # import.css sets .hide to { display: none } 
-    assert_match /display: none/, @doc.at('#hide01').attributes['style']
+    assert_match /display: none/, @doc.at('#hide01')['style']
   end
 
   def test_local_remote_check

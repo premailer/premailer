@@ -53,7 +53,7 @@ class TestLinks < Test::Unit::TestCase
     premailer.to_inline_css
     
     premailer.processed_doc.search('a').each do |el|
-      href = el.attributes['href']
+      href = el['href']
       next if href.nil? or href.empty?
       assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable.to_s}"
     end
@@ -81,13 +81,13 @@ class TestLinks < Test::Unit::TestCase
     premailer = Premailer.new(html.to_s, :link_query_string => '', :with_html_string => true)
     premailer.to_inline_css
     
-    assert_equal 'http://example.com/index.php?pram1=one&pram2=two', premailer.processed_doc.at('a').attributes['href']
+    assert_equal 'http://example.com/index.php?pram1=one&pram2=two', premailer.processed_doc.at('a')['href']
 
     html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
     premailer = Premailer.new(html.to_s, :link_query_string => 'qs', :with_html_string => true)
     premailer.to_inline_css
     
-    assert_equal 'http://example.com/index.php?pram1=one&pram2=two&amp;qs', premailer.processed_doc.at('a').attributes['href']
+    assert_equal 'http://example.com/index.php?pram1=one&pram2=two&amp;qs', premailer.processed_doc.at('a')['href']
 
   end
 
