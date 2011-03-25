@@ -177,7 +177,7 @@ protected
           css_block << line
         end
       end
-      @css_parser.add_block!(css_block, {:base_uri => @base_url, :base_dir => @base_dir})
+      @css_parser.add_block!(css_block, {:base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld]})
     rescue; end
   end
 
