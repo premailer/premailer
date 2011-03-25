@@ -7,7 +7,7 @@ require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'fileutils'
-require 'lib/premailer'
+require 'premailer'
 
 def gemspec
  @gemspec ||= begin
