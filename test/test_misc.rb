@@ -35,11 +35,12 @@ class TestMisc < Test::Unit::TestCase
 		</html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
-    assert_match /padding\-left\: 10px/i,  premailer.processed_doc.at('p')['style']
-	  assert_match /border\: none\Z/i,  premailer.processed_doc.at('td')['style']
-
+    [:nokogiri, :hpricot].each do |adapter|
+  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+  		premailer.to_inline_css
+      assert_match /padding\: 0 0 0 10px/i,  premailer.processed_doc.at('p')['style']
+  	  assert_match /border\: none;\Z/i,  premailer.processed_doc.at('td')['style']
+    end
   end
 
   def test_styles_in_the_body
