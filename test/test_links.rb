@@ -120,9 +120,10 @@ class TestLinks < Test::Unit::TestCase
   end
 
   def test_resolving_urls_in_doc
+    # force Nokogiri since this consistenly segfaults with Hpricot
     base_file = File.dirname(__FILE__) + '/files/base.html'
     base_url = 'https://my.example.com:8080/test-path.html'
-    premailer = Premailer.new(base_file, :base_url => base_url)
+    premailer = Premailer.new(base_file, :base_url => base_url, :adapter => :nokogiri)
     premailer.to_inline_css
     pdoc = premailer.processed_doc
     doc = premailer.doc

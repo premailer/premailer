@@ -112,11 +112,7 @@ module Adapter
       unless styles.empty?
         style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
 
-        if head.inner_html.empty? 
-					head.inner_html = style_tag
-				else
-					head.inner_html << style_tag
-				end
+        head.add_child(style_tag)
       end
     else
       $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]

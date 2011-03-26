@@ -130,6 +130,7 @@ class Premailer
 
     @base_url = nil
     @base_dir = nil
+    @unmergable_rules = nil
 
     if @options[:base_url]
       @base_url = URI.parse(@options.delete(:base_url))

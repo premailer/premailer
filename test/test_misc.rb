@@ -131,17 +131,19 @@ END_HTML
 		</body>
 		</html>
 END_HTML
+    [:nokogiri].each do |adapter|
+  		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
+  		premailer.to_inline_css
+  	  assert_equal 1, premailer.processed_doc.search('head link').length
+  	  assert_equal 1, premailer.processed_doc.search('head style').length
 
-		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true)
-		premailer.to_inline_css
-	  assert_equal 1, premailer.processed_doc.search('head link').length
-	  assert_equal 1, premailer.processed_doc.search('head style').length
+  		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => adapter)
+  		premailer.to_inline_css
+  	  assert_nil premailer.processed_doc.at('head link')
 
-		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => :nokogiri)
-		premailer.to_inline_css
-	  assert_nil premailer.processed_doc.at('head link')
-    # should be preserved as unmergeable
-	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
+      # should be preserved as unmergeable
+  	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
+  	end
   end
 
   def test_unmergable_rules
