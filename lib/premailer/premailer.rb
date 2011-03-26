@@ -70,7 +70,9 @@ class Premailer
   # base directory used to resolve links for local files
   attr_reader   :base_dir
 
-  
+  # unmergeable CSS rules to be preserved in the head (CssParser)
+  attr_reader   :unmergable_rules
+
   # processed HTML document (Hpricot)
   attr_reader   :processed_doc
   

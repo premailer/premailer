@@ -7,7 +7,7 @@ module Adapter
   # Returns a string.
   def to_inline_css
     doc = @processed_doc
-    unmergable_rules = CssParser::Parser.new
+    @unmergable_rules = CssParser::Parser.new
     
     # Give all styles already in style attributes a specificity of 1000 
     # per http://www.w3.org/TR/CSS21/cascade.html#specificity
@@ -24,7 +24,7 @@ module Adapter
       selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
       
       if selector =~ Premailer::RE_UNMERGABLE_SELECTORS
-        unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
+        @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
       else
         begin
           # Change single ID CSS selectors into xpath so that we can match more 
@@ -83,7 +83,7 @@ module Adapter
       el['style'] = Premailer.escape_string(merged.declarations_to_s)
     end
 
-    doc = write_unmergable_css_rules(doc, unmergable_rules)
+    doc = write_unmergable_css_rules(doc, @unmergable_rules)
 
     doc.search('*').remove_class if @options[:remove_classes]  
 
