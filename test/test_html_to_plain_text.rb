@@ -46,6 +46,19 @@ END_HTML
     assert_plaintext "test text", "test text&nbsp;"
   end
 
+  def test_wrapping_spans
+    html = <<END_HTML
+    <html>
+    <body>
+		<p><span>Test</span>
+		<span>line 2</span>
+		</p>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+    assert_match /Test line 2/, premailer.to_plain_text
+  end
+
   def test_line_breaks
     assert_plaintext "Test text\nTest text", "Test text\r\nTest text"
     assert_plaintext "Test text\nTest text", "Test text\rTest text"
