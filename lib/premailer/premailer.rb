@@ -203,7 +203,7 @@ protected
             load_css_from_local_file!(link_uri)
           else
             $stderr.puts "Loading css from uri: " + link_uri if @options[:verbose]
-            @css_parser.load_uri!(link_uri)
+            @css_parser.load_uri!(link_uri, {:only_media_types => [:screen, :handheld]})
           end
 
         elsif tag.to_s.strip =~ /^\<style/i      
