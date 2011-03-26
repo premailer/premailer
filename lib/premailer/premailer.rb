@@ -103,6 +103,7 @@ class Premailer
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
+  # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE, 
                 :line_length => 65, 
@@ -142,10 +143,8 @@ class Premailer
 		
 		@adapter_name = @options[:adapter]
 		@adapter_name, @adapter_class = Adapter.find @adapter_name
-		
-		self.class.send(:include, @adapter_class)
 
-		# class << self; include Adapter::Hpricot; end
+		self.class.send(:include, @adapter_class)
 		
 		@doc = load_html(@html_file)
     # TODO

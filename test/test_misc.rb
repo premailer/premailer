@@ -12,11 +12,10 @@ class TestMisc < Test::Unit::TestCase
   # NB: 2010-11-16 -- after reverting to Hpricot this test can no longer pass.
   # It's too much of an edge case to get any dev time.
   def test_parsing_extra_quotes
-    flunk 'Known and accepted regression'
     io = StringIO.new('<p></p>
     <h3 "id="WAR"><a name="WAR"></a>Writes and Resources</h3>
     <table></table>')
-    premailer = Premailer.new(io)
+    premailer = Premailer.new(io, :adapter => :nokogiri)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
   
@@ -65,14 +64,16 @@ END_HTML
 		</html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
+    [:nokogiri, :hpricot].each do |adapter|
+  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+  		premailer.to_inline_css
 
-	  h = premailer.processed_doc.at('head')
-	  assert_nil h['style']
+  	  h = premailer.processed_doc.at('head')
+  	  assert_nil h['style']
 
-	  t = premailer.processed_doc.at('title')
-	  assert_nil t['style']
+  	  t = premailer.processed_doc.at('title')
+  	  assert_nil t['style']
+    end
   end
 
   def test_multiple_identical_ids
@@ -99,7 +100,7 @@ END_HTML
     html = <<END_HTML
     <html> 
     <head>
-    <link rel="stylesheet" href="#">
+    <link rel="stylesheet" href="#"/>
     <style type="text/css"> a:hover { color: red; } </style>
     </head>
     <body> 
@@ -113,9 +114,10 @@ END_HTML
 	  assert_equal 1, premailer.processed_doc.search('head link').length
 	  assert_equal 1, premailer.processed_doc.search('head style').length
 
-		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false)
+		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => :nokogiri)
 		premailer.to_inline_css
 	  assert_nil premailer.processed_doc.at('head link')
+    # should be preserved as unmergeable
 	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
   end
 
