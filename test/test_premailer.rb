@@ -18,8 +18,6 @@ class TestPremailer < Test::Unit::TestCase
         s.shutdown
       end
     end
-
-    sleep 1 # ensure the server has time to load
   end
 
   def test_preserving_special_characters
