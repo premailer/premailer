@@ -23,6 +23,6 @@ Gem::Specification.new do |s|
   ]
   s.executables = 'premailer'
   s.add_dependency('hpricot', '>= 0.8.3')
-  s.add_dependency('css_parser', '>= 1.1.3')
+  s.add_dependency('css_parser', '>= 1.1.6')
   s.add_dependency('htmlentities', '>= 4.0.0')
 end
