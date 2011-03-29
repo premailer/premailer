@@ -79,7 +79,7 @@ module Adapter
       if @options[:remove_ids]
         # find all anchor's targets and hash them
         targets = []
-        doc.search("a[@href^=#]").each do |el|
+        doc.search("a[@href^='#']").each do |el|
           target = el.get_attribute('href')[1..-1]
           targets << target
           el.set_attribute('href', "#" + Digest::MD5.hexdigest(target))
