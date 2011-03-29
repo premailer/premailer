@@ -59,17 +59,7 @@ module Adapter
       # Perform style folding
       merged = CssParser.merge(declarations)
       merged.expand_shorthand!
-      
-      #if @options[:prefer_cellpadding] and (el.name == 'td' or el.name == 'th') and el['cellpadding'].nil?
-      #  if cellpadding = equivalent_cellpadding(merged)
-      #    el['cellpadding'] = cellpadding
-      #    merged['padding-left'] = nil
-      #    merged['padding-right'] = nil
-      #    merged['padding-top'] = nil
-      #    merged['padding-bottom'] = nil
-      #  end
-      #end
-      
+          
       # Duplicate CSS attributes as HTML attributes
       if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)       
         Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
