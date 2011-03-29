@@ -21,6 +21,7 @@ class TestPremailer < Test::Unit::TestCase
   end
 
   def test_special_characters_nokogiri
+    
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
   	premailer.to_inline_css
@@ -35,16 +36,13 @@ class TestPremailer < Test::Unit::TestCase
 
   def test_cyrillic_nokogiri_remote
     if RUBY_VERSION =~ /1.9/ 
-      #remote_setup('iso-8859-5.html', :adapter => :hpricot)
-    	#puts @premailer.processed_doc
-      #assert_equal '&#1079;&#1072;&#1084;&#1077;&#1097;&#1072;&#1102;&#1097;&#1080;&#1081; &#1090;&#1077;&#1082;&#1089;&#1090;', @premailer.processed_doc.at('p').inner_html
-      
-      remote_setup('iso-8859-5.html', :adapter => :nokogiri, :encoding => nil, :debug => true) #, :encoding => 'iso-8859-5')
+      remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
     	@premailer.to_inline_css
       assert_equal Encoding.find('ISO-8859-5'), @premailer.processed_doc.at('p').inner_html.encoding
     end
   end
 
+  # TODO: this fails when run from rake but not when called directly
   def test_preserving_special_characters_hpricot
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :hpricot)

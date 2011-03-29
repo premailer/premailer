@@ -169,28 +169,12 @@ module Adapter
 			
 			doc = nil
 
+      # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
       if thing.is_a?(String) and RUBY_VERSION =~ /1.9/ 
-        if @html_encoding
-		      thing = thing.force_encoding(@html_encoding).encode!
-		    end
-		    
-		    doc = ::Nokogiri::HTML(thing) {|c| c.noent.recover }
-		    
-		    $stderr.puts "Reading string: meta_enc: #{doc.meta_encoding} enc: #{doc.encoding}" if @options[:debug]
-		    
-		    if doc.encoding and @html_encoding.nil?
-		      # no encoding was forced in the options and a meta charset is present
-
-          # TODO: preserve encoding an get native characters, not HTML entities, or force to a binary stream?
-          # force to a binary encoding in Ruby 1.9
-    			# see http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74 for details
-
-		      thing = thing.force_encoding(doc.encoding).encode!
-		      doc = ::Nokogiri::HTML(thing) {|c| c.noent.recover }
-		    end
+	      thing = thing.force_encoding('ASCII-8BIT').encode!
+		    doc = ::Nokogiri::HTML(thing) {|c| c.noent.recover }	    
 		  else
-		    # not a string so can't force encoding
-		    doc = ::Nokogiri::HTML(thing) {|c| c.noent.recover }
+		    doc = ::Nokogiri::HTML(thing, nil, 'ASCII-8BIT') {|c| c.noent.recover }
 	    end
 			
 			return doc
