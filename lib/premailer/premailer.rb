@@ -113,6 +113,7 @@ class Premailer
                 :link_query_string => nil, 
                 :base_url => nil,
                 :remove_classes => false,
+                :remove_ids => false,
                 :css => [],
                 :css_to_attributes => true,
                 :with_html_string => false,
