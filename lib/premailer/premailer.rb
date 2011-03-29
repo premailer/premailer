@@ -429,17 +429,17 @@ public
       next unless data['support'] >= @options[:warn_level]
       if @doc.search("*[@#{attribute}]").length > 0
         warnings.push({:message => "#{attribute} HTML attribute",
-            :level => WARN_LABEL[property_support[prop]['support']],
-            :clients => property_support[prop]['unsupported_in'].join(', ')})
+            :level => WARN_LABEL[data['support']],
+            :clients => data['unsupported_in'].join(', ')})
       end
     end
 
     @client_support['elements'].each do |element, data|
       next unless data['support'] >= @options[:warn_level]
-      if @doc.search("element").length > 0
+      if @doc.search(element).length > 0
         warnings.push({:message => "#{element} HTML element",
-            :level => WARN_LABEL[property_support[prop]['support']],
-            :clients => property_support[prop]['unsupported_in'].join(', ')})
+            :level => WARN_LABEL[data['support']],
+            :clients => data['unsupported_in'].join(', ')})
       end
     end
 
