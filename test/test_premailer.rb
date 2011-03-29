@@ -133,12 +133,14 @@ END_HTML
 
     css_string = IO.read(File.join(files_base, 'import.css'))
 
-    premailer = Premailer.new(File.join(files_base, 'no_css.html'), {:css_string => css_string})
-    premailer.to_inline_css
-    @doc = premailer.processed_doc
+    [:nokogiri, :hpricot].each do |adapter|
+      premailer = Premailer.new(File.join(files_base, 'no_css.html'), {:css_string => css_string, :adapter => adapter})
+      premailer.to_inline_css
+      @doc = premailer.processed_doc
 
-    # import.css sets .hide to { display: none }
-    assert_match /display: none/, @doc.at('#hide01').attributes['style']
+      # import.css sets .hide to { display: none }
+      assert_match /display: none/, @doc.at('#hide01')['style']
+    end
   end
 
   def test_local_remote_check
