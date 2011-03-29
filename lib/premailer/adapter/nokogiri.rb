@@ -1,130 +1,128 @@
-
 module Adapter
 	module Nokogiri
 	
-	# Merge CSS into the HTML document.
-  #
-  # Returns a string.
-  def to_inline_css
-    doc = @processed_doc
-    @unmergable_rules = CssParser::Parser.new
+  	# Merge CSS into the HTML document.
+    #
+    # Returns a string.
+    def to_inline_css
+      doc = @processed_doc
+      @unmergable_rules = CssParser::Parser.new
     
-    # Give all styles already in style attributes a specificity of 1000 
-    # per http://www.w3.org/TR/CSS21/cascade.html#specificity
-    doc.search("*[@style]").each do |el| 
-      el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
-    end
+      # Give all styles already in style attributes a specificity of 1000 
+      # per http://www.w3.org/TR/CSS21/cascade.html#specificity
+      doc.search("*[@style]").each do |el| 
+        el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
+      end
 
-    # Iterate through the rules and merge them into the HTML
-    @css_parser.each_selector(:all) do |selector, declaration, specificity|
-      # Save un-mergable rules separately
-      selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
+      # Iterate through the rules and merge them into the HTML
+      @css_parser.each_selector(:all) do |selector, declaration, specificity|
+        # Save un-mergable rules separately
+        selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
 
-      # Convert element names to lower case
-      selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
+        # Convert element names to lower case
+        selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
       
-      if selector =~ Premailer::RE_UNMERGABLE_SELECTORS
-        @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
-      else
-        begin
-          # Change single ID CSS selectors into xpath so that we can match more 
-          # than one element.  Added to work around dodgy generated code.
-          selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
+        if selector =~ Premailer::RE_UNMERGABLE_SELECTORS
+          @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
+        else
+          begin
+            # Change single ID CSS selectors into xpath so that we can match more 
+            # than one element.  Added to work around dodgy generated code.
+            selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
 
-          doc.search(selector).each do |el|
-            if el.elem? and (el.name != 'head' and el.parent.name != 'head')
-              # Add a style attribute or append to the existing one  
-              block = "[SPEC=#{specificity}[#{declaration}]]"
-              el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
+            doc.search(selector).each do |el|
+              if el.elem? and (el.name != 'head' and el.parent.name != 'head')
+                # Add a style attribute or append to the existing one  
+                block = "[SPEC=#{specificity}[#{declaration}]]"
+                el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
+              end
             end
+          rescue  ::Nokogiri::SyntaxError, RuntimeError, ArgumentError
+            $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
+            next
           end
-        rescue  ::Nokogiri::SyntaxError, RuntimeError, ArgumentError
-          $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
-          next
         end
       end
-    end
 
-    # Read STYLE attributes and perform folding
-    doc.search("*[@style]").each do |el|
-      style = el.attributes['style'].to_s
+      # Read STYLE attributes and perform folding
+      doc.search("*[@style]").each do |el|
+        style = el.attributes['style'].to_s
       
-      declarations = []
+        declarations = []
 
-      style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
-        rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
-        declarations << rs
-      end
+        style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
+          rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
+          declarations << rs
+        end
 
-      # Perform style folding
-      merged = CssParser.merge(declarations)
-      merged.expand_shorthand!
+        # Perform style folding
+        merged = CssParser.merge(declarations)
+        merged.expand_shorthand!
           
-      # Duplicate CSS attributes as HTML attributes
-      if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)       
-        Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
-          el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+        # Duplicate CSS attributes as HTML attributes
+        if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)       
+          Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
+            el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+          end
         end
-      end
       
-      merged.create_dimensions_shorthand!
+        merged.create_dimensions_shorthand!
 
-      # write the inline STYLE attribute
-      el['style'] = Premailer.escape_string(merged.declarations_to_s)
-    end
-
-    doc = write_unmergable_css_rules(doc, @unmergable_rules)
-
-    doc.search('*').remove_class if @options[:remove_classes]  
-
-    @processed_doc = doc
-		if is_xhtml?
-			@processed_doc.to_xhtml
-		else
-    	@processed_doc.to_html
-  	end
-  end
-	
-	
-	# Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
-  # and write it into the <tt>body</tt>.
-  #
-  # <tt>doc</tt> is an Nokogiri document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
-  #
-  # Returns an Nokogiri document.
-  def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-    if head = doc.at('head')
-      styles = ''
-      unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
-        styles += "#{selector} { #{declarations} }\n"
-      end    
-
-      unless styles.empty?
-        style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-
-        head.add_child(style_tag)
+        # write the inline STYLE attribute
+        el['style'] = Premailer.escape_string(merged.declarations_to_s)
       end
-    else
-      $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]
+
+      doc = write_unmergable_css_rules(doc, @unmergable_rules)
+
+      doc.search('*').remove_class if @options[:remove_classes]  
+
+      @processed_doc = doc
+  		if is_xhtml?
+  			@processed_doc.to_xhtml
+  		else
+      	@processed_doc.to_html
+    	end
     end
-    doc
-  end
+	
+  	# Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
+    # and write it into the <tt>body</tt>.
+    #
+    # <tt>doc</tt> is an Nokogiri document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
+    #
+    # Returns an Nokogiri document.
+    def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
+      if head = doc.at('head')
+        styles = ''
+        unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
+          styles += "#{selector} { #{declarations} }\n"
+        end    
+
+        unless styles.empty?
+          style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
+
+          head.add_child(style_tag)
+        end
+      else
+        $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]
+      end
+      doc
+    end
 
 	
-	  # Converts the HTML document to a format suitable for plain-text e-mail.
-  #
-  # If present, uses the <body> element as its base; otherwise uses the whole document.
-  #
-  # Returns a string.
-  def to_plain_text
-    html_src = ''
-    begin
-      html_src = @doc.at("body").inner_html
-    rescue; end
+    # Converts the HTML document to a format suitable for plain-text e-mail.
+    #
+    # If present, uses the <body> element as its base; otherwise uses the whole document.
+    #
+    # Returns a string.
+    def to_plain_text
+      html_src = ''
+      begin
+        html_src = @doc.at("body").inner_html
+      rescue; end
 
-    html_src = @doc.to_html unless html_src and not html_src.empty?
-    convert_to_text(html_src, @options[:line_length], @html_encoding)
-  end
+      html_src = @doc.to_html unless html_src and not html_src.empty?
+      convert_to_text(html_src, @options[:line_length], @html_encoding)
+    end
 	
 		# Returns the original HTML as a string.
 		def to_s

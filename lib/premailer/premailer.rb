@@ -73,10 +73,10 @@ class Premailer
   # unmergeable CSS rules to be preserved in the head (CssParser)
   attr_reader   :unmergable_rules
 
-  # processed HTML document (Hpricot)
+  # processed HTML document (Hpricot/Nokogiri)
   attr_reader   :processed_doc
   
-  # source HTML document (Hpricot)
+  # source HTML document (Hpricot/Nokogiri)
   attr_reader   :doc
 
   module Warnings
@@ -166,10 +166,8 @@ class Premailer
     @css_warnings = check_client_support if @css_warnings.empty?
     @css_warnings
   end
-  
-protected  
 
-
+protected
   def load_css_from_local_file!(path)
     css_block = ''
     begin
@@ -219,7 +217,6 @@ protected
 
 # here be deprecated methods
 public
-
   def local_uri?(uri) # :nodoc:
     warn "[DEPRECATION] `local_uri?` is deprecated.  Please use `Premailer.local_data?` instead."
     Premailer.local_data?(uri)
@@ -392,54 +389,51 @@ public
       u.to_s
     end
 
-    # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
-    def check_client_support # :nodoc:
-      @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
+  # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
+  def check_client_support # :nodoc:
+    @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
 
-      warnings = []
-      properties = []
-    
-      # Get a list off CSS properties
-      @processed_doc.search("*[@style]").each do |el|
-        style_url = el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*\:/i) do |s|
-          properties.push($1)
-        end
+    warnings = []
+    properties = []
+  
+    # Get a list off CSS properties
+    @processed_doc.search("*[@style]").each do |el|
+      style_url = el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*\:/i) do |s|
+        properties.push($1)
       end
-
-      properties.uniq!
-
-      property_support = @client_support['css_properties']
-      properties.each do |prop|
-        if property_support.include?(prop) and
-            property_support[prop].include?('support') and
-            property_support[prop]['support'] >= @options[:warn_level]
-          warnings.push({:message => "#{prop} CSS property",
-              :level => WARN_LABEL[property_support[prop]['support']],
-              :clients => property_support[prop]['unsupported_in'].join(', ')})
-        end
-      end
-
-      @client_support['attributes'].each do |attribute, data|
-        next unless data['support'] >= @options[:warn_level]
-        if @doc.search("*[@#{attribute}]").length > 0
-          warnings.push({:message => "#{attribute} HTML attribute",
-              :level => WARN_LABEL[property_support[prop]['support']],
-              :clients => property_support[prop]['unsupported_in'].join(', ')})
-        end
-      end
-
-      @client_support['elements'].each do |element, data|
-        next unless data['support'] >= @options[:warn_level]
-        if @doc.search("element").length > 0
-          warnings.push({:message => "#{element} HTML element",
-              :level => WARN_LABEL[property_support[prop]['support']],
-              :clients => property_support[prop]['unsupported_in'].join(', ')})
-        end
-      end
-
-      return warnings
     end
+
+    properties.uniq!
+
+    property_support = @client_support['css_properties']
+    properties.each do |prop|
+      if property_support.include?(prop) and
+          property_support[prop].include?('support') and
+          property_support[prop]['support'] >= @options[:warn_level]
+        warnings.push({:message => "#{prop} CSS property",
+            :level => WARN_LABEL[property_support[prop]['support']],
+            :clients => property_support[prop]['unsupported_in'].join(', ')})
+      end
+    end
+
+    @client_support['attributes'].each do |attribute, data|
+      next unless data['support'] >= @options[:warn_level]
+      if @doc.search("*[@#{attribute}]").length > 0
+        warnings.push({:message => "#{attribute} HTML attribute",
+            :level => WARN_LABEL[property_support[prop]['support']],
+            :clients => property_support[prop]['unsupported_in'].join(', ')})
+      end
+    end
+
+    @client_support['elements'].each do |element, data|
+      next unless data['support'] >= @options[:warn_level]
+      if @doc.search("element").length > 0
+        warnings.push({:message => "#{element} HTML element",
+            :level => WARN_LABEL[property_support[prop]['support']],
+            :clients => property_support[prop]['unsupported_in'].join(', ')})
+      end
+    end
+
+    return warnings
   end
-
-
-
+end
