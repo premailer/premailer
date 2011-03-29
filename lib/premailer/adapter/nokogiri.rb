@@ -76,6 +76,25 @@ module Adapter
 
       doc.search('*').remove_class if @options[:remove_classes]  
 
+      if @options[:remove_ids]
+        # find all anchor's targets and hash them
+        targets = []
+        doc.search("a[@href^=#]").each do |el|
+          target = el.get_attribute('href')[1..-1]
+          targets << target
+          el.set_attribute('href', "#" + Digest::MD5.hexdigest(target))
+        end
+        # hash ids that are links target, delete others
+        doc.search("*[@id]").each do |el|
+          id = el.get_attribute('id')
+          if targets.include?(id)
+            el.set_attribute('id', Digest::MD5.hexdigest(id))
+          else
+            el.remove_attribute('id')
+          end
+        end
+      end
+
       @processed_doc = doc
   		if is_xhtml?
   			@processed_doc.to_xhtml
