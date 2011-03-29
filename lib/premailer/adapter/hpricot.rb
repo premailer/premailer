@@ -128,7 +128,7 @@ module Adapter
 			rescue; end
 
 			html_src = @doc.to_html unless html_src and not html_src.empty?
-			convert_to_text(html_src, @options[:line_length], @html_charset)
+			convert_to_text(html_src, @options[:line_length], @html_encoding)
 		end	
 	
 	
@@ -152,6 +152,19 @@ module Adapter
 				else
 				thing = open(input)
 			end
+
+			# force to a binary encoding in Ruby 1.9
+			# see http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74 for details
+			if RUBY_VERSION =~ /1.9/ 
+			  if thing.respond_to?(:read)
+			    thing = thing.read
+			  end
+			  if thing.is_a?(String)
+			    thing.force_encoding(@html_encoding).encode!
+			  end
+      end
+
+
 			# TODO: deal with Hpricot seg faults on empty input
 			thing ? Hpricot(thing) : nil  
 		end

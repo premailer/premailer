@@ -20,14 +20,38 @@ class TestPremailer < Test::Unit::TestCase
     end
   end
 
-  def test_preserving_special_characters
-    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
-    [:hpricot, :nokogiri].each do |adapter|
-      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-    	premailer.to_inline_css
-      assert_equal 'cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html, "adapter: #{adapter}"
+  def test_special_characters_nokogiri
+    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+  	premailer.to_inline_css
+    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
+  end
+
+  def test_special_characters_nokogiri_remote
+    remote_setup('chars.html', :adapter => :nokogiri)
+  	@premailer.to_inline_css
+    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
+  end
+
+  def test_cyrillic_nokogiri_remote
+    if RUBY_VERSION =~ /1.9/ 
+      #remote_setup('iso-8859-5.html', :adapter => :hpricot)
+    	#puts @premailer.processed_doc
+      #assert_equal '&#1079;&#1072;&#1084;&#1077;&#1097;&#1072;&#1102;&#1097;&#1080;&#1081; &#1090;&#1077;&#1082;&#1089;&#1090;', @premailer.processed_doc.at('p').inner_html
+      
+      remote_setup('iso-8859-5.html', :adapter => :nokogiri, :encoding => nil, :debug => true) #, :encoding => 'iso-8859-5')
+    	@premailer.to_inline_css
+      assert_equal Encoding.find('ISO-8859-5'), @premailer.processed_doc.at('p').inner_html.encoding
     end
   end
+
+  def test_preserving_special_characters_hpricot
+    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :hpricot)
+  	premailer.to_inline_css
+    assert_equal 'cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
+  end
+
   
   def test_detecting_html
     [:nokogiri, :hpricot].each do |adapter|
