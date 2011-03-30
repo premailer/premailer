@@ -105,6 +105,7 @@ class Premailer
   # [+css_string+] Pass CSS as a string
   # [+remove_ids+] Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is +false+.
   # [+remove_classes+] Remove class attributes. Default is +false+.
+  # [+remove_comments+] Remove html comments. Default is +false+.
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
@@ -116,6 +117,7 @@ class Premailer
                 :base_url => nil,
                 :remove_classes => false,
                 :remove_ids => false,
+                :remove_comments => false,
                 :css => [],
                 :css_to_attributes => true,
                 :with_html_string => false,

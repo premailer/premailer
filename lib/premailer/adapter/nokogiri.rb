@@ -74,7 +74,13 @@ module Adapter
 
       doc = write_unmergable_css_rules(doc, @unmergable_rules)
 
-      doc.search('*').remove_class if @options[:remove_classes]  
+      doc.traverse do |el|
+        if el.comment? and @options[:remove_comments]
+          el.remove
+        else
+          el.remove_attribute('class') if @options[:remove_classes]
+        end
+      end  
 
       if @options[:remove_ids]
         # find all anchor's targets and hash them
