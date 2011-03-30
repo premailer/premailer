@@ -103,6 +103,8 @@ class Premailer
   # [+css+] Manually specify a CSS stylesheet.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
   # [+css_string+] Pass CSS as a string
+  # [+remove_ids+] Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is +false+.
+  # [+remove_classes+] Remove class attributes. Default is +false+.
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
