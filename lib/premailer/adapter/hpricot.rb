@@ -80,8 +80,8 @@ module Adapter
         lst = el.parent.children
         el.parent = nil
         lst.delete(el)
-      else
-        el.remove_class if @options[:remove_classes]
+      elsif el.elem?
+        el.remove_attribute('class') if @options[:remove_classes]
       end
     end
 
