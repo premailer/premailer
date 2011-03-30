@@ -167,6 +167,26 @@ END_HTML
       assert_match /test/, premailer.to_inline_css
     end
   end
+  
+  def test_remove_ids
+    html = <<END_HTML
+    <html> <head> <style type="text/css"> #remove { color:blue; } </style> </head>
+    <body>
+		<p id="remove"><a href="#keep">Test</a></p> 
+		<p id="keep">Test</p>
+		</body> </html>
+END_HTML
+
+    [:nokogiri, :hpricot].each do |adapter|
+  		pm = Premailer.new(html, :with_html_string => true, :remove_ids => true, :adapter => adapter)
+      pm.to_inline_css
+      doc = pm.processed_doc
+  	  assert_nil doc.at('#remove')
+  	  assert_nil doc.at('#keep')
+  	  hashed_id = doc.at('a')['href'][1..-1]
+  	  assert_not_nil doc.at("\##{hashed_id}")
+  	end
+  end
 
 protected
   def local_setup(f = 'base.html', opts = {})
