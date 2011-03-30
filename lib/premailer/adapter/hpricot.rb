@@ -75,13 +75,15 @@ module Adapter
 
     doc = write_unmergable_css_rules(doc, @unmergable_rules)
 
-    doc.search('*').each do |el|
-      if el.comment? and @options[:remove_comments]
-        lst = el.parent.children
-        el.parent = nil
-        lst.delete(el)
-      elsif el.elem?
-        el.remove_attribute('class') if @options[:remove_classes]
+    if @options[:remove_classes] or @options[:remove_comments]
+      doc.search('*').each do |el|
+        if el.comment? and @options[:remove_comments]
+          lst = el.parent.children
+          el.parent = nil
+          lst.delete(el)
+        elsif el.elem?
+          el.remove_attribute('class') if @options[:remove_classes]
+        end
       end
     end
 
