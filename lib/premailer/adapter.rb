@@ -5,13 +5,13 @@
 # * nokogiri
 # * hpricot
 module Adapter
-		DEFAULT = :hpricot
-			  
-	  # Returns the adapter to use. Defaults to <tt>Adapter::</tt>.
+    DEFAULT = :hpricot
+
+    # Returns the adapter to use. Defaults to <tt>Adapter::</tt>.
     def self.use
       @use ||= DEFAULT
     end
-		
+
     # Sets the +adapter+ to use. Raises an +ArgumentError+ unless the +adapter+ exists.
     def self.use=(adapter)
       validate_adapter! adapter
@@ -44,6 +44,6 @@ module Adapter
       require adapters[adapter][:require]
       [adapter, adapters[adapter][:class]]
     rescue LoadError
-      puts "tried to use the #{adapter} adapter, but was unable to find the library in the LOAD_PATH."      
+      puts "tried to use the #{adapter} adapter, but was unable to find the library in the LOAD_PATH."
     end
 end

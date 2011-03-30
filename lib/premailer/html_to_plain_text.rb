@@ -9,7 +9,7 @@ module HtmlToPlainText
   # TODO: add support for DL, OL
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     txt = html
-    
+
     # decode HTML entities
     he = HTMLEntities.new
     txt = he.decode(txt)
@@ -19,7 +19,7 @@ module HtmlToPlainText
     txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |s|
       hlevel = $1.to_i
 
-      htext = $2      
+      htext = $2
       htext.gsub!(/<br[\s]*\/?>/i, "\n") # handle <br>s
       htext.gsub!(/<\/?[^>]*>/i, '') # strip tags
 
@@ -36,10 +36,10 @@ module HtmlToPlainText
         else     # H3-H6, dashes below
           htext = htext + "\n" + ('-' * hlength)
       end
-      
+
       "\n\n" + htext + "\n\n"
     end
-    
+
     # wrap spans
     txt.gsub!(/(<\/span>)[\s]+(<span)/mi, '\1 \2')
 
@@ -52,11 +52,11 @@ module HtmlToPlainText
     txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')
     # list not followed by a newline
     txt.gsub!(/<\/li>[\s]*(?![\n])/i, "\n")
-    
+
     # paragraphs and line breaks
     txt.gsub!(/<\/p>/i, "\n\n")
     txt.gsub!(/<br[\/ ]*>/i, "\n")
-    
+
     # strip remaining tags
     txt.gsub!(/<\/?[^>]*>/, '')
 
@@ -64,7 +64,7 @@ module HtmlToPlainText
 
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
-    
+
     # strip extra spaces
     txt.gsub!(/\302\240+/, " ") # non-breaking spaces -> spaces
     txt.gsub!(/\n[ \t]+/, "\n") # space at start of lines

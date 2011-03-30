@@ -4,8 +4,8 @@
 #
 # Premailer processes HTML and CSS to improve e-mail deliverability.
 #
-# Premailer's main function is to render all CSS as inline <tt>style</tt> 
-# attributes. It also converts relative links to absolute links and checks 
+# Premailer's main function is to render all CSS as inline <tt>style</tt>
+# attributes. It also converts relative links to absolute links and checks
 # the 'safety' of CSS properties against a CSS support chart.
 #
 # = Example
@@ -38,12 +38,12 @@ class Premailer
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
-  
+
   # list of CSS attributes that can be rendered as HTML attributes
   #
   # TODO: too much repetition
   # TODO: background=""
-  RELATED_ATTRIBUTES = { 
+  RELATED_ATTRIBUTES = {
     'h1' => {'text-align' => 'align'},
     'h2' => {'text-align' => 'align'},
     'h3' => {'text-align' => 'align'},
@@ -63,7 +63,7 @@ class Premailer
 
   # URI of the HTML file used
   attr_reader   :html_file
-  
+
   # base URL used to resolve links
   attr_reader   :base_url
 
@@ -75,7 +75,7 @@ class Premailer
 
   # processed HTML document (Hpricot/Nokogiri)
   attr_reader   :processed_doc
-  
+
   # source HTML document (Hpricot/Nokogiri)
   attr_reader   :doc
 
@@ -91,8 +91,8 @@ class Premailer
 
   # Create a new Premailer object.
   #
-  # +html+ is the HTML data to process. It can be either an IO object, the URL of a 
-  # remote file, a local path or a raw HTML string.  If passing an HTML string you 
+  # +html+ is the HTML data to process. It can be either an IO object, the URL of a
+  # remote file, a local path or a raw HTML string.  If passing an HTML string you
   # must set the +:with_html_string+ option to +true+.
   #
   # ==== Options
@@ -108,9 +108,9 @@ class Premailer
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
   # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
-    @options = {:warn_level => Warnings::SAFE, 
-                :line_length => 65, 
-                :link_query_string => nil, 
+    @options = {:warn_level => Warnings::SAFE,
+                :line_length => 65,
+                :link_query_string => nil,
                 :base_url => nil,
                 :remove_classes => false,
                 :css => [],
@@ -123,7 +123,7 @@ class Premailer
                 :io_exceptions => false,
                 :adapter => Adapter.use}.merge(options)
 
-    @html_file = html 
+    @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
 
     @css_files = @options[:css]
@@ -145,13 +145,13 @@ class Premailer
       :import => true,
       :io_exceptions => @options[:io_exceptions]
     })
-		
-		@adapter_name = @options[:adapter]
-		@adapter_name, @adapter_class = Adapter.find @adapter_name
 
-		self.class.send(:include, @adapter_class)
+    @adapter_name = @options[:adapter]
+    @adapter_name, @adapter_class = Adapter.find @adapter_name
 
-		@doc = load_html(@html_file)
+    self.class.send(:include, @adapter_class)
+
+    @doc = load_html(@html_file)
 
     @processed_doc = @doc
     @processed_doc = convert_inline_links(@processed_doc, @base_url) if @base_url
@@ -198,8 +198,8 @@ protected
       end
     end
   end
-  
-	  # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
+
+    # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
@@ -214,7 +214,7 @@ protected
             @css_parser.load_uri!(link_uri, {:only_media_types => [:screen, :handheld]})
           end
 
-        elsif tag.to_s.strip =~ /^\<style/i      
+        elsif tag.to_s.strip =~ /^\<style/i
           @css_parser.add_block!(tag.inner_html, :base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld])
         end
       end
@@ -239,13 +239,13 @@ public
   rescue
     return true
   end
-	
-	def append_query_string(doc, qs)
+
+  def append_query_string(doc, qs)
     return doc if qs.nil?
 
     qs.to_s.gsub!(/^[\?]*/, '').strip!
     return doc if qs.empty?
-    
+
     begin
       current_host = @base_url.host
     rescue
@@ -253,10 +253,10 @@ public
     end
 
     $stderr.puts "Attempting to append_query_string: #{qs}" if @options[:verbose]
-    
+
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
-      next if href.nil? or href.empty?    
+      next if href.nil? or href.empty?
       next if href[0,1] == '#' # don't bother with anchors
 
       begin
@@ -264,7 +264,7 @@ public
 
         if current_host and href.host != nil and href.host != current_host
           $stderr.puts "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
-          next 
+          next
         end
 
         if href.scheme and href.scheme != 'http' and href.scheme != 'https'
@@ -277,7 +277,7 @@ public
         else
           href.query = qs
         end
-    
+
         el['href'] = href.to_s
       rescue URI::Error => e
         $stderr.puts "Skipping append_query_string for: #{href.to_s} (#{e.message})" if @options[:verbose]
@@ -288,7 +288,7 @@ public
     doc
   end
 
-	  # Check for an XHTML doctype
+    # Check for an XHTML doctype
   def is_xhtml?
     intro = @doc.to_s.strip.split("\n")[0..2].join(' ')
     is_xhtml = (intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
@@ -296,10 +296,10 @@ public
     $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
     is_xhtml
   end
-	
-	  # Convert relative links to absolute links.
+
+    # Convert relative links to absolute links.
   #
-  # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes 
+  # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes
   # as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.
   #
   # <tt>doc</tt> is an Hpricot document and <tt>base_uri</tt> is either a string or a URI.
@@ -352,7 +352,7 @@ public
   def self.escape_string(str) # :nodoc:
     str.gsub(/"/ , "'")
   end
-  
+
   def self.resolve_link(path, base_path) # :nodoc:
     path.strip!
     resolved = nil
@@ -361,7 +361,7 @@ public
       return Premailer.canonicalize(resolved)
     elsif base_path.kind_of?(URI)
       resolved = base_path.merge(path)
-      return Premailer.canonicalize(resolved)    
+      return Premailer.canonicalize(resolved)
     elsif base_path.kind_of?(String) and base_path =~ /^(http[s]?|ftp):\/\//i
       resolved = URI.parse(base_path)
       resolved = resolved.merge(path)
@@ -383,7 +383,7 @@ public
     else
       return true
     end
-  end  
+  end
 
   # from http://www.ruby-forum.com/topic/140101
   def self.canonicalize(uri) # :nodoc:
@@ -404,7 +404,7 @@ public
 
     warnings = []
     properties = []
-  
+
     # Get a list off CSS properties
     @processed_doc.search("*[@style]").each do |el|
       style_url = el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*\:/i) do |s|
