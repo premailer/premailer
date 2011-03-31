@@ -22,7 +22,7 @@ module Adapter
     def self.adapters
       @adapters ||= {
         :nokogiri => { :class => Nokogiri, :require => "nokogiri" },
-        :hpricot  => { :class => Hpricot,       :require => "hpricot" },
+        :hpricot  => { :class => Hpricot,  :require => "hpricot" },
       }
     end
 

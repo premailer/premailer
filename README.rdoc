@@ -48,12 +48,8 @@ Download the Premailer gem from RubyGems.
 Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Fork and patch to your heart's content.  Please don't increment the version numbers, though.
 
 A few areas that are particularly in need of love:
-* Testing suite
-  There were unit tests but they were so funky that it was better to just strip them out.
-* Create a binary file for easing command line use, allowing the output to be piped in *nix systems
-* Test with Rails
+* Improved test coverage
 * Move un-repeated background images defined in CSS to <tt><td background=""></tt> for Outlook
-* Correctly parse http://www.webstandards.org/files/acid2/test.html
 
 === Credits and code
 
