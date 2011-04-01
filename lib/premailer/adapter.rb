@@ -5,45 +5,53 @@
 # * nokogiri
 # * hpricot
 module Adapter
-    DEFAULT = :hpricot
 
-    # Returns the adapter to use. Defaults to <tt>Adapter::</tt>.
-    def self.use
-      @use ||= DEFAULT
+  autoload :Hpricot, 'premailer/adapter/hpricot'
+  autoload :Nokogiri, 'premailer/adapter/nokogiri'
+
+  REQUIREMENT_MAP = [
+    ["hpricot",  :hpricot],
+    ["nokogiri", :nokogiri],
+  ]
+
+  # Returns the adapter to use.
+  def self.use
+    return @use if @use
+    self.use = self.default
+    @use
+  end
+
+  # The default adapter based on what you currently have loaded and
+  # installed. First checks to see if any adapters are already loaded,
+  # then ckecks to see which are installed if none are loaded.
+  def self.default
+    return :hpricot  if defined?(::Hpricot)
+    return :nokogiri if defined?(::Nokogiri)
+
+    REQUIREMENT_MAP.each do |(library, adapter)|
+      begin
+        require library
+        return adapter
+      rescue LoadError
+        next
+      end
     end
 
-    # Sets the +adapter+ to use. Raises an +ArgumentError+ unless the +adapter+ exists.
-    def self.use=(adapter)
-      validate_adapter! adapter
-      @use = adapter
-    end
+    raise "No suitable adapter for Premailer was found, please install hpricot or nokogiri"
+  end
 
-    # Returns a memoized +Hash+ of adapters.
-    def self.adapters
-      @adapters ||= {
-        :nokogiri => { :class => Nokogiri, :require => "nokogiri" },
-        :hpricot  => { :class => Hpricot,  :require => "hpricot" },
-      }
-    end
+  # Sets the +adapter+ to use. Raises an +ArgumentError+ unless the +adapter+ exists.
+  def self.use=(new_adapter)
+    @use = find(new_adapter)
+  end
 
-    # Returns an +adapter+. Raises an +ArgumentError+ unless the +adapter+ exists.
-    def self.find(adapter)
-      validate_adapter! adapter
-      load_adapter adapter
-    end
+  # Returns an +adapter+. Raises an +ArgumentError+ unless the +adapter+ exists.
+  def self.find(adapter)
+    return adapter if adapter.is_a?(Module)
 
-  private
+    Premailer::Adapter.const_get("#{adapter.to_s.split('_').map{|s| s.capitalize}.join('')}")
+  rescue NameError
+    raise ArgumentError, "Invalid adapter: #{adapter}"
+  end
 
-    # Raises an +ArgumentError+ unless the +adapter+ exists.
-    def self.validate_adapter!(adapter)
-      raise ArgumentError, "Invalid adapter: #{adapter}" unless adapters[adapter]
-    end
-
-    # Tries to load and return the given +adapter+ name and class and falls back to the +FALLBACK+ adapter.
-    def self.load_adapter(adapter)
-      require adapters[adapter][:require]
-      [adapter, adapters[adapter][:class]]
-    rescue LoadError
-      puts "tried to use the #{adapter} adapter, but was unable to find the library in the LOAD_PATH."
-    end
 end

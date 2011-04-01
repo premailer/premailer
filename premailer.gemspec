@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.author  = "Alex Dunae"
   s.rdoc_options << '--all' << '--inline-source' << '--line-numbers' << '--charset' << 'utf-8'
-  s.extra_rdoc_files = ["README.rdoc"]  
+  s.extra_rdoc_files = ["README.rdoc"]
   s.files = [
     "init.rb",
     "bin/premailer",
@@ -22,7 +22,8 @@ Gem::Specification.new do |s|
     "misc/client_support.yaml"
   ]
   s.executables = 'premailer'
-  s.add_dependency('hpricot', '>= 0.8.3')
   s.add_dependency('css_parser', '>= 1.1.6')
   s.add_dependency('htmlentities', '>= 4.0.0')
+  s.add_development_dependency('hpricot', '>= 0.8.3')
+  s.add_development_dependency('nokogiri', '>= 1.4.4')
 end

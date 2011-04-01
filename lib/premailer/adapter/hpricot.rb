@@ -1,17 +1,18 @@
+require 'hpricot'
 
 module Adapter
 	module Hpricot
-	
+
 	  # Merge CSS into the HTML document.
   #
   # Returns a string.
   def to_inline_css
     doc = @processed_doc
     @unmergable_rules = CssParser::Parser.new
-    
-    # Give all styles already in style attributes a specificity of 1000 
+
+    # Give all styles already in style attributes a specificity of 1000
     # per http://www.w3.org/TR/CSS21/cascade.html#specificity
-    doc.search("*[@style]").each do |el| 
+    doc.search("*[@style]").each do |el|
       el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
     end
 
@@ -22,18 +23,18 @@ module Adapter
 
       # Convert element names to lower case
       selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
-      
+
       if selector =~ Premailer::RE_UNMERGABLE_SELECTORS
         @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
       else
         begin
-          # Change single ID CSS selectors into xpath so that we can match more 
+          # Change single ID CSS selectors into xpath so that we can match more
           # than one element.  Added to work around dodgy generated code.
           selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
 
           doc.search(selector).each do |el|
             if el.elem? and (el.name != 'head' and el.parent.name != 'head')
-              # Add a style attribute or append to the existing one  
+              # Add a style attribute or append to the existing one
               block = "[SPEC=#{specificity}[#{declaration}]]"
               el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
             end
@@ -48,7 +49,7 @@ module Adapter
     # Read STYLE attributes and perform folding
     doc.search("*[@style]").each do |el|
       style = el.attributes['style'].to_s
-      
+
       declarations = []
 
       style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
@@ -59,14 +60,14 @@ module Adapter
       # Perform style folding
       merged = CssParser.merge(declarations)
       merged.expand_shorthand!
-           
+
       # Duplicate CSS attributes as HTML attributes
-      if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)       
+      if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)
         Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
           el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
         end
       end
-      
+
       merged.create_dimensions_shorthand!
 
       # write the inline STYLE attribute
@@ -110,8 +111,8 @@ module Adapter
 
     @processed_doc.to_original_html
   end
-	
-	# Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>) 
+
+	# Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>)
   # and write it into the <tt>body</tt>.
   #
   # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
@@ -122,7 +123,7 @@ module Adapter
       styles = ''
       unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
         styles += "#{selector} { #{declarations} }\n"
-      end    
+      end
 
       unless styles.empty?
         style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
@@ -134,7 +135,7 @@ module Adapter
     doc
   end
 
-	
+
     # Converts the HTML document to a format suitable for plain-text e-mail.
     #
 		# If present, uses the <body> element as its base; otherwise uses the whole document.
@@ -148,9 +149,9 @@ module Adapter
 
 			html_src = @doc.to_html unless html_src and not html_src.empty?
 			convert_to_text(html_src, @options[:line_length], @html_encoding)
-		end	
-	
-	
+		end
+
+
 	  # Returns the original HTML as a string.
 		def to_s
 			@doc.to_original_html
@@ -161,7 +162,7 @@ module Adapter
 		# Returns an Hpricot document.
 		def load_html(input) # :nodoc:
 			thing = nil
-			
+
 			# TODO: duplicate options
 			if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
 				thing = input
@@ -173,8 +174,8 @@ module Adapter
 			end
 
 			# TODO: deal with Hpricot seg faults on empty input
-			thing ? Hpricot(thing) : nil  
+			thing ? Hpricot(thing) : nil
 		end
-		
+
 	end
 end

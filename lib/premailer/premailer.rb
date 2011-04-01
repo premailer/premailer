@@ -151,8 +151,7 @@ class Premailer
       :io_exceptions => @options[:io_exceptions]
     })
 
-    @adapter_name = @options[:adapter]
-    @adapter_name, @adapter_class = Adapter.find @adapter_name
+    @adapter_class = Adapter.find @options[:adapter]
 
     self.class.send(:include, @adapter_class)
 
