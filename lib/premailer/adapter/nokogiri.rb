@@ -62,7 +62,13 @@ module Adapter
         # Duplicate CSS attributes as HTML attributes
         if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)       
           Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
-            el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+            if not merged[css_att].empty?
+              el[html_att] = merged[css_att].gsub(/;$/, '').strip if el[html_att].nil? 
+              # remove css declaration to avoid conflicts
+              # needs a patched css_parser
+              # see http://github.com/alexdunae/css_parser/pull/10
+              merged.remove_declaration!(css_att)
+            end
           end
         end
       

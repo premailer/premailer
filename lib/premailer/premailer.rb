@@ -54,7 +54,10 @@ class Premailer
     'div' => {'text-align' => 'align'},
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
-    'table' => {'background-color' => 'bgcolor'},
+    'table' => {
+      'background-color' => 'bgcolor',
+      'width' => 'width', 'height' => 'height'
+    },
     'tr' => {'text-align' => 'align', 'background-color' => 'bgcolor'},
     'th' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
     'td' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
