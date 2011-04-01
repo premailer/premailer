@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
     "misc/client_support.yaml"
   ]
   s.executables = 'premailer'
-  s.add_dependency('css_parser', '>= 1.1.6')
+  s.add_dependency('css_parser', '>= 1.1.9')
   s.add_dependency('htmlentities', '>= 4.0.0')
   s.add_development_dependency('hpricot', '>= 0.8.3')
   s.add_development_dependency('nokogiri', '>= 1.4.4')
