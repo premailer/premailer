@@ -4,7 +4,8 @@
 #
 # * nokogiri
 # * hpricot
-module Adapter
+class Premailer
+  module Adapter
     DEFAULT = :hpricot
 
     # Returns the adapter to use. Defaults to <tt>Adapter::</tt>.
@@ -32,7 +33,7 @@ module Adapter
       load_adapter adapter
     end
 
-  private
+    private
 
     # Raises an +ArgumentError+ unless the +adapter+ exists.
     def self.validate_adapter!(adapter)
@@ -46,4 +47,5 @@ module Adapter
     rescue LoadError
       puts "tried to use the #{adapter} adapter, but was unable to find the library in the LOAD_PATH."
     end
+  end
 end
