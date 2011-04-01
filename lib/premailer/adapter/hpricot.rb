@@ -40,7 +40,7 @@ class Premailer
                   el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
                 end
               end
-            rescue Hpricot::Error, RuntimeError, ArgumentError
+            rescue ::Hpricot::Error, RuntimeError, ArgumentError
               $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
               next
             end
