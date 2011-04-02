@@ -108,7 +108,8 @@ class Premailer
 
         @processed_doc = doc
         if is_xhtml?
-          @processed_doc.to_xhtml
+          # we don't want to encode carriage returns
+          @processed_doc.to_xhtml.gsub(/&\#xD;/i, "\r")
         else
           @processed_doc.to_html
         end

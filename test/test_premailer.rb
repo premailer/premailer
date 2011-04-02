@@ -187,6 +187,20 @@ END_HTML
   	  assert_not_nil doc.at("\##{hashed_id}")
   	end
   end
+  
+  def test_carriage_returns_as_entities
+    html = <<-html
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html>
+    <body>\n\r<p>test</p>\n\r<p>test</p>
+    </body></html>
+    html
+
+    [:nokogiri, :hpricot].each do |adapter|
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      assert_match /\r/, pm.to_inline_css
+    end
+  end
 
 protected
   def local_setup(f = 'base.html', opts = {})
