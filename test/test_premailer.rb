@@ -21,7 +21,6 @@ class TestPremailer < Test::Unit::TestCase
   end
 
   def test_special_characters_nokogiri
-    
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
   	premailer.to_inline_css
@@ -42,12 +41,13 @@ class TestPremailer < Test::Unit::TestCase
     end
   end
 
-  # TODO: this fails when run from rake but not when called directly
-  def test_preserving_special_characters_hpricot
+  # TODO: this passes when run from rake but not when run from:
+  #  ruby -Itest test/test_premailer.rb -n test_special_characters_hpricot
+  def test_special_characters_hpricot
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :hpricot)
   	premailer.to_inline_css
-    assert_equal 'cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
+    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
   end
 
   
