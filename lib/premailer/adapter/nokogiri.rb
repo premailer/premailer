@@ -70,6 +70,7 @@ class Premailer
           end
 
           merged.create_dimensions_shorthand!
+          merged.create_border_shorthand!
 
           # write the inline STYLE attribute
           el['style'] = Premailer.escape_string(merged.declarations_to_s)
@@ -109,7 +110,7 @@ class Premailer
         @processed_doc = doc
         if is_xhtml?
           # we don't want to encode carriage returns
-          @processed_doc.to_xhtml.gsub(/&\#xD;/i, "\r")
+          @processed_doc.to_xhtml(:encoding => nil).gsub(/&\#xD;/i, "\r")
         else
           @processed_doc.to_html
         end
@@ -158,9 +159,9 @@ class Premailer
       # Returns the original HTML as a string.
       def to_s
         if is_xhtml?
-          @doc.to_xhtml
+          @doc.to_xhtml(:encoding => nil)
         else
-          @doc.to_html
+          @doc.to_html(:encoding => nil)
         end
       end
 
@@ -191,9 +192,9 @@ class Premailer
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
           thing = thing.force_encoding('ASCII-8BIT').encode!
-          doc = ::Nokogiri::HTML(thing) {|c| c.noent.recover }
+          doc = ::Nokogiri::XML(thing) {|c| c.recover }
         else
-          doc = ::Nokogiri::HTML(thing, nil, 'ASCII-8BIT') {|c| c.noent.recover }
+          doc = ::Nokogiri::XML(thing, nil, 'ASCII-8BIT') {|c| c.recover }
         end
 
         return doc

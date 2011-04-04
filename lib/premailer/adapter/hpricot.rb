@@ -57,7 +57,6 @@ class Premailer
             rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
             declarations << rs
           end
-
           # Perform style folding
           merged = CssParser.merge(declarations)
           merged.expand_shorthand!
@@ -70,6 +69,7 @@ class Premailer
           end
 
           merged.create_dimensions_shorthand!
+          merged.create_border_shorthand!
 
           # write the inline STYLE attribute
           el['style'] = Premailer.escape_string(merged.declarations_to_s)

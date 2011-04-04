@@ -33,13 +33,13 @@ class TestPremailer < Test::Unit::TestCase
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
   end
 
-  def test_cyrillic_nokogiri_remote
-    if RUBY_VERSION =~ /1.9/ 
-      remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
-    	@premailer.to_inline_css
-      assert_equal Encoding.find('ISO-8859-5'), @premailer.processed_doc.at('p').inner_html.encoding
-    end
-  end
+  #def test_cyrillic_nokogiri_remote
+  #  if RUBY_VERSION =~ /1.9/ 
+  #    remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
+  #  	@premailer.to_inline_css
+  #    assert_equal Encoding.find('ISO-8859-5'), @premailer.processed_doc.at('p').inner_html.encoding
+  #  end
+  #end
 
   # TODO: this passes when run from rake but not when run from:
   #  ruby -Itest test/test_premailer.rb -n test_special_characters_hpricot
