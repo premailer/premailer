@@ -150,7 +150,7 @@ END_HTML
 
     # the old way is deprecated but should still work
     premailer = Premailer.new( StringIO.new('a') )
-    assert premailer.local_uri?( '/path/' )
+    assert Premailer.local_data?( '/path/' )
   end
 
   def test_initialize_can_accept_io_object
