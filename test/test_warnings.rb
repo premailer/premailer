@@ -12,9 +12,9 @@ class TestWarnings < Test::Unit::TestCase
     <body>
     <form method="post"> Test </form>
     </body>
-		</html>
+    </html>
 END_HTML
-    
+
     [:nokogiri, :hpricot].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 2, warnings.length
@@ -87,11 +87,11 @@ END_HTML
       assert_equal 1, warnings.length
     end
   end
-  
+
 protected
   def get_warnings(html, adapter = :nokogiri, warn_level = Premailer::Warnings::SAFE)
     pm = Premailer.new(html, {:adpater => adapter, :with_html_string => true, :warn_level => warn_level})
     pm.to_inline_css
-    pm.check_client_support  
+    pm.check_client_support
   end
 end

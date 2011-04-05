@@ -27,7 +27,7 @@ desc 'Parse a URL and write out the output.'
 task :inline do
   url = ENV['url']
   output = ENV['output']
-  
+
   if !url or url.empty? or !output or output.empty?
     puts 'Usage: rake inline url=http://example.com/ output=output.html'
     exit
@@ -45,7 +45,7 @@ end
 task :text do
   url = ENV['url']
   output = ENV['output']
-  
+
   if !url or url.empty? or !output or output.empty?
     puts 'Usage: rake text url=http://example.com/ output=output.txt'
     exit
@@ -55,7 +55,7 @@ task :text do
   fout = File.open(output, "w")
   fout.puts premailer.to_plain_text
   fout.close
-  
+
   puts "Succesfully parsed '#{url}' into '#{output}'"
 end
 

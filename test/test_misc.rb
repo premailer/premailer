@@ -17,103 +17,103 @@ class TestMisc < Test::Unit::TestCase
     premailer = Premailer.new(io, :adapter => :nokogiri)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
-  
+
   # https://github.com/alexdunae/premailer/issues/#issue/28
   def test_style_expanding
     html = <<END_HTML
-    <html> 
-    <body> 
+    <html>
+    <body>
     <style type="text/css">
     td { border-left: 1px solid black; }
-    td.special { border: none; } 
+    td.special { border: none; }
     td p { padding: 0; }
     td.special p { padding-left: 10px; }
     </style>
-		<table><tr><td class="special"><p>Test</p></td></tr></table> 
-		</body>
-		</html>
+    <table><tr><td class="special"><p>Test</p></td></tr></table>
+    </body>
+    </html>
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-  		premailer.to_inline_css
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      premailer.to_inline_css
       assert_match /padding\: 0 0 0 10px/i,  premailer.processed_doc.at('p')['style']
-  	  assert_match /border\: none;\Z/i,  premailer.processed_doc.at('td')['style']
+      assert_match /border\: none;\Z/i,  premailer.processed_doc.at('td')['style']
     end
   end
 
   def test_styles_in_the_body
     html = <<END_HTML
-    <html> 
-    <body> 
+    <html>
+    <body>
     <style type="text/css"> p { color: red; } </style>
-		<p>Test</p> 
-		</body>
-		</html>
+    <p>Test</p>
+    </body>
+    </html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
+    premailer = Premailer.new(html, :with_html_string => true)
+    premailer.to_inline_css
 
-	  assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
   end
-  
+
   def test_commented_out_styles_in_the_body
     html = <<END_HTML
-    <html> 
-    <body> 
+    <html>
+    <body>
     <style type="text/css"> <!-- p { color: red; } --> </style>
-		<p>Test</p> 
-		</body>
-		</html>
+    <p>Test</p>
+    </body>
+    </html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
+    premailer = Premailer.new(html, :with_html_string => true)
+    premailer.to_inline_css
 
-	  assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_not_applying_styles_to_the_head
     html = <<END_HTML
-    <html> 
+    <html>
     <head>
     <title>Title</title>
     <style type="text/css"> * { color: red; } </style>
     </head>
-    <body> 
-		<p><a>Test</a></p> 
-		</body>
-		</html>
+    <body>
+    <p><a>Test</a></p>
+    </body>
+    </html>
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-  		premailer.to_inline_css
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      premailer.to_inline_css
 
-  	  h = premailer.processed_doc.at('head')
-  	  assert_nil h['style']
+      h = premailer.processed_doc.at('head')
+      assert_nil h['style']
 
-  	  t = premailer.processed_doc.at('title')
-  	  assert_nil t['style']
+      t = premailer.processed_doc.at('title')
+      assert_nil t['style']
     end
   end
 
   def test_multiple_identical_ids
     html = <<-END_HTML
-    <html> 
+    <html>
     <head>
     <style type="text/css"> #the_id { color: red; } </style>
     </head>
-    <body> 
-		<p id="the_id">Test</p> 
-		<p id="the_id">Test</p> 
-		</body>
-		</html>
+    <body>
+    <p id="the_id">Test</p>
+    <p id="the_id">Test</p>
+    </body>
+    </html>
     END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
+    premailer = Premailer.new(html, :with_html_string => true)
+    premailer.to_inline_css
     premailer.processed_doc.search('p').each do |el|
       assert_match /red/i, el['style']
     end
@@ -121,72 +121,72 @@ END_HTML
 
   def test_preserving_styles
     html = <<END_HTML
-    <html> 
+    <html>
     <head>
     <link rel="stylesheet" href="#"/>
     <style type="text/css"> a:hover { color: red; } </style>
     </head>
-    <body> 
-		<p><a>Test</a></p> 
-		</body>
-		</html>
+    <body>
+    <p><a>Test</a></p>
+    </body>
+    </html>
 END_HTML
     [:nokogiri].each do |adapter|
-  		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
-  		premailer.to_inline_css
-  	  assert_equal 1, premailer.processed_doc.search('head link').length
-  	  assert_equal 1, premailer.processed_doc.search('head style').length
+      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
+      premailer.to_inline_css
+      assert_equal 1, premailer.processed_doc.search('head link').length
+      assert_equal 1, premailer.processed_doc.search('head style').length
 
-  		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => adapter)
-  		premailer.to_inline_css
-  	  assert_nil premailer.processed_doc.at('head link')
+      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => adapter)
+      premailer.to_inline_css
+      assert_nil premailer.processed_doc.at('head link')
 
       # should be preserved as unmergeable
-  	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
-  	end
+      assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
+    end
   end
 
   def test_unmergable_rules
     html = <<END_HTML
     <html> <head> <style type="text/css"> a { color:blue; } a:hover { color: red; } </style> </head>
-		<p><a>Test</a></p> 
-		</body> </html>
+    <p><a>Test</a></p>
+    </body> </html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
-		premailer.to_inline_css
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+    premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
+    premailer.to_inline_css
+    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
   def test_unmergable_rules_with_no_head
     html = <<END_HTML
-    <html> <body> 
+    <html> <body>
     <style type="text/css"> a:hover { color: red; } </style>
-		<p><a>Test</a></p> 
-		</body> </html>
+    <p><a>Test</a></p>
+    </body> </html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :with_html_string => true)
     assert_nothing_raised do
-		  premailer.to_inline_css
-	  end
-	  assert_nil premailer.processed_doc.at('head')
+      premailer.to_inline_css
+    end
+    assert_nil premailer.processed_doc.at('head')
   end
 
   def test_unmergable_rules_with_empty_head
     html = <<END_HTML
     <html> <head></head>
-    <body> 
+    <body>
     <style type="text/css"> a:hover { color: red; } </style>
-		<p><a>Test</a></p> 
-		</body> </html>
+    <p><a>Test</a></p>
+    </body> </html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :with_html_string => true)
     assert_nothing_raised do
-		  premailer.to_inline_css
-	  end
-	  assert_not_nil premailer.processed_doc.at('head style')
+      premailer.to_inline_css
+    end
+    assert_not_nil premailer.processed_doc.at('head style')
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
@@ -195,40 +195,40 @@ END_HTML
     <html>
     <style type="text/css"> td a:link.top_links { color: red; } </style>
     <body>
-		<td><a class="top_links">Test</a></td>
-		</body>
-		</html>
+    <td><a class="top_links">Test</a></td>
+    </body>
+    </html>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :with_html_string => true)
     assert_nothing_raised do
-		  premailer.to_inline_css
-	  end
-	  assert_match /color: red/, premailer.processed_doc.at('a').attributes['style'].to_s
+      premailer.to_inline_css
+    end
+    assert_match /color: red/, premailer.processed_doc.at('a').attributes['style'].to_s
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
   def test_parsing_bad_markup_around_tables
     html = <<END_HTML
     <html>
-    <style type="text/css"> 
+    <style type="text/css">
       .style3 { font-size: xx-large; }
-      .style5 { background-color: #000080; } 
+      .style5 { background-color: #000080; }
     </style>
-		<tr>
-						<td valign="top" class="style3">
-						<!-- MSCellType="ContentHead" -->
-						<strong>PROMOCION CURSOS PRESENCIALES</strong></td>
-						<strong>
-						<td valign="top" style="height: 125px" class="style5">
-						<!-- MSCellType="DecArea" -->
-						<img alt="" src="../../images/CertisegGold.GIF" width="608" height="87" /></td>
-		</tr>
+    <tr>
+            <td valign="top" class="style3">
+            <!-- MSCellType="ContentHead" -->
+            <strong>PROMOCION CURSOS PRESENCIALES</strong></td>
+            <strong>
+            <td valign="top" style="height: 125px" class="style5">
+            <!-- MSCellType="DecArea" -->
+            <img alt="" src="../../images/CertisegGold.GIF" width="608" height="87" /></td>
+    </tr>
 END_HTML
 
-		premailer = Premailer.new(html, :with_html_string => true)
-		premailer.to_inline_css
-	  assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
-	  assert_match /background-color: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s		
+    premailer = Premailer.new(html, :with_html_string => true)
+    premailer.to_inline_css
+    assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
+    assert_match /background-color: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
   end
 end

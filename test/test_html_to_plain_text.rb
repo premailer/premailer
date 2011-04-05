@@ -14,9 +14,9 @@ class TestHtmlToPlainText < Test::Unit::TestCase
     <html>
     <title>Ignore me</title>
     <body>
-		<p>Test</p>
-		</body>
-		</html>
+    <p>Test</p>
+    </body>
+    </html>
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
@@ -28,7 +28,7 @@ END_HTML
     <html>
     <title>Ignore me</title>
     <body>
-		<p>Test
+    <p>Test
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
@@ -50,9 +50,9 @@ END_HTML
     html = <<END_HTML
     <html>
     <body>
-		<p><span>Test</span>
-		<span>line 2</span>
-		</p>
+    <p><span>Test</span>
+    <span>line 2</span>
+    </p>
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
@@ -68,7 +68,7 @@ END_HTML
     assert_plaintext "* item 1\n* item 2", "<li class='123'>item 1</li> <li>item 2</li>\n"
     assert_plaintext "* item 1\n* item 2\n* item 3", "<li>item 1</li> \t\n <li>item 2</li> <li> item 3</li>\n"
   end
-  
+
   def test_stripping_html
     assert_plaintext 'test text', "<p class=\"123'45 , att\" att=tester>test <span class='te\"st'>text</span>\n"
   end
@@ -80,7 +80,7 @@ END_HTML
     assert_plaintext "Test text\nTest text", "\n<p>Test text<br> \tTest text<br></p>\n"
     assert_plaintext "Test text\n\nTest text", "Test text<br><BR />Test text"
   end
-  
+
   def test_headings
     assert_plaintext "****\nTest\n****", "<h1>Test</h1>"
     assert_plaintext "****\nTest\n****", "\t<h1>\nTest</h1> "
@@ -89,7 +89,7 @@ END_HTML
     assert_plaintext "----\nTest\n----", "<h2>Test</h2>"
     assert_plaintext "Test\n----", "<h3> <span class='a'>Test </span></h3>"
   end
-  
+
   def test_wrapping_lines
     raw = ''
     100.times { raw += 'test ' }
@@ -104,24 +104,24 @@ END_HTML
   def test_links
     # basic
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/">Link</a>'
-    
+
     # nested html
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/"><span class="a">Link</span></a>'
-    
+
     # complex link
     assert_plaintext 'Link ( http://example.com:80/~user?aaa=bb&c=d,e,f#foo )', '<a href="http://example.com:80/~user?aaa=bb&amp;c=d,e,f#foo">Link</a>'
-    
+
     # attributes
     assert_plaintext 'Link ( http://example.com/ )', '<a title=\'title\' href="http://example.com/">Link</a>'
-    
+
     # spacing
     assert_plaintext 'Link ( http://example.com/ )', '<a href="   http://example.com/ "> Link </a>'
-    
+
     # merge links
     assert_plaintext 'Link ( %%LINK%% )', '<a href="%%LINK%%">Link</a>'
     assert_plaintext 'Link ( [LINK] )', '<a href="[LINK]">Link</a>'
     assert_plaintext 'Link ( {LINK} )', '<a href="{LINK}">Link</a>'
-    
+
     # unsubscribe
     assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
   end
