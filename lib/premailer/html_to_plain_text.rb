@@ -73,6 +73,9 @@ module HtmlToPlainText
     # no more than two consecutive newlines
     txt.gsub!(/[\n]{3,}/, "\n\n")
 
+    # no more than two consecutive spaces
+    txt.gsub!(/ {2,}/, " ")
+
     txt.strip
   end
 

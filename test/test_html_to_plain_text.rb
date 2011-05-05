@@ -44,6 +44,7 @@ END_HTML
     assert_plaintext "a\na", "  \na \n a \t"
     assert_plaintext "a\n\na", "  \na \n\t \n \n a \t"
     assert_plaintext "test text", "test text&nbsp;"
+    assert_plaintext "test text", "test        text"
   end
 
   def test_wrapping_spans
