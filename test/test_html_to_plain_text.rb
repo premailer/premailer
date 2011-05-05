@@ -117,6 +117,9 @@ END_HTML
     # spacing
     assert_plaintext 'Link ( http://example.com/ )', '<a href="   http://example.com/ "> Link </a>'
     
+    # multiple
+    assert_plaintext 'Link A ( http://example.com/a/ ) Link B ( http://example.com/b/ )', '<a href="http://example.com/a/">Link A</a> <a href="http://example.com/b/">Link B</a>'
+
     # merge links
     assert_plaintext 'Link ( %%LINK%% )', '<a href="%%LINK%%">Link</a>'
     assert_plaintext 'Link ( [LINK] )', '<a href="[LINK]">Link</a>'

@@ -44,7 +44,7 @@ module HtmlToPlainText
     txt.gsub!(/(<\/span>)[\s]+(<span)/mi, '\1 \2')
 
     # links
-    txt.gsub!(/<a.*href=\"([^\"]*)\"[^>]*>(.*)<\/a>/i) do |s|
+    txt.gsub!(/<a.+?href=\"([^\"]*)\"[^>]*>(.+?)<\/a>/i) do |s|
       $2.strip + ' ( ' + $1.strip + ' )'
     end
 
