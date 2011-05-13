@@ -44,7 +44,7 @@ module HtmlToPlainText
     txt.gsub!(/(<\/span>)[\s]+(<span)/mi, '\1 \2')
 
     # links
-    txt.gsub!(/<a.*href=\"([^\"]*)\"[^>]*>(.*)<\/a>/i) do |s|
+    txt.gsub!(/<a.+?href=\"([^\"]*)\"[^>]*>(.+?)<\/a>/i) do |s|
       $2.strip + ' ( ' + $1.strip + ' )'
     end
 
@@ -72,6 +72,9 @@ module HtmlToPlainText
 
     # no more than two consecutive newlines
     txt.gsub!(/[\n]{3,}/, "\n\n")
+
+    # no more than two consecutive spaces
+    txt.gsub!(/ {2,}/, " ")
 
     txt.strip
   end
