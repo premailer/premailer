@@ -44,6 +44,7 @@ END_HTML
     assert_plaintext "a\na", "  \na \n a \t"
     assert_plaintext "a\n\na", "  \na \n\t \n \n a \t"
     assert_plaintext "test text", "test text&nbsp;"
+    assert_plaintext "test text", "test        text"
   end
 
   def test_wrapping_spans
@@ -117,6 +118,9 @@ END_HTML
     # spacing
     assert_plaintext 'Link ( http://example.com/ )', '<a href="   http://example.com/ "> Link </a>'
     
+    # multiple
+    assert_plaintext 'Link A ( http://example.com/a/ ) Link B ( http://example.com/b/ )', '<a href="http://example.com/a/">Link A</a> <a href="http://example.com/b/">Link B</a>'
+
     # merge links
     assert_plaintext 'Link ( %%LINK%% )', '<a href="%%LINK%%">Link</a>'
     assert_plaintext 'Link ( [LINK] )', '<a href="[LINK]">Link</a>'
