@@ -32,6 +32,10 @@ class Premailer
               # Change single ID CSS selectors into xpath so that we can match more
               # than one element.  Added to work around dodgy generated code.
               selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
+              
+              # convert attribute selectors to hpricot's format
+              selector.gsub!(/\[([\w]+)\]/, '[@\1]')
+              selector.gsub!(/\[([\w]+)([\=\~\^\$\*]+)([\w\s]+)\]/, '[@\1\2\'\3\']')
 
               doc.search(selector).each do |el|
                 if el.elem? and (el.name != 'head' and el.parent.name != 'head')

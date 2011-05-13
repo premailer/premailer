@@ -201,6 +201,18 @@ END_HTML
       assert_match /\r/, pm.to_inline_css
     end
   end
+  
+  
+  def test_advanced_selectors
+    remote_setup('base.html', :adapter => :nokogiri)
+    assert_match /italic/, @doc.at('h2 + h3')['style']
+    assert_match /italic/, @doc.at('p[attr~=quote]')['style']
+    assert_match /italic/, @doc.at('ul li:first-of-type')['style']
+    
+    remote_setup('base.html', :adapter => :hpricot)
+    assert_match /italic/, @doc.at('p[@attr~="quote"]')['style']
+    assert_match /italic/, @doc.at('ul li:first-of-type')['style']
+  end
 
 protected
   def local_setup(f = 'base.html', opts = {})

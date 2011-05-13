@@ -71,6 +71,10 @@ p { margin: 0 0 1em; font: normal 100%/158% "Arial", sans-serif; vertical-align:
 .hide { text-align: center; color: red; font-size: 150%; }
 
 /*** specific elements ***/
+h2 + h3 { font-style: italic;}
+p[attr~=quote]  { font-style: italic;}
+ul li:first-of-type { font-style: italic;}
+
 .content p a, .content li a { color: #8AAD09; text-decoration: underline; }
 
 .content p.dt { margin-bottom: .8em; font: italic 95%/135% "Arial", sans-serif; }
