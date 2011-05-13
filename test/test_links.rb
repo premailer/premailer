@@ -22,6 +22,7 @@ class TestLinks < Test::Unit::TestCase
     ]
       
     not_appendable = [
+      '%DONOTCONVERT%',
       '{DONOTCONVERT}',
       '[DONOTCONVERT]',
       '<DONOTCONVERT>',
