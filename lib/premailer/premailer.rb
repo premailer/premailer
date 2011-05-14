@@ -205,7 +205,7 @@ protected
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
-        if tag.to_s.strip =~ /^\<link/i and tag.attributes['href'] and media_type_ok?(tag.attributes['media'])
+        if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media'])
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           if Premailer.local_data?(link_uri)
