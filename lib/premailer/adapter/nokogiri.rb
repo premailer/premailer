@@ -194,7 +194,7 @@ class Premailer
           thing = thing.force_encoding('ASCII-8BIT').encode!
           doc = ::Nokogiri::XML(thing) {|c| c.recover }
         else
-          doc = ::Nokogiri::XML(thing, nil, 'ASCII-8BIT') {|c| c.recover }
+          doc = ::Nokogiri::XML(thing, nil, @options[:inputencoding] || 'ASCII-8BIT') {|c| c.recover }
         end
 
         return doc
