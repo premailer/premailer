@@ -68,7 +68,7 @@ module Adapter
             # remove css declaration to avoid conflicts
             # needs a patched css_parser
             # see http://github.com/alexdunae/css_parser/pull/10
-            merged.remove_declaration!(css_att)
+            merged.remove_declaration!(css_att) if @options[:css_to_attributes]
           end
         end
       end
