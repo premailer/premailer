@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name     = "premailer"
+  s.name     = "fotonauts-premailer"
   s.version  = "1.7.1"
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary  = "Preflight for HTML e-mail."
