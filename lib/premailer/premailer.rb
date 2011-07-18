@@ -36,6 +36,7 @@ class Premailer
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
+  RE_RESET_SELECTORS = /^(\:\#outlook|body|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
   # list of CSS attributes that can be rendered as HTML attributes
   #
@@ -105,6 +106,7 @@ class Premailer
   # [+remove_classes+] Remove class attributes. Default is +false+.
   # [+remove_comments+] Remove html comments. Default is +false+.
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
+  # [+preserve_reset+] Whether to preserve styles associated with the MailChimp reset code
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
   # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
@@ -121,6 +123,7 @@ class Premailer
                 :with_html_string => false,
                 :css_string => nil,
                 :preserve_styles => false,
+                :preserve_reset => true,
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false,
