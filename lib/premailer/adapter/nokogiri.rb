@@ -123,19 +123,18 @@ class Premailer
       #
       # Returns an Nokogiri document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-        if head = doc.at('head')
-          styles = ''
-          unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
-            styles += "#{selector} { #{declarations} }\n"
-          end
+        styles = ''
+        unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
+          styles += "#{selector} { #{declarations} }\n"
+        end
 
-          unless styles.empty?
-            style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-
-            head.add_child(style_tag)
+        unless styles.empty?
+          style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
+          if body = doc.search('body')
+            body.add_child(style_tag)
+          else
+            doc.inner_html= doc.inner_html << style_tag
           end
-        else
-          $stderr.puts "Unable to write unmergable CSS rules: no <head> was found" if @options[:verbose]
         end
         doc
       end
@@ -192,9 +191,9 @@ class Premailer
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
           thing = thing.force_encoding('ASCII-8BIT').encode!
-          doc = ::Nokogiri::XML(thing) {|c| c.recover }
+          doc = ::Nokogiri::HTML(thing) {|c| c.recover }
         else
-          doc = ::Nokogiri::XML(thing, nil, 'ASCII-8BIT') {|c| c.recover }
+          doc = ::Nokogiri::HTML(thing, nil, 'ASCII-8BIT') {|c| c.recover }
         end
 
         return doc
