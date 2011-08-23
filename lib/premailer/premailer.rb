@@ -36,7 +36,7 @@ class Premailer
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
-  RE_RESET_SELECTORS = /^(\:\#outlook|body|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
+  RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
   # list of CSS attributes that can be rendered as HTML attributes
   #
@@ -217,7 +217,7 @@ protected
           end
           
           # if the file does not exist locally, try to grab the remote reference
-          if not File.exists?(link_uri)
+          if link_uri.nil? or not File.exists?(link_uri)
             link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           end
           
