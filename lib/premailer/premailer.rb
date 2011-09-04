@@ -98,7 +98,7 @@ class Premailer
   # [+warn_level+] What level of CSS compatibility warnings to show (see Warnings).
   # [+link_query_string+] A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
   # [+base_url+] Used to calculate absolute URLs for local files.
-  # [+css+] Manually specify a CSS stylesheet.
+  # [+css+] Manually specify CSS stylesheets.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
   # [+css_string+] Pass CSS as a string
   # [+remove_ids+] Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is +false+.
@@ -129,7 +129,7 @@ class Premailer
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
 
-    @css_files = @options[:css]
+    @css_files = [@options[:css]].flatten
 
     @css_warnings = []
 
@@ -442,3 +442,4 @@ public
     return warnings
   end
 end
+
