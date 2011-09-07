@@ -215,4 +215,25 @@ END_HTML
 	  assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
 	  assert_match /background-color: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s		
   end
+
+  # in response to https://github.com/alexdunae/premailer/issues/28
+  def test_handling_shorthand_auto_properties
+    html = <<END_HTML
+    <html>
+    <style type="text/css"> 
+      #page { margin: 0; margin-left: auto; margin-right: auto; }
+      p { border: 1px solid black; border-right: none; }
+      
+    </style>
+    <body>
+      <div id='page'><p>test</p></div>
+    </body>
+    </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+  	premailer.to_inline_css
+    assert_match /margin: 0 auto;/, premailer.processed_doc.search('#page').first.attributes['style'].to_s
+    assert_match /border-style: solid none solid solid;/, premailer.processed_doc.search('p').first.attributes['style'].to_s
+  end
 end
