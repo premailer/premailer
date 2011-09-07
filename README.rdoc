@@ -42,6 +42,26 @@ Download the Premailer gem from RubyGems.
   premailer.warnings.each do |w|
     puts "#{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
   end
+  
+=== Premailer-specific CSS
+
+Premailer looks for a few CSS attributes that make working with tables a bit easier.
+
++-premailer-width+::        Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements
++-premailer-height+::       Available on <tt>table</tt>, <tt>tr</tt>, <tt>th</tt> and <tt>td</tt> elements
++-premailer-cellpadding+::  Available on <tt>table</tt> elements
++-premailer-cellspacing+::  Available on <tt>table</tt> elements
+
+Each of these CSS declarations will be copied to appropriate element's attribute. 
+
+For example
+
+  table { -premailer-cellspacing: 5; -premailer-width: 500;}
+
+will result in 
+
+  <table cellspacing='5' width='500'>
+
 
 === Contributions
 

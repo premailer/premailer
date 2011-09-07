@@ -214,6 +214,24 @@ END_HTML
     assert_match /italic/, @doc.at('ul li:first-of-type')['style']
   end
 
+  def test_premailer_related_attributes
+    html = <<END_HTML
+    <html> <head> <style>table { -premailer-width: 500; } td { -premailer-height: 20}; </style>
+    <body>
+		<table> <tr> <td> Test </td> </tr> </table>
+		</body> </html>
+END_HTML
+
+    [:nokogiri, :hpricot].each do |adapter|
+  		pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      pm.to_inline_css
+      doc = pm.processed_doc
+  	  assert_equal '500', doc.at('table')['width']
+  	  assert_equal '20', doc.at('td')['height']
+  	end
+  end
+
+
 protected
   def local_setup(f = 'base.html', opts = {})
     base_file = File.expand_path(File.dirname(__FILE__)) + '/files/' + f
