@@ -129,8 +129,21 @@ END_HTML
     # unsubscribe
     assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
   end
+  
+  # see https://github.com/alexdunae/premailer/issues/72
+  def test_multiple_links_per_line
+    assert_plaintext 'This is link1 ( http://www.google.com ) and link2 ( http://www.google.com ) is next.', 
+                     '<p>This is <a href="http://www.google.com" >link1</a> and <a href="http://www.google.com" >link2 </a> is next.</p>',
+                     nil, 10000
+  end
 
-  def assert_plaintext(out, raw, msg = nil)
-    assert_equal out, convert_to_text(raw), msg
+  # see https://github.com/alexdunae/premailer/issues/72
+  def test_links_within_headings
+    assert_plaintext "****************************\nTest ( http://example.com/ )\n****************************", 
+                     "<h1><a href='http://example.com/'>Test</a></h1>"
+  end
+
+  def assert_plaintext(out, raw, msg = nil, line_length = 65)
+    assert_equal out, convert_to_text(raw, line_length), msg
   end
 end
