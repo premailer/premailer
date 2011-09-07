@@ -52,10 +52,33 @@ class Premailer
     'div' => {'text-align' => 'align'},
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
-    'table' => {'background-color' => 'bgcolor'},
-    'tr' => {'text-align' => 'align', 'background-color' => 'bgcolor'},
-    'th' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
-    'td' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
+    'table' => {
+      'background-color' => 'bgcolor',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height',
+      '-premailer-cellpadding' => 'cellpadding',
+      '-premailer-cellspacing' => 'cellspacing',
+    },
+    'tr' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      '-premailer-height' => 'height'
+    },
+    'th' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      'vertical-align' => 'valign',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height'
+    },
+    'td' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      'vertical-align' => 'valign',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height',
+      '-premailer-colspan' => 'colspan'
+    },
     'img' => {'float' => 'align'}
   }
 
