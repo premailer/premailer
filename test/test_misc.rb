@@ -131,7 +131,7 @@ END_HTML
 		</body>
 		</html>
 END_HTML
-    [:nokogiri].each do |adapter|
+    [:nokogiri, :hpricot].each do |adapter|
   		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
   		premailer.to_inline_css
   	  assert_equal 1, premailer.processed_doc.search('head link').length
@@ -142,7 +142,7 @@ END_HTML
   	  assert_nil premailer.processed_doc.at('head link')
 
       # should be preserved as unmergeable
-  	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
+  	  assert_match /red !important/i, premailer.processed_doc.at('body style').inner_html
   	end
   end
 
@@ -155,38 +155,22 @@ END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
 		premailer.to_inline_css
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
 
-  def test_unmergable_rules_with_no_head
+  def test_unmergable_rules_with_no_body
     html = <<END_HTML
-    <html> <body> 
+    <html> 
     <style type="text/css"> a:hover { color: red; } </style>
 		<p><a>Test</a></p> 
-		</body> </html>
+		</html>
 END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true)
     assert_nothing_raised do
 		  premailer.to_inline_css
 	  end
-	  assert_nil premailer.processed_doc.at('head')
-  end
-
-  def test_unmergable_rules_with_empty_head
-    html = <<END_HTML
-    <html> <head></head>
-    <body> 
-    <style type="text/css"> a:hover { color: red; } </style>
-		<p><a>Test</a></p> 
-		</body> </html>
-END_HTML
-
-		premailer = Premailer.new(html, :with_html_string => true)
-    assert_nothing_raised do
-		  premailer.to_inline_css
-	  end
-	  assert_not_nil premailer.processed_doc.at('head style')
+	  assert_match /red !important/i, premailer.processed_doc.at('style').inner_html
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7

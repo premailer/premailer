@@ -129,13 +129,14 @@ class Premailer
         end
 
         unless styles.empty?
-          style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
+          style_tag = "<style type=\"text/css\">\n#{styles}></style>"
           if body = doc.search('body')
-            body.add_child(style_tag)
+            doc.at_css('body').children.first.before(style_tag)            
           else
-            doc.inner_html= doc.inner_html << style_tag
+            doc.inner_html = style_tag += doc.inner_html
           end
         end
+
         doc
       end
 
