@@ -295,7 +295,8 @@ public
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
-      next if href[0,1] == '#' # don't bother with anchors
+      
+      next if href[0,1] =~ /[\#\{\[\<\%]/ # don't bother with anchors or special-looking links
 
       begin
         href = URI.parse(href)
@@ -355,7 +356,7 @@ public
       tags.each do |tag|
         # skip links that look like they have merge tags
         # and mailto, ftp, etc...
-        if tag.attributes[attribute].to_s =~ /^(\%\{|\[|<|\#|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:)/i
+        if tag.attributes[attribute].to_s =~ /^([\%\<\{\#\[]|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:)/i
           next
         end
 
