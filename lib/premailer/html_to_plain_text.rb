@@ -14,6 +14,9 @@ module HtmlToPlainText
     he = HTMLEntities.new
     txt = he.decode(txt)
 
+    # replace image by their alt attribute
+    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
+
     # handle headings (H1-H6)
     txt.gsub!(/(<\/h[1-6]>)/i, "\n\\1") # move closing tags to new lines
     txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |s|

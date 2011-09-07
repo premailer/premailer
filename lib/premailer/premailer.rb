@@ -1,5 +1,3 @@
-#!/usr/bin/ruby
-#
 # Premailer by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-10
 #
 # Premailer processes HTML and CSS to improve e-mail deliverability.
@@ -54,10 +52,33 @@ class Premailer
     'div' => {'text-align' => 'align'},
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
-    'table' => {'background-color' => 'bgcolor'},
-    'tr' => {'text-align' => 'align', 'background-color' => 'bgcolor'},
-    'th' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
-    'td' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
+    'table' => {
+      'background-color' => 'bgcolor',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height',
+      '-premailer-cellpadding' => 'cellpadding',
+      '-premailer-cellspacing' => 'cellspacing',
+    },
+    'tr' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      '-premailer-height' => 'height'
+    },
+    'th' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      'vertical-align' => 'valign',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height'
+    },
+    'td' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      'vertical-align' => 'valign',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height',
+      '-premailer-colspan' => 'colspan'
+    },
     'img' => {'float' => 'align'}
   }
 
@@ -207,7 +228,7 @@ protected
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
-        if tag.to_s.strip =~ /^\<link/i and tag.attributes['href'] and media_type_ok?(tag.attributes['media'])
+        if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media'])
 
           link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           if Premailer.local_data?(link_uri)
@@ -239,9 +260,9 @@ public
 
   def media_type_ok?(media_types) # :nodoc:
     return true if media_types.nil? or media_types.empty?
-    return media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
+    media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   rescue
-    return true
+    true
   end
 
   def append_query_string(doc, qs)
@@ -295,8 +316,7 @@ public
     # Check for an XHTML doctype
   def is_xhtml?
     intro = @doc.to_html.strip.split("\n")[0..2].join(' ')
-    is_xhtml = (intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
-    is_xhtml = is_xhtml ? true : false
+    is_xhtml = !!(intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
     $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
     is_xhtml
   end
@@ -362,17 +382,16 @@ public
     resolved = nil
     if path =~ /(http[s]?|ftp):\/\//i
       resolved = path
-      return Premailer.canonicalize(resolved)
+      Premailer.canonicalize(resolved)
     elsif base_path.kind_of?(URI)
       resolved = base_path.merge(path)
-      return Premailer.canonicalize(resolved)
+      Premailer.canonicalize(resolved)
     elsif base_path.kind_of?(String) and base_path =~ /^(http[s]?|ftp):\/\//i
       resolved = URI.parse(base_path)
       resolved = resolved.merge(path)
-      return Premailer.canonicalize(resolved)
+      Premailer.canonicalize(resolved)
     else
-
-      return File.expand_path(path, File.dirname(base_path))
+      File.expand_path(path, File.dirname(base_path))
     end
   end
 
@@ -380,13 +399,9 @@ public
   #
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
-    if data.is_a?(IO) || data.is_a?(StringIO)
-      return true
-    elsif data =~ /^(http|https|ftp)\:\/\//i
-      return false
-    else
-      return true
-    end
+    return true if data.is_a?(IO) || data.is_a?(StringIO)
+    return false if data =~ /^(http|https|ftp)\:\/\//i
+    true
   end
 
   # from http://www.ruby-forum.com/topic/140101
@@ -404,7 +419,7 @@ public
 
   # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
   def check_client_support # :nodoc:
-    @client_support = @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
+    @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE))
 
     warnings = []
     properties = []
