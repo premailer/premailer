@@ -192,6 +192,24 @@ END_HTML
 	  assert_match /background-color: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s		
   end
 
+  # in response to https://github.com/alexdunae/premailer/issues/56
+  def test_inline_important
+    html = <<END_HTML
+    <html>
+    <style type="text/css"> 
+      p { color: red !important; }
+    </style>
+    <body>
+      <p style='color: green !important;'>test</p></div>
+    </body>
+    </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+  	premailer.to_inline_css
+    assert_equal 'color: green !important;', premailer.processed_doc.search('p').first.attributes['style'].to_s
+  end
+
   # in response to https://github.com/alexdunae/premailer/issues/28
   def test_handling_shorthand_auto_properties
     html = <<END_HTML

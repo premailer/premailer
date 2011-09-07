@@ -52,7 +52,6 @@ class Premailer
           style = el.attributes['style'].to_s
 
           declarations = []
-
           style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
             rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
             declarations << rs
