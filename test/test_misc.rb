@@ -17,30 +17,6 @@ class TestMisc < Test::Unit::TestCase
     premailer = Premailer.new(io, :adapter => :nokogiri)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
   end
-  
-  # https://github.com/alexdunae/premailer/issues/#issue/28
-  def test_style_expanding
-    html = <<END_HTML
-    <html> 
-    <body> 
-    <style type="text/css">
-    td { border-left: 1px solid black; }
-    td.special { border: none; } 
-    td p { padding: 0; }
-    td.special p { padding-left: 10px; }
-    </style>
-		<table><tr><td class="special"><p>Test</p></td></tr></table> 
-		</body>
-		</html>
-END_HTML
-
-    [:hpricot, :nokogiri].each do |adapter|
-  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-  		premailer.to_inline_css
-      assert_match /padding\: 0 0 0 10px/i,  premailer.processed_doc.at('p')['style']
-  	  assert_match /border\: none; border\-left\: 1px solid black/i,  premailer.processed_doc.at('td')['style']
-    end
-  end
 
   def test_styles_in_the_body
     html = <<END_HTML
