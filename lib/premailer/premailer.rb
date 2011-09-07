@@ -36,6 +36,7 @@ class Premailer
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
+  RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
   # list of CSS attributes that can be rendered as HTML attributes
   #
@@ -128,6 +129,7 @@ class Premailer
   # [+remove_classes+] Remove class attributes. Default is +false+.
   # [+remove_comments+] Remove html comments. Default is +false+.
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
+  # [+preserve_reset+] Whether to preserve styles associated with the MailChimp reset code
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
   # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
@@ -144,6 +146,7 @@ class Premailer
                 :with_html_string => false,
                 :css_string => nil,
                 :preserve_styles => false,
+                :preserve_reset => true,
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false,
@@ -229,8 +232,18 @@ protected
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
         if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media'])
-
-          link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+          # A user might want to <link /> to a local css file that is also mirrored on the site
+          # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
+          
+          if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
+            link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
+          end
+          
+          # if the file does not exist locally, try to grab the remote reference
+          if link_uri.nil? or not File.exists?(link_uri)
+            link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+          end
+          
           if Premailer.local_data?(link_uri)
             $stderr.puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)

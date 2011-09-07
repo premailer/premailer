@@ -13,6 +13,9 @@ module HtmlToPlainText
     # decode HTML entities
     he = HTMLEntities.new
     txt = he.decode(txt)
+    
+    # replace image by their alt attribute
+    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
 
     # replace image by their alt attribute
     txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
@@ -70,7 +73,7 @@ module HtmlToPlainText
     txt.gsub!(/<\/?[^>]*>/, '')
 
     txt = word_wrap(txt, line_length)
-
+    
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
 
@@ -84,6 +87,11 @@ module HtmlToPlainText
 
     # no more than two consecutive spaces
     txt.gsub!(/ {2,}/, " ")
+    
+    # the word messes up the parens
+    txt.gsub!(/\([ \n](http[^)]+)[\n ]\)/) do |s|
+      "( " + $1 + " )"
+    end
 
     txt.strip
   end

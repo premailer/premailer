@@ -29,6 +29,12 @@ class Premailer
             @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
           else
             begin
+	            if selector =~ Premailer::RE_RESET_SELECTORS
+                # this is in place to preserve the MailChimp CSS reset: http://github.com/mailchimp/Email-Blueprints/
+                # however, this doesn't mean for testing pur
+	              @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration))  unless !@options[:preserve_reset]
+              end
+
               # Change single ID CSS selectors into xpath so that we can match more
               # than one element.  Added to work around dodgy generated code.
               selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
