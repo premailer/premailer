@@ -2,3 +2,4 @@
 *.gem
 bin/*.html
 html/
+vendor/
