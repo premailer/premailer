@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
   s.add_dependency('htmlentities', '>= 4.0.0')
   s.add_development_dependency('hpricot', '>= 0.8.3')
   s.add_development_dependency('nokogiri', '>= 1.4.4')
+  s.add_development_dependency('rake', ['~> 0.8',  '!= 0.9.0'])
 end
