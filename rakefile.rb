@@ -18,8 +18,7 @@ Gem::PackageTask.new(gemspec) do |pkg|
   pkg.need_tar = true
 end
 
-desc 'Default: parse a URL.'
-task :default => [:inline]
+task :default => [:test]
 
 desc 'Parse a URL and write out the output.'
 task :inline do
