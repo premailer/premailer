@@ -31,7 +31,7 @@ class Premailer
   include HtmlToPlainText
   include CssParser
 
-  VERSION = '1.7.2'
+  VERSION = '1.7.3'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
