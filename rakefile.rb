@@ -3,8 +3,7 @@ $:.unshift File.expand_path('../lib', __FILE__)
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
-require 'rake/packagetask'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'fileutils'
 require 'premailer'
 
@@ -15,7 +14,7 @@ def gemspec
  end
 end
 
-Rake::GemPackageTask.new(gemspec) do |pkg|
+Gem::PackageTask.new(gemspec) do |pkg|
   pkg.need_tar = true
 end
 
