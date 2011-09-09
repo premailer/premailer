@@ -126,16 +126,15 @@ class Premailer
         unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
           styles += "#{selector} { #{declarations} }\n"
         end
-
+        
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}></style>"
           if body = doc.search('body')
-            doc.at_css('body').children.first.before(style_tag)            
+            doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))            
           else
             doc.inner_html = style_tag += doc.inner_html
           end
         end
-
         doc
       end
 
@@ -185,7 +184,6 @@ class Premailer
         end
 
         return nil unless thing
-
         doc = nil
 
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
@@ -193,7 +191,8 @@ class Premailer
           thing = thing.force_encoding('ASCII-8BIT').encode!
           doc = ::Nokogiri::HTML(thing) {|c| c.recover }
         else
-          doc = ::Nokogiri::HTML(thing, nil, @options[:inputencoding] || 'BINARY') {|c| c.recover }
+          default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
+          doc = ::Nokogiri::HTML(thing, nil, @options[:inputencoding] || default_encoding) {|c| c.recover }
         end
 
         return doc
