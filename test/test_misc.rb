@@ -168,6 +168,8 @@ END_HTML
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
+  #
+  # fails sometimes in JRuby, see https://github.com/alexdunae/premailer/issues/79
   def test_parsing_bad_markup_around_tables
     html = <<END_HTML
     <html>
