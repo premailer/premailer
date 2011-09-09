@@ -42,6 +42,10 @@ Download the Premailer gem from RubyGems.
   premailer.warnings.each do |w|
     puts "#{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
   end
+
+=== Ruby Compatibility
+
+Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 (preview 1). It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the {Travis CI dashboard}[http://travis-ci.org/#!/alexdunae/premailer].
   
 === Premailer-specific CSS
 
