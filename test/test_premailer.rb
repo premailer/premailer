@@ -1,27 +1,7 @@
 # encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestPremailer < Test::Unit::TestCase
-  include WEBrick
-
-  def setup
-    # from http://nullref.se/blog/2006/5/17/testing-with-webrick
-    @uri_base = "http://localhost:12000"
-    www_root = File.expand_path(File.dirname(__FILE__)) + '/files/'
-
-    unless @server_thread
-      @server_thread = Thread.new do
-        s = WEBrick::HTTPServer.new(:Port => 12000, :DocumentRoot => www_root, :Logger => Log.new(nil, BasicLog::ERROR), :AccessLog => [])
-        port = s.config[:Port]
-        begin
-          s.start
-        ensure
-          s.shutdown
-        end
-      end
-    end
-  end
-
+class TestPremailer < Premailer::TestCase
   def test_special_characters_nokogiri
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
@@ -51,7 +31,6 @@ class TestPremailer < Test::Unit::TestCase
   	premailer.to_inline_css
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
   end
-
   
   def test_detecting_html
     [:nokogiri, :hpricot].each do |adapter|
@@ -233,28 +212,4 @@ END_HTML
   	  assert_equal '20', doc.at('td')['height']
   	end
   end
-
-
-protected
-  def local_setup(f = 'base.html', opts = {})
-    base_file = File.expand_path(File.dirname(__FILE__)) + '/files/' + f
-    premailer = Premailer.new(base_file, opts)
-    premailer.to_inline_css
-    @doc = premailer.processed_doc
-  end
-  
-  def remote_setup(f = 'base.html', opts = {})
-    # increment the port number for testing multiple adapters  
-    @premailer = Premailer.new(@uri_base + "/#{f}", opts)
-    @premailer.to_inline_css
-    @doc = @premailer.processed_doc
-  end
-
-  #def teardown
-  #  if @server_thread
-  #    @server_thread.kill
-  #    @server_thread.join(5)
-  #    @server_thread = nil
-  #  end
-  #end
 end

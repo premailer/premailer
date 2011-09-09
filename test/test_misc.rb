@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 # Random tests for specific issues.
 #
 # The test suite will be cleaned up at some point soon.
-class TestMisc < Test::Unit::TestCase
+class TestMisc < Premailer::TestCase
 
   # in response to http://github.com/alexdunae/premailer/issues#issue/4
   #

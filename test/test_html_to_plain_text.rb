@@ -1,7 +1,7 @@
 # encoding: utf-8
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestHtmlToPlainText < Test::Unit::TestCase
+class TestHtmlToPlainText < Premailer::TestCase
   include HtmlToPlainText
 
   def test_to_plain_text_with_fragment

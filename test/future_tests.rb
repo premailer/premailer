@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestPremailer < Test::Unit::TestCase
+class TestPremailer < Premailer::TestCase
   def test_related_attributes
     flunk 'Not implemented'
     local_setup

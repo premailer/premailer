@@ -1,6 +1,7 @@
+# encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestLinks < Test::Unit::TestCase
+class TestLinks < Premailer::TestCase
   def test_empty_query_string
     assert_nothing_raised do
       premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
