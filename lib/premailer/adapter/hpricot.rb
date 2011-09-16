@@ -8,6 +8,7 @@ class Premailer
       #
       # Returns a string.
       def to_inline_css
+        $stderr.puts "TO INLINE with Hpricot"
         doc = @processed_doc
         @unmergable_rules = CssParser::Parser.new
 

@@ -176,6 +176,7 @@ class Premailer
     })
 
     @adapter_class = Adapter.find @options[:adapter]
+    $stderr.puts "Using adapter #{@adapter_class}"
 
     self.class.send(:include, @adapter_class)
 
