@@ -120,8 +120,7 @@ class Premailer
       'background-color' => 'bgcolor',
       'vertical-align' => 'valign',
       '-premailer-width' => 'width',
-      '-premailer-height' => 'height',
-      '-premailer-colspan' => 'colspan'
+      '-premailer-height' => 'height'
     },
     'img' => {'float' => 'align'}
   }
