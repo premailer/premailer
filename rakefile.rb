@@ -2,7 +2,6 @@ $:.unshift File.expand_path('../lib', __FILE__)
 
 require 'rake'
 require 'rake/testtask'
-require 'rdoc/task'
 require 'rubygems/package_task'
 require 'fileutils'
 require 'premailer'
@@ -61,8 +60,12 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
-RDoc::Task.new do |rd|
-  rd.main = "README.rdoc"
-  rd.rdoc_files.include("README.rdoc", "LICENSE.rdoc", "lib/**/*.rb")
-  rd.title = 'Premailer Documentation'
+
+begin
+  require 'yard'
+
+  YARD::Rake::YardocTask.new
+rescue LoadError
+  $stderr.puts "Please install YARD with: gem install yard"
 end
+
