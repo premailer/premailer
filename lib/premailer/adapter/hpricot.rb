@@ -2,11 +2,11 @@ require 'hpricot'
 
 class Premailer
   module Adapter
+    # Hpricot adapter
     module Hpricot
 
       # Merge CSS into the HTML document.
-      #
-      # Returns a string.
+      # @return [String] HTML.
       def to_inline_css
         doc = @processed_doc
         @unmergable_rules = CssParser::Parser.new
@@ -29,16 +29,16 @@ class Premailer
             @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
           else
             begin
-	            if selector =~ Premailer::RE_RESET_SELECTORS
+              if selector =~ Premailer::RE_RESET_SELECTORS
                 # this is in place to preserve the MailChimp CSS reset: http://github.com/mailchimp/Email-Blueprints/
                 # however, this doesn't mean for testing pur
-	              @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration))  unless !@options[:preserve_reset]
+                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration))  unless !@options[:preserve_reset]
               end
 
               # Change single ID CSS selectors into xpath so that we can match more
               # than one element.  Added to work around dodgy generated code.
               selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
-              
+
               # convert attribute selectors to hpricot's format
               selector.gsub!(/\[([\w]+)\]/, '[@\1]')
               selector.gsub!(/\[([\w]+)([\=\~\^\$\*]+)([\w\s]+)\]/, '[@\1\2\'\3\']')
@@ -128,7 +128,7 @@ class Premailer
       #
       # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
       #
-      # Returns an Hpricot document.
+      # @return [::Hpricot] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = ''
         unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
@@ -151,7 +151,7 @@ class Premailer
       #
       # If present, uses the <body> element as its base; otherwise uses the whole document.
       #
-      # Returns a string.
+      # @return [String] Plain text.
       def to_plain_text
         html_src = ''
         begin
@@ -163,24 +163,25 @@ class Premailer
       end
 
 
-      # Returns the original HTML as a string.
+      # Gets the original HTML as a string.
+      # @return [String] HTML.
       def to_s
         @doc.to_original_html
       end
 
       # Load the HTML file and convert it into an Hpricot document.
       #
-      # Returns an Hpricot document.
+      # @return [::Hpricot] a document.
       def load_html(input) # :nodoc:
         thing = nil
 
         # TODO: duplicate options
         if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
           thing = input
-				elsif @is_local_file
+        elsif @is_local_file
           @base_dir = File.dirname(input)
           thing = File.open(input, 'r')
-				else
+        else
           thing = open(input)
         end
 
@@ -191,3 +192,4 @@ class Premailer
     end
   end
 end
+

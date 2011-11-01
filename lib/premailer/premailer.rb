@@ -1,4 +1,4 @@
-# Premailer by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-10
+# Premailer by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-11
 #
 # Premailer processes HTML and CSS to improve e-mail deliverability.
 #
@@ -6,42 +6,49 @@
 # attributes. It also converts relative links to absolute links and checks
 # the 'safety' of CSS properties against a CSS support chart.
 #
-# = Example
-#  premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
+# ## Example of use
 #
-#  # Write the HTML output
-#  fout = File.open("output.html", "w")
-#  fout.puts premailer.to_inline_css
-#  fout.close
+# ```ruby
+# premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
 #
-#  # Write the plain-text output
-#  fout = File.open("ouput.txt", "w")
-#  fout.puts premailer.to_plain_text
-#  fout.close
+# # Write the HTML output
+# fout = File.open("output.html", "w")
+# fout.puts premailer.to_inline_css
+# fout.close
 #
-#  # List any CSS warnings
-#  puts premailer.warnings.length.to_s + ' warnings found'
-#  premailer.warnings.each do |w|
-#    puts "#{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
-#  end
+# # Write the plain-text output
+# fout = File.open("ouput.txt", "w")
+# fout.puts premailer.to_plain_text
+# fout.close
 #
-#  premailer = Premailer.new(html_file, :warn_level => Premailer::Warnings::SAFE)
-#  puts premailer.to_inline_css
+# # List any CSS warnings
+# puts premailer.warnings.length.to_s + ' warnings found'
+# premailer.warnings.each do |w|
+#   puts "#{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
+# end
+#
+# premailer = Premailer.new(html_file, :warn_level => Premailer::Warnings::SAFE)
+# puts premailer.to_inline_css
+# ```
+#
 class Premailer
   include HtmlToPlainText
   include CssParser
 
+  # Premailer version.
   VERSION = '1.7.3'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
+  # Unmergable selectors regexp.
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
+  # Reset selectors regexp.
   RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
   # list of CSS attributes that can be rendered as HTML attributes
   #
-  # TODO: too much repetition
-  # TODO: background=""
+  # @todo too much repetition
+  # @todo background=""
   RELATED_ATTRIBUTES = {
     'h1' => {'text-align' => 'align'},
     'h2' => {'text-align' => 'align'},
@@ -90,6 +97,7 @@ class Premailer
   attr_reader   :base_url
 
   # base directory used to resolve links for local files
+  # @return [String] base directory
   attr_reader   :base_dir
 
   # unmergeable CSS rules to be preserved in the head (CssParser)
@@ -101,38 +109,44 @@ class Premailer
   # source HTML document (Hpricot/Nokogiri)
   attr_reader   :doc
 
+  # Warning levels
   module Warnings
+    # No warnings
     NONE = 0
+    # Safe
     SAFE = 1
+    # Poor
     POOR = 2
+    # Risky
     RISKY = 3
   end
   include Warnings
 
+  # Waning level names
   WARN_LABEL = %w(NONE SAFE POOR RISKY)
 
   # Create a new Premailer object.
   #
-  # +html+ is the HTML data to process. It can be either an IO object, the URL of a
-  # remote file, a local path or a raw HTML string.  If passing an HTML string you
-  # must set the +:with_html_string+ option to +true+.
+  # @param html is the HTML data to process. It can be either an IO object, the URL of a
+  #   remote file, a local path or a raw HTML string.  If passing an HTML string you
+  #   must set the with_html_string option to true.
   #
-  # ==== Options
-  # [+line_length+] Line length used by to_plain_text. Boolean, default is 65.
-  # [+warn_level+] What level of CSS compatibility warnings to show (see Warnings).
-  # [+link_query_string+] A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
-  # [+base_url+] Used to calculate absolute URLs for local files.
-  # [+css+] Manually specify CSS stylesheets.
-  # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
-  # [+css_string+] Pass CSS as a string
-  # [+remove_ids+] Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is +false+.
-  # [+remove_classes+] Remove class attributes. Default is +false+.
-  # [+remove_comments+] Remove html comments. Default is +false+.
-  # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
-  # [+preserve_reset+] Whether to preserve styles associated with the MailChimp reset code
-  # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
-  # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
-  # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
+  # @param [Hash] options the options to handle html with.
+  # @option options [FixNum] :line_length Line length used by to_plain_text. Default is 65.
+  # @option options [FixNum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}).
+  # @option options [String] :link_query_string A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
+  # @option options [String] :base_url Used to calculate absolute URLs for local files.
+  # @option options [Array(String)] :css Manually specify CSS stylesheets.
+  # @option options [Boolean] :css_to_attributes Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
+  # @option options [String] :css_string Pass CSS as a string
+  # @option options [Boolean] :remove_ids Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is false.
+  # @option options [Boolean] :remove_classes Remove class attributes. Default is false.
+  # @option options [Boolean] :remove_comments Remove html comments. Default is false.
+  # @option options [Boolean] :preserve_styles Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is false.
+  # @option options [Boolean] :preserve_reset Whether to preserve styles associated with the MailChimp reset code.
+  # @option options [Boolean] :with_html_string Whether the html param should be treated as a raw string.
+  # @option options [Boolean] :verbose Whether to print errors and warnings to <tt>$stderr</tt>.  Default is false.
+  # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
@@ -190,7 +204,8 @@ class Premailer
     load_css_from_html!
   end
 
-  # Array containing a hash of CSS warnings.
+  # CSS warnings.
+  # @return [Array(Hash)] Array of warnings.
   def warnings
     return [] if @options[:warn_level] == Warnings::NONE
     @css_warnings = check_client_support if @css_warnings.empty?
@@ -215,6 +230,7 @@ protected
     @css_parser.add_block!(css_string, {:base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld]})
   end
 
+  # @private
   def load_css_from_options! # :nodoc:
     load_css_from_string(@options[:css_string]) if @options[:css_string]
 
@@ -264,6 +280,8 @@ protected
 
 # here be deprecated methods
 public
+  # @private
+  # @deprecated
   def local_uri?(uri) # :nodoc:
     warn "[DEPRECATION] `local_uri?` is deprecated.  Please use `Premailer.local_data?` instead."
     Premailer.local_data?(uri)
@@ -271,7 +289,8 @@ public
 
 # here be instance methods
 
-  def media_type_ok?(media_types) # :nodoc:
+  # @private
+  def media_type_ok?(media_types)
     return true if media_types.nil? or media_types.empty?
     media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   rescue
@@ -327,7 +346,7 @@ public
     doc
   end
 
-    # Check for an XHTML doctype
+  # Check for an XHTML doctype
   def is_xhtml?
     intro = @doc.to_html.strip.split("\n")[0..2].join(' ')
     is_xhtml = !!(intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
@@ -335,7 +354,7 @@ public
     is_xhtml
   end
 
-    # Convert relative links to absolute links.
+  # Convert relative links to absolute links.
   #
   # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes
   # as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.
@@ -387,10 +406,12 @@ public
   end
 
 
+  # @private
   def self.escape_string(str) # :nodoc:
     str.gsub(/"/ , "'")
   end
 
+  # @private
   def self.resolve_link(path, base_path) # :nodoc:
     path.strip!
     resolved = nil
