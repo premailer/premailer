@@ -1,4 +1,4 @@
-= Premailer License
+# Premailer License
 
 Copyright (c) 2007-2011, Alex Dunae.  All rights reserved.
 
