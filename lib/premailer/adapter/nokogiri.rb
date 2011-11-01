@@ -2,11 +2,12 @@ require 'nokogiri'
 
 class Premailer
   module Adapter
+    # Nokogiri adapter
     module Nokogiri
 
       # Merge CSS into the HTML document.
       #
-      # Returns a string.
+      # @return [String] an HTML.
       def to_inline_css
         doc = @processed_doc
         @unmergable_rules = CssParser::Parser.new
@@ -122,7 +123,7 @@ class Premailer
       #
       # <tt>doc</tt> is an Nokogiri document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
       #
-      # Returns an Nokogiri document.
+      # @return [::Nokogiri::XML] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = ''
         unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
@@ -145,7 +146,7 @@ class Premailer
       #
       # If present, uses the <body> element as its base; otherwise uses the whole document.
       #
-      # Returns a string.
+      # @return [String] a plain text.
       def to_plain_text
         html_src = ''
         begin
@@ -156,7 +157,8 @@ class Premailer
         convert_to_text(html_src, @options[:line_length], @html_encoding)
       end
 
-      # Returns the original HTML as a string.
+      # Gets the original HTML as a string.
+      # @return [String] HTML.
       def to_s
         if is_xhtml?
           @doc.to_xhtml(:encoding => nil)
@@ -167,7 +169,7 @@ class Premailer
 
       # Load the HTML file and convert it into an Nokogiri document.
       #
-      # Returns an Nokogiri document.
+      # @return [::Nokogiri::XML] a document.
       def load_html(input) # :nodoc:
         thing = nil
 
