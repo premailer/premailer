@@ -132,6 +132,8 @@ class Premailer
   # [+preserve_reset+] Whether to preserve styles associated with the MailChimp reset code
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
+  # [+include_link_tags+] Whether to include css from <tt>link rel=stylesheet</tt> tags.  Default is +true+.
+  # [+include_style_tags+] Whether to include css from <tt>style</tt> tags.  Default is +true+.
   # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
@@ -150,6 +152,8 @@ class Premailer
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false,
+                :include_link_tags => true,
+                :include_style_tags => true,
                 :adapter => Adapter.use}.merge(options)
 
     @html_file = html
@@ -231,7 +235,7 @@ protected
   def load_css_from_html! # :nodoc:
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
-        if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media'])
+        if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media']) && @options[:include_link_tags]
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
           
@@ -252,7 +256,7 @@ protected
             @css_parser.load_uri!(link_uri, {:only_media_types => [:screen, :handheld]})
           end
 
-        elsif tag.to_s.strip =~ /^\<style/i
+        elsif tag.to_s.strip =~ /^\<style/i && @options[:include_style_tags]
           @css_parser.add_block!(tag.inner_html, :base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld])
         end
       end
