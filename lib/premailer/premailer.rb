@@ -150,7 +150,8 @@ class Premailer
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false,
-                :adapter => Adapter.use}.merge(options)
+                :adapter => Adapter.use,
+                :inputencoding => 'ASCII-8BIT'}.merge(options)
 
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
