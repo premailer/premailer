@@ -220,4 +220,11 @@ END_HTML
     assert_equal expected_html, pm.to_inline_css
   end
 
+  def test_htmlentities
+    html_entities = "&#8217;"
+    expected_html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>'</p></body></html>\n"
+    pm = Premailer.new(html_entities, :with_html_string => true, :adapter => :nokogiri, :replace_html_entities => true)
+    assert_equal expected_html, pm.to_inline_css
+  end
+
 end

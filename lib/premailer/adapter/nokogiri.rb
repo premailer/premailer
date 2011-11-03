@@ -186,6 +186,14 @@ class Premailer
         return nil unless thing
         doc = nil
 
+        # Handle HTML entities
+        if @options[:replace_html_entities] == true and thing.is_a?(String) 
+          if RUBY_VERSION =~ /1.9/
+            thing = thing.gsub("&#8217;","'")
+          elsif RUBY_VERSION =~ /1.8/
+            thing = thing.gsub("\342\200\231", "'")
+          end
+        end
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
         # However, we really don't want to hardcode this. ASCII-8BIG should be the default, but not the only option.
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
