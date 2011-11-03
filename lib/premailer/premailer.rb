@@ -38,6 +38,43 @@ class Premailer
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
   RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
+  # list of HTMLEntities to fix
+  # source: http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-
+  HTML_ENTITIES = {
+    "1.8" => {
+      "\342\200\231" => "'",
+      "\342\200\246" => "...",
+      "\342\200\176" => "'",
+      "\342\200\177" => "'",
+      "\342\200\230" => "'",
+      "\342\200\231" => "'",
+      "\342\200\232" => ',',
+      "\342\200\233" => "'",
+      "\342\200\234" => '"',
+      "\342\200\235" => '"',
+      "\342\200\041" => '-',
+      "\342\200\174" => '-',
+      "\342\200\220" => '-',
+      "\342\200\223" => '-',
+      "\342\200\224" => '--',
+      "\342\200\225" => '--',
+      "\342\200\042" => '--'
+    },
+    "1.9" => {
+      "&#8217;" => "'",
+      "&#8230;" => "...",
+      "&#8216;" => "'",
+      "&#8218;" => ',',
+      "&#8219;" => "'",
+      "&#8220;" => '"',
+      "&#8221;" => '"',
+      "&#8208;" => '-',
+      "&#8211;" => '-',
+      "&#8212;" => '--',
+      "&#8213;" => '--'
+    }
+  }
+
   # list of CSS attributes that can be rendered as HTML attributes
   #
   # TODO: too much repetition
