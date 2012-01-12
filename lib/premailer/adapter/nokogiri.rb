@@ -47,6 +47,11 @@ class Premailer
           end
         end
 
+        # Remove script tags
+        if @options[:remove_script_tags]
+          doc.search("script").remove
+        end
+
         # Read STYLE attributes and perform folding
         doc.search("*[@style]").each do |el|
           style = el.attributes['style'].to_s
