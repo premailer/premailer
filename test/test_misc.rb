@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 # Random tests for specific issues.
 #
 # The test suite will be cleaned up at some point soon.
-class TestMisc < Test::Unit::TestCase
+class TestMisc < Premailer::TestCase
 
   # in response to http://github.com/alexdunae/premailer/issues#issue/4
   #
@@ -16,53 +16,6 @@ class TestMisc < Test::Unit::TestCase
     <table></table>')
     premailer = Premailer.new(io, :adapter => :nokogiri)
     assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
-  end
-  
-  def test_quotes
-    html = <<-html
-    <html>
-    <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=macintosh">
-    </head>
-    <body>
-    <p class="quote">&ldquo;&hellip; a must-read for fans.&rdquo;<br>
-      <span class="quotereference">&mdash;Library Journal</span></p>
-    </body>
-    </html>
-    html
-    
-    [:hpricot, :nokogiri].each do |adapter|
-  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
- # 		premailer.to_inline_css
-  		puts premailer.to_inline_css
-#      assert_match /padding\: 0 0 0 10px/i,  premailer.processed_doc.at('p')['style']
-# 	  assert_match /border\: none; border\-left\: 1px solid black/i,  premailer.processed_doc.at('td')['style']
-    end
-    
-  end
-  
-  # https://github.com/alexdunae/premailer/issues/#issue/28
-  def test_style_expanding
-    html = <<END_HTML
-    <html> 
-    <body> 
-    <style type="text/css">
-    td { border-left: 1px solid black; }
-    td.special { border: none; } 
-    td p { padding: 0; }
-    td.special p { padding-left: 10px; }
-    </style>
-		<table><tr><td class="special"><p>Test</p></td></tr></table> 
-		</body>
-		</html>
-END_HTML
-
-    [:hpricot, :nokogiri].each do |adapter|
-  		premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-  		premailer.to_inline_css
-      assert_match /padding\: 0 0 0 10px/i,  premailer.processed_doc.at('p')['style']
-  	  assert_match /border\: none; border\-left\: 1px solid black/i,  premailer.processed_doc.at('td')['style']
-    end
   end
 
   def test_styles_in_the_body
@@ -154,7 +107,7 @@ END_HTML
 		</body>
 		</html>
 END_HTML
-    [:nokogiri].each do |adapter|
+    [:nokogiri, :hpricot].each do |adapter|
   		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
   		premailer.to_inline_css
   	  assert_equal 1, premailer.processed_doc.search('head link').length
@@ -165,7 +118,7 @@ END_HTML
   	  assert_nil premailer.processed_doc.at('head link')
 
       # should be preserved as unmergeable
-  	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
+  	  assert_match /red !important/i, premailer.processed_doc.at('body style').inner_html
   	end
   end
 
@@ -178,38 +131,22 @@ END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
 		premailer.to_inline_css
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
 
-  def test_unmergable_rules_with_no_head
+  def test_unmergable_rules_with_no_body
     html = <<END_HTML
-    <html> <body> 
+    <html> 
     <style type="text/css"> a:hover { color: red; } </style>
 		<p><a>Test</a></p> 
-		</body> </html>
+		</html>
 END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true)
     assert_nothing_raised do
 		  premailer.to_inline_css
 	  end
-	  assert_nil premailer.processed_doc.at('head')
-  end
-
-  def test_unmergable_rules_with_empty_head
-    html = <<END_HTML
-    <html> <head></head>
-    <body> 
-    <style type="text/css"> a:hover { color: red; } </style>
-		<p><a>Test</a></p> 
-		</body> </html>
-END_HTML
-
-		premailer = Premailer.new(html, :with_html_string => true)
-    assert_nothing_raised do
-		  premailer.to_inline_css
-	  end
-	  assert_not_nil premailer.processed_doc.at('head style')
+	  assert_match /red !important/i, premailer.processed_doc.at('style').inner_html
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
@@ -231,6 +168,8 @@ END_HTML
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7
+  #
+  # fails sometimes in JRuby, see https://github.com/alexdunae/premailer/issues/79
   def test_parsing_bad_markup_around_tables
     html = <<END_HTML
     <html>
@@ -253,5 +192,44 @@ END_HTML
 		premailer.to_inline_css
 	  assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
 	  assert_match /background-color: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s		
+  end
+
+  # in response to https://github.com/alexdunae/premailer/issues/56
+  def test_inline_important
+    html = <<END_HTML
+    <html>
+    <style type="text/css"> 
+      p { color: red !important; }
+    </style>
+    <body>
+      <p style='color: green !important;'>test</p></div>
+    </body>
+    </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+  	premailer.to_inline_css
+    assert_equal 'color: green !important;', premailer.processed_doc.search('p').first.attributes['style'].to_s
+  end
+
+  # in response to https://github.com/alexdunae/premailer/issues/28
+  def test_handling_shorthand_auto_properties
+    html = <<END_HTML
+    <html>
+    <style type="text/css"> 
+      #page { margin: 0; margin-left: auto; margin-right: auto; }
+      p { border: 1px solid black; border-right: none; }
+      
+    </style>
+    <body>
+      <div id='page'><p>test</p></div>
+    </body>
+    </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+  	premailer.to_inline_css
+    assert_match /margin: 0 auto;/, premailer.processed_doc.search('#page').first.attributes['style'].to_s
+    assert_match /border-style: solid none solid solid;/, premailer.processed_doc.search('p').first.attributes['style'].to_s
   end
 end

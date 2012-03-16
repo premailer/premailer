@@ -1,6 +1,7 @@
+# encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestLinks < Test::Unit::TestCase
+class TestLinks < Premailer::TestCase
   def test_empty_query_string
     assert_nothing_raised do
       premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
@@ -10,7 +11,7 @@ class TestLinks < Test::Unit::TestCase
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true}
+    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :hpricot}
     
     appendable = [
       '/', 

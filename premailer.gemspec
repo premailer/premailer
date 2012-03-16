@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "fotonauts-premailer"
-  s.version  = "1.7.1"
+  s.version  = "1.7.3"
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary  = "Preflight for HTML e-mail."
   s.email    = "code@dunae.ca"
@@ -17,4 +17,6 @@ Gem::Specification.new do |s|
   s.add_dependency('htmlentities', '>= 4.0.0')
   s.add_development_dependency('hpricot', '>= 0.8.3')
   s.add_development_dependency('nokogiri', '>= 1.4.4')
+  s.add_development_dependency('rake', ['~> 0.8',  '!= 0.9.0'])
+  s.add_development_dependency('rdoc', '>= 2.4.2')
 end

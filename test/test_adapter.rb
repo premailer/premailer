@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestAdapter < Test::Unit::TestCase
+class TestAdapter < Premailer::TestCase
 
   def test_default_to_best_available
     require 'hpricot'

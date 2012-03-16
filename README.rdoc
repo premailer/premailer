@@ -43,6 +43,30 @@ Download the Premailer gem from RubyGems.
     puts "#{w[:message]} (#{w[:level]}) may not render properly in #{w[:clients]}"
   end
 
+=== Ruby Compatibility
+
+Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 (preview 1). It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the {Travis CI dashboard}[http://travis-ci.org/#!/alexdunae/premailer].
+  
+=== Premailer-specific CSS
+
+Premailer looks for a few CSS attributes that make working with tables a bit easier.
+
++-premailer-width+::        Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements
++-premailer-height+::       Available on <tt>table</tt>, <tt>tr</tt>, <tt>th</tt> and <tt>td</tt> elements
++-premailer-cellpadding+::  Available on <tt>table</tt> elements
++-premailer-cellspacing+::  Available on <tt>table</tt> elements
+
+Each of these CSS declarations will be copied to appropriate element's attribute. 
+
+For example
+
+  table { -premailer-cellspacing: 5; -premailer-width: 500;}
+
+will result in 
+
+  <table cellspacing='5' width='500'>
+
+
 === Contributions
 
 Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Fork and patch to your heart's content.  Please don't increment the version numbers, though.

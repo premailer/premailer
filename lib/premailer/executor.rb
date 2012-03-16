@@ -73,7 +73,7 @@ $stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if opt
 premailer = nil
 input = nil
 
-if $stdin.tty?
+if $stdin.tty? or STDIN.fcntl(Fcntl::F_GETFL, 0) == 0
   input = ARGV.shift
 else
   input = $stdin

@@ -2,10 +2,8 @@ $:.unshift File.expand_path('../lib', __FILE__)
 
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
-require 'rake/packagetask'
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
+require 'rdoc/task'
+require 'rubygems/package_task'
 require 'fileutils'
 require 'premailer'
 
@@ -16,12 +14,11 @@ def gemspec
  end
 end
 
-Rake::GemPackageTask.new(gemspec) do |pkg|
+Gem::PackageTask.new(gemspec) do |pkg|
   pkg.need_tar = true
 end
 
-desc 'Default: parse a URL.'
-task :default => [:inline]
+task :default => [:test]
 
 desc 'Parse a URL and write out the output.'
 task :inline do
@@ -64,7 +61,7 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
-Rake::RDocTask.new do |rd|
+RDoc::Task.new do |rd|
   rd.main = "README.rdoc"
   rd.rdoc_files.include("README.rdoc", "LICENSE.rdoc", "lib/**/*.rb")
   rd.title = 'Premailer Documentation'

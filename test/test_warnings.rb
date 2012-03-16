@@ -1,9 +1,7 @@
 # encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
-class TestWarnings < Test::Unit::TestCase
-  include WEBrick
-
+class TestWarnings < Premailer::TestCase
   def test_element_warnings
     html = <<END_HTML
     <!DOCTYPE html>

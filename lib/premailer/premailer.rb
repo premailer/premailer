@@ -31,11 +31,12 @@ class Premailer
   include HtmlToPlainText
   include CssParser
 
-  VERSION = '1.7.1'
+  VERSION = '1.7.3'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
+  RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
   # list of CSS attributes that can be rendered as HTML attributes
   #
@@ -52,10 +53,34 @@ class Premailer
     'div' => {'text-align' => 'align'},
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
-    'table' => {'background-color' => 'bgcolor', 'background-image' => 'background'},
-    'tr' => {'text-align' => 'align', 'background-color' => 'bgcolor', "height" => "height"},
-    'th' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
-    'td' => {'text-align' => 'align', 'background-color' => 'bgcolor', 'vertical-align' => 'valign'},
+    'table' => {
+      'background-color' => 'bgcolor',
+      'background-image' => 'background',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height',
+      '-premailer-cellpadding' => 'cellpadding',
+      '-premailer-cellspacing' => 'cellspacing',
+    },
+    'tr' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      '-premailer-height' => 'height'
+    },
+    'th' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      'vertical-align' => 'valign',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height'
+    },
+    'td' => {
+      'text-align' => 'align',
+      'background-color' => 'bgcolor',
+      'vertical-align' => 'valign',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height',
+      '-premailer-colspan' => 'colspan'
+    },
     'img' => {'float' => 'align'}
   }
 
@@ -98,13 +123,14 @@ class Premailer
   # [+warn_level+] What level of CSS compatibility warnings to show (see Warnings).
   # [+link_query_string+] A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
   # [+base_url+] Used to calculate absolute URLs for local files.
-  # [+css+] Manually specify a CSS stylesheet.
+  # [+css+] Manually specify CSS stylesheets.
   # [+css_to_attributes+] Copy related CSS attributes into HTML attributes (e.g. +background-color+ to +bgcolor+)
   # [+css_string+] Pass CSS as a string
   # [+remove_ids+] Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is +false+.
   # [+remove_classes+] Remove class attributes. Default is +false+.
   # [+remove_comments+] Remove html comments. Default is +false+.
   # [+preserve_styles+] Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is +false+.
+  # [+preserve_reset+] Whether to preserve styles associated with the MailChimp reset code
   # [+with_html_string+] Whether the +html+ param should be treated as a raw string.
   # [+verbose+] Whether to print errors and warnings to <tt>$stderr</tt>.  Default is +false+.
   # [+adapter+] Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
@@ -121,6 +147,7 @@ class Premailer
                 :with_html_string => false,
                 :css_string => nil,
                 :preserve_styles => false,
+                :preserve_reset => true,
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false,
@@ -129,7 +156,7 @@ class Premailer
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
 
-    @css_files = @options[:css]
+    @css_files = [@options[:css]].flatten
 
     @css_warnings = []
 
@@ -206,8 +233,18 @@ protected
     if tags = @doc.search("link[@rel='stylesheet'], style")
       tags.each do |tag|
         if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media'])
-
-          link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+          # A user might want to <link /> to a local css file that is also mirrored on the site
+          # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
+          
+          if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
+            link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
+          end
+          
+          # if the file does not exist locally, try to grab the remote reference
+          if link_uri.nil? or not File.exists?(link_uri)
+            link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+          end
+          
           if Premailer.local_data?(link_uri)
             $stderr.puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
@@ -259,7 +296,8 @@ public
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
-      next if href[0,1] == '#' # don't bother with anchors
+      
+      next if href[0,1] =~ /[\#\{\[\<\%]/ # don't bother with anchors or special-looking links
 
       begin
         href = URI.parse(href)
@@ -319,7 +357,7 @@ public
       tags.each do |tag|
         # skip links that look like they have merge tags
         # and mailto, ftp, etc...
-        if tag.attributes[attribute].to_s =~ /^(\%\{|\[|<|\#|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:)/i
+        if tag.attributes[attribute].to_s =~ /^([\%\<\{\#\[]|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:)/i
           next
         end
 
@@ -442,3 +480,4 @@ public
     return warnings
   end
 end
+

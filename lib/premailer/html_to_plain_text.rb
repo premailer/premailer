@@ -13,6 +13,23 @@ module HtmlToPlainText
     # decode HTML entities
     he = HTMLEntities.new
     txt = he.decode(txt)
+    
+    # replace image by their alt attribute
+    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
+
+    # replace image by their alt attribute
+    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
+    txt.gsub!(/<img.+?alt='([^\']*)\'[^>]*\/>/i, '\1')
+
+    # links
+    txt.gsub!(/<a.+?href=\"([^\"]*)\"[^>]*>(.+?)<\/a>/i) do |s|
+      $2.strip + ' ( ' + $1.strip + ' )'
+    end
+
+    txt.gsub!(/<a.+?href='([^\']*)\'[^>]*>(.+?)<\/a>/i) do |s|
+      $2.strip + ' ( ' + $1.strip + ' )'
+    end
+
 
     # handle headings (H1-H6)
     txt.gsub!(/(<\/h[1-6]>)/i, "\n\\1") # move closing tags to new lines
@@ -43,11 +60,6 @@ module HtmlToPlainText
     # wrap spans
     txt.gsub!(/(<\/span>)[\s]+(<span)/mi, '\1 \2')
 
-    # links
-    txt.gsub!(/<a.+?href=\"([^\"]*)\"[^>]*>(.+?)<\/a>/i) do |s|
-      $2.strip + ' ( ' + $1.strip + ' )'
-    end
-
     # lists -- TODO: should handle ordered lists
     txt.gsub!(/[\s]*(<li[^>]*>)[\s]*/i, '* ')
     # list not followed by a newline
@@ -61,7 +73,7 @@ module HtmlToPlainText
     txt.gsub!(/<\/?[^>]*>/, '')
 
     txt = word_wrap(txt, line_length)
-
+    
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
 
@@ -75,6 +87,11 @@ module HtmlToPlainText
 
     # no more than two consecutive spaces
     txt.gsub!(/ {2,}/, " ")
+    
+    # the word messes up the parens
+    txt.gsub!(/\([ \n](http[^)]+)[\n ]\)/) do |s|
+      "( " + $1 + " )"
+    end
 
     txt.strip
   end
