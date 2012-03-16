@@ -55,6 +55,7 @@ class Premailer
     'body' => {'background-color' => 'bgcolor'},
     'table' => {
       'background-color' => 'bgcolor',
+      'background-image' => 'background',
       '-premailer-width' => 'width',
       '-premailer-height' => 'height',
       '-premailer-cellpadding' => 'cellpadding',
