@@ -7,3 +7,6 @@ platforms :jruby do
 end
 
 gemspec
+
+gem "ripper", :group => :development, :platforms => :mri_18
+

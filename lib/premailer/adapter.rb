@@ -1,15 +1,16 @@
-# = HTTPI::Adapter
-#
-# Manages the adapter classes. Currently supports:
-#
-# * nokogiri
-# * hpricot
+
+
 class Premailer
+  # Manages the adapter classes. Currently supports:
+  #
+  # * nokogiri
+  # * hpricot
   module Adapter
 
     autoload :Hpricot, 'premailer/adapter/hpricot'
     autoload :Nokogiri, 'premailer/adapter/nokogiri'
 
+    # adapter to required file mapping.
     REQUIREMENT_MAP = [
       ["hpricot",  :hpricot],
       ["nokogiri", :nokogiri],
@@ -24,7 +25,8 @@ class Premailer
 
     # The default adapter based on what you currently have loaded and
     # installed. First checks to see if any adapters are already loaded,
-    # then ckecks to see which are installed if none are loaded.
+    # then checks to see which are installed if none are loaded.
+    # @raise [RuntimeError] unless suitable adapter found.
     def self.default
       return :hpricot  if defined?(::Hpricot)
       return :nokogiri if defined?(::Nokogiri)
@@ -38,15 +40,17 @@ class Premailer
         end
       end
 
-      raise "No suitable adapter for Premailer was found, please install hpricot or nokogiri"
+      raise RuntimeError.new("No suitable adapter for Premailer was found, please install hpricot or nokogiri")
     end
 
-    # Sets the +adapter+ to use. Raises an +ArgumentError+ unless the +adapter+ exists.
+    # Sets the adapter to use.
+    # @raise [ArgumentError] unless the adapter exists.
     def self.use=(new_adapter)
       @use = find(new_adapter)
     end
 
-    # Returns an +adapter+. Raises an +ArgumentError+ unless the +adapter+ exists.
+    # Returns an adapter.
+    # @raise [ArgumentError] unless the adapter exists.
     def self.find(adapter)
       return adapter if adapter.is_a?(Module)
 

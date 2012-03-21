@@ -8,8 +8,6 @@ Gem::Specification.new do |s|
   s.description = "Improve the rendering of HTML emails by making CSS inline, converting links and warning about unsupported code."
   s.has_rdoc = true
   s.author  = "Alex Dunae"
-  s.rdoc_options << '--all' << '--inline-source' << '--line-numbers' << '--charset' << 'utf-8'
-  s.extra_rdoc_files = ["README.rdoc"]
   s.files            = `git ls-files`.split("\n")
   s.test_files       = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables      = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
@@ -18,5 +16,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('hpricot', '>= 0.8.3')
   s.add_development_dependency('nokogiri', '>= 1.4.4')
   s.add_development_dependency('rake', ['~> 0.8',  '!= 0.9.0'])
-  s.add_development_dependency('rdoc', '>= 2.4.2')
+  s.add_development_dependency('yard', '~> 0.7.3')
+  s.add_development_dependency('redcarpet', '~> 1.17.2')
 end
+
