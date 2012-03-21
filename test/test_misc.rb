@@ -233,7 +233,7 @@ END_HTML
     assert_match /border-style: solid none solid solid;/, premailer.processed_doc.search('p').first.attributes['style'].to_s
   end
 
-  def test_removing_script_tags
+  def test_removing_scripts
     html = <<END_HTML
     <html>
     <head>
@@ -246,9 +246,15 @@ END_HTML
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-      premailer = Premailer.new(html, :with_html_string => true, :remove_script_tags => true, :adapter => adapter)
+      premailer = Premailer.new(html, :with_html_string => true, :remove_scripts => true, :adapter => adapter)
       premailer.to_inline_css
       assert_equal 0, premailer.processed_doc.search('script').length
+    end
+
+    [:nokogiri, :hpricot].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :remove_scripts => false, :adapter => adapter)
+      premailer.to_inline_css
+      assert_equal 1, premailer.processed_doc.search('script').length
     end
   end
 end
