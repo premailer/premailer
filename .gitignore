@@ -4,4 +4,6 @@ Gemfile.lock
 bin/*.html
 html/
 vendor/
-rdoc/
+doc/
+.yardoc/
+*.sw?
