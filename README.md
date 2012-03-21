@@ -7,13 +7,13 @@ huge pain and a simple newsletter becomes un-managable very quickly. This
 script is my solution.
 
 * CSS styles are converted to inline style attributes
-  Checks <tt>style</tt> and <tt>link[rel=stylesheet]</tt> tags and preserves existing inline attributes
+  - Checks <tt>style</tt> and <tt>link[rel=stylesheet]</tt> tags and preserves existing inline attributes
+
 * Relative paths are converted to absolute paths
-  Checks links in <tt>href</tt>, <tt>src</tt> and CSS <tt>url('')</tt>
+  - Checks links in <tt>href</tt>, <tt>src</tt> and CSS <tt>url('')</tt>
 * CSS properties are checked against e-mail client capabilities
-  Based on the Email Standards Project's guides
-* A plain text version is created
-  (optional)
+  - Based on the Email Standards Project's guides
+* A plain text version is created (optional)
 
 ## Premailer 2.0 is coming
 
@@ -24,7 +24,7 @@ I'm looking for input on a version 2.0 update to Premailer.  PLease visit the [P
 Download the Premailer gem from RubyGems.
 
 ```bash
-sudo gem install premailer
+gem install premailer
 ```
 
 ## Example
@@ -55,11 +55,17 @@ Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 (preview 1). It als
 ## Premailer-specific CSS
 
 Premailer looks for a few CSS attributes that make working with tables a bit easier.
+<dl>
+  <dt>-premailer-width</dt>
+    <dd>Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements</dd>
+  <dt>-premailer-height</dt>
+    <dd>Available on <tt>table</tt>, <tt>tr</tt>, <tt>th</tt> and <tt>td</tt> elements</dd>
+  <dt>-premailer-cellpadding</dt>
+    <dd>Available on <tt>table</tt> elements</dd>
+  <dt>-premailer-cellspacing</dt>
+    <dd>Available on <tt>table</tt> elements</dd>
+</dl>
 
-* -premailer-width+::        Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements
-* -premailer-height+::       Available on <tt>table</tt>, <tt>tr</tt>, <tt>th</tt> and <tt>td</tt> elements
-* -premailer-cellpadding+::  Available on <tt>table</tt> elements
-* -premailer-cellspacing+::  Available on <tt>table</tt> elements
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
 
@@ -95,5 +101,5 @@ The web interface can be found at [premailer.dialect.ca](http://premailer.dialec
 
 The source code can be found on [GitHub](https://github.com/alexdunae/premailer).
 
-Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2011.  See {file:LICENSE.md} for license details.
+Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2012.  See {file:LICENSE.md} for license details.
 

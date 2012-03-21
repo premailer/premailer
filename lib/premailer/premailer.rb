@@ -1,5 +1,3 @@
-# Premailer by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2008-11
-#
 # Premailer processes HTML and CSS to improve e-mail deliverability.
 #
 # Premailer's main function is to render all CSS as inline <tt>style</tt>
