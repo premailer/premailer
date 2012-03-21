@@ -67,7 +67,6 @@ Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 (preview 1). It als
 ## Premailer-specific CSS
 
 Premailer looks for a few CSS attributes that make working with tables a bit easier.
-<<<<<<< HEAD
 <dl>
   <dt>-premailer-width</dt>
     <dd>Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements</dd>
@@ -78,14 +77,6 @@ Premailer looks for a few CSS attributes that make working with tables a bit eas
   <dt>-premailer-cellspacing</dt>
     <dd>Available on <tt>table</tt> elements</dd>
 </dl>
-
-=======
-
-* -premailer-width+::        Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements
-* -premailer-height+::       Available on <tt>table</tt>, <tt>tr</tt>, <tt>th</tt> and <tt>td</tt> elements
-* -premailer-cellpadding+::  Available on <tt>table</tt> elements
-* -premailer-cellspacing+::  Available on <tt>table</tt> elements
->>>>>>> yard/switch_to_yard
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
 
@@ -121,9 +112,5 @@ The web interface can be found at [premailer.dialect.ca](http://premailer.dialec
 
 The source code can be found on [GitHub](https://github.com/alexdunae/premailer).
 
-<<<<<<< HEAD
 Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2012.  See {file:LICENSE.md} for license details.
-=======
-Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2011.  See {file:LICENSE.md} for license details.
->>>>>>> yard/switch_to_yard
 
