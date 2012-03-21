@@ -188,9 +188,23 @@ class Premailer
         return nil unless thing
         doc = nil
 
+        # Handle HTML entities
+        if @options[:replace_html_entities] == true and thing.is_a?(String) 
+          if RUBY_VERSION =~ /1.9/
+            html_entity_ruby_version = "1.9"
+          elsif RUBY_VERSION =~ /1.8/
+            html_entity_ruby_version = "1.8"
+          end
+          if html_entity_ruby_version
+            HTML_ENTITIES[html_entity_ruby_version].map do |entity, replacement|
+              thing.gsub! entity, replacement
+            end
+          end
+        end
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
+        # However, we really don't want to hardcode this. ASCII-8BIG should be the default, but not the only option.
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
-          thing = thing.force_encoding('ASCII-8BIT').encode!
+          thing = thing.force_encoding(@options[:inputencoding]).encode!
           doc = ::Nokogiri::HTML(thing) {|c| c.recover }
         else
           default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
