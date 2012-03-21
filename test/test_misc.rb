@@ -232,4 +232,23 @@ END_HTML
     assert_match /margin: 0 auto;/, premailer.processed_doc.search('#page').first.attributes['style'].to_s
     assert_match /border-style: solid none solid solid;/, premailer.processed_doc.search('p').first.attributes['style'].to_s
   end
+
+  def test_removing_script_tags
+    html = <<END_HTML
+    <html>
+    <head>
+      <script>script to be removed</script>
+    </head>
+    <body>
+      content
+    </body>
+    </html>
+END_HTML
+
+    [:nokogiri, :hpricot].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :remove_script_tags => true, :adapter => adapter)
+      premailer.to_inline_css
+      assert_equal 0, premailer.processed_doc.search('script').length
+    end
+  end
 end
