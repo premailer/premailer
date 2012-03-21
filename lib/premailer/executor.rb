@@ -44,6 +44,10 @@ opts = OptionParser.new do |opts|
     options[:remove_classes] = v
   end
 
+  opts.on("-j", "--remove-scripts", "Remove <script> elements") do |v|
+    options[:remove_classes] = v
+  end
+
   opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length].to_s})") do |v|
     options[:line_length] = v
   end
