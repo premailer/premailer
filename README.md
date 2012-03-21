@@ -7,20 +7,11 @@ huge pain and a simple newsletter becomes un-managable very quickly. This
 script is my solution.
 
 * CSS styles are converted to inline style attributes
-<<<<<<< HEAD
   - Checks <tt>style</tt> and <tt>link[rel=stylesheet]</tt> tags and preserves existing inline attributes
-
 * Relative paths are converted to absolute paths
   - Checks links in <tt>href</tt>, <tt>src</tt> and CSS <tt>url('')</tt>
 * CSS properties are checked against e-mail client capabilities
   - Based on the Email Standards Project's guides
-=======
-* Checks <tt>style</tt> and <tt>link[rel=stylesheet]</tt> tags and preserves existing inline attributes
-* Relative paths are converted to absolute paths
-* Checks links in <tt>href</tt>, <tt>src</tt> and CSS <tt>url('')</tt>
-* CSS properties are checked against e-mail client capabilities
-* Based on the Email Standards Project's guides
->>>>>>> yard/switch_to_yard
 * A plain text version is created (optional)
 
 ## Premailer 2.0 is coming
@@ -32,11 +23,7 @@ I'm looking for input on a version 2.0 update to Premailer.  PLease visit the [P
 Download the Premailer gem from RubyGems.
 
 ```bash
-<<<<<<< HEAD
 gem install premailer
-=======
-sudo gem install premailer
->>>>>>> yard/switch_to_yard
 ```
 
 ## Example
