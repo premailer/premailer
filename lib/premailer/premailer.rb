@@ -143,7 +143,7 @@ class Premailer
   # @option options [Boolean] :remove_ids Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is false.
   # @option options [Boolean] :remove_classes Remove class attributes. Default is false.
   # @option options [Boolean] :remove_comments Remove html comments. Default is false.
-  # @option options [Boolean] :remove_scripts Remove <tt><script></tt> elements. Default is true.
+  # @option options [Boolean] :remove_scripts Remove <tt>script</tt> elements. Default is true.
   # @option options [Boolean] :preserve_styles Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is false.
   # @option options [Boolean] :preserve_reset Whether to preserve styles associated with the MailChimp reset code.
   # @option options [Boolean] :with_html_string Whether the html param should be treated as a raw string.
