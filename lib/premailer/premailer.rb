@@ -43,6 +43,43 @@ class Premailer
   # Reset selectors regexp.
   RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
+  # list of HTMLEntities to fix
+  # source: http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-
+  HTML_ENTITIES = {
+    "1.8" => {
+      "\342\200\231" => "'",
+      "\342\200\246" => "...",
+      "\342\200\176" => "'",
+      "\342\200\177" => "'",
+      "\342\200\230" => "'",
+      "\342\200\231" => "'",
+      "\342\200\232" => ',',
+      "\342\200\233" => "'",
+      "\342\200\234" => '"',
+      "\342\200\235" => '"',
+      "\342\200\041" => '-',
+      "\342\200\174" => '-',
+      "\342\200\220" => '-',
+      "\342\200\223" => '-',
+      "\342\200\224" => '--',
+      "\342\200\225" => '--',
+      "\342\200\042" => '--'
+    },
+    "1.9" => {
+      "&#8217;" => "'",
+      "&#8230;" => "...",
+      "&#8216;" => "'",
+      "&#8218;" => ',',
+      "&#8219;" => "'",
+      "&#8220;" => '"',
+      "&#8221;" => '"',
+      "&#8208;" => '-',
+      "&#8211;" => '-',
+      "&#8212;" => '--',
+      "&#8213;" => '--'
+    }
+  }
+
   # list of CSS attributes that can be rendered as HTML attributes
   #
   # @todo too much repetition
@@ -148,6 +185,8 @@ class Premailer
   # @option options [Boolean] :verbose Whether to print errors and warnings to <tt>$stderr</tt>.  Default is false.
   # @option options [Boolean] :include_link_tags Whether to include css from <tt>link rel=stylesheet</tt> tags.  Default is true.
   # @option options [Boolean] :include_style_tags Whether to include css from <tt>style</tt> tags.  Default is true.
+  # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea.
+  # @option options [Boolean] :replace_html_entities Convert HTML entities to actual characters. Default is false.
   # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
@@ -169,7 +208,10 @@ class Premailer
                 :io_exceptions => false,
                 :include_link_tags => true,
                 :include_style_tags => true,
-                :adapter => Adapter.use}.merge(options)
+                :input_encoding => 'ASCII-8BIT',
+                :replace_html_entities => false,
+                :adapter => Adapter.use,
+                }.merge(options)
 
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)

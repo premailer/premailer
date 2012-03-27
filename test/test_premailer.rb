@@ -232,4 +232,18 @@ END_HTML
     assert_match /1\.231/, @doc.at('body').attributes['style'].to_s
     assert_no_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
   end
+
+  def test_input_encoding
+    html_special_characters = "Ää, Öö, Üü".encode("UTF-8")
+    expected_html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>" + html_special_characters + "</p></body></html>\n"
+    pm = Premailer.new(html_special_characters, :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8")
+    assert_equal expected_html, pm.to_inline_css
+  end
+
+  def test_htmlentities
+    html_entities = "&#8217;"
+    expected_html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>'</p></body></html>\n"
+    pm = Premailer.new(html_entities, :with_html_string => true, :adapter => :nokogiri, :replace_html_entities => true)
+    assert_equal expected_html, pm.to_inline_css
+  end
 end
