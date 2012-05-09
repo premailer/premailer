@@ -86,7 +86,7 @@ Contributions are most welcome.  Premailer was rotting away in a private SVN rep
 A few areas that are particularly in need of love:
 
 * Improved test coverage
-* Move un-repeated background images defined in CSS to <tt><td background=""></tt> for Outlook
+* Move un-repeated background images defined in CSS for Outlook
 
 ## Credits and code
 
@@ -99,5 +99,5 @@ The web interface can be found at [premailer.dialect.ca](http://premailer.dialec
 
 The source code can be found on [GitHub](https://github.com/alexdunae/premailer).
 
-Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2012.  See {file:LICENSE.md} for license details.
+Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2012.  See [LICENSE.md](https://github.com/alexdunae/premailer/blob/master/LICENSE.md) for license details.
 
