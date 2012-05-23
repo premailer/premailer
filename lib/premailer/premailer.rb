@@ -468,7 +468,7 @@ public
     elsif base_path.kind_of?(URI)
       resolved = base_path.merge(path)
       Premailer.canonicalize(resolved)
-    elsif base_path.kind_of?(String) and base_path =~ /^(http[s]?|ftp):\/\//i
+    elsif base_path.kind_of?(String) and base_path =~ /\A(http[s]?|ftp):\/\//i
       resolved = URI.parse(base_path)
       resolved = resolved.merge(path)
       Premailer.canonicalize(resolved)

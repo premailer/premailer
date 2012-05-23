@@ -15,6 +15,13 @@ class TestPremailer < Premailer::TestCase
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
   end
 
+  def test_link_in_new_line_nokogiri
+    html = 	"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta content='text/html; charset=utf-8' http-equiv='Content-Type'>\n<title>Test</title>\n<link href='/assets/mailer.css' rel='stylesheet' type='text/css'>\n</head>\n<body>\n<p class='description'>yay travis! \nhttp://travis-ci.org/#!/alexdunae/premailer</p>\n</body>\n</html>\n"
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+    premailer.to_inline_css
+    assert_equal "yay travis! \nhttp://travis-ci.org/#!/alexdunae/premailer", premailer.processed_doc.at('p').inner_html
+  end
+
   #def test_cyrillic_nokogiri_remote
   #  if RUBY_VERSION =~ /1.9/ 
   #    remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
