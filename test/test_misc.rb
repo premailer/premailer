@@ -257,4 +257,5 @@ END_HTML
       assert_equal 1, premailer.processed_doc.search('script').length
     end
   end
+
 end
