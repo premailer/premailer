@@ -426,7 +426,7 @@ public
           next
         end
 
-        if tag.attributes[attribute].to_s =~ /\Ahttp/i
+        if tag.attributes[attribute].to_s =~ /^http/i
           begin
             merged = URI.parse(tag.attributes[attribute])
           rescue; next; end
