@@ -246,4 +246,18 @@ END_HTML
     pm = Premailer.new(html_entities, :with_html_string => true, :adapter => :nokogiri, :replace_html_entities => true)
     assert_equal expected_html, pm.to_inline_css
   end
+
+  # If a line other than the first line in the html string begins with a URI
+  # Premailer should not identify the html string as a URI. Otherwise the following
+  # exception would be raised: ActionView::Template::Error: bad URI(is not URI?)
+  def test_line_starting_with_uri_in_html_with_linked_css
+    files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
+    html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
+  
+    assert_nothing_raised do
+      premailer = Premailer.new(html_string, :with_html_string => true)
+      premailer.to_inline_css
+    end
+  end
+
 end
