@@ -207,7 +207,7 @@ class Premailer
         # However, we really don't want to hardcode this. ASCII-8BIG should be the default, but not the only option.
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
           thing = thing.force_encoding(@options[:input_encoding]).encode!
-          doc = ::Nokogiri::HTML(thing) {|c| c.recover }
+          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) {|c| c.recover }
         else
           default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
           doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) {|c| c.recover }
