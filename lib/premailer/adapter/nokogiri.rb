@@ -75,7 +75,7 @@ class Premailer
           end
 
           # write the inline STYLE attribute
-          el['style'] = Premailer.escape_string(merged.declarations_to_s)
+          el['style'] = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip).sort.join('; ')
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules)
