@@ -193,6 +193,7 @@ class Premailer
                 :line_length => 65,
                 :link_query_string => nil,
                 :base_url => nil,
+                :base_dir => nil,
                 :remove_classes => false,
                 :remove_ids => false,
                 :remove_comments => false,
@@ -221,7 +222,7 @@ class Premailer
     @css_warnings = []
 
     @base_url = nil
-    @base_dir = nil
+    @base_dir = @options[:base_dir]
     @unmergable_rules = nil
 
     if @options[:base_url]
@@ -298,8 +299,8 @@ protected
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
           
-          if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
-            link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
+          if tag.attributes['href'].to_s.include? @base_url.to_s and @is_local_file
+            link_uri = File.join(@base_dir || '', tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
           end
           
           # if the file does not exist locally, try to grab the remote reference
