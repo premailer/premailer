@@ -121,6 +121,18 @@ class TestLinks < Premailer::TestCase
     assert_equal 'http://example.com/path', Premailer.resolve_link(' path', base_uri)
   end
 
+  def test_resolving_urls_from_html_string
+    # The inner URI is on its own line to ensure that the impl doesn't match
+    # URIs based on start of line.
+    base_uri = "<html><head></head><body>\nhttp://example.com/\n</body>"
+    ['test.html', '/test.html', './test.html',
+     'test/../test.html', 'test/../test/../test.html'].each do |q|
+      assert_nothing_raised do
+        Premailer.resolve_link(q, base_uri)
+      end
+    end
+  end
+
   def test_resolving_urls_in_doc
     # force Nokogiri since this consistenly segfaults with Hpricot
     base_file = File.dirname(__FILE__) + '/files/base.html'
