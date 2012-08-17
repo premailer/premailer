@@ -108,7 +108,13 @@ END_HTML
     
     # nested html
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/"><span class="a">Link</span></a>'
-    
+
+    # nested html with new line
+    assert_plaintext 'Link ( http://example.com/ )', "<a href='http://example.com/'>\n\t<span class='a'>Link</span>\n\t</a>"
+
+    # mailto
+    assert_plaintext 'Contact Us ( contact@example.org )', "<a href='mailto:contact@example.org'>Contact Us</a>"
+
     # complex link
     assert_plaintext 'Link ( http://example.com:80/~user?aaa=bb&c=d,e,f#foo )', '<a href="http://example.com:80/~user?aaa=bb&amp;c=d,e,f#foo">Link</a>'
     
