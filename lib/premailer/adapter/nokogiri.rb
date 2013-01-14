@@ -132,7 +132,7 @@ class Premailer
       # @return [::Nokogiri::XML] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = ''
-        unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
+        unmergable_rules.each_selector(:all, :force_important => false) do |selector, declarations, specificity|
           styles += "#{selector} { #{declarations} }\n"
         end
         
