@@ -41,7 +41,7 @@ class Premailer
   # Unmergable selectors regexp.
   RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
   # Reset selectors regexp.
-  RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
+  RE_RESET_SELECTORS = /^(\:\#outlook|\.ReadMsgBody|\.ExternalClass.*|table td)$/
 
   # list of HTMLEntities to fix
   # source: http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-
