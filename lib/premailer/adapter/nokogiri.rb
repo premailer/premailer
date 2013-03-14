@@ -213,6 +213,11 @@ class Premailer
           doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) {|c| c.recover }
         end
 
+        doc.search("style").each do |style|
+          child = style.children.first
+          child.swap(child.text()) if child.cdata?
+        end
+
         return doc
       end
 
