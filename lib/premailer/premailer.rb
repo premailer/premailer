@@ -297,16 +297,16 @@ protected
         if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media']) && @options[:include_link_tags]
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
-          
+
           if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
             link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
           end
-          
+
           # if the file does not exist locally, try to grab the remote reference
           if link_uri.nil? or not File.exists?(link_uri)
             link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           end
-          
+
           if Premailer.local_data?(link_uri)
             $stderr.puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
@@ -361,7 +361,7 @@ public
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
-      
+
       next if href[0,1] =~ /[\#\{\[\<\%]/ # don't bother with anchors or special-looking links
 
       begin
@@ -452,6 +452,10 @@ public
     doc
   end
 
+  # @private
+  def self.is_media_query?(media_types)
+    media_types && media_types.any?{|mt| mt.to_s.count('()') >= 2 }
+  end
 
   # @private
   def self.escape_string(str) # :nodoc:
