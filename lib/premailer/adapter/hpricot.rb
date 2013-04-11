@@ -136,7 +136,7 @@ class Premailer
         styles = unmergable_rules.to_s
 
         unless styles.empty?
-          style_tag = "<style type=\"text/css\">\n#{styles}</style>"
+          style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
           if body = doc.search('body')
             body.append(style_tag)
           else

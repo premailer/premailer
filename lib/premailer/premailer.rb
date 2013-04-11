@@ -454,7 +454,7 @@ public
 
   # @private
   def self.is_media_query?(media_types)
-    media_types && media_types.any?{|mt| mt.to_s.include?(' and ') }
+    media_types && media_types.any?{|mt| mt.to_s.count('()') >= 2 }
   end
 
   # @private

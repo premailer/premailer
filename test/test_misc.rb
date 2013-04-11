@@ -134,6 +134,42 @@ END_HTML
 	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
 
+  def test_unmergable_media_queries
+    html = <<END_HTML
+    <html> <head>
+    <style type="text/css">
+    a { color: blue; }
+    @media (min-width:500px) {
+      a { color: red; }
+    }
+    @media screen and (orientation: portrait) {
+      a { color: green; }
+    }
+    </style>
+    </head>
+    <body>
+    <p><a>Test</a></p>
+    </body> </html>
+END_HTML
+
+    [:nokogiri, :hpricot].each do |adapter|
+      puts "------- Testing adapter #{adapter}"
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      puts premailer.to_inline_css
+
+      style_tag = premailer.processed_doc.at('body style')
+      assert style_tag, "#{adapter} failed to add a body style tag"
+
+      style_tag_contents = style_tag.inner_html
+      assert_equal "color: blue;", premailer.processed_doc.at('a').attributes['style'].to_s,
+                   "#{adapter}: Failed to inline the default style"
+      assert_match /@media \(min-width:500px\) {.*?a {.*?color: red;.*?}.*?}/m, style_tag_contents,
+                   "#{adapter}: Failed to add media query with no type to style"
+      assert_match /@media screen and \(orientation: portrait\) {.*?a {.*?color: green;.*?}.*?}/m, style_tag_contents,
+                   "#{adapter}: Failed to add media query with type to style"
+    end
+  end
+
   def test_unmergable_rules_with_no_body
     html = <<END_HTML
     <html>
