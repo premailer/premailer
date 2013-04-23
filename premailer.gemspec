@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name     = "premailer"
+  s.name     = "regru-premailer"
   s.version  = "1.7.3"
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary  = "Preflight for HTML e-mail."
