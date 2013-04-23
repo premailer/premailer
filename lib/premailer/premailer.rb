@@ -467,7 +467,7 @@ public
     elsif base_path.kind_of?(URI)
       resolved = base_path.merge(path)
       Premailer.canonicalize(resolved)
-    elsif base_path.kind_of?(String) and base_path =~ /^(http[s]?|ftp):\/\//i
+    elsif base_path.kind_of?(String) and base_path =~ /\A(http[s]?|ftp):\/\//i
       resolved = URI.parse(base_path)
       resolved = resolved.merge(path)
       Premailer.canonicalize(resolved)
@@ -481,7 +481,7 @@ public
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
     return true if data.is_a?(IO) || data.is_a?(StringIO)
-    return false if data =~ /^(http|https|ftp)\:\/\//i
+    return false if data =~ /\A(http|https|ftp)\:\/\//i
     true
   end
 
