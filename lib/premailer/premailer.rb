@@ -261,7 +261,7 @@ class Premailer
 protected
   def load_css_from_local_file!(path)
     css_block = ''
-    path.gsub!(/\Afile:\/\//, '')
+    path.gsub!(/\Afile:/, '')
     begin
       File.open(path, "r") do |file|
         while line = file.gets
@@ -482,7 +482,7 @@ public
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
     return true   if data.is_a?(IO) || data.is_a?(StringIO)
-    return true   if data =~ /\Afile\:\/\//i
+    return true   if data =~ /\Afile:\/\//i
     return false  if data =~ /\A(?:(https?|ftp):)\/\//i
     true
   end
