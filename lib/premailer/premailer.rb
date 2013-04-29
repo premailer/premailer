@@ -261,6 +261,7 @@ class Premailer
 protected
   def load_css_from_local_file!(path)
     css_block = ''
+    path.gsub!(/\Afile:\/\//, '')
     begin
       File.open(path, "r") do |file|
         while line = file.gets
