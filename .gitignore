@@ -7,3 +7,5 @@ vendor/
 doc/
 .yardoc/
 *.sw?
+pkg/
+
