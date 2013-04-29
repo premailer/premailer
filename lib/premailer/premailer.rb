@@ -29,12 +29,11 @@
 # puts premailer.to_inline_css
 # ```
 #
+require 'premailer/version'
+
 class Premailer
   include HtmlToPlainText
   include CssParser
-
-  # Premailer version.
-  VERSION = '1.7.6'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 

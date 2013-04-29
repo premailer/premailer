@@ -1,6 +1,10 @@
+$LOAD_PATH.unshift(File.expand_path('./lib', File.dirname(__FILE__)))
+
+require 'premailer/version'
+
 Gem::Specification.new do |s|
   s.name     = "regru-premailer"
-  s.version  = "1.7.6"
+  s.version  = Premailer::VERSION.dup
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary  = "Preflight for HTML e-mail."
   s.email    = "code@dunae.ca"
