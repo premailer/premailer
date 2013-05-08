@@ -102,6 +102,20 @@ END_HTML
     assert lens.max <= 20
   end
 
+  def test_img_alt_tags
+    # ensure html imag tags that aren't self-closed are parsed, 
+    # along with accepting both '' and "" as attribute quotes
+
+    # <img alt="" />
+    assert_plaintext 'Example ( http://example.com/ )', '<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"/></a>'
+    # <img alt="">
+    assert_plaintext 'Example ( http://example.com/ )', '<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"></a>'
+    # <img alt='' />
+    assert_plaintext 'Example ( http://example.com/ )', "<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'/></a>"
+    # <img alt=''>
+    assert_plaintext 'Example ( http://example.com/ )', "<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'></a>"
+  end
+
   def test_links
     # basic
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/">Link</a>'
