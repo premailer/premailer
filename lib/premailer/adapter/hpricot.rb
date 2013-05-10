@@ -139,7 +139,9 @@ class Premailer
 
         unless styles.empty?
           style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-          if body = doc.search('body')
+          if head = doc.search('head')
+            head.append(style_tag)
+          elsif body = doc.search('body')
             body.append(style_tag)
           else
             doc.inner_html= doc.inner_html << style_tag
