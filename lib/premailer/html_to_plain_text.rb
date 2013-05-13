@@ -14,12 +14,20 @@ module HtmlToPlainText
     he = HTMLEntities.new
     txt = he.decode(txt)
 
-    # replace image by their alt attribute
-    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
+    # replace images with their alt attributes
+    # for img tags with "" for attribute quotes
+    # with or without closing tag
+    # eg. the following formats:
+    # <img alt="" />
+    # <img alt="">
+    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\>/i, '\1')
 
-    # replace image by their alt attribute
-    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\/>/i, '\1')
-    txt.gsub!(/<img.+?alt='([^\']*)\'[^>]*\/>/i, '\1')
+    # for img tags with '' for attribute quotes
+    # with or without closing tag
+    # eg. the following formats:
+    # <img alt='' />
+    # <img alt=''>
+    txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # links
     txt.gsub!(/<a.+?href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)+?)<\/a>/i) do |s|
