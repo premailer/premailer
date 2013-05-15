@@ -115,10 +115,10 @@ END_HTML
 
   		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => adapter)
   		premailer.to_inline_css
-  	  assert_nil premailer.processed_doc.at('head link')
+  	  assert_nil premailer.processed_doc.at('body link')
 
       # should be preserved as unmergeable
-  	  assert_match /red !important/i, premailer.processed_doc.at('body style').inner_html
+  	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
   	end
   end
 
@@ -131,7 +131,7 @@ END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
 		premailer.to_inline_css
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
   def test_unmergable_rules_with_no_body
