@@ -129,11 +129,13 @@ class Premailer
         unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
           styles += "#{selector} { #{declarations} }\n"
         end
-        
+
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}></style>"
-          if body = doc.search('body')
-            doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))            
+          if head = doc.search('head')
+            doc.at_css('head').children.before(::Nokogiri::XML.fragment(style_tag))
+          elsif body = doc.search('body')
+            doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
           else
             doc.inner_html = style_tag += doc.inner_html
           end
@@ -191,7 +193,7 @@ class Premailer
         doc = nil
 
         # Handle HTML entities
-        if @options[:replace_html_entities] == true and thing.is_a?(String) 
+        if @options[:replace_html_entities] == true and thing.is_a?(String)
           if RUBY_VERSION =~ /1.9/
             html_entity_ruby_version = "1.9"
           elsif RUBY_VERSION =~ /1.8/
