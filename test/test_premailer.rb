@@ -237,7 +237,7 @@ END_HTML
 
   def test_input_encoding
     html_special_characters = "Ää, Öö, Üü"
-    if RUBY_VERSION >= '1.0'
+    if html_special_characters.respond_to?(:encode!)
       html_special_characters.encode!("UTF-8")
     else
       html_special_characters = Iconv.conv("UTF-8", "ASCII-8BIT", html_special_characters)
