@@ -242,12 +242,12 @@ END_HTML
 
   def test_meta_encoding_downcase
     meta_encoding = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
-    expected_html = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'
+    expected_html = Regexp.new(Regexp.escape('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'), Regexp::IGNORECASE)
     pm = Premailer.new(meta_encoding, :with_html_string => true, :adapter => :nokogiri, :input_encoding => "utf-8")
     assert_match expected_html, pm.to_inline_css
   end
 
-  def test_meta_encoding_anycase
+  def test_meta_encoding_upcase
     meta_encoding = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'
     expected_html = Regexp.new(Regexp.escape('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'), Regexp::IGNORECASE)
     pm = Premailer.new(meta_encoding, :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8")
