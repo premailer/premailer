@@ -135,7 +135,11 @@ class Premailer
           if head = doc.search('head')
             doc.at_css('head').add_child(::Nokogiri::XML.fragment(style_tag))
           elsif body = doc.search('body')
-            doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
+            if doc.at_css('body').children && !doc.at_css('body').children.empty?
+              doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
+            else
+              doc.at_css('body').add_child(::Nokogiri::XML.fragment(style_tag))
+            end
           else
             doc.inner_html = style_tag += doc.inner_html
           end
