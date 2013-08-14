@@ -148,6 +148,9 @@ END_HTML
     
     # unsubscribe
     assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
+
+    # empty link gets dropped, and shouldn't run forever
+    assert_plaintext(("This is some more text\n\n" * 14 + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
   end
   
   # see https://github.com/alexdunae/premailer/issues/72
