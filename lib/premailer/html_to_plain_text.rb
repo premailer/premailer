@@ -30,12 +30,20 @@ module HtmlToPlainText
     txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # links
-    txt.gsub!(/<a.+?href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)+?)<\/a>/i) do |s|
-      $3.strip + ' ( ' + $2.strip + ' )'
+    txt.gsub!(/<a.+?href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)*?)<\/a>/i) do |s|
+      if $3.empty?
+        ''
+      else
+        $3.strip + ' ( ' + $2.strip + ' )'
+      end
     end
 
-    txt.gsub!(/<a.+?href='(mailto:)?([^\']*)\'[^>]*>((.|\s)+?)<\/a>/i) do |s|
-      $3.strip + ' ( ' + $2.strip + ' )'
+    txt.gsub!(/<a.+?href='(mailto:)?([^\']*)\'[^>]*>((.|\s)*?)<\/a>/i) do |s|
+      if $3.empty?
+        ''
+      else
+        $3.strip + ' ( ' + $2.strip + ' )'
+      end
     end
 
 
