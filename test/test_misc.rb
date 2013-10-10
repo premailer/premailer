@@ -115,10 +115,10 @@ END_HTML
 
   		premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => false, :adapter => adapter)
   		premailer.to_inline_css
-  	  assert_nil premailer.processed_doc.at('head link')
+  	  assert_nil premailer.processed_doc.at('body link')
 
       # should be preserved as unmergeable
-  	  assert_match /red !important/i, premailer.processed_doc.at('body style').inner_html
+  	  assert_match /red !important/i, premailer.processed_doc.at('head style').inner_html
   	end
   end
 
@@ -131,7 +131,7 @@ END_HTML
 
 		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
 		premailer.to_inline_css
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
   def test_unmergable_rules_with_no_body
@@ -209,7 +209,7 @@ END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
   	premailer.to_inline_css
-    assert_equal 'color: green !important;', premailer.processed_doc.search('p').first.attributes['style'].to_s
+    assert_equal 'color: green !important', premailer.processed_doc.search('p').first.attributes['style'].to_s
   end
 
   # in response to https://github.com/alexdunae/premailer/issues/28
@@ -231,6 +231,23 @@ END_HTML
   	premailer.to_inline_css
     assert_match /margin: 0 auto;/, premailer.processed_doc.search('#page').first.attributes['style'].to_s
     assert_match /border-style: solid none solid solid;/, premailer.processed_doc.search('p').first.attributes['style'].to_s
+  end
+
+  def test_sorting_style_attributes
+    html = <<END_HTML
+    <html>
+    <style type="text/css">
+      #page { right: 10px; left: 5px }
+    </style>
+    <body>
+      <div id='page'>test</div>
+    </body>
+    </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+    premailer.to_inline_css
+    assert_equal "left: 5px; right: 10px", premailer.processed_doc.search('#page').first.attributes['style'].to_s
   end
 
   def test_removing_scripts
@@ -257,4 +274,5 @@ END_HTML
       assert_equal 1, premailer.processed_doc.search('script').length
     end
   end
+
 end

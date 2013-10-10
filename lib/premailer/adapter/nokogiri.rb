@@ -75,7 +75,7 @@ class Premailer
           end
 
           # write the inline STYLE attribute
-          el['style'] = Premailer.escape_string(merged.declarations_to_s)
+          el['style'] = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip).sort.join('; ')
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules)
@@ -112,7 +112,7 @@ class Premailer
         @processed_doc = doc
         if is_xhtml?
           # we don't want to encode carriage returns
-          @processed_doc.to_xhtml(:encoding => nil).gsub(/&\#(xD|13);/i, "\r")
+          @processed_doc.to_xhtml(:encoding => nil).gsub(/&\#xD;/i, "\r")
         else
           @processed_doc.to_html
         end
@@ -132,8 +132,14 @@ class Premailer
 
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}></style>"
-          if body = doc.search('body')
-            doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
+          if head = doc.search('head')
+            doc.at_css('head').add_child(::Nokogiri::XML.fragment(style_tag))
+          elsif body = doc.search('body')
+            if doc.at_css('body').children && !doc.at_css('body').children.empty?
+              doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
+            else
+              doc.at_css('body').add_child(::Nokogiri::XML.fragment(style_tag))
+            end
           else
             doc.inner_html = style_tag += doc.inner_html
           end
@@ -207,14 +213,10 @@ class Premailer
         # However, we really don't want to hardcode this. ASCII-8BIG should be the default, but not the only option.
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
           thing = thing.force_encoding(@options[:input_encoding]).encode!
-          doc = ::Nokogiri::HTML(thing) {|c| c.recover }
+          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) {|c| c.recover }
         else
           default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
           doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) {|c| c.recover }
-        end
-
-        doc.search("style").children.each do |child|
-          child.swap(child.text()) if child.cdata?
         end
 
         return doc
