@@ -12,8 +12,6 @@ $LOAD_PATH.unshift(lib_path)  unless $LOAD_PATH.include? lib_path
 
 require 'premailer/version'
 
-task :default => [:test]
-
 desc 'Parse a URL and write out the output.'
 task :inline do
   require 'premailer'
@@ -60,5 +58,7 @@ Rake::TestTask.new do |t|
 end
 
 YARD::Rake::YardocTask.new do |yard|
-  yard.options << "--title='premailer #{Premailer::VERSION}'"
+  yard.options << "--title='Premailer #{Premailer::VERSION} Documentation'"
 end
+
+task :default => [:test]
