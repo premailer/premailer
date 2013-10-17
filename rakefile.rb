@@ -2,7 +2,6 @@ $:.unshift File.expand_path('../lib', __FILE__)
 
 require 'rake'
 require 'rake/testtask'
-require 'rake'
 require "bundler/gem_tasks"
 require 'yard'
 
