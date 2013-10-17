@@ -6,7 +6,7 @@ require 'rake'
 require "bundler/gem_tasks"
 require 'yard'
 
-GEM_ROOT = File.dirname(__FILE__).freeze
+GEM_ROOT = File.dirname(__FILE__).freeze  unless defined?(GEM_ROOT)
 
 lib_path = File.expand_path('lib', GEM_ROOT)
 $LOAD_PATH.unshift(lib_path)  unless $LOAD_PATH.include? lib_path
