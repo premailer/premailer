@@ -7,9 +7,9 @@ huge pain and a simple newsletter becomes un-managable very quickly. This
 script is my solution.
 
 * CSS styles are converted to inline style attributes
-  - Checks <tt>style</tt> and <tt>link[rel=stylesheet]</tt> tags and preserves existing inline attributes
+  - Checks `style` and `link[rel=stylesheet]` tags and preserves existing inline attributes
 * Relative paths are converted to absolute paths
-  - Checks links in <tt>href</tt>, <tt>src</tt> and CSS <tt>url('')</tt>
+  - Checks links in `href`, `src` and CSS `url('')`
 * CSS properties are checked against e-mail client capabilities
   - Based on the Email Standards Project's guides
 * A plain text version is created (optional)
@@ -32,14 +32,14 @@ gem install premailer
 premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
 
 # Write the HTML output
-fout = File.open("output.html", "w")
-fout.puts premailer.to_inline_css
-fout.close
+File.open("output.html", "w") do |fout|
+  fout.puts premailer.to_inline_css
+end
 
 # Write the plain-text output
-fout = File.open("ouput.txt", "w")
-fout.puts premailer.to_plain_text
-fout.close
+File.open("ouput.txt", "w") do |fout|
+  fout.puts premailer.to_plain_text
+end
 
 # Output any CSS warnings
 premailer.warnings.each do |w|
@@ -49,28 +49,25 @@ end
 
 ## Ruby Compatibility
 
-Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 (preview 1). It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](http://travis-ci.org/#!/alexdunae/premailer).
+Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](http://travis-ci.org/#!/alexdunae/premailer).
 
 ## Premailer-specific CSS
 
 Premailer looks for a few CSS attributes that make working with tables a bit easier.
-<dl>
-  <dt>-premailer-width</dt>
-    <dd>Available on <tt>table</tt>, <tt>th</tt> and <tt>td</tt> elements</dd>
-  <dt>-premailer-height</dt>
-    <dd>Available on <tt>table</tt>, <tt>tr</tt>, <tt>th</tt> and <tt>td</tt> elements</dd>
-  <dt>-premailer-cellpadding</dt>
-    <dd>Available on <tt>table</tt> elements</dd>
-  <dt>-premailer-cellspacing</dt>
-    <dd>Available on <tt>table</tt> elements</dd>
-</dl>
+
+| CSS Attribute | Availability |
+| ------------- | ------------ |
+| -premailer-width | Available on `table`, `th` and `td` elements |
+| -premailer-height | Available on `table`, `tr`, `th` and `td` elements |
+| -premailer-cellpadding | Available on `table` elements |
+| -premailer-cellspacing | Available on `table` elements |
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
 
 For example
 
 ```css
-table { -premailer-cellspacing: 5; -premailer-width: 500;}
+table { -premailer-cellspacing: 5; -premailer-width: 500; }
 ```
 
 will result in 
