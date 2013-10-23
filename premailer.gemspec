@@ -6,7 +6,7 @@ $LOAD_PATH.unshift(lib_path)  unless $LOAD_PATH.include? lib_path
 require 'premailer/version'
 
 Gem::Specification.new do |s|
-  s.name     = "regru-premailer"
+  s.name     = "premailer"
   s.version  = Premailer::VERSION.dup
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary  = "Preflight for HTML e-mail."
