@@ -1,4 +1,5 @@
-source :rubygems
+source "https://rubygems.org"
+
 gem 'css_parser', :git => 'git://github.com/alexdunae/css_parser.git'
 gem 'webmock', :group => [:development, :test]
 
@@ -10,3 +11,4 @@ gemspec
 
 gem "ripper", :group => :development, :platforms => :mri_18
 
+gem "coveralls", :require => false, :platforms => [:mri_19, :mri_20], :group => :development

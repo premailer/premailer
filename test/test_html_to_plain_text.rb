@@ -102,13 +102,33 @@ END_HTML
     assert lens.max <= 20
   end
 
+  def test_img_alt_tags
+    # ensure html imag tags that aren't self-closed are parsed, 
+    # along with accepting both '' and "" as attribute quotes
+
+    # <img alt="" />
+    assert_plaintext 'Example ( http://example.com/ )', '<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"/></a>'
+    # <img alt="">
+    assert_plaintext 'Example ( http://example.com/ )', '<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"></a>'
+    # <img alt='' />
+    assert_plaintext 'Example ( http://example.com/ )', "<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'/></a>"
+    # <img alt=''>
+    assert_plaintext 'Example ( http://example.com/ )', "<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'></a>"
+  end
+
   def test_links
     # basic
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/">Link</a>'
     
     # nested html
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/"><span class="a">Link</span></a>'
-    
+
+    # nested html with new line
+    assert_plaintext 'Link ( http://example.com/ )', "<a href='http://example.com/'>\n\t<span class='a'>Link</span>\n\t</a>"
+
+    # mailto
+    assert_plaintext 'Contact Us ( contact@example.org )', "<a href='mailto:contact@example.org'>Contact Us</a>"
+
     # complex link
     assert_plaintext 'Link ( http://example.com:80/~user?aaa=bb&c=d,e,f#foo )', '<a href="http://example.com:80/~user?aaa=bb&amp;c=d,e,f#foo">Link</a>'
     
@@ -128,6 +148,9 @@ END_HTML
     
     # unsubscribe
     assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
+
+    # empty link gets dropped, and shouldn't run forever
+    assert_plaintext(("This is some more text\n\n" * 14 + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
   end
   
   # see https://github.com/alexdunae/premailer/issues/72

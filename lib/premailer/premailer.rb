@@ -29,12 +29,11 @@
 # puts premailer.to_inline_css
 # ```
 #
+require 'premailer/version'
+
 class Premailer
   include HtmlToPlainText
   include CssParser
-
-  # Premailer version.
-  VERSION = '1.7.3'
 
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
@@ -120,8 +119,7 @@ class Premailer
       'background-color' => 'bgcolor',
       'vertical-align' => 'valign',
       '-premailer-width' => 'width',
-      '-premailer-height' => 'height',
-      '-premailer-colspan' => 'colspan'
+      '-premailer-height' => 'height'
     },
     'img' => {'float' => 'align'}
   }
@@ -262,6 +260,7 @@ class Premailer
 protected
   def load_css_from_local_file!(path)
     css_block = ''
+    path.gsub!(/\Afile:/, '')
     begin
       File.open(path, "r") do |file|
         while line = file.gets
@@ -292,21 +291,26 @@ protected
 
     # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
-    if tags = @doc.search("link[@rel='stylesheet'], style")
+    if (@options[:adapter] == :nokogiri)
+      tags = @doc.search("link[@rel='stylesheet']", "//style[not(contains(@data-premailer,'ignore'))]")
+    else
+      tags = @doc.search("link[@rel='stylesheet'], style:not([@data-premailer='ignore'])")
+    end
+    if tags
       tags.each do |tag|
         if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media']) && @options[:include_link_tags]
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
-          
+
           if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
             link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
           end
-          
+
           # if the file does not exist locally, try to grab the remote reference
           if link_uri.nil? or not File.exists?(link_uri)
             link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
           end
-          
+
           if Premailer.local_data?(link_uri)
             $stderr.puts "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
@@ -338,10 +342,9 @@ public
 
   # @private
   def media_type_ok?(media_types)
+    media_types = media_types.to_s
     return true if media_types.nil? or media_types.empty?
     media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
-  rescue
-    true
   end
 
   def append_query_string(doc, qs)
@@ -361,7 +364,7 @@ public
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
-      
+
       next if href[0,1] =~ /[\#\{\[\<\%]/ # don't bother with anchors or special-looking links
 
       begin
@@ -462,13 +465,13 @@ public
   def self.resolve_link(path, base_path) # :nodoc:
     path.strip!
     resolved = nil
-    if path =~ /(http[s]?|ftp):\/\//i
+    if path =~ /\A(?:(https?|ftp|file):)\/\//i
       resolved = path
       Premailer.canonicalize(resolved)
     elsif base_path.kind_of?(URI)
       resolved = base_path.merge(path)
       Premailer.canonicalize(resolved)
-    elsif base_path.kind_of?(String) and base_path =~ /^(http[s]?|ftp):\/\//i
+    elsif base_path.kind_of?(String) and base_path =~ /\A(?:(?:https?|ftp|file):)\/\//i
       resolved = URI.parse(base_path)
       resolved = resolved.merge(path)
       Premailer.canonicalize(resolved)
@@ -481,8 +484,9 @@ public
   #
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
-    return true if data.is_a?(IO) || data.is_a?(StringIO)
-    return false if data =~ /^(http|https|ftp)\:\/\//i
+    return true   if data.is_a?(IO) || data.is_a?(StringIO)
+    return true   if data =~ /\Afile:\/\//i
+    return false  if data =~ /\A(?:(https?|ftp):)\/\//i
     true
   end
 
