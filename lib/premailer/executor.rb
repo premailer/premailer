@@ -77,10 +77,10 @@ $stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if opt
 premailer = nil
 input = nil
 
-if $stdin.tty? or STDIN.fcntl(Fcntl::F_GETFL, 0) == 0
+if $stdin.tty?
   input = ARGV.shift
 else
-  input = $stdin
+  input = $stdin.read
   options[:with_html_string] = true
 end
 
