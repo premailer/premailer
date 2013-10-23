@@ -20,15 +20,20 @@ I'm looking for input on a version 2.0 update to Premailer.  PLease visit the [P
 
 ## Installation
 
-Download the Premailer gem from RubyGems.
+Install the Premailer gem from RubyGems.
 
 ```bash
 gem install premailer
 ```
 
+or add it to your `Gemfile` and run `bundle`.
+
 ## Example
 
 ```ruby
+require 'rubygems' # optional for Ruby 1.9 or above.
+require 'premailer'
+
 premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
 
 # Write the HTML output
