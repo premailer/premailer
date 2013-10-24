@@ -10,10 +10,6 @@ module HtmlToPlainText
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     txt = html
 
-    # decode HTML entities
-    he = HTMLEntities.new
-    txt = he.decode(txt)
-
     # replace images with their alt attributes
     # for img tags with "" for attribute quotes
     # with or without closing tag
@@ -45,7 +41,6 @@ module HtmlToPlainText
         $3.strip + ' ( ' + $2.strip + ' )'
       end
     end
-
 
     # handle headings (H1-H6)
     txt.gsub!(/(<\/h[1-6]>)/i, "\n\\1") # move closing tags to new lines
@@ -87,6 +82,10 @@ module HtmlToPlainText
 
     # strip remaining tags
     txt.gsub!(/<\/?[^>]*>/, '')
+
+    # decode HTML entities
+    he = HTMLEntities.new
+    txt = he.decode(txt)
 
     txt = word_wrap(txt, line_length)
 
