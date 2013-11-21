@@ -178,12 +178,12 @@ class Premailer
   # @option options [Boolean] :remove_comments Remove html comments. Default is false.
   # @option options [Boolean] :remove_scripts Remove <tt>script</tt> elements. Default is true.
   # @option options [Boolean] :preserve_styles Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is false.
-  # @option options [Boolean] :preserve_reset Whether to preserve styles associated with the MailChimp reset code.
-  # @option options [Boolean] :with_html_string Whether the html param should be treated as a raw string.
+  # @option options [Boolean] :preserve_reset Whether to preserve styles associated with the MailChimp reset code. Default is true.
+  # @option options [Boolean] :with_html_string Whether the html param should be treated as a raw string. Default is false.
   # @option options [Boolean] :verbose Whether to print errors and warnings to <tt>$stderr</tt>.  Default is false.
   # @option options [Boolean] :include_link_tags Whether to include css from <tt>link rel=stylesheet</tt> tags.  Default is true.
   # @option options [Boolean] :include_style_tags Whether to include css from <tt>style</tt> tags.  Default is true.
-  # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea.
+  # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea. Default is ASCII-8BIT.
   # @option options [Boolean] :replace_html_entities Convert HTML entities to actual characters. Default is false.
   # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
