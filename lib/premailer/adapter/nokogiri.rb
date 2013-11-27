@@ -19,15 +19,15 @@ class Premailer
         end
 
         # Iterate through the rules and merge them into the HTML
-        @css_parser.each_selector(:all) do |selector, declaration, specificity|
+        @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
           # Save un-mergable rules separately
           selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
 
           # Convert element names to lower case
           selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
 
-          if selector =~ Premailer::RE_UNMERGABLE_SELECTORS
-            @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
+          if Premailer.is_media_query?(media_types) || selector =~ Premailer::RE_UNMERGABLE_SELECTORS
+            @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration), media_types) unless @options[:preserve_styles]
           else
             begin
               if selector =~ Premailer::RE_RESET_SELECTORS
@@ -79,6 +79,9 @@ class Premailer
               el[html_att] = merged[css_att].gsub(/url\('(.*)'\)/,'\1').gsub(/;$/, '').strip if el[html_att].nil? and not merged[css_att].empty?
             end
           end
+
+          # Collapse multiple rules into one as much as possible.
+          merged.create_shorthand!
 
           # write the inline STYLE attribute
           el['style'] = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip).sort.join('; ')
@@ -138,9 +141,7 @@ class Premailer
 
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}</style>"
-          if head = doc.search('head')
-            doc.at_css('head').add_child(::Nokogiri::XML.fragment(style_tag))
-          elsif body = doc.search('body')
+          if body = doc.search('body')
             if doc.at_css('body').children && !doc.at_css('body').children.empty?
               doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
             else

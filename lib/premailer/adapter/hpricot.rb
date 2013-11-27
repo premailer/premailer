@@ -18,15 +18,15 @@ class Premailer
         end
 
         # Iterate through the rules and merge them into the HTML
-        @css_parser.each_selector(:all) do |selector, declaration, specificity|
+        @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
           # Save un-mergable rules separately
           selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
 
           # Convert element names to lower case
           selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
 
-          if selector =~ Premailer::RE_UNMERGABLE_SELECTORS
-            @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless @options[:preserve_styles]
+          if Premailer.is_media_query?(media_types) || selector =~ Premailer::RE_UNMERGABLE_SELECTORS
+            @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration), media_types) unless @options[:preserve_styles]
           else
             begin
               if selector =~ Premailer::RE_RESET_SELECTORS
@@ -75,6 +75,7 @@ class Premailer
           # Perform style folding
           merged = CssParser.merge(declarations)
           merged.expand_shorthand!
+          merged.create_shorthand!
 
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)
@@ -132,10 +133,7 @@ class Premailer
       #
       # @return [::Hpricot] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-        styles = ''
-        unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
-          styles += "#{selector} { #{declarations} }\n"
-        end
+        styles = unmergable_rules.to_s
 
         unless styles.empty?
           style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
