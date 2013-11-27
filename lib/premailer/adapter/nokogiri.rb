@@ -134,10 +134,7 @@ class Premailer
       #
       # @return [::Nokogiri::XML] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
-        styles = ''
-        unmergable_rules.each_selector(:all, :force_important => true) do |selector, declarations, specificity|
-          styles += "#{selector} { #{declarations} }\n"
-        end
+        styles = unmergable_rules.to_s
 
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}</style>"
