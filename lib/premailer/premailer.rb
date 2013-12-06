@@ -552,7 +552,7 @@ public
       end
     end
 
-    return warnings
+    warnings
   end
 end
 

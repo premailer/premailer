@@ -228,7 +228,7 @@ class Premailer
           child.swap(child.text()) if child.cdata?
         end
 
-        return doc
+        doc
       end
 
     end
