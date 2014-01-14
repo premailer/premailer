@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'css_parser', :git => 'git://github.com/alexdunae/css_parser.git'
+gem 'css_parser', :git => 'git://github.com/premailer/css_parser.git'
 gem 'webmock', :group => [:development, :test]
 
 platforms :jruby do
