@@ -77,9 +77,11 @@ $stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if opt
 premailer = nil
 input = nil
 
-if $stdin.tty?
+if ARGV.size > 0
+  # Executed via command line or shell script
   input = ARGV.shift
 else
+  # Called in piped command
   input = $stdin.read
   options[:with_html_string] = true
 end
