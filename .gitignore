@@ -8,4 +8,5 @@ doc/
 .yardoc/
 *.sw?
 pkg/
+.bundle/
 *.sublime-*
