@@ -151,6 +151,23 @@ END_HTML
     end
   end
   
+  def test_initialize_no_escape_attributes_option
+    html = <<END_HTML
+    <html> <body>
+    <a id="google" href="http://google.com">Google</a>
+    <a id="noescape" href="{{link_url}}">Link</a>
+		</body> </html>
+END_HTML
+
+    [:nokogiri, :hpricot].each do |adapter|
+    	pm = Premailer.new(html, :with_html_string => true, :adapter => adapter, :escape_url_attributes => false)
+      pm.to_inline_css
+      doc = pm.processed_doc
+      assert_equal doc.at('#google')['href'], 'http://google.com'
+      assert_equal doc.at('#noescape')['href'], '{{link_url}}'
+    end
+  end
+  
   def test_remove_ids
     html = <<END_HTML
     <html> <head> <style type="text/css"> #remove { color:blue; } </style> </head>
