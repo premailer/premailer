@@ -16,7 +16,7 @@ script is my solution.
 
 ## Premailer 2.0 is coming
 
-I'm looking for input on a version 2.0 update to Premailer.  PLease visit the [Premailer 2.0 Planning Page](https://github.com/alexdunae/premailer/wiki/Premailer-2.0-Planning) and give me your feedback.
+I'm looking for input on a version 2.0 update to Premailer.  Please visit the [Premailer 2.0 Planning Page](https://github.com/alexdunae/premailer/wiki/Premailer-2.0-Planning) and give me your feedback.
 
 ## Installation
 
