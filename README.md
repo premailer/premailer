@@ -1,4 +1,4 @@
-# Premailer README
+# Premailer README [![Build Status](https://travis-ci.org/premailer/premailer.png?branch=master)](https://travis-ci.org/premailer/premailer)
 
 ## What is this?
 
@@ -54,7 +54,7 @@ end
 
 ## Ruby Compatibility
 
-Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](http://travis-ci.org/#!/alexdunae/premailer).
+Premailer is tested on Ruby 1.8.7, Ruby 1.9.2 and Ruby 1.9.3 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](http://travis-ci.org/#!/premailer/premailer).
 
 ## Premailer-specific CSS
 
