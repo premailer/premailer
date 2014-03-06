@@ -202,7 +202,7 @@ class Premailer
 
         # Handle HTML entities
         if @options[:replace_html_entities] == true and thing.is_a?(String)
-          if RUBY_VERSION =~ /1.9/
+          if RUBY_VERSION =~ /1.9/ || RUBY_VERSION =~ /2.0/
             html_entity_ruby_version = "1.9"
           elsif RUBY_VERSION =~ /1.8/
             html_entity_ruby_version = "1.8"
