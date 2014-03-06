@@ -225,10 +225,7 @@ END_HTML
   end
 
   def test_include_style_tags_option
-    local_setup('base.html', :adapter => :nokogiri, :include_style_tags => true)
-    assert_match /1\.231/, @doc.at('body').attributes['style'].to_s
-    assert_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
-
+    # Check that media queries do NOT get inlined
     local_setup('base.html', :adapter => :nokogiri, :include_style_tags => false)
     assert_match /1\.231/, @doc.at('body').attributes['style'].to_s
     assert_no_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
