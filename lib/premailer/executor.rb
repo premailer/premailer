@@ -52,6 +52,10 @@ opts = OptionParser.new do |opts|
     options[:line_length] = v
   end
 
+  opts.on("-e", "--entities", "Output HTML entities instead of UTF-8 when using Nokogiri") do |v|
+    options[:output_encoding] = "US-ASCII"
+  end
+
   opts.on("-d", "--io-exceptions", "Abort on I/O errors") do |v|
     options[:io_exceptions] = v
   end
