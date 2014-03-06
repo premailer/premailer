@@ -136,8 +136,9 @@ END_HTML
 		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
 		premailer.to_inline_css
 
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
-
+    # blue should be inlined
+	  assert_no_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+    # red should remain in <style> block
 	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
 
