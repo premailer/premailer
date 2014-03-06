@@ -119,7 +119,7 @@ END_HTML
 
       # should be preserved as unmergeable
 
-  	  assert_match /red !important/i, premailer.processed_doc.at('body style').inner_html
+  	  assert_match /color: red/i, premailer.processed_doc.at('body style').inner_html
 
   	  assert_match /a:hover/i, premailer.processed_doc.at('style').inner_html
 
