@@ -4,7 +4,7 @@ gem 'css_parser',	:git => 'git://github.com/premailer/css_parser.git'
 gem 'webmock',		:group => [:development, :test]
 
 
-gemspec :name => 'ruby187.gemspec'
+gemspec :name => 'ruby187'
 
 gem "ripper", :group => :development, :platforms => :mri_18
 
