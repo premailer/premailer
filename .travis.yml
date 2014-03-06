@@ -5,20 +5,19 @@ rvm:
   - 1.9.2
   - 1.9.3
   - 2.0.0
-  - jruby
   - ree
 gemfile:
   - Gemfile
   - gemfiles/ruby187.gemfile
 matrix:
-  include:
+  exclude:
     - rvm: 1.8.7
-      gemfile: gemfiles/ruby187.gemfile
+      gemfile: Gemfile
     - rvm: 1.9.2
-      gemfile: Gemfile
-    - rvm: 1.9.3
-      gemfile: Gemfile
-    - rvm: 2.0.0
-      gemfile: Gemfile
-    - rvm: ree
       gemfile: gemfiles/ruby187.gemfile
+    - rvm: 1.9.3
+      gemfile: gemfiles/ruby187.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/ruby187.gemfile
+    - rvm: ree
+      gemfile: Gemfile

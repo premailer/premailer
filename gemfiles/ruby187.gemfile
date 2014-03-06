@@ -1,13 +1,9 @@
 source "https://rubygems.org"
 
-gem 'css_parser', :git => 'git://github.com/premailer/css_parser.git'
-gem 'webmock', :group => [:development, :test]
+gem 'css_parser',	:git => 'git://github.com/premailer/css_parser.git'
+gem 'webmock',		:group => [:development, :test]
+gem 'nokogiri',		'~> 1.5.10'
 
-gem 'nokogiri', '~> 1.5.10'
-
-platforms :jruby do
-  gem 'jruby-openssl'
-end
 
 gemspec
 
