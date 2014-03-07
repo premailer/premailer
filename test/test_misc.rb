@@ -172,9 +172,9 @@ END_HTML
 
       assert_equal "color: blue", premailer.processed_doc.at('a').attributes['style'].to_s,
                    "#{adapter}: Failed to inline the default style"
-      assert_match /@media \(min-width:500px\) {.*?a {.*?color: red;.*?}.*?}/m, style_tag_contents,
+      assert_match /@media \(min-width:500px\) \{.*?a {.*?color: red;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with no type to style"
-      assert_match /@media screen and \(orientation: portrait\) {.*?a {.*?color: green;.*?}.*?}/m, style_tag_contents,
+      assert_match /@media screen and \(orientation: portrait\) \{.*?a \{.*?color: green;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with type to style"
     end
 
