@@ -202,15 +202,8 @@ class Premailer
 
         # Handle HTML entities
         if @options[:replace_html_entities] == true and thing.is_a?(String)
-          if RUBY_VERSION =~ /1.9/ || RUBY_VERSION =~ /2.0/
-            html_entity_ruby_version = "1.9"
-          elsif RUBY_VERSION =~ /1.8/
-            html_entity_ruby_version = "1.9"
-          end
-          if html_entity_ruby_version
-            HTML_ENTITIES[html_entity_ruby_version].map do |entity, replacement|
-              thing.gsub! entity, replacement
-            end
+          HTML_ENTITIES.map do |entity, replacement|
+            thing.gsub! entity, replacement
           end
         end
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
