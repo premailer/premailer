@@ -205,7 +205,7 @@ class Premailer
           if RUBY_VERSION =~ /1.9/ || RUBY_VERSION =~ /2.0/
             html_entity_ruby_version = "1.9"
           elsif RUBY_VERSION =~ /1.8/
-            html_entity_ruby_version = "1.8"
+            html_entity_ruby_version = "1.9"
           end
           if html_entity_ruby_version
             HTML_ENTITIES[html_entity_ruby_version].map do |entity, replacement|
