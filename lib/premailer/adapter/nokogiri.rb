@@ -121,9 +121,9 @@ class Premailer
         @processed_doc = doc
         if is_xhtml?
           # we don't want to encode carriage returns
-          @processed_doc.to_xhtml(:encoding => nil).gsub(/&\#(xD|13);/i, "\r")
+          @processed_doc.to_xhtml(encoding:@options[:output_encoding]).gsub(/&\#(xD|13);/i, "\r")
         else
-          @processed_doc.to_html
+          @processed_doc.to_html(encoding:@options[:output_encoding])
         end
       end
 
@@ -186,10 +186,10 @@ class Premailer
         # TODO: duplicate options
         if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
           thing = input
-				elsif @is_local_file
+        elsif @is_local_file
           @base_dir = File.dirname(input)
           thing = File.open(input, 'r')
-				else
+        else
           thing = open(input)
         end
 

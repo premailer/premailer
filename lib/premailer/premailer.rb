@@ -186,6 +186,7 @@ class Premailer
                 :include_link_tags => true,
                 :include_style_tags => true,
                 :input_encoding => 'ASCII-8BIT',
+                :output_encoding => nil,
                 :replace_html_entities => false,
                 :adapter => Adapter.use,
                 }.merge(options)
