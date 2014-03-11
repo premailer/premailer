@@ -119,7 +119,7 @@ END_HTML
 
       # should be preserved as unmergeable
 
-  	  assert_match /red !important/i, premailer.processed_doc.at('body style').inner_html
+  	  assert_match /color: red/i, premailer.processed_doc.at('body style').inner_html
 
   	  assert_match /a:hover/i, premailer.processed_doc.at('style').inner_html
 
@@ -136,8 +136,9 @@ END_HTML
 		premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
 		premailer.to_inline_css
 
-	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red[\s]*!important;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
-
+    # blue should be inlined
+	  assert_no_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+    # red should remain in <style> block
 	  assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
 
@@ -171,9 +172,9 @@ END_HTML
 
       assert_equal "color: blue", premailer.processed_doc.at('a').attributes['style'].to_s,
                    "#{adapter}: Failed to inline the default style"
-      assert_match /@media \(min-width:500px\) {.*?a {.*?color: red;.*?}.*?}/m, style_tag_contents,
+      assert_match /@media \(min-width:500px\) \{.*?a {.*?color: red;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with no type to style"
-      assert_match /@media screen and \(orientation: portrait\) {.*?a {.*?color: green;.*?}.*?}/m, style_tag_contents,
+      assert_match /@media screen and \(orientation: portrait\) \{.*?a \{.*?color: green;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with type to style"
     end
 
