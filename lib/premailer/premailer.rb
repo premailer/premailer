@@ -164,6 +164,7 @@ class Premailer
   # @option options [Boolean] :include_style_tags Whether to include css from <tt>style</tt> tags.  Default is true.
   # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea. Default is ASCII-8BIT.
   # @option options [Boolean] :replace_html_entities Convert HTML entities to actual characters. Default is false.
+  # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
   # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
@@ -188,6 +189,7 @@ class Premailer
                 :input_encoding => 'ASCII-8BIT',
                 :output_encoding => nil,
                 :replace_html_entities => false,
+                :escape_url_attributes => true,
                 :adapter => Adapter.use,
                 }.merge(options)
 
@@ -396,6 +398,7 @@ public
     base_uri = URI.parse(base_uri) unless base_uri.kind_of?(URI)
 
     append_qs = @options[:link_query_string] || ''
+    escape_attrs = @options[:escape_url_attributes]
 
     ['href', 'src', 'background'].each do |attribute|
       tags = doc.search("*[@#{attribute}]")
@@ -418,6 +421,7 @@ public
             merged = Premailer.resolve_link(tag.attributes[attribute].to_s, base_uri)
           rescue
             begin
+              next unless escape_attrs
               merged = Premailer.resolve_link(URI.escape(tag.attributes[attribute].to_s), base_uri)
             rescue; end
           end
