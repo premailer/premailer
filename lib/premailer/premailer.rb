@@ -166,6 +166,7 @@ class Premailer
   # @option options [Boolean] :replace_html_entities Convert HTML entities to actual characters. Default is false.
   # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
   # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
+  # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
