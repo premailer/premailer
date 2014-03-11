@@ -258,6 +258,15 @@ END_HTML
     assert_equal expected_html, pm.to_inline_css
   end
 
+  # output_encoding option should return HTML Entities when set to US-ASCII
+  def test_output_encoding
+    html_special_characters = "©"
+    html_entities_characters = "&#169;"
+    expected_html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>" + html_entities_characters + "</p></body></html>\n"
+    pm = Premailer.new(xxxxx, :output_encoding => "US-ASCII", :adapter => :nokogiri, :input_encoding => "UTF-8");
+    assert_equal expected_html, pm.to_inline_css
+  end
+
   def test_meta_encoding_downcase
     meta_encoding = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
     expected_html = Regexp.new(Regexp.escape('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'), Regexp::IGNORECASE)
