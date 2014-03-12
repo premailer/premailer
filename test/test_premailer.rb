@@ -263,7 +263,7 @@ END_HTML
     html_special_characters = "©"
     html_entities_characters = "&#169;"
     expected_html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>" + html_entities_characters + "</p></body></html>\n"
-    pm = Premailer.new(html_special_characters, :output_encoding => "US-ASCII", :adapter => :nokogiri, :input_encoding => "UTF-8");
+    pm = Premailer.new(html_special_characters, :output_encoding => "US-ASCII", :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8");
     assert_equal expected_html, pm.to_inline_css
   end
 
