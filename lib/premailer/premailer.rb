@@ -286,12 +286,17 @@ protected
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
 
           if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
-            link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
-          end
-
-          # if the file does not exist locally, try to grab the remote reference
-          if link_uri.nil? or not File.exists?(link_uri)
-            link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+            if @options[:with_html_string]
+              link_uri = tag.attributes['href'].to_s.sub(@base_url.to_s, '').sub(/\A\/*/, '')
+            else
+              link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
+              # if the file does not exist locally, try to grab the remote reference
+              unless File.exists?(link_uri)
+                link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
+              end
+            end
+          else
+            link_uri = tag.attributes['href'].to_s
           end
 
           if Premailer.local_data?(link_uri)
