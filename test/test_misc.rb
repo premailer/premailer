@@ -321,4 +321,22 @@ END_HTML
     end
   end
 
+  def test_strip_important_from_attributes
+    html = <<END_HTML
+    <html>
+    <head>
+      <style>td { background-color: #FF0000 !important; }</style>
+    </head>
+    <body>
+      <table><tr><td>red</td></tr></table>
+    </body>
+    </html>
+END_HTML
+
+    [:nokogiri, :hpricot].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      assert_match 'bgcolor="#FF0000"', premailer.to_inline_css
+    end
+  end
+
 end
