@@ -42,7 +42,7 @@ File.open("output.html", "w") do |fout|
 end
 
 # Write the plain-text output
-File.open("ouput.txt", "w") do |fout|
+File.open("output.txt", "w") do |fout|
   fout.puts premailer.to_plain_text
 end
 
