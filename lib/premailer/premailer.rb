@@ -162,6 +162,7 @@ class Premailer
   # @option options [Boolean] :verbose Whether to print errors and warnings to <tt>$stderr</tt>.  Default is false.
   # @option options [Boolean] :include_link_tags Whether to include css from <tt>link rel=stylesheet</tt> tags.  Default is true.
   # @option options [Boolean] :include_style_tags Whether to include css from <tt>style</tt> tags.  Default is true.
+  # @option options [Boolean] :include_imports Whether to include css from <tt>@import</tt> statements.  Default is true.
   # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea. Default is ASCII-8BIT.
   # @option options [Boolean] :replace_html_entities Convert HTML entities to actual characters. Default is false.
   # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
@@ -187,6 +188,7 @@ class Premailer
                 :io_exceptions => false,
                 :include_link_tags => true,
                 :include_style_tags => true,
+                :include_imports => true,
                 :input_encoding => 'ASCII-8BIT',
                 :output_encoding => nil,
                 :replace_html_entities => false,
@@ -213,7 +215,7 @@ class Premailer
 
     @css_parser = CssParser::Parser.new({
       :absolute_paths => true,
-      :import => true,
+      :import => @options[:include_imports],
       :io_exceptions => @options[:io_exceptions]
     })
 
