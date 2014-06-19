@@ -275,7 +275,7 @@ protected
     # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
     if (@options[:adapter] == :nokogiri)
-      tags = @doc.search("link[@rel='stylesheet'][not(contains(@data-premailer,'ignore'))]", "//style[not(contains(@data-premailer,'ignore'))]")
+      tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore'])", "//style[not(contains(@data-premailer,'ignore'))]")
     else
       tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore']), style:not([@data-premailer='ignore'])")
     end
@@ -545,4 +545,3 @@ public
     warnings
   end
 end
-
