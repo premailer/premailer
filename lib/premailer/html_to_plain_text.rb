@@ -26,7 +26,8 @@ module HtmlToPlainText
     txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # links
-    txt.gsub!(/<a.+?href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)*?)<\/a>/i) do |s|
+    # txt.gsub!(/<a.+?href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)*?)<\/a>/i) do |s|
+    txt.gsub!(/<a\s.*href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)*?)<\/a>/i) do |s|
       if $3.empty?
         ''
       else
@@ -34,7 +35,8 @@ module HtmlToPlainText
       end
     end
 
-    txt.gsub!(/<a.+?href='(mailto:)?([^\']*)\'[^>]*>((.|\s)*?)<\/a>/i) do |s|
+    # txt.gsub!(/<a.+?href='(mailto:)?([^\']*)\'[^>]*>((.|\s)*?)<\/a>/i) do |s|
+    txt.gsub!(/<a\s.*?href='(mailto:)?([^\']*)\'[^>]*>((.|\s)*?)<\/a>/i) do |s|
       if $3.empty?
         ''
       else
