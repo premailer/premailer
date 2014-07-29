@@ -252,7 +252,7 @@ protected
       end
 
       load_css_from_string(css_block)
-    rescue; end
+    rescue StandardError; end
   end
 
   def load_css_from_string(css_string)
@@ -343,7 +343,7 @@ public
 
     begin
       current_host = @base_url.host
-    rescue
+    rescue StandardError
       current_host = nil
     end
 
@@ -421,15 +421,15 @@ public
         if tag.attributes[attribute].to_s =~ /^http/i
           begin
             merged = URI.parse(tag.attributes[attribute])
-          rescue; next; end
+          rescue StandardError; next; end
         else
           begin
             merged = Premailer.resolve_link(tag.attributes[attribute].to_s, base_uri)
-          rescue
+          rescue StandardError
             begin
               next unless escape_attrs
               merged = Premailer.resolve_link(URI.escape(tag.attributes[attribute].to_s), base_uri)
-            rescue; end
+            rescue StandardError; end
           end
         end
 
