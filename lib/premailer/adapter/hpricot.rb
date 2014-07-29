@@ -158,7 +158,7 @@ class Premailer
         html_src = ''
         begin
           html_src = @doc.search("body").inner_html
-        rescue; end
+        rescue StandardError; end
 
         html_src = @doc.to_html unless html_src and not html_src.empty?
         convert_to_text(html_src, @options[:line_length], @html_encoding)
