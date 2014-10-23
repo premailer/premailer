@@ -6,6 +6,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - ree
+  - jruby
 gemfile:
   - Gemfile
   - gemfiles/ruby187.gemfile
