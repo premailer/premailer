@@ -340,4 +340,34 @@ END_HTML
     end
   end
 
+  def test_scripts_with_nokogiri
+    html = <<END_HTML
+    <html>
+    <body>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "John Doe",
+      "jobTitle": "Graduate research assistant",
+      "affiliation": "University of Dreams",
+      "additionalName": "Johnny",
+      "url": "http://www.example.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1234 Peach Drive",
+        "addressLocality": "Wonderland",
+        "addressRegion": "Georgia"
+      }
+    }
+    </script
+    </body>
+    </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true, :remove_scripts => false, :adapter => :nokogiri)
+    premailer.to_inline_css
+
+    assert !premailer.processed_doc.css('script[type="application/ld+json"]').first.children.first.cdata?
+  end
 end

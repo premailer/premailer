@@ -216,9 +216,13 @@ class Premailer
           doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) {|c| c.recover }
         end
 
-        # Fix for removing any CDATA tags inserted per https://github.com/sparklemotion/nokogiri/issues/311
-        doc.search("style").children.each do |child|
-          child.swap(child.text()) if child.cdata?
+        # Fix for removing any CDATA tags from both style and script tags inserted per
+        # https://github.com/sparklemotion/nokogiri/issues/311 and
+        # https://github.com/premailer/premailer/issues/199
+        %w(style script).each do |tag|
+          doc.search(tag).children.each do |child|
+            child.swap(child.text()) if child.cdata?
+          end
         end
 
         doc
