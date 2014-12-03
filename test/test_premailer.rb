@@ -204,6 +204,23 @@ END_HTML
   	end
   end
 
+  def test_reset_contenteditable
+    html = <<-___
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html> <head> <style type="text/css"> #remove { color:blue; } </style> </head>
+    <body>
+    <div contenteditable="true" id="editable"> Test </div>
+    </body> </html>
+    ___
+    [:nokogiri, :hpricot].each do |adapter|
+  		pm = Premailer.new(html, :with_html_string => true, :reset_contenteditable => true, :adapter => adapter)
+      pm.to_inline_css
+      doc = pm.processed_doc
+  	  assert_nil doc.at('#editable')['contenteditable'],
+        "#{adapter}: contenteditable attribute not removed"
+  	end
+  end
+
   def test_carriage_returns_as_entities
     html = <<-html
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

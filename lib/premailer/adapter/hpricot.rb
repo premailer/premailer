@@ -102,6 +102,12 @@ class Premailer
           end
         end
 
+        if @options[:reset_contenteditable]
+          doc.search('*[@contenteditable]').each do |el|
+            el.remove_attribute('contenteditable')
+          end
+        end
+
         if @options[:remove_ids]
           # find all anchor's targets and hash them
           targets = []
