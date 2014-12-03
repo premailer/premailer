@@ -118,6 +118,13 @@ class Premailer
           end
         end
 
+        if @options[:reset_contenteditable]
+          doc.search('*[@contenteditable]').each do |el|
+            puts "found: #{el}"
+            el.remove_attribute('contenteditable')
+          end
+        end
+
         @processed_doc = doc
         if is_xhtml?
           # we don't want to encode carriage returns
