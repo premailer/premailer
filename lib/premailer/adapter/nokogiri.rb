@@ -120,7 +120,6 @@ class Premailer
 
         if @options[:reset_contenteditable]
           doc.search('*[@contenteditable]').each do |el|
-            puts "found: #{el}"
             el.remove_attribute('contenteditable')
           end
         end
