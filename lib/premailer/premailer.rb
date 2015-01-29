@@ -145,8 +145,8 @@ class Premailer
   #   must set the with_html_string option to true.
   #
   # @param [Hash] options the options to handle html with.
-  # @option options [FixNum] :line_length Line length used by to_plain_text. Default is 65.
-  # @option options [FixNum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}).
+  # @option options [Fixnum] :line_length Line length used by to_plain_text. Default is 65.
+  # @option options [Fixnum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}).
   # @option options [String] :link_query_string A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
   # @option options [String] :base_url Used to calculate absolute URLs for local files.
   # @option options [Array(String)] :css Manually specify CSS stylesheets.
