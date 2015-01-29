@@ -4,7 +4,6 @@
 --no-private
 --readme README.md
 --title "Premailer Documentation"
---plugin redcarpet-ext
 -
 README.md
 LICENSE.md
