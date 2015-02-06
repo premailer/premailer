@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.test_files       = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables      = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.add_dependency('css_parser', '>= 1.3.6')
-  s.add_dependency('htmlentities', [ '>= 4.0.0', '<= 4.3.3' ])
+  s.add_dependency('htmlentities', ['>= 4.0.0'])
   s.add_development_dependency "bundler", "~> 1.3"
   s.add_development_dependency('rake', ['~> 0.8',  '!= 0.9.0'])
   s.add_development_dependency('hpricot', '>= 0.8.3')
