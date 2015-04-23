@@ -193,6 +193,7 @@ class Premailer
                 :output_encoding => nil,
                 :replace_html_entities => false,
                 :escape_url_attributes => true,
+                :unescaped_ampersand => false,
                 :adapter => Adapter.use,
                 }.merge(options)
 
@@ -371,7 +372,8 @@ public
         end
 
         if href.query and not href.query.empty?
-          href.query = href.query + '&amp;' + qs
+          amp = @options[:unescaped_ampersand] ? '&' : '&amp;'
+          href.query = href.query + amp + qs
         else
           href.query = qs
         end

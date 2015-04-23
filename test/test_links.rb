@@ -77,6 +77,16 @@ class TestLinks < Premailer::TestCase
     assert_equal '/test/?123&456&amp;utm_source=1234', premailer.processed_doc.at('a')['href']
   end
 
+  def test_unescape_ampersand
+    qs = 'utm_source=1234'
+
+    premailer = Premailer.new("<a href='/test/?q=query'>Link</a>", :link_query_string => qs, :with_html_string => true, :unescaped_ampersand => true)
+    premailer.to_inline_css
+
+    premailer.processed_doc.search('a').each do |a|
+      assert_equal '/test/?q=query&utm_source=1234', a['href'].to_s
+    end
+  end
 
   def test_preserving_links
     html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
