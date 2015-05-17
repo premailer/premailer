@@ -10,6 +10,11 @@ module HtmlToPlainText
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     txt = html
 
+    # strip text ignored html. Useful for removing
+    # headers and footers that aren't needed in the
+    # text version
+    txt.gsub!(/<!-- start text\/html -->.*?<!-- end text\/html -->/m, '')
+
     # replace images with their alt attributes
     # for img tags with "" for attribute quotes
     # with or without closing tag
