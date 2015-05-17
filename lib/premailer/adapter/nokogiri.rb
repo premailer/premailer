@@ -144,7 +144,7 @@ class Premailer
 
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}</style>"
-          if body = doc.search('body')
+          unless (body = doc.search('body')).empty?
             if doc.at_css('body').children && !doc.at_css('body').children.empty?
               doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
             else

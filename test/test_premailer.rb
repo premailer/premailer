@@ -334,4 +334,14 @@ END_HTML
     end
   end
 
+  def test_empty_html_nokogiri
+    html = ""
+    css = "a:hover {color:red;}"
+
+    assert_nothing_raised do
+      pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri)
+      pm.to_inline_css
+    end
+  end
+
 end
