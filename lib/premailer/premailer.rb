@@ -101,7 +101,11 @@ class Premailer
       '-premailer-width' => 'width',
       '-premailer-height' => 'height'
     },
-    'img' => {'float' => 'align'}
+    'img' => {
+      'float' => 'align',
+      'width' => 'width',
+      'height' => 'height'
+    }
   }
 
   # URI of the HTML file used
