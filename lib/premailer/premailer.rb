@@ -103,8 +103,8 @@ class Premailer
     },
     'img' => {
       'float' => 'align',
-      'width' => 'width',
-      'height' => 'height'
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height'
     }
   }
 
