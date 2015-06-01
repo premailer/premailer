@@ -74,12 +74,13 @@ class Premailer
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
     'table' => {
+      'text-align' => 'align',
       'background-color' => 'bgcolor',
       'background-image' => 'background',
       '-premailer-width' => 'width',
       '-premailer-height' => 'height',
       '-premailer-cellpadding' => 'cellpadding',
-      '-premailer-cellspacing' => 'cellspacing',
+      '-premailer-cellspacing' => 'cellspacing'
     },
     'tr' => {
       'text-align' => 'align',
