@@ -74,7 +74,7 @@ class Premailer
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
     'table' => {
-      'float' => 'align',
+      '-premailer-align' => 'align',
       'background-color' => 'bgcolor',
       'background-image' => 'background',
       '-premailer-width' => 'width',
