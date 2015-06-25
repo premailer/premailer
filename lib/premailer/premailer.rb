@@ -74,12 +74,13 @@ class Premailer
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
     'table' => {
+      '-premailer-align' => 'align',
       'background-color' => 'bgcolor',
       'background-image' => 'background',
       '-premailer-width' => 'width',
       '-premailer-height' => 'height',
       '-premailer-cellpadding' => 'cellpadding',
-      '-premailer-cellspacing' => 'cellspacing',
+      '-premailer-cellspacing' => 'cellspacing'
     },
     'tr' => {
       'text-align' => 'align',
@@ -100,7 +101,11 @@ class Premailer
       '-premailer-width' => 'width',
       '-premailer-height' => 'height'
     },
-    'img' => {'float' => 'align'}
+    'img' => {
+      'float' => 'align',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height'
+    }
   }
 
   # URI of the HTML file used
