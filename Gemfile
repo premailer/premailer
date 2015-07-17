@@ -13,4 +13,4 @@ gem "ripper", :group => :development, :platforms => :mri_18
 
 gem "coveralls", :require => false, :platforms => [:mri_19, :mri_20], :group => :development
 
-gem 'test-unit', :group => [:development, :test]
+gem 'test-unit', :group => [:development, :test], :platforms => [:mri_20]
