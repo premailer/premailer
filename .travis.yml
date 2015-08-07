@@ -26,5 +26,9 @@ matrix:
       gemfile: gemfiles/.ruby187.gemfile
     - rvm: 2.0.0
       gemfile: gemfiles/.ruby187.gemfile
+    - rvm: 2.1.0
+      gemfile: gemfiles/.ruby187.gemfile
+    - rvm: 2.2.0
+      gemfile: gemfiles/.ruby187.gemfile
     - rvm: ree
       gemfile: Gemfile
