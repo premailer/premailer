@@ -2,11 +2,11 @@
 $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../'))
 require 'rubygems'
-require 'test/unit'
-require 'webmock/test_unit'
+require 'minitest/autorun'
+require 'webmock/minitest'
 require 'premailer'
 
-class Premailer::TestCase < Test::Unit::TestCase
+class Premailer::TestCase < Minitest::Test
   BASE_URI  = 'http://premailer.dev/'
   BASE_PATH =  File.expand_path(File.dirname(__FILE__)) + '/files'
 
