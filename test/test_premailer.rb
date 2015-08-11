@@ -6,13 +6,13 @@ class TestPremailer < Premailer::TestCase
   def test_special_characters_nokogiri
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
-  	premailer.to_inline_css
+    premailer.to_inline_css
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
   end
 
   def test_special_characters_nokogiri_remote
     remote_setup('chars.html', :adapter => :nokogiri)
-  	@premailer.to_inline_css
+    @premailer.to_inline_css
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
   end
 
@@ -29,7 +29,7 @@ class TestPremailer < Premailer::TestCase
   def test_special_characters_hpricot
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :hpricot)
-  	premailer.to_inline_css
+    premailer.to_inline_css
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
   end
 
@@ -73,10 +73,10 @@ END_HTML
     qs = 'testing=123'
 
     [:nokogiri, :hpricot].each do |adapter|
-		  premailer = Premailer.new(html, :with_html_string => true, :link_query_string => qs, :adapter => adapter)
-		  premailer.to_inline_css
-	    assert_no_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s
-	  end
+      premailer = Premailer.new(html, :with_html_string => true, :link_query_string => qs, :adapter => adapter)
+      premailer.to_inline_css
+      assert_no_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s
+    end
   end
 
   def test_escaping_strings
@@ -176,7 +176,7 @@ END_HTML
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-    	pm = Premailer.new(html, :with_html_string => true, :adapter => adapter, :escape_url_attributes => false)
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter, :escape_url_attributes => false)
       pm.to_inline_css
       doc = pm.processed_doc
       assert_equal doc.at('#google')['href'], 'http://google.com'
@@ -194,14 +194,14 @@ END_HTML
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-  		pm = Premailer.new(html, :with_html_string => true, :remove_ids => true, :adapter => adapter)
+      pm = Premailer.new(html, :with_html_string => true, :remove_ids => true, :adapter => adapter)
       pm.to_inline_css
       doc = pm.processed_doc
-  	  assert_nil doc.at('#remove')
-  	  assert_nil doc.at('#keep')
-  	  hashed_id = doc.at('a')['href'][1..-1]
-  	  assert_not_nil doc.at("\##{hashed_id}")
-  	end
+      assert_nil doc.at('#remove')
+      assert_nil doc.at('#keep')
+      hashed_id = doc.at('a')['href'][1..-1]
+      assert_not_nil doc.at("\##{hashed_id}")
+    end
   end
 
   def test_reset_contenteditable
@@ -213,12 +213,12 @@ END_HTML
     </body> </html>
     ___
     [:nokogiri, :hpricot].each do |adapter|
-  		pm = Premailer.new(html, :with_html_string => true, :reset_contenteditable => true, :adapter => adapter)
+      pm = Premailer.new(html, :with_html_string => true, :reset_contenteditable => true, :adapter => adapter)
       pm.to_inline_css
       doc = pm.processed_doc
-  	  assert_nil doc.at('#editable')['contenteditable'],
-        "#{adapter}: contenteditable attribute not removed"
-  	end
+      assert_nil doc.at('#editable')['contenteditable'],
+                 "#{adapter}: contenteditable attribute not removed"
+    end
   end
 
   def test_carriage_returns_as_entities
@@ -256,12 +256,12 @@ END_HTML
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-  		pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       pm.to_inline_css
       doc = pm.processed_doc
-  	  assert_equal '500', doc.at('table')['width']
-  	  assert_equal '20', doc.at('td')['height']
-  	end
+      assert_equal '500', doc.at('table')['width']
+      assert_equal '20', doc.at('td')['height']
+    end
   end
 
   def test_include_link_tags_option
