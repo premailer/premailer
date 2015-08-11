@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestPremailer < Premailer::TestCase
   def test_special_characters_nokogiri
-    html = '<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
+    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
     premailer.to_inline_css
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
@@ -27,7 +27,7 @@ class TestPremailer < Premailer::TestCase
   # TODO: this passes when run from rake but not when run from:
   #  ruby -Itest test/test_premailer.rb -n test_special_characters_hpricot
   def test_special_characters_hpricot
-    html = '<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
+    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :hpricot)
     premailer.to_inline_css
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp;', premailer.processed_doc.at('p').inner_html
@@ -75,7 +75,7 @@ END_HTML
     [:nokogiri, :hpricot].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :link_query_string => qs, :adapter => adapter)
       premailer.to_inline_css
-      refute_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s
+      assert_no_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s
     end
   end
 
@@ -108,7 +108,7 @@ END_HTML
       local_setup('base.html', :adapter => adapter)
 
       # noimport.css (print stylesheet) sets body { background } to red
-      refute_match /red/, @doc.at('body').attributes['style'].to_s
+      assert_no_match /red/, @doc.at('body').attributes['style'].to_s
 
       # import.css sets .hide to { display: none }
       assert_match /display: none/, @doc.at('#hide01').attributes['style'].to_s
@@ -120,7 +120,7 @@ END_HTML
       remote_setup('base.html', :adapter => adapter)
 
       # noimport.css (print stylesheet) sets body { background } to red
-      refute_match /red/, @doc.at('body')['style']
+      assert_no_match /red/, @doc.at('body')['style']
 
       # import.css sets .hide to { display: none }
       assert_match /display: none/, @doc.at('#hide01')['style']
@@ -143,13 +143,13 @@ END_HTML
   end
 
   def test_local_remote_check
-    assert Premailer.local_data?(StringIO.new('a'))
-    assert Premailer.local_data?('/path/')
-    assert !Premailer.local_data?('http://example.com/path/')
+    assert Premailer.local_data?( StringIO.new('a') )
+    assert Premailer.local_data?( '/path/' )
+    assert !Premailer.local_data?( 'http://example.com/path/' )
 
     # the old way is deprecated but should still work
-    premailer = Premailer.new(StringIO.new('a'))
-    assert premailer.local_uri?('/path/')
+    premailer = Premailer.new( StringIO.new('a') )
+    assert premailer.local_uri?( '/path/' )
   end
 
   def test_initialize_can_accept_io_object
@@ -200,7 +200,7 @@ END_HTML
       assert_nil doc.at('#remove')
       assert_nil doc.at('#keep')
       hashed_id = doc.at('a')['href'][1..-1]
-      refute_nil doc.at("\##{hashed_id}")
+      assert_not_nil doc.at("\##{hashed_id}")
     end
   end
 
@@ -270,7 +270,7 @@ END_HTML
     assert_match /display: none/, @doc.at('.hide').attributes['style'].to_s
 
     local_setup('base.html', :adapter => :nokogiri, :include_link_tags => false)
-    refute_match /1\.231/, @doc.at('body').attributes['style'].to_s
+    assert_no_match /1\.231/, @doc.at('body').attributes['style'].to_s
     assert_match /display: none/, @doc.at('.hide').attributes['style'].to_s
   end
 
@@ -281,7 +281,7 @@ END_HTML
 
     local_setup('base.html', :adapter => :nokogiri, :include_style_tags => false)
     assert_match /1\.231/, @doc.at('body').attributes['style'].to_s
-    refute_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
+    assert_no_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
   end
 
   def test_input_encoding
@@ -328,16 +328,20 @@ END_HTML
     files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
     html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
 
-    premailer = Premailer.new(html_string, :with_html_string => true)
-    premailer.to_inline_css
+    assert_nothing_raised do
+      premailer = Premailer.new(html_string, :with_html_string => true)
+      premailer.to_inline_css
+    end
   end
 
   def test_empty_html_nokogiri
     html = ""
     css = "a:hover {color:red;}"
 
-    pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri)
-    pm.to_inline_css
+    assert_nothing_raised do
+      pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri)
+      pm.to_inline_css
+    end
   end
 
 end

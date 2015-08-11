@@ -31,7 +31,7 @@ END_HTML
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\: red/i, premailer.processed_doc.at('p')['style']
+    assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_commented_out_styles_in_the_body
@@ -47,7 +47,7 @@ END_HTML
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\: red/i, premailer.processed_doc.at('p')['style']
+    assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_not_applying_styles_to_the_head
@@ -108,7 +108,7 @@ END_HTML
 		</html>
 END_HTML
     [:nokogiri, :hpricot].each do |adapter|
-      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true, :adapter => adapter)
+      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
       premailer.to_inline_css
       assert_equal 1, premailer.processed_doc.search('head link').length
       assert_equal 1, premailer.processed_doc.search('head style').length
@@ -137,7 +137,7 @@ END_HTML
     premailer.to_inline_css
 
     # blue should be inlined
-    refute_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+    assert_no_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
     # red should remain in <style> block
     assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
@@ -189,7 +189,9 @@ END_HTML
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
-    premailer.to_inline_css
+    assert_nothing_raised do
+      premailer.to_inline_css
+    end
     assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
   end
 
@@ -205,7 +207,9 @@ END_HTML
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
-    premailer.to_inline_css
+    assert_nothing_raised do
+      premailer.to_inline_css
+    end
     assert_match /color: red/, premailer.processed_doc.at('a').attributes['style'].to_s
   end
 

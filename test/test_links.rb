@@ -3,13 +3,15 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestLinks < Premailer::TestCase
   def test_empty_query_string
-    premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
-    premailer.to_inline_css
+    assert_nothing_raised do
+      premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
+      premailer.to_inline_css
+    end
   end
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    opts = {:base_url => 'http://example.com/', :link_query_string => qs, :with_html_string => true, :adapter => :hpricot}
+    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :hpricot}
 
     appendable = [
         '/',
@@ -35,7 +37,7 @@ class TestLinks < Premailer::TestCase
         'gopher://gopher.floodgap.com/1/fun/twitpher'
     ]
 
-    html = appendable.collect { |url| "<a href='#{url}'>Link</a>" }
+    html = appendable.collect {|url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
     premailer.to_inline_css
@@ -47,7 +49,7 @@ class TestLinks < Premailer::TestCase
       assert_match qs, uri.query, "missing query string for #{el.to_s}"
     end
 
-    html = not_appendable.collect { |url| "<a href='#{url}'>Link</a>" }
+    html = not_appendable.collect {|url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
     premailer.to_inline_css
@@ -135,7 +137,9 @@ class TestLinks < Premailer::TestCase
     base_uri = "<html><head></head><body>\nhttp://example.com/\n</body>"
     ['test.html', '/test.html', './test.html',
      'test/../test.html', 'test/../test/../test.html'].each do |q|
-      Premailer.resolve_link(q, base_uri)
+      assert_nothing_raised do
+        Premailer.resolve_link(q, base_uri)
+      end
     end
   end
 
@@ -165,7 +169,7 @@ class TestLinks < Premailer::TestCase
         '/'
     ]
 
-    html = convertable.collect { |url| "<a href='#{url}'>Link</a>" }
+    html = convertable.collect {|url| "<a href='#{url}'>Link</a>" }
     premailer = Premailer.new(html.to_s, :base_url => "http://example.com", :with_html_string => true)
 
     premailer.processed_doc.search('a').each do |el|
@@ -190,7 +194,7 @@ class TestLinks < Premailer::TestCase
         'cid:13443452066.10392logo.jpeg@inline_attachment'
     ]
 
-    html = not_convertable.collect { |url| "<a href='#{url}'>Link</a>" }
+    html = not_convertable.collect {|url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, :base_url => "example.com", :with_html_string => true)
     premailer.to_inline_css
