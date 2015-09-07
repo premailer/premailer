@@ -81,6 +81,9 @@ class Premailer
           if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
               el[html_att] = merged[css_att].gsub(/url\('(.*)'\)/,'\1').gsub(/;$|\s*!important/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+              merged.instance_variable_get("@declarations").tap do |declarations|
+                declarations.delete(css_att)
+              end
             end
           end
 
