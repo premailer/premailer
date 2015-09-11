@@ -295,7 +295,7 @@ protected
 
           if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
             if @options[:with_html_string]
-              link_uri = tag.attributes['href'].to_s.sub(@base_url.to_s, '').sub(/\A\/*/, '')
+              link_uri = tag.attributes['href'].to_s.sub(@base_url.to_s, '')
             else
               link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
               # if the file does not exist locally, try to grab the remote reference
