@@ -173,6 +173,7 @@ class Premailer
   # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
   # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
+  # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
@@ -199,6 +200,7 @@ class Premailer
                 :replace_html_entities => false,
                 :escape_url_attributes => true,
                 :unescaped_ampersand => false,
+                :create_shorthands => true,
                 :adapter => Adapter.use,
                 }.merge(options)
 

@@ -17,7 +17,6 @@ class Premailer
         doc.search("*[@style]").each do |el|
           el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
         end
-
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
           # Save un-mergable rules separately
@@ -79,9 +78,8 @@ class Premailer
               el[html_att] = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip if el[html_att].nil? and not merged[css_att].empty?
             end
           end
-
           # Collapse multiple rules into one as much as possible.
-          merged.create_shorthand!
+          merged.create_shorthand! if @options[:create_shorthands]
 
           # write the inline STYLE attribute
           attributes = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip)
