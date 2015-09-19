@@ -237,7 +237,8 @@ END_HTML
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
     assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
-    assert_match /background: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
+    assert_no_match /background: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
+    assert_match /#000080/, premailer.processed_doc.search('.style5').first.attributes['bgcolor'].to_s
   end
 
   # in response to https://github.com/alexdunae/premailer/issues/56
