@@ -115,6 +115,25 @@ END_HTML
     end
   end
 
+  def test_css_to_attributes
+    [:nokogiri, :hpricot].each do |adapter|
+      html = '<td style="background-color: #FFF;"></td>'
+      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
+      premailer.to_inline_css
+      assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s
+      assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s
+    end
+  end
+
+  def test_avoid_changing_css_to_attributes
+    [:nokogiri, :hpricot].each do |adapter|
+      html = '<td style="background-color: #FFF;"></td>'
+      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => false})
+      premailer.to_inline_css
+      assert_match /background: #FFF/, premailer.processed_doc.search('td').first.attributes['style'].to_s
+    end
+  end
+
   def test_importing_remote_css
     [:nokogiri, :hpricot].each do |adapter|
       remote_setup('base.html', :adapter => adapter)
