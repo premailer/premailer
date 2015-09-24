@@ -9,11 +9,13 @@ class Premailer
 
     autoload :Hpricot, 'premailer/adapter/hpricot'
     autoload :Nokogiri, 'premailer/adapter/nokogiri'
+    autoload :Nokogumbo, 'premailer/adapter/nokogumbo'
 
     # adapter to required file mapping.
     REQUIREMENT_MAP = [
       ["hpricot",  :hpricot],
       ["nokogiri", :nokogiri],
+      ["nokogumbi", :nokogumbo],
     ]
 
     # Returns the adapter to use.
@@ -30,6 +32,7 @@ class Premailer
     def self.default
       return :hpricot  if defined?(::Hpricot)
       return :nokogiri if defined?(::Nokogiri)
+      return :nokogumbo if defined?(::Nokogumbo)
 
       REQUIREMENT_MAP.each do |(library, adapter)|
         begin
