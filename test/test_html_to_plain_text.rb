@@ -47,6 +47,19 @@ END_HTML
     assert_plaintext "test text", "test        text"
   end
 
+  def test_stripping_comments
+    assert_plaintext "before\nafter", "before<!-- comment -->after"
+
+    html = <<HTML
+before<!--[if
+gte mso 9]><style>
+  table.topMerch	{ width: 23.5% !important; }
+  table.thirdspace { display: none !important; }
+</style><![endif]-->after
+HTML
+    assert_plaintext "before\nafter", html
+  end
+
   def test_wrapping_spans
     html = <<END_HTML
     <html>
