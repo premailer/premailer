@@ -54,7 +54,7 @@ end
 
 ## Ruby Compatibility
 
-Premailer is tested on Ruby 1.8.7, Ruby 1.9.2, Ruby 1.9.3, and Ruby 2.x.0 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](http://travis-ci.org/#!/premailer/premailer).
+Premailer is tested on Ruby 1.8.7, Ruby 1.9.2, Ruby 1.9.3, and Ruby 2.x.0 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
 
 ## Premailer-specific CSS
 
@@ -93,10 +93,10 @@ A few areas that are particularly in need of love:
 
 ## Credits and code
 
-Thanks to [all the wonderful contributors](https://github.com/alexdunae/premailer/contributors) for their updates.
+Thanks to [all the wonderful contributors](https://github.com/premailer/premailer/contributors) for their updates.
 
 Thanks to [Greenhood + Company](http://www.greenhood.com/) for sponsoring some of the 1.5.6 updates,
-and to [Campaign Monitor](http://www.campaignmonitor.com) for supporting the web interface.
+and to [Campaign Monitor](https://www.campaignmonitor.com/) for supporting the web interface.
 
 The web interface can be found at [premailer.dialect.ca](http://premailer.dialect.ca).
 
