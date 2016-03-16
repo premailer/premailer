@@ -1,4 +1,4 @@
-require 'rake'
+require 'bundler/setup'
 require 'rake/testtask'
 require "bundler/gem_tasks"
 require 'yard'
@@ -16,7 +16,7 @@ task :inline do
 
   url = ENV['url']
   output = ENV['output']
-  
+
   if !url or url.empty? or !output or output.empty?
     puts 'Usage: rake inline url=http://example.com/ output=output.html'
     exit
@@ -36,7 +36,7 @@ task :text do
 
   url = ENV['url']
   output = ENV['output']
-  
+
   if !url or url.empty? or !output or output.empty?
     puts 'Usage: rake text url=http://example.com/ output=output.txt'
     exit
@@ -46,13 +46,14 @@ task :text do
   File.open(output, "w") do |fout|
     fout.puts premailer.to_plain_text
   end
-  
+
   puts "Succesfully parsed '#{url}' into '#{output}'"
 end
 
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/test_*.rb']
   t.verbose = false
+  t.warning = false
 end
 
 YARD::Rake::YardocTask.new do |yard|
