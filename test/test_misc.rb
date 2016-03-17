@@ -137,7 +137,7 @@ END_HTML
     premailer.to_inline_css
 
     # blue should be inlined
-    assert_no_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+    refute_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
     # red should remain in <style> block
     assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
   end
@@ -189,9 +189,7 @@ END_HTML
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
-    assert_nothing_raised do
-      premailer.to_inline_css
-    end
+    premailer.to_inline_css
     assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
   end
 
@@ -207,9 +205,7 @@ END_HTML
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
-    assert_nothing_raised do
-      premailer.to_inline_css
-    end
+    premailer.to_inline_css
     assert_match /color: red/, premailer.processed_doc.at('a').attributes['style'].to_s
   end
 
@@ -237,7 +233,7 @@ END_HTML
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
     assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
-    assert_no_match /background: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
+    refute_match /background: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
     assert_match /#000080/, premailer.processed_doc.search('.style5').first.attributes['bgcolor'].to_s
   end
 

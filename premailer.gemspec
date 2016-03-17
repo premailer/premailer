@@ -19,5 +19,9 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_development_dependency('nokogiri', '>= 1.4.4')
   s.add_development_dependency('yard', '~> 0.8.7.6')
   s.add_development_dependency('redcarpet', '~> 3.0')
+  s.add_development_dependency('maxitest')
+  s.add_development_dependency('coveralls')
+  s.add_development_dependency('webmock')
+  s.add_development_dependency('nokogumbo')
 end
 
