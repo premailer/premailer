@@ -1,4 +1,4 @@
-require 'lib/premailer/version'
+require './lib/premailer/version'
 
 Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.summary  = "Preflight for HTML e-mail."
@@ -9,6 +9,8 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.author  = "Alex Dunae"
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
+  s.required_ruby_version = '>= 2.0.0'
+
   s.add_dependency('css_parser', '>= 1.3.7')
   s.add_dependency('htmlentities', ['>= 4.0.0'])
   s.add_development_dependency "bundler", "~> 1.3"
