@@ -75,7 +75,7 @@ END_HTML
     [:nokogiri, :hpricot].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :link_query_string => qs, :adapter => adapter)
       premailer.to_inline_css
-      assert_no_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s
+      refute_match /testing=123/, premailer.processed_doc.search('a').first.attributes['href'].to_s
     end
   end
 
@@ -108,7 +108,7 @@ END_HTML
       local_setup('base.html', :adapter => adapter)
 
       # noimport.css (print stylesheet) sets body { background } to red
-      assert_no_match /red/, @doc.at('body').attributes['style'].to_s
+      refute_match /red/, @doc.at('body').attributes['style'].to_s
 
       # import.css sets .hide to { display: none }
       assert_match /display: none/, @doc.at('#hide01').attributes['style'].to_s
@@ -139,7 +139,7 @@ END_HTML
       remote_setup('base.html', :adapter => adapter)
 
       # noimport.css (print stylesheet) sets body { background } to red
-      assert_no_match /red/, @doc.at('body')['style']
+      refute_match /red/, @doc.at('body')['style']
 
       # import.css sets .hide to { display: none }
       assert_match /display: none/, @doc.at('#hide01')['style']
@@ -219,7 +219,7 @@ END_HTML
       assert_nil doc.at('#remove')
       assert_nil doc.at('#keep')
       hashed_id = doc.at('a')['href'][1..-1]
-      assert_not_nil doc.at("\##{hashed_id}")
+      refute_nil doc.at("\##{hashed_id}")
     end
   end
 
@@ -289,7 +289,7 @@ END_HTML
     assert_match /display: none/, @doc.at('.hide').attributes['style'].to_s
 
     local_setup('base.html', :adapter => :nokogiri, :include_link_tags => false)
-    assert_no_match /1\.231/, @doc.at('body').attributes['style'].to_s
+    refute_match /1\.231/, @doc.at('body').attributes['style'].to_s
     assert_match /display: none/, @doc.at('.hide').attributes['style'].to_s
   end
 
@@ -300,7 +300,7 @@ END_HTML
 
     local_setup('base.html', :adapter => :nokogiri, :include_style_tags => false)
     assert_match /1\.231/, @doc.at('body').attributes['style'].to_s
-    assert_no_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
+    refute_match /display: block/, @doc.at('#iphone').attributes['style'].to_s
   end
 
   def test_input_encoding
@@ -347,20 +347,16 @@ END_HTML
     files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
     html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
 
-    assert_nothing_raised do
-      premailer = Premailer.new(html_string, :with_html_string => true)
-      premailer.to_inline_css
-    end
+    premailer = Premailer.new(html_string, :with_html_string => true)
+    premailer.to_inline_css
   end
 
   def test_empty_html_nokogiri
     html = ""
     css = "a:hover {color:red;}"
 
-    assert_nothing_raised do
-      pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri)
-      pm.to_inline_css
-    end
+    pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri)
+    pm.to_inline_css
   end
 
 end

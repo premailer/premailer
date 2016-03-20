@@ -1,34 +1,12 @@
-notifications:
-  disabled: true
+cache: bundler
+sudo: false
+branches:
+  only: master
+matrix:
+  fast_finish: true
+before_install: rm Gemfile.lock
 rvm:
-  - 1.8.7
-  - 1.9.2
-  - 1.9.3
   - 2.0.0
   - 2.1.0
   - 2.2.0
-  - ree
-gemfile:
-  - Gemfile
-  - gemfiles/.ruby187.gemfile
-before_install:
-  - gem install bundler
-env:
-  global:
-    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-matrix:
-  exclude:
-    - rvm: 1.8.7
-      gemfile: Gemfile
-    - rvm: 1.9.2
-      gemfile: gemfiles/.ruby187.gemfile
-    - rvm: 1.9.3
-      gemfile: gemfiles/.ruby187.gemfile
-    - rvm: 2.0.0
-      gemfile: gemfiles/.ruby187.gemfile
-    - rvm: 2.1.0
-      gemfile: gemfiles/.ruby187.gemfile
-    - rvm: 2.2.0
-      gemfile: gemfiles/.ruby187.gemfile
-    - rvm: ree
-      gemfile: Gemfile
+  - 2.3.0

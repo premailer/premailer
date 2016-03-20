@@ -3,10 +3,8 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestLinks < Premailer::TestCase
   def test_empty_query_string
-    assert_nothing_raised do
-      premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
-      premailer.to_inline_css
-    end
+    premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
+    premailer.to_inline_css
   end
 
   def test_appending_link_query_string
@@ -137,9 +135,7 @@ class TestLinks < Premailer::TestCase
     base_uri = "<html><head></head><body>\nhttp://example.com/\n</body>"
     ['test.html', '/test.html', './test.html',
      'test/../test.html', 'test/../test/../test.html'].each do |q|
-      assert_nothing_raised do
-        Premailer.resolve_link(q, base_uri)
-      end
+      Premailer.resolve_link(q, base_uri)
     end
   end
 
