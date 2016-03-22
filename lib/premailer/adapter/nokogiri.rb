@@ -85,9 +85,13 @@ class Premailer
           merged.create_shorthand! if @options[:create_shorthands]
 
           # write the inline STYLE attribute
-          attributes = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip)
-          attributes = attributes.map { |attr| [attr.split(':').first, attr] }.sort_by { |pair| pair.first }.map { |pair| pair[1] }
-          el['style'] = attributes.join('; ')
+          attributes = []
+          merged.each_declaration do |prop, val, is_important|
+           importance = is_important ? ' !important' : ''
+           attributes << [prop, "#{prop}: #{val}#{importance}"]
+          end
+          sorted = attributes.sort_by { |pair| pair.first }.collect { |pair| pair.last }
+          el['style'] = sorted.join('; ')
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules)

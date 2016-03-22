@@ -359,4 +359,13 @@ END_HTML
     pm.to_inline_css
   end
 
+  def test_data_uri
+    html = "<div id='backgrounded'></div>"
+    css = "#backgrounded { background: url(data:image/png;base64,iVBORw0K) }"
+    [:nokogiri, :nokogumbo, :hpricot].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => adapter)
+      assert_match Regexp.new(Regexp.escape('style="background: url(data:image/png;base64,iVBORw0K)')), premailer.to_inline_css, "Problem when using #{adapter} adapter"
+    end
+  end
+
 end
