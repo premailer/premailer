@@ -87,7 +87,7 @@ class Premailer
           # write the inline STYLE attribute
           attributes = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip)
           attributes = attributes.map { |attr| [attr.split(':').first, attr] }.sort_by { |pair| pair.first }.map { |pair| pair[1] }
-          el['style'] = attributes.join('; ')
+          el['style'] = attributes.join('; ') + ";"
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules)
