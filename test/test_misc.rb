@@ -170,7 +170,7 @@ END_HTML
 
       style_tag_contents = style_tag.inner_html
 
-      assert_equal "color: blue", premailer.processed_doc.at('a').attributes['style'].to_s,
+      assert_equal "color: blue;", premailer.processed_doc.at('a').attributes['style'].to_s,
                    "#{adapter}: Failed to inline the default style"
       assert_match /@media \(min-width:500px\) \{.*?a \{.*?color: red;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with no type to style"
@@ -252,7 +252,7 @@ END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
     premailer.to_inline_css
-    assert_equal 'color: green !important', premailer.processed_doc.search('p').first.attributes['style'].to_s
+    assert_equal 'color: green !important;', premailer.processed_doc.search('p').first.attributes['style'].to_s
   end
 
   # in response to https://github.com/alexdunae/premailer/issues/28
@@ -291,7 +291,7 @@ END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
-    assert_equal "left: 5px; right: 10px", premailer.processed_doc.search('#page').first.attributes['style'].to_s
+    assert_equal "left: 5px; right: 10px;", premailer.processed_doc.search('#page').first.attributes['style'].to_s
   end
 
   def test_removing_scripts
