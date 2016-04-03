@@ -168,7 +168,9 @@ END_HTML
 
     # the old way is deprecated but should still work
     premailer = Premailer.new( StringIO.new('a') )
-    assert premailer.local_uri?( '/path/' )
+    silence_stderr do
+      assert premailer.local_uri?( '/path/' )
+    end
   end
 
   def test_initialize_can_accept_io_object
@@ -359,4 +361,11 @@ END_HTML
     pm.to_inline_css
   end
 
+  def silence_stderr(&block)
+    orig_stderr = $stderr
+    $stderr = File.open(File::NULL, 'w')
+    block.call
+  ensure
+    $stderr = orig_stderr
+  end
 end

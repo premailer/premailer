@@ -161,9 +161,8 @@ END_HTML
 END_HTML
 
     [:nokogiri, :hpricot].each do |adapter|
-      puts "------- Testing adapter #{adapter}"
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-      puts premailer.to_inline_css
+      premailer.to_inline_css
 
       style_tag = premailer.processed_doc.at('body style')
       assert style_tag, "#{adapter} failed to add a body style tag"
