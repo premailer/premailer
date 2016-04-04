@@ -120,7 +120,7 @@ END_HTML
       html = '<td style="background-color: #FFF;"></td>'
       premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
       premailer.to_inline_css
-      assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s
+      assert_equal ';', premailer.processed_doc.search('td').first.attributes['style'].to_s
       assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s
     end
   end
@@ -168,7 +168,9 @@ END_HTML
 
     # the old way is deprecated but should still work
     premailer = Premailer.new( StringIO.new('a') )
-    assert premailer.local_uri?( '/path/' )
+    silence_stderr do
+      assert premailer.local_uri?( '/path/' )
+    end
   end
 
   def test_initialize_can_accept_io_object
@@ -359,4 +361,11 @@ END_HTML
     pm.to_inline_css
   end
 
+  def silence_stderr(&block)
+    orig_stderr = $stderr
+    $stderr = File.open(File::NULL, 'w')
+    block.call
+  ensure
+    $stderr = orig_stderr
+  end
 end
