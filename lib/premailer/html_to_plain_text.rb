@@ -84,25 +84,25 @@ module HtmlToPlainText
     he = HTMLEntities.new
     txt = he.decode(txt)
 
+    # no more than two consecutive spaces
+    txt.gsub!(/ {2,}/, " ")
+
     txt = word_wrap(txt, line_length)
 
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
 
     # strip extra spaces
-    txt.gsub!(/\302\240+/, " ") # non-breaking spaces -> spaces
+    txt.gsub!(/[ \t]*\302\240+[ \t]*/, " ") # non-breaking spaces -> spaces
     txt.gsub!(/\n[ \t]+/, "\n") # space at start of lines
     txt.gsub!(/[ \t]+\n/, "\n") # space at end of lines
 
     # no more than two consecutive newlines
     txt.gsub!(/[\n]{3,}/, "\n\n")
 
-    # no more than two consecutive spaces
-    txt.gsub!(/ {2,}/, " ")
-
     # the word messes up the parens
-    txt.gsub!(/\([ \n](http[^)]+)[\n ]\)/) do |s|
-      "( " + $1 + " )"
+    txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |s|
+      ($1 == "\n" ? $1 : '' ) + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '' )
     end
 
     txt.strip
