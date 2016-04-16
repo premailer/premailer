@@ -114,6 +114,10 @@ END_HTML
     assert lens.max <= 20
   end
 
+  def test_wrapping_lines_with_spaces
+    assert_plaintext "Long line\nnew line", 'Long     line new line', nil ,10
+  end
+
   def test_img_alt_tags
     # ensure html imag tags that aren't self-closed are parsed,
     # along with accepting both '' and "" as attribute quotes
@@ -163,6 +167,9 @@ END_HTML
 
     # empty link gets dropped, and shouldn't run forever
     assert_plaintext(("This is some more text\n\n" * 14 + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
+
+    # links that go outside of line should wrap nicely
+    assert_plaintext "Long text before the actual link and then LINK TEXT \n( http://www.long.link ) and then more text that does not wrap", 'Long text before the actual link and then <a href="http://www.long.link"/>LINK TEXT</a> and then more text that does not wrap'
 
     # same text and link
     assert_plaintext 'http://example.com', '<a href="http://example.com">http://example.com</a>'
