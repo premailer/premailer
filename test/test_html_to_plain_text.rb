@@ -163,6 +163,9 @@ END_HTML
 
     # empty link gets dropped, and shouldn't run forever
     assert_plaintext(("This is some more text\n\n" * 14 + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
+
+    # same text and link
+    assert_plaintext 'http://example.com', '<a href="http://example.com">http://example.com</a>'
   end
 
   # see https://github.com/alexdunae/premailer/issues/72

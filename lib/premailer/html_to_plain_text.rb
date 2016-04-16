@@ -34,6 +34,8 @@ module HtmlToPlainText
     txt.gsub!(/<a\s.*?href=["'](mailto:)?([^"']*)["'][^>]*>((.|\s)*?)<\/a>/i) do |s|
       if $3.empty?
         ''
+      elsif $3.strip.downcase == $2.strip.downcase
+        $3.strip
       else
         $3.strip + ' ( ' + $2.strip + ' )'
       end
