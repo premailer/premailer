@@ -366,4 +366,39 @@ END_HTML
 
     assert !premailer.processed_doc.css('script[type="application/ld+json"]').first.children.first.cdata?
   end
+
+  def test_style_without_data_in_content
+    html = <<END_HTML
+    <html>
+    <head>
+      <style>#logo {content:url(good.png)};}</style>
+    </head>
+    <body>
+      <image id="logo"/>
+    </body>
+    </html>
+END_HTML
+    [:nokogiri, :hpricot].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      assert_match 'content: url(good.png)', premailer.to_inline_css
+    end
+  end
+
+  def test_style_with_data_in_content
+    html = <<END_HTML
+    <html>
+    <head>
+      <style>#logo {content: url(data:image/png;base64,LOTSOFSTUFF)};}</style>
+    </head>
+    <body>
+      <image id="logo"/>
+    </body>
+    </html>
+END_HTML
+    [:nokogiri, :hpricot].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      assert_match 'content: url(data:image/png;base64,LOTSOFSTUFF)', premailer.to_inline_css
+    end
+  end
+
 end

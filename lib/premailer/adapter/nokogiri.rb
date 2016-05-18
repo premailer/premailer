@@ -85,7 +85,8 @@ class Premailer
           merged.create_shorthand! if @options[:create_shorthands]
 
           # write the inline STYLE attribute
-          attributes = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip)
+          # split by ';' but ignore those in brackets
+          attributes = Premailer.escape_string(merged.declarations_to_s).split(/;(?![^(]*\))/).map(&:strip)
           attributes = attributes.map { |attr| [attr.split(':').first, attr] }.sort_by { |pair| pair.first }.map { |pair| pair[1] }
           el['style'] = attributes.join('; ') + ";"
         end
