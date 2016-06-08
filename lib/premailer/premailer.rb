@@ -195,7 +195,7 @@ class Premailer
                 :io_exceptions => false,
                 :include_link_tags => true,
                 :include_style_tags => true,
-                :input_encoding => 'ASCII-8BIT',
+                :input_encoding => html.respond_to?(:encoding) ? html.encoding.to_s : 'ASCII-8BIT',
                 :output_encoding => nil,
                 :replace_html_entities => false,
                 :escape_url_attributes => true,
