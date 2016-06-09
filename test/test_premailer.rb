@@ -357,7 +357,7 @@ END_HTML
     html = ""
     css = "a:hover {color:red;}"
 
-    pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri)
+    pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri, input_encoding: 'UTF-8')
     pm.to_inline_css
   end
 
