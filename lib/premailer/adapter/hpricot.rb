@@ -4,6 +4,13 @@ class Premailer
   module Adapter
     # Hpricot adapter
     module Hpricot
+      def self.included(base)
+        warn <<eos
+[DEPRECATED] Premailer's Hpricot adapter will be removed with the next major \
+release. Change your :adapter option to :nokogiri or remove the `hpricot` gem \
+from your application to silence this warning. (Called from #{caller[2]})
+eos
+      end
 
       # Merge CSS into the HTML document.
       # @return [String] HTML.
