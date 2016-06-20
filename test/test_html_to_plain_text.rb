@@ -170,6 +170,9 @@ END_HTML
 
     # links that go outside of line should wrap nicely
     assert_plaintext "Long text before the actual link and then LINK TEXT \n( http://www.long.link ) and then more text that does not wrap", 'Long text before the actual link and then <a href="http://www.long.link"/>LINK TEXT</a> and then more text that does not wrap'
+
+    # same text and link
+    assert_plaintext 'http://example.com', '<a href="http://example.com">http://example.com</a>'
   end
 
   # see https://github.com/alexdunae/premailer/issues/72
