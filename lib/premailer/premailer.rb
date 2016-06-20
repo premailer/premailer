@@ -263,7 +263,9 @@ protected
       end
 
       load_css_from_string(css_block)
-    rescue; end
+    rescue => e
+      raise e if @options[:io_exceptions]
+    end
   end
 
   def load_css_from_string(css_string)
