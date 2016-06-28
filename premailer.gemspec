@@ -11,7 +11,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.executables      = ['premailer']
   s.required_ruby_version = '>= 2.0.0'
 
-  s.add_dependency('css_parser', '>= 1.3.7')
+  s.add_dependency('css_parser', '>= 1.4.5')
   s.add_dependency('htmlentities', ['>= 4.0.0'])
   s.add_development_dependency "bundler", "~> 1.3"
   s.add_development_dependency('rake', ['~> 0.8',  '!= 0.9.0'])
