@@ -1,0 +1,466 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: HtmlToPlainText
+  
+    &mdash; &#39;Premailer 1.8.7 Documentation&#39;
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!HtmlToPlainText.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (H)</a> &raquo;
+    
+    
+    <span class="title">HtmlToPlainText</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: HtmlToPlainText
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><span class='object_link'><a href="Premailer.html" title="Premailer (class)">Premailer</a></span></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/premailer/html_to_plain_text.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>Support functions for Premailer</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#convert_to_text-instance_method" title="#convert_to_text (instance method)">- (Object) <strong>convert_to_text</strong>(html, line_length = 65, from_charset = &#39;UTF-8&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the text in UTF-8 format with all HTML tags removed.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#word_wrap-instance_method" title="#word_wrap (instance method)">- (Object) <strong>word_wrap</strong>(txt, line_length) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Taken from Rails&#39; word_wrap helper (<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap">http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap</a>).</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="convert_to_text-instance_method">
+  
+    - (<tt>Object</tt>) <strong>convert_to_text</strong>(html, line_length = 65, from_charset = &#39;UTF-8&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns the text in UTF-8 format with all HTML tags removed</p>
+
+<p>TODO: add support for DL, OL</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/html_to_plain_text.rb', line 10</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_convert_to_text'>convert_to_text</span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='comma'>,</span> <span class='id identifier rubyid_line_length'>line_length</span> <span class='op'>=</span> <span class='int'>65</span><span class='comma'>,</span> <span class='id identifier rubyid_from_charset'>from_charset</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_txt'>txt</span> <span class='op'>=</span> <span class='id identifier rubyid_html'>html</span>
+
+  <span class='comment'># strip text ignored html. Useful for removing
+</span>  <span class='comment'># headers and footers that aren&#39;t needed in the
+</span>  <span class='comment'># text version
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;!-- start text\/html --&gt;.*?&lt;!-- end text\/html --&gt;</span><span class='regexp_end'>/m</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># replace images with their alt attributes
+</span>  <span class='comment'># for img tags with &quot;&quot; for attribute quotes
+</span>  <span class='comment'># with or without closing tag
+</span>  <span class='comment'># eg. the following formats:
+</span>  <span class='comment'># &lt;img alt=&quot;&quot; /&gt;
+</span>  <span class='comment'># &lt;img alt=&quot;&quot;&gt;
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;img.+?alt=\&quot;([^\&quot;]*)\&quot;[^&gt;]*\&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>\1</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># for img tags with &#39;&#39; for attribute quotes
+</span>  <span class='comment'># with or without closing tag
+</span>  <span class='comment'># eg. the following formats:
+</span>  <span class='comment'># &lt;img alt=&#39;&#39; /&gt;
+</span>  <span class='comment'># &lt;img alt=&#39;&#39;&gt;
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;img.+?alt=\&#39;([^\&#39;]*)\&#39;[^&gt;]*\&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>\1</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># links
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;a\s.*?href=[&quot;&#39;](mailto:)?([^&quot;&#39;]*)[&quot;&#39;][^&gt;]*&gt;((.|\s)*?)&lt;\/a&gt;</span><span class='regexp_end'>/i</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='backref'>$3</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+    <span class='kw'>elsif</span> <span class='backref'>$3</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>==</span> <span class='backref'>$2</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span>
+      <span class='backref'>$3</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span>
+    <span class='kw'>else</span>
+      <span class='backref'>$3</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> ( </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='backref'>$2</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> )</span><span class='tstring_end'>&#39;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># handle headings (H1-H6)
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(&lt;\/h[1-6]&gt;)</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\\1</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># move closing tags to new lines
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[\s]*&lt;h([1-6]+)[^&gt;]*&gt;[\s]*(.*)[\s]*&lt;\/h[1-6]+&gt;</span><span class='regexp_end'>/i</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_hlevel'>hlevel</span> <span class='op'>=</span> <span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+
+    <span class='id identifier rubyid_htext'>htext</span> <span class='op'>=</span> <span class='backref'>$2</span>
+    <span class='id identifier rubyid_htext'>htext</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;br[\s]*\/?&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># handle &lt;br&gt;s
+</span>    <span class='id identifier rubyid_htext'>htext</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;\/?[^&gt;]*&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># strip tags
+</span>
+    <span class='comment'># determine maximum line length
+</span>    <span class='id identifier rubyid_hlength'>hlength</span> <span class='op'>=</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_htext'>htext</span><span class='period'>.</span><span class='id identifier rubyid_each_line'>each_line</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_l'>l</span><span class='op'>|</span> <span class='id identifier rubyid_llength'>llength</span> <span class='op'>=</span> <span class='id identifier rubyid_l'>l</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='semicolon'>;</span> <span class='id identifier rubyid_hlength'>hlength</span> <span class='op'>=</span> <span class='id identifier rubyid_llength'>llength</span> <span class='kw'>if</span> <span class='id identifier rubyid_llength'>llength</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_hlength'>hlength</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_hlength'>hlength</span> <span class='op'>=</span> <span class='id identifier rubyid_line_length'>line_length</span> <span class='kw'>if</span> <span class='id identifier rubyid_hlength'>hlength</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_line_length'>line_length</span>
+
+    <span class='kw'>case</span> <span class='id identifier rubyid_hlevel'>hlevel</span>
+      <span class='kw'>when</span> <span class='int'>1</span>   <span class='comment'># H1, asterisks above and below
+</span>        <span class='id identifier rubyid_htext'>htext</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>*</span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_hlength'>hlength</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_htext'>htext</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>*</span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_hlength'>hlength</span><span class='rparen'>)</span>
+      <span class='kw'>when</span> <span class='int'>2</span>   <span class='comment'># H1, dashes above and below
+</span>        <span class='id identifier rubyid_htext'>htext</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-</span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_hlength'>hlength</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_htext'>htext</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-</span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_hlength'>hlength</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>     <span class='comment'># H3-H6, dashes below
+</span>        <span class='id identifier rubyid_htext'>htext</span> <span class='op'>=</span> <span class='id identifier rubyid_htext'>htext</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-</span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_hlength'>hlength</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_htext'>htext</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># wrap spans
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(&lt;\/span&gt;)[\s]+(&lt;span)</span><span class='regexp_end'>/mi</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>\1 \2</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># lists -- TODO: should handle ordered lists
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[\s]*(&lt;li[^&gt;]*&gt;)[\s]*</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>* </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='comment'># list not followed by a newline
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;\/li&gt;[\s]*(?![\n])</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># paragraphs and line breaks
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;\/p&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;br[\/ ]*&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># strip remaining tags
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;\/?[^&gt;]*&gt;</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># decode HTML entities
+</span>  <span class='id identifier rubyid_he'>he</span> <span class='op'>=</span> <span class='const'>HTMLEntities</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_txt'>txt</span> <span class='op'>=</span> <span class='id identifier rubyid_he'>he</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='rparen'>)</span>
+
+  <span class='comment'># no more than two consecutive spaces
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'> {2,}</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_txt'>txt</span> <span class='op'>=</span> <span class='id identifier rubyid_word_wrap'>word_wrap</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='comma'>,</span> <span class='id identifier rubyid_line_length'>line_length</span><span class='rparen'>)</span>
+
+  <span class='comment'># remove linefeeds (\r\n and \r -&gt; \n)
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\r\n?</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># strip extra spaces
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[ \t]*\302\240+[ \t]*</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># non-breaking spaces -&gt; spaces
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\n[ \t]+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># space at start of lines
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[ \t]+\n</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># space at end of lines
+</span>
+  <span class='comment'># no more than two consecutive newlines
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[\n]{3,}</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># the word messes up the parens
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\(([ \n])(http[^)]+)([\n ])\)</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='lparen'>(</span><span class='backref'>$1</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='backref'>$1</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>( </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='backref'>$2</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> )</span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='backref'>$3</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='backref'>$1</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="word_wrap-instance_method">
+  
+    - (<tt>Object</tt>) <strong>word_wrap</strong>(txt, line_length) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Taken from Rails&#39; word_wrap helper (<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap">http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap</a>)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+114
+115
+116
+117
+118</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/html_to_plain_text.rb', line 114</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_word_wrap'>word_wrap</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='comma'>,</span> <span class='id identifier rubyid_line_length'>line_length</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_line'>line</span><span class='op'>|</span>
+    <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_line_length'>line_length</span> <span class='op'>?</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(.{1,</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_line_length'>line_length</span><span class='embexpr_end'>}</span><span class='tstring_content'>})(\s+|$)</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\\1\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span> <span class='op'>:</span> <span class='id identifier rubyid_line'>line</span>
+  <span class='kw'>end</span> <span class='op'>*</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Tue Jun 28 11:36:28 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.3.0).
+</div>
+
+  </body>
+</html>

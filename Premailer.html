@@ -1,0 +1,2131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Premailer
+  
+    &mdash; &#39;Premailer 1.8.7 Documentation&#39;
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!Premailer.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (P)</a> &raquo;
+    
+    
+    <span class="title">Premailer</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Premailer
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Premailer</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">CssParser, <span class='object_link'><a href="HtmlToPlainText.html" title="HtmlToPlainText (module)">HtmlToPlainText</a></span>, <span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/premailer/adapter.rb<span class="defines">,<br />
+  lib/premailer/version.rb,<br /> lib/premailer/premailer.rb,<br /> lib/premailer/adapter/hpricot.rb,<br /> lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Premailer/Adapter.html" title="Premailer::Adapter (module)">Adapter</a></span>, <span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span>
+    
+  
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          <div class="docstring">
+  <div class="discussion">
+    <p>Premailer version.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1.8.7</span><span class='tstring_end'>&#39;</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+        <dt id="CLIENT_SUPPORT_FILE-constant" class="">CLIENT_SUPPORT_FILE =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/../../misc/client_support.yaml</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="RE_UNMERGABLE_SELECTORS-constant" class="">RE_UNMERGABLE_SELECTORS =
+          <div class="docstring">
+  <div class="discussion">
+    <p>Unmergable selectors regexp.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)</span><span class='regexp_end'>/i</span></span></pre></dd>
+      
+        <dt id="RE_RESET_SELECTORS-constant" class="">RE_RESET_SELECTORS =
+          <div class="docstring">
+  <div class="discussion">
+    <p>Reset selectors regexp.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$</span><span class='regexp_end'>/</span></span></pre></dd>
+      
+        <dt id="HTML_ENTITIES-constant" class="">HTML_ENTITIES =
+          <div class="docstring">
+  <div class="discussion">
+    <p>list of HTMLEntities to fix
+source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-">http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-</a></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8217;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8230;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>...</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8216;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8218;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>,</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8219;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8220;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&quot;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8221;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&quot;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8208;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8211;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8212;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>--</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8213;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>--</span><span class='tstring_end'>&#39;</span></span>
+<span class='rbrace'>}</span></pre></dd>
+      
+        <dt id="RELATED_ATTRIBUTES-constant" class="">RELATED_ATTRIBUTES =
+          <div class="docstring">
+  <div class="discussion">
+    
+  <div class="note todo">
+    <strong>TODO:</strong>
+    <div class='inline'><p>too much repetition</p>
+</div>
+  </div>
+
+  <div class="note todo">
+    <strong>TODO:</strong>
+    <div class='inline'><p>background=&quot;&quot;</p>
+</div>
+  </div>
+
+<p>list of CSS attributes that can be rendered as HTML attributes</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h1</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h2</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h3</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h4</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h5</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h6</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>p</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>div</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>blockquote</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>body</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background-color</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bgcolor</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>table</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background-color</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bgcolor</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background-image</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-width</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>width</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-height</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>height</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-cellpadding</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cellpadding</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-cellspacing</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cellspacing</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tr</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background-color</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bgcolor</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-height</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>height</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>th</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background-color</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bgcolor</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>vertical-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>valign</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-width</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>width</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-height</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>height</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>td</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background-color</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bgcolor</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>vertical-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>valign</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-width</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>width</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-height</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>height</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>img</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>float</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-width</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>width</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-height</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>height</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+        <dt id="WARN_LABEL-constant" class="">WARN_LABEL =
+          <div class="docstring">
+  <div class="discussion">
+    <p>Waning level names</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='tstring_content'>NONE</span><span class='words_sep'> </span><span class='tstring_content'>SAFE</span><span class='words_sep'> </span><span class='tstring_content'>POOR</span><span class='words_sep'> </span><span class='tstring_content'>RISKY</span><span class='words_sep'>)</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Premailer/Warnings.html#NONE-constant" title="Premailer::Warnings::NONE (constant)">Warnings::NONE</a></span>, <span class='object_link'><a href="Premailer/Warnings.html#POOR-constant" title="Premailer::Warnings::POOR (constant)">Warnings::POOR</a></span>, <span class='object_link'><a href="Premailer/Warnings.html#RISKY-constant" title="Premailer::Warnings::RISKY (constant)">Warnings::RISKY</a></span>, <span class='object_link'><a href="Premailer/Warnings.html#SAFE-constant" title="Premailer::Warnings::SAFE (constant)">Warnings::SAFE</a></span></p>
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#base_dir-instance_method" title="#base_dir (instance method)">- (String) <strong>base_dir</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>base directory used to resolve links for local files.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#base_url-instance_method" title="#base_url (instance method)">- (Object) <strong>base_url</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>base URL used to resolve links.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#doc-instance_method" title="#doc (instance method)">- (Object) <strong>doc</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>source HTML document (Hpricot/Nokogiri).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#html_file-instance_method" title="#html_file (instance method)">- (Object) <strong>html_file</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>URI of the HTML file used.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#processed_doc-instance_method" title="#processed_doc (instance method)">- (Object) <strong>processed_doc</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>processed HTML document (Hpricot/Nokogiri).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unmergable_rules-instance_method" title="#unmergable_rules (instance method)">- (Object) <strong>unmergable_rules</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>unmergeable CSS rules to be preserved in the head (CssParser).</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#canonicalize-class_method" title="canonicalize (class method)">+ (Object) <strong>canonicalize</strong>(uri) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>from <a href="http://www.ruby-forum.com/topic/140101">http://www.ruby-forum.com/topic/140101</a>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#local_data%3F-class_method" title="local_data? (class method)">+ (Boolean) <strong>local_data?</strong>(data) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Test the passed variable to see if we are in local or remote mode.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#append_query_string-instance_method" title="#append_query_string (instance method)">- (Object) <strong>append_query_string</strong>(doc, qs) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#check_client_support-instance_method" title="#check_client_support (instance method)">- (Object) <strong>check_client_support</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Check CLIENT_SUPPORT_FILE for any CSS warnings.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#convert_inline_links-instance_method" title="#convert_inline_links (instance method)">- (Object) <strong>convert_inline_links</strong>(doc, base_uri) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Convert relative links to absolute links.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Premailer) <strong>initialize</strong>(html, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Create a new Premailer object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#is_xhtml%3F-instance_method" title="#is_xhtml? (instance method)">- (Boolean) <strong>is_xhtml?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Check for an XHTML doctype.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#warnings-instance_method" title="#warnings (instance method)">- (Array(Hash)) <strong>warnings</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>CSS warnings.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HtmlToPlainText.html" title="HtmlToPlainText (module)">HtmlToPlainText</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HtmlToPlainText.html#convert_to_text-instance_method" title="HtmlToPlainText#convert_to_text (method)">#convert_to_text</a></span>, <span class='object_link'><a href="HtmlToPlainText.html#word_wrap-instance_method" title="HtmlToPlainText#word_wrap (method)">#word_wrap</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></tt>) <strong>initialize</strong>(html, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Create a new Premailer object.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>html</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>is the HTML data to process. It can be either an IO object, the URL of a
+remote file, a local path or a raw HTML string.  If passing an HTML string you
+must set the with_html_string option to true.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the options to handle html with.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    <p class="tag_title">Options Hash (<tt>options</tt>):</p>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:line_length</span>
+          <span class="type">(<tt>Fixnum</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Line length used by to_plain_text. Default is 65.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:warn_level</span>
+          <span class="type">(<tt>Fixnum</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>What level of CSS compatibility warnings to show (see <span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span>).</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:link_query_string</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>A string to append to every <tt>a href=&quot;&quot;</tt> link. Do not include the initial <tt>?</tt>.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:base_url</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Used to calculate absolute URLs for local files.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:css</span>
+          <span class="type">(<tt>Array(String)</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Manually specify CSS stylesheets.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:css_to_attributes</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:css_string</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Pass CSS as a string</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:remove_ids</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:remove_classes</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Remove class attributes. Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:remove_comments</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Remove html comments. Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:remove_scripts</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Remove <tt>script</tt> elements. Default is true.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:reset_contenteditable</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Remove <tt>contenteditable</tt> attributes. Default is true.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:preserve_styles</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:preserve_reset</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Whether to preserve styles associated with the MailChimp reset code. Default is true.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:with_html_string</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Whether the html param should be treated as a raw string. Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:verbose</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Whether to print errors and warnings to <tt>$stderr</tt>.  Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:io_exceptions</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Throws exceptions on I/O errors.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:include_link_tags</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Whether to include css from <tt>link rel=stylesheet</tt> tags.  Default is true.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:include_style_tags</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Whether to include css from <tt>style</tt> tags.  Default is true.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:input_encoding</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Manually specify the source documents encoding. This is a good idea. Default is ASCII-8BIT.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:replace_html_entities</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Convert HTML entities to actual characters. Default is false.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:escape_url_attributes</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>URL Escapes href, src, and background attributes on elements. Default is true.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:adapter</span>
+          <span class="type">(<tt>Symbol</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:output_encoding</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Output encoding option for Nokogiri adapter. Should be set to &quot;US-ASCII&quot; to output HTML entities instead of Unicode characters.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:create_shorthands</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.</p>
+</div>
+          
+        </li>
+      
+    </ul>
+  
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 178</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:warn_level</span> <span class='op'>=&gt;</span> <span class='const'>Warnings</span><span class='op'>::</span><span class='const'>SAFE</span><span class='comma'>,</span>
+              <span class='symbol'>:line_length</span> <span class='op'>=&gt;</span> <span class='int'>65</span><span class='comma'>,</span>
+              <span class='symbol'>:link_query_string</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
+              <span class='symbol'>:base_url</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
+              <span class='symbol'>:remove_classes</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:remove_ids</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:remove_comments</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:remove_scripts</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:reset_contenteditable</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:css</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>
+              <span class='symbol'>:css_to_attributes</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:with_html_string</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:css_string</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
+              <span class='symbol'>:preserve_styles</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:preserve_reset</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:verbose</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:debug</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:io_exceptions</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:include_link_tags</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:include_style_tags</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:input_encoding</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ASCII-8BIT</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+              <span class='symbol'>:output_encoding</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
+              <span class='symbol'>:replace_html_entities</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:escape_url_attributes</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:unescaped_ampersand</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+              <span class='symbol'>:create_shorthands</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:adapter</span> <span class='op'>=&gt;</span> <span class='const'>Adapter</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span><span class='comma'>,</span>
+              <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@html_file</span> <span class='op'>=</span> <span class='id identifier rubyid_html'>html</span>
+  <span class='ivar'>@is_local_file</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:with_html_string</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>Premailer</span><span class='period'>.</span><span class='id identifier rubyid_local_data?'>local_data?</span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@css_files</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:css</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
+
+  <span class='ivar'>@css_warnings</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+  <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@base_dir</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@unmergable_rules</span> <span class='op'>=</span> <span class='kw'>nil</span>
+
+  <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:base_url</span><span class='rbracket'>]</span>
+    <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:base_url</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>elsif</span> <span class='kw'>not</span> <span class='ivar'>@is_local_file</span>
+    <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@html_file</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='ivar'>@css_parser</span> <span class='op'>=</span> <span class='const'>CssParser</span><span class='op'>::</span><span class='const'>Parser</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+    <span class='symbol'>:absolute_paths</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+    <span class='symbol'>:import</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+    <span class='symbol'>:io_exceptions</span> <span class='op'>=&gt;</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:io_exceptions</span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@adapter_class</span> <span class='op'>=</span> <span class='const'>Adapter</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:adapter</span><span class='rbracket'>]</span>
+
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='symbol'>:include</span><span class='comma'>,</span> <span class='ivar'>@adapter_class</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='id identifier rubyid_load_html'>load_html</span><span class='lparen'>(</span><span class='ivar'>@html_file</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@processed_doc</span> <span class='op'>=</span> <span class='ivar'>@doc</span>
+  <span class='ivar'>@processed_doc</span> <span class='op'>=</span> <span class='id identifier rubyid_convert_inline_links'>convert_inline_links</span><span class='lparen'>(</span><span class='ivar'>@processed_doc</span><span class='comma'>,</span> <span class='ivar'>@base_url</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@base_url</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:link_query_string</span><span class='rbracket'>]</span>
+    <span class='ivar'>@processed_doc</span> <span class='op'>=</span> <span class='id identifier rubyid_append_query_string'>append_query_string</span><span class='lparen'>(</span><span class='ivar'>@processed_doc</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:link_query_string</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_load_css_from_options!'>load_css_from_options!</span>
+  <span class='id identifier rubyid_load_css_from_html!'>load_css_from_html!</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="base_dir-instance_method">
+  
+    - (<tt>String</tt>) <strong>base_dir</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>base directory used to resolve links for local files</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>base directory</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+119
+120
+121</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 119</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_base_dir'>base_dir</span>
+  <span class='ivar'>@base_dir</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="base_url-instance_method">
+  
+    - (<tt>Object</tt>) <strong>base_url</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>base URL used to resolve links</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+115
+116
+117</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 115</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_base_url'>base_url</span>
+  <span class='ivar'>@base_url</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="doc-instance_method">
+  
+    - (<tt>Object</tt>) <strong>doc</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>source HTML document (Hpricot/Nokogiri)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+128
+129
+130</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 128</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_doc'>doc</span>
+  <span class='ivar'>@doc</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="html_file-instance_method">
+  
+    - (<tt>Object</tt>) <strong>html_file</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>URI of the HTML file used</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_html_file'>html_file</span>
+  <span class='ivar'>@html_file</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="processed_doc-instance_method">
+  
+    - (<tt>Object</tt>) <strong>processed_doc</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>processed HTML document (Hpricot/Nokogiri)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 125</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_processed_doc'>processed_doc</span>
+  <span class='ivar'>@processed_doc</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="unmergable_rules-instance_method">
+  
+    - (<tt>Object</tt>) <strong>unmergable_rules</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>unmergeable CSS rules to be preserved in the head (CssParser)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+122
+123
+124</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 122</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_unmergable_rules'>unmergable_rules</span>
+  <span class='ivar'>@unmergable_rules</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="canonicalize-class_method">
+  
+    + (<tt>Object</tt>) <strong>canonicalize</strong>(uri) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>from <a href="http://www.ruby-forum.com/topic/140101">http://www.ruby-forum.com/topic/140101</a></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 498</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_canonicalize'>canonicalize</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
+</span><span class='id identifier rubyid_u'>u</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_uri'>uri</span> <span class='op'>:</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_normalize!'>normalize!</span>
+<span class='id identifier rubyid_newpath'>newpath</span> <span class='op'>=</span> <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span>
+<span class='kw'>while</span> <span class='id identifier rubyid_newpath'>newpath</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>([^/]+)/\.\./?</span><span class='regexp_end'>}</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_match'>match</span><span class='op'>|</span>
+    <span class='backref'>$1</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>..</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='id identifier rubyid_match'>match</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span> <span class='kw'>do</span> <span class='kw'>end</span>
+  <span class='id identifier rubyid_newpath'>newpath</span> <span class='op'>=</span> <span class='id identifier rubyid_newpath'>newpath</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/\./</span><span class='regexp_end'>}</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/\.\z</span><span class='regexp_end'>}</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_newpath'>newpath</span>
+  <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="local_data?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>local_data?</strong>(data) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Test the passed variable to see if we are in local or remote mode.</p>
+
+<p>IO objects return true, as do strings that look like URLs.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+490
+491
+492
+493
+494
+495</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 490</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_local_data?'>local_data?</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>true</span>   <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>IO</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>StringIO</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>true</span>   <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\Afile:\/\/</span><span class='regexp_end'>/i</span></span>
+  <span class='kw'>return</span> <span class='kw'>false</span>  <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A(?:(https?|ftp):)\/\/</span><span class='regexp_end'>/i</span></span>
+  <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="append_query_string-instance_method">
+  
+    - (<tt>Object</tt>) <strong>append_query_string</strong>(doc, qs) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 347</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_append_query_string'>append_query_string</span><span class='lparen'>(</span><span class='id identifier rubyid_doc'>doc</span><span class='comma'>,</span> <span class='id identifier rubyid_qs'>qs</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_doc'>doc</span> <span class='kw'>if</span> <span class='id identifier rubyid_qs'>qs</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+
+  <span class='id identifier rubyid_qs'>qs</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^[\?]*</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_strip!'>strip!</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_doc'>doc</span> <span class='kw'>if</span> <span class='id identifier rubyid_qs'>qs</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_current_host'>current_host</span> <span class='op'>=</span> <span class='ivar'>@base_url</span><span class='period'>.</span><span class='id identifier rubyid_host'>host</span>
+  <span class='kw'>rescue</span>
+    <span class='id identifier rubyid_current_host'>current_host</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+
+  <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Attempting to append_query_string: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_qs'>qs</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:verbose</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_doc'>doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>a</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span><span class='op'>|</span><span class='id identifier rubyid_el'>el</span><span class='op'>|</span>
+    <span class='id identifier rubyid_href'>href</span> <span class='op'>=</span> <span class='id identifier rubyid_el'>el</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>href</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span>
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='kw'>or</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_href'>href</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[\#\{\[\&lt;\%]</span><span class='regexp_end'>/</span></span> <span class='comment'># don&#39;t bother with anchors or special-looking links
+</span>
+    <span class='kw'>begin</span>
+      <span class='id identifier rubyid_href'>href</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_href'>href</span><span class='rparen'>)</span>
+
+      <span class='kw'>if</span> <span class='id identifier rubyid_current_host'>current_host</span> <span class='kw'>and</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_host'>host</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_host'>host</span> <span class='op'>!=</span> <span class='id identifier rubyid_current_host'>current_host</span>
+        <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skipping append_query_string for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='tstring_content'> because host is no good</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:verbose</span><span class='rbracket'>]</span>
+        <span class='kw'>next</span>
+      <span class='kw'>end</span>
+
+      <span class='kw'>if</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_scheme'>scheme</span> <span class='kw'>and</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_scheme'>scheme</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>http</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>and</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_scheme'>scheme</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>https</span><span class='tstring_end'>&#39;</span></span>
+        <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skipping append_query_string for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='tstring_content'> because scheme is no good</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:verbose</span><span class='rbracket'>]</span>
+        <span class='kw'>next</span>
+      <span class='kw'>end</span>
+
+      <span class='kw'>if</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span> <span class='kw'>and</span> <span class='kw'>not</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+        <span class='id identifier rubyid_amp'>amp</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:unescaped_ampersand</span><span class='rbracket'>]</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&amp;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&amp;amp;</span><span class='tstring_end'>&#39;</span></span>
+        <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span> <span class='op'>=</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span> <span class='op'>+</span> <span class='id identifier rubyid_amp'>amp</span> <span class='op'>+</span> <span class='id identifier rubyid_qs'>qs</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span> <span class='op'>=</span> <span class='id identifier rubyid_qs'>qs</span>
+      <span class='kw'>end</span>
+
+      <span class='id identifier rubyid_el'>el</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>href</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='kw'>rescue</span> <span class='const'>URI</span><span class='op'>::</span><span class='const'>Error</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skipping append_query_string for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='tstring_content'> (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:verbose</span><span class='rbracket'>]</span>
+      <span class='kw'>next</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_doc'>doc</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="check_client_support-instance_method">
+  
+    - (<tt>Object</tt>) <strong>check_client_support</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 511</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_check_client_support'>check_client_support</span> <span class='comment'># :nodoc:
+</span>  <span class='ivar'>@client_support</span> <span class='op'>||=</span> <span class='const'>YAML</span><span class='op'>::</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='const'>CLIENT_SUPPORT_FILE</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_warnings'>warnings</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_properties'>properties</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+  <span class='comment'># Get a list off CSS properties
+</span>  <span class='ivar'>@processed_doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*[@style]</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_el'>el</span><span class='op'>|</span>
+    <span class='id identifier rubyid_style_url'>style_url</span> <span class='op'>=</span> <span class='id identifier rubyid_el'>el</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>style</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>([\w\-]+)[\s]*\:</span><span class='regexp_end'>/i</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+      <span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='backref'>$1</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_uniq!'>uniq!</span>
+
+  <span class='id identifier rubyid_property_support'>property_support</span> <span class='op'>=</span> <span class='ivar'>@client_support</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>css_properties</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_prop'>prop</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_property_support'>property_support</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_prop'>prop</span><span class='rparen'>)</span> <span class='kw'>and</span>
+        <span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>and</span>
+        <span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_prop'>prop</span><span class='embexpr_end'>}</span><span class='tstring_content'> CSS property</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'>WARN_LABEL</span><span class='lbracket'>[</span><span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
+          <span class='symbol'>:clients</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported_in</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='ivar'>@client_support</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>attributes</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_attribute'>attribute</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
+    <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span>
+    <span class='kw'>if</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*[@</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'> HTML attribute</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'>WARN_LABEL</span><span class='lbracket'>[</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
+          <span class='symbol'>:clients</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported_in</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='ivar'>@client_support</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>elements</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_element'>element</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
+    <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span>
+    <span class='kw'>if</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='id identifier rubyid_element'>element</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_element'>element</span><span class='embexpr_end'>}</span><span class='tstring_content'> HTML element</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'>WARN_LABEL</span><span class='lbracket'>[</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
+          <span class='symbol'>:clients</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported_in</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_warnings'>warnings</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="convert_inline_links-instance_method">
+  
+    - (<tt>Object</tt>) <strong>convert_inline_links</strong>(doc, base_uri) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Convert relative links to absolute links.</p>
+
+<p>Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes
+as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.</p>
+
+<p><tt>doc</tt> is an Hpricot document and <tt>base_uri</tt> is either a string or a URI.</p>
+
+<p>Returns an Hpricot document.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 413</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_convert_inline_links'>convert_inline_links</span><span class='lparen'>(</span><span class='id identifier rubyid_doc'>doc</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
+</span>  <span class='id identifier rubyid_base_uri'>base_uri</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_append_qs'>append_qs</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:link_query_string</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_escape_attrs'>escape_attrs</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:escape_url_attributes</span><span class='rbracket'>]</span>
+
+  <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>href</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>src</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>background</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_attribute'>attribute</span><span class='op'>|</span>
+    <span class='id identifier rubyid_tags'>tags</span> <span class='op'>=</span> <span class='id identifier rubyid_doc'>doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*[@</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_tags'>tags</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+    <span class='id identifier rubyid_tags'>tags</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span>
+      <span class='comment'># skip links that look like they have merge tags
+</span>      <span class='comment'># and mailto, ftp, etc...
+</span>      <span class='kw'>if</span> <span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^([\%\&lt;\{\#\[]|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:|cid:)</span><span class='regexp_end'>/i</span></span>
+        <span class='kw'>next</span>
+      <span class='kw'>end</span>
+
+      <span class='kw'>if</span> <span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^http</span><span class='regexp_end'>/i</span></span>
+        <span class='kw'>begin</span>
+          <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+        <span class='kw'>rescue</span><span class='semicolon'>;</span> <span class='kw'>next</span><span class='semicolon'>;</span> <span class='kw'>end</span>
+      <span class='kw'>else</span>
+        <span class='kw'>begin</span>
+          <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>Premailer</span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
+        <span class='kw'>rescue</span>
+          <span class='kw'>begin</span>
+            <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_escape_attrs'>escape_attrs</span>
+            <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>Premailer</span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
+          <span class='kw'>rescue</span><span class='semicolon'>;</span> <span class='kw'>end</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+
+      <span class='comment'># make sure &#39;merged&#39; is a URI
+</span>      <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='kw'>end</span> <span class='comment'># end of each tag
+</span>  <span class='kw'>end</span> <span class='comment'># end of each attrs
+</span>
+  <span class='id identifier rubyid_doc'>doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*[@style]</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_el'>el</span><span class='op'>|</span>
+    <span class='id identifier rubyid_el'>el</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>style</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>CssParser</span><span class='period'>.</span><span class='id identifier rubyid_convert_uris'>convert_uris</span><span class='lparen'>(</span><span class='id identifier rubyid_el'>el</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>style</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_doc'>doc</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="is_xhtml?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>is_xhtml?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Check for an XHTML doctype</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+398
+399
+400
+401
+402
+403</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 398</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_is_xhtml?'>is_xhtml?</span>
+  <span class='id identifier rubyid_intro'>intro</span> <span class='op'>=</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_to_html'>to_html</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>2</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_is_xhtml'>is_xhtml</span> <span class='op'>=</span> <span class='op'>!</span><span class='op'>!</span><span class='lparen'>(</span><span class='id identifier rubyid_intro'>intro</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>w3c\/\/[\s]*dtd[\s]+xhtml</span><span class='regexp_end'>/i</span></span><span class='rparen'>)</span>
+  <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Is XHTML? </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_is_xhtml'>is_xhtml</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_content'>\nChecked:\n</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_intro'>intro</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:debug</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_is_xhtml'>is_xhtml</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="warnings-instance_method">
+  
+    - (<tt>Array(Hash)</tt>) <strong>warnings</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>CSS warnings.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array(Hash)</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>Array of warnings.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+248
+249
+250
+251
+252</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 248</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_warnings'>warnings</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>Warnings</span><span class='op'>::</span><span class='const'>NONE</span>
+  <span class='ivar'>@css_warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_check_client_support'>check_client_support</span> <span class='kw'>if</span> <span class='ivar'>@css_warnings</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='ivar'>@css_warnings</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Tue Jun 28 11:36:28 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.3.0).
+</div>
+
+  </body>
+</html>
