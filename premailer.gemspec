@@ -14,7 +14,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_dependency('css_parser', '>= 1.4.5')
   s.add_dependency('htmlentities', ['>= 4.0.0'])
   s.add_development_dependency "bundler", "~> 1.3"
-  s.add_development_dependency('rake', ['~> 0.8',  '!= 0.9.0'])
+  s.add_development_dependency('rake', ['> 0.8',  '!= 0.9.0'])
   s.add_development_dependency('hpricot', '>= 0.8.3')
   s.add_development_dependency('nokogiri', '>= 1.4.4')
   s.add_development_dependency('yard', '~> 0.8.7.6')

@@ -39,7 +39,7 @@ GEM
     nokogumbo (1.4.7)
       nokogiri
     pkg-config (1.1.7)
-    rake (0.9.6)
+    rake (11.2.2)
     redcarpet (3.3.4)
     safe_yaml (1.0.4)
     simplecov (0.11.2)
@@ -70,7 +70,7 @@ DEPENDENCIES
   nokogiri (>= 1.4.4)
   nokogumbo
   premailer!
-  rake (~> 0.8, != 0.9.0)
+  rake (> 0.8, != 0.9.0)
   redcarpet (~> 3.0)
   webmock
   yard (~> 0.8.7.6)
