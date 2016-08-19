@@ -36,14 +36,15 @@ require 'premailer'
 
 premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
 
+# Write the plain-text output
+# This must come before to_inline_css (https://github.com/premailer/premailer/issues/201)
+File.open("output.txt", "w") do |fout|
+  fout.puts premailer.to_plain_text
+end
+
 # Write the HTML output
 File.open("output.html", "w") do |fout|
   fout.puts premailer.to_inline_css
-end
-
-# Write the plain-text output
-File.open("output.txt", "w") do |fout|
-  fout.puts premailer.to_plain_text
 end
 
 # Output any CSS warnings
