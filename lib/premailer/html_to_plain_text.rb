@@ -10,6 +10,11 @@ module HtmlToPlainText
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     txt = html
 
+    # strip text ignored html. Useful for removing
+    # headers and footers that aren't needed in the
+    # text version
+    txt.gsub!(/<!-- start text\/html -->.*?<!-- end text\/html -->/m, '')
+
     # replace images with their alt attributes
     # for img tags with "" for attribute quotes
     # with or without closing tag
@@ -26,17 +31,11 @@ module HtmlToPlainText
     txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # links
-    txt.gsub!(/<a\s.*?href=\"(mailto:)?([^\"]*)\"[^>]*>((.|\s)*?)<\/a>/i) do |s|
+    txt.gsub!(/<a\s.*?href=["'](mailto:)?([^"']*)["'][^>]*>((.|\s)*?)<\/a>/i) do |s|
       if $3.empty?
         ''
-      else
-        $3.strip + ' ( ' + $2.strip + ' )'
-      end
-    end
-
-    txt.gsub!(/<a\s.*?href='(mailto:)?([^\']*)\'[^>]*>((.|\s)*?)<\/a>/i) do |s|
-      if $3.empty?
-        ''
+      elsif $3.strip.downcase == $2.strip.downcase
+        $3.strip
       else
         $3.strip + ' ( ' + $2.strip + ' )'
       end
@@ -87,25 +86,25 @@ module HtmlToPlainText
     he = HTMLEntities.new
     txt = he.decode(txt)
 
+    # no more than two consecutive spaces
+    txt.gsub!(/ {2,}/, " ")
+
     txt = word_wrap(txt, line_length)
 
     # remove linefeeds (\r\n and \r -> \n)
     txt.gsub!(/\r\n?/, "\n")
 
     # strip extra spaces
-    txt.gsub!(/\302\240+/, " ") # non-breaking spaces -> spaces
+    txt.gsub!(/[ \t]*\302\240+[ \t]*/, " ") # non-breaking spaces -> spaces
     txt.gsub!(/\n[ \t]+/, "\n") # space at start of lines
     txt.gsub!(/[ \t]+\n/, "\n") # space at end of lines
 
     # no more than two consecutive newlines
     txt.gsub!(/[\n]{3,}/, "\n\n")
 
-    # no more than two consecutive spaces
-    txt.gsub!(/ {2,}/, " ")
-
     # the word messes up the parens
-    txt.gsub!(/\([ \n](http[^)]+)[\n ]\)/) do |s|
-      "( " + $1 + " )"
+    txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |s|
+      ($1 == "\n" ? $1 : '' ) + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '' )
     end
 
     txt.strip

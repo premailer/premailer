@@ -74,12 +74,13 @@ class Premailer
     'blockquote' => {'text-align' => 'align'},
     'body' => {'background-color' => 'bgcolor'},
     'table' => {
+      '-premailer-align' => 'align',
       'background-color' => 'bgcolor',
       'background-image' => 'background',
       '-premailer-width' => 'width',
       '-premailer-height' => 'height',
       '-premailer-cellpadding' => 'cellpadding',
-      '-premailer-cellspacing' => 'cellspacing',
+      '-premailer-cellspacing' => 'cellspacing'
     },
     'tr' => {
       'text-align' => 'align',
@@ -100,7 +101,11 @@ class Premailer
       '-premailer-width' => 'width',
       '-premailer-height' => 'height'
     },
-    'img' => {'float' => 'align'}
+    'img' => {
+      'float' => 'align',
+      '-premailer-width' => 'width',
+      '-premailer-height' => 'height'
+    }
   }
 
   # URI of the HTML file used
@@ -145,8 +150,8 @@ class Premailer
   #   must set the with_html_string option to true.
   #
   # @param [Hash] options the options to handle html with.
-  # @option options [FixNum] :line_length Line length used by to_plain_text. Default is 65.
-  # @option options [FixNum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}).
+  # @option options [Fixnum] :line_length Line length used by to_plain_text. Default is 65.
+  # @option options [Fixnum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}).
   # @option options [String] :link_query_string A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
   # @option options [String] :base_url Used to calculate absolute URLs for local files.
   # @option options [Array(String)] :css Manually specify CSS stylesheets.
@@ -161,6 +166,7 @@ class Premailer
   # @option options [Boolean] :preserve_reset Whether to preserve styles associated with the MailChimp reset code. Default is true.
   # @option options [Boolean] :with_html_string Whether the html param should be treated as a raw string. Default is false.
   # @option options [Boolean] :verbose Whether to print errors and warnings to <tt>$stderr</tt>.  Default is false.
+  # @option options [Boolean] :io_exceptions Throws exceptions on I/O errors.
   # @option options [Boolean] :include_link_tags Whether to include css from <tt>link rel=stylesheet</tt> tags.  Default is true.
   # @option options [Boolean] :include_style_tags Whether to include css from <tt>style</tt> tags.  Default is true.
   # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea. Default is ASCII-8BIT.
@@ -168,6 +174,7 @@ class Premailer
   # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
   # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
+  # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
@@ -193,6 +200,8 @@ class Premailer
                 :output_encoding => nil,
                 :replace_html_entities => false,
                 :escape_url_attributes => true,
+                :unescaped_ampersand => false,
+                :create_shorthands => true,
                 :adapter => Adapter.use,
                 }.merge(options)
 
@@ -254,7 +263,9 @@ protected
       end
 
       load_css_from_string(css_block)
-    rescue; end
+    rescue => e
+      raise e if @options[:io_exceptions]
+    end
   end
 
   def load_css_from_string(css_string)
@@ -276,11 +287,7 @@ protected
 
     # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
-    if (@options[:adapter] == :nokogiri)
-      tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore'])", "//style[not(contains(@data-premailer,'ignore'))]")
-    else
-      tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore']), style:not([@data-premailer='ignore'])")
-    end
+    tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore']), style:not([@data-premailer='ignore'])")
     if tags
       tags.each do |tag|
         if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media']) && @options[:include_link_tags]
@@ -289,13 +296,13 @@ protected
 
           if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
             if @options[:with_html_string]
-              link_uri = tag.attributes['href'].to_s.sub(@base_url.to_s, '').sub(/\A\/*/, '')
+              link_uri = tag.attributes['href'].to_s.sub(@base_url.to_s, '')
             else
               link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
-              # if the file does not exist locally, try to grab the remote reference
-              unless File.exists?(link_uri)
-                link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
-              end
+            end
+            # if the file does not exist locally, try to grab the remote reference
+            unless File.exists?(link_uri)
+              link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
             end
           else
             link_uri = tag.attributes['href'].to_s
@@ -371,7 +378,8 @@ public
         end
 
         if href.query and not href.query.empty?
-          href.query = href.query + '&amp;' + qs
+          amp = @options[:unescaped_ampersand] ? '&' : '&amp;'
+          href.query = href.query + amp + qs
         else
           href.query = qs
         end

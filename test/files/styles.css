@@ -1,8 +1,6 @@
 /*
  * Premailer styles
  *
- * Copyright (c) 2009 Dialect Communications Group (dialect.ca)
- *
  * $Package: Premailer $
  * $Date: 2009-02-09 17:15:56 -0800 (Mon, 09 Feb 2009) $WCDATE$ $
  * $Rev: 95 $WCREV$ $
@@ -15,7 +13,7 @@
 body{font:13px/1.231 "Arial",sans-serif;color: #fff;background-color: #9EBF00;}
 
  #wrapper { width: 100%; margin: 2em 0; background-color: #9EBF00; color: #fff; }
- 
+
 .container { margin: 0 auto; line-height: 130%; color: #4d4d4d; text-align: left; }
 
 .frame { background-color: #b6d93f; font-size: 1px; line-height: 1px;  }

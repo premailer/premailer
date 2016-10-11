@@ -17,14 +17,13 @@ class Premailer
         doc.search("*[@style]").each do |el|
           el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
         end
-
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
           # Save un-mergable rules separately
-          selector.gsub!(/:link([\s]*)+/i) {|m| $1 }
+          selector.gsub!(/:link([\s]*)+/i) { |m| $1 }
 
           # Convert element names to lower case
-          selector.gsub!(/([\s]|^)([\w]+)/) {|m| $1.to_s + $2.to_s.downcase }
+          selector.gsub!(/([\s]|^)([\w]+)/) { |m| $1.to_s + $2.to_s.downcase }
 
           if Premailer.is_media_query?(media_types) || selector =~ Premailer::RE_UNMERGABLE_SELECTORS
             @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration), media_types) unless @options[:preserve_styles]
@@ -33,7 +32,7 @@ class Premailer
               if selector =~ Premailer::RE_RESET_SELECTORS
                 # this is in place to preserve the MailChimp CSS reset: http://github.com/mailchimp/Email-Blueprints/
                 # however, this doesn't mean for testing pur
-                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration))  unless !@options[:preserve_reset]
+                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless !@options[:preserve_reset]
               end
 
               # Change single ID CSS selectors into xpath so that we can match more
@@ -47,7 +46,7 @@ class Premailer
                   el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
                 end
               end
-            rescue  ::Nokogiri::SyntaxError, RuntimeError, ArgumentError
+            rescue ::Nokogiri::SyntaxError, RuntimeError, ArgumentError
               $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
               next
             end
@@ -74,17 +73,22 @@ class Premailer
           merged.expand_shorthand!
 
           # Duplicate CSS attributes as HTML attributes
-          if Premailer::RELATED_ATTRIBUTES.has_key?(el.name)
+          if Premailer::RELATED_ATTRIBUTES.has_key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
-              el[html_att] = merged[css_att].gsub(/url\('(.*)'\)/,'\1').gsub(/;$|\s*!important/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+              el[html_att] = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+              merged.instance_variable_get("@declarations").tap do |declarations|
+                declarations.delete(css_att)
+              end
             end
           end
-
           # Collapse multiple rules into one as much as possible.
-          merged.create_shorthand!
+          merged.create_shorthand! if @options[:create_shorthands]
 
           # write the inline STYLE attribute
-          el['style'] = Premailer.escape_string(merged.declarations_to_s).split(';').map(&:strip).sort.join('; ')
+          # split by ';' but ignore those in brackets
+          attributes = Premailer.escape_string(merged.declarations_to_s).split(/;(?![^(]*\))/).map(&:strip)
+          attributes = attributes.map { |attr| [attr.split(':').first, attr] }.sort_by { |pair| pair.first }.map { |pair| pair[1] }
+          el['style'] = attributes.join('; ') + ";"
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules)
@@ -144,7 +148,7 @@ class Premailer
 
         unless styles.empty?
           style_tag = "<style type=\"text/css\">\n#{styles}</style>"
-          if body = doc.search('body')
+          unless (body = doc.search('body')).empty?
             if doc.at_css('body').children && !doc.at_css('body').children.empty?
               doc.at_css('body').children.before(::Nokogiri::XML.fragment(style_tag))
             else
@@ -167,7 +171,8 @@ class Premailer
         html_src = ''
         begin
           html_src = @doc.at("body").inner_html
-        rescue; end
+        rescue;
+        end
 
         html_src = @doc.to_html unless html_src and not html_src.empty?
         convert_to_text(html_src, @options[:line_length], @html_encoding)
@@ -213,13 +218,13 @@ class Premailer
           end
         end
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
-        # However, we really don't want to hardcode this. ASCII-8BIG should be the default, but not the only option.
+        # However, we really don't want to hardcode this. ASCII-8BIT should be the default, but not the only option.
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
           thing = thing.force_encoding(@options[:input_encoding]).encode!
-          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) {|c| c.recover }
+          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) { |c| c.recover }
         else
           default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
-          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) {|c| c.recover }
+          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) { |c| c.recover }
         end
 
         # Fix for removing any CDATA tags from both style and script tags inserted per

@@ -36,14 +36,15 @@ require 'premailer'
 
 premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
 
+# Write the plain-text output
+# This must come before to_inline_css (https://github.com/premailer/premailer/issues/201)
+File.open("output.txt", "w") do |fout|
+  fout.puts premailer.to_plain_text
+end
+
 # Write the HTML output
 File.open("output.html", "w") do |fout|
   fout.puts premailer.to_inline_css
-end
-
-# Write the plain-text output
-File.open("output.txt", "w") do |fout|
-  fout.puts premailer.to_plain_text
 end
 
 # Output any CSS warnings
@@ -54,7 +55,7 @@ end
 
 ## Ruby Compatibility
 
-Premailer is tested on Ruby 1.8.7, Ruby 1.9.2, Ruby 1.9.3, and Ruby 2.0.0 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](http://travis-ci.org/#!/premailer/premailer).
+Premailer is tested on Ruby 1.8.7, Ruby 1.9.2, Ruby 1.9.3, and Ruby 2.x.0 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
 
 ## Premailer-specific CSS
 
@@ -66,7 +67,7 @@ Premailer looks for a few CSS attributes that make working with tables a bit eas
 | -premailer-height | Available on `table`, `tr`, `th` and `td` elements |
 | -premailer-cellpadding | Available on `table` elements |
 | -premailer-cellspacing | Available on `table` elements |
-| data-premailer="ignore" | Available on `style` elements. Premailer will ignore these elements entirely. |
+| data-premailer="ignore" | Available on `link` and `style` elements. Premailer will ignore these elements entirely. |
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
 
@@ -93,10 +94,10 @@ A few areas that are particularly in need of love:
 
 ## Credits and code
 
-Thanks to [all the wonderful contributors](https://github.com/alexdunae/premailer/contributors) for their updates.
+Thanks to [all the wonderful contributors](https://github.com/premailer/premailer/contributors) for their updates.
 
 Thanks to [Greenhood + Company](http://www.greenhood.com/) for sponsoring some of the 1.5.6 updates,
-and to [Campaign Monitor](http://www.campaignmonitor.com) for supporting the web interface.
+and to [Campaign Monitor](https://www.campaignmonitor.com/) for supporting the web interface.
 
 The web interface can be found at [premailer.dialect.ca](http://premailer.dialect.ca).
 

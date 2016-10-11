@@ -69,9 +69,21 @@ END_HTML
     assert_plaintext "* item 1\n* item 2", "<li class='123'>item 1</li> <li>item 2</li>\n"
     assert_plaintext "* item 1\n* item 2\n* item 3", "<li>item 1</li> \t\n <li>item 2</li> <li> item 3</li>\n"
   end
-  
+
   def test_stripping_html
     assert_plaintext 'test text', "<p class=\"123'45 , att\" att=tester>test <span class='te\"st'>text</span>\n"
+  end
+
+  def test_stripping_ignored_blocks
+    html = <<END_HTML
+    <p>test</p>
+    <!-- start text/html -->
+      <img src="logo.png" alt="logo">
+    <!-- end text/html -->
+    <p>text</p>
+END_HTML
+    premailer = Premailer.new(html, :with_html_string => true)
+    assert_match /test\n\ntext/, premailer.to_plain_text
   end
 
   def test_paragraphs_and_breaks
@@ -81,7 +93,7 @@ END_HTML
     assert_plaintext "Test text\nTest text", "\n<p>Test text<br> \tTest text<br></p>\n"
     assert_plaintext "Test text\n\nTest text", "Test text<br><BR />Test text"
   end
-  
+
   def test_headings
     assert_plaintext "****\nTest\n****", "<h1>Test</h1>"
     assert_plaintext "****\nTest\n****", "\t<h1>\nTest</h1> "
@@ -90,7 +102,7 @@ END_HTML
     assert_plaintext "----\nTest\n----", "<h2>Test</h2>"
     assert_plaintext "Test\n----", "<h3> <span class='a'>Test </span></h3>"
   end
-  
+
   def test_wrapping_lines
     raw = ''
     100.times { raw += 'test ' }
@@ -102,8 +114,12 @@ END_HTML
     assert lens.max <= 20
   end
 
+  def test_wrapping_lines_with_spaces
+    assert_plaintext "Long line\nnew line", 'Long     line new line', nil ,10
+  end
+
   def test_img_alt_tags
-    # ensure html imag tags that aren't self-closed are parsed, 
+    # ensure html imag tags that aren't self-closed are parsed,
     # along with accepting both '' and "" as attribute quotes
 
     # <img alt="" />
@@ -119,7 +135,7 @@ END_HTML
   def test_links
     # basic
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/">Link</a>'
-    
+
     # nested html
     assert_plaintext 'Link ( http://example.com/ )', '<a href="http://example.com/"><span class="a">Link</span></a>'
 
@@ -131,13 +147,13 @@ END_HTML
 
     # complex link
     assert_plaintext 'Link ( http://example.com:80/~user?aaa=bb&c=d,e,f#foo )', '<a href="http://example.com:80/~user?aaa=bb&amp;c=d,e,f#foo">Link</a>'
-    
+
     # attributes
     assert_plaintext 'Link ( http://example.com/ )', '<a title=\'title\' href="http://example.com/">Link</a>'
-    
+
     # spacing
     assert_plaintext 'Link ( http://example.com/ )', '<a href="   http://example.com/ "> Link </a>'
-    
+
     # multiple
     assert_plaintext 'Link A ( http://example.com/a/ ) Link B ( http://example.com/b/ )', '<a href="http://example.com/a/">Link A</a> <a href="http://example.com/b/">Link B</a>'
 
@@ -145,24 +161,30 @@ END_HTML
     assert_plaintext 'Link ( %%LINK%% )', '<a href="%%LINK%%">Link</a>'
     assert_plaintext 'Link ( [LINK] )', '<a href="[LINK]">Link</a>'
     assert_plaintext 'Link ( {LINK} )', '<a href="{LINK}">Link</a>'
-    
+
     # unsubscribe
     assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
 
     # empty link gets dropped, and shouldn't run forever
     assert_plaintext(("This is some more text\n\n" * 14 + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
+
+    # links that go outside of line should wrap nicely
+    assert_plaintext "Long text before the actual link and then LINK TEXT \n( http://www.long.link ) and then more text that does not wrap", 'Long text before the actual link and then <a href="http://www.long.link"/>LINK TEXT</a> and then more text that does not wrap'
+
+    # same text and link
+    assert_plaintext 'http://example.com', '<a href="http://example.com">http://example.com</a>'
   end
-  
+
   # see https://github.com/alexdunae/premailer/issues/72
   def test_multiple_links_per_line
-    assert_plaintext 'This is link1 ( http://www.google.com ) and link2 ( http://www.google.com ) is next.', 
+    assert_plaintext 'This is link1 ( http://www.google.com ) and link2 ( http://www.google.com ) is next.',
                      '<p>This is <a href="http://www.google.com" >link1</a> and <a href="http://www.google.com" >link2 </a> is next.</p>',
                      nil, 10000
   end
 
   # see https://github.com/alexdunae/premailer/issues/72
   def test_links_within_headings
-    assert_plaintext "****************************\nTest ( http://example.com/ )\n****************************", 
+    assert_plaintext "****************************\nTest ( http://example.com/ )\n****************************",
                      "<h1><a href='http://example.com/'>Test</a></h1>"
   end
 
