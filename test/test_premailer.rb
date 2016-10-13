@@ -293,7 +293,7 @@ END_HTML
     </body> </html>
     END_HTML
 
-    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex => true, :adapter => :nokogiri)
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :adapter => :nokogiri)
     pm.to_inline_css
     doc = pm.processed_doc
     assert_equal 'FAFAFA', doc.at('table')['bgcolor']
@@ -308,7 +308,7 @@ END_HTML
     </body> </html>
     END_HTML
 
-    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex => true, :adapter => :nokogiri)
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :adapter => :nokogiri)
     pm.to_inline_css
     doc = pm.processed_doc
     assert_equal 'red', doc.at('table')['bgcolor']
