@@ -9,13 +9,13 @@ module AdapterHelper
     def is_rgb?(color)
       pattern = %r{
       rgb
-      \(          # literal open
+      \(\s*    # literal open, with optional whitespace
       (\d{1,3})   # capture 1-3 digits
       \s*,\s*     # comma, with optional whitespace
       (\d{1,3})   # capture 1-3 digits
       \s*,\s*     # comma, with optional whitespace
       (\d{1,3})   # capture 1-3 digits
-      \)          # literal close
+      \s*\)       # literal close, with optional whitespace
       }x
 
       pattern.match(color)
@@ -25,6 +25,8 @@ module AdapterHelper
       match_data = is_rgb?(color)
       if match_data
         "#{to_hex(match_data[1])}#{to_hex(match_data[2])}#{to_hex(match_data[3])}"
+      else
+        color
       end
     end
   end

@@ -285,7 +285,7 @@ END_HTML
     end
   end
 
-  def test_rgb
+  def test_rgb_color
     html = <<-END_HTML
     <html> <head> <style>table { background-color: rgb(250, 250, 250); } </style>
     <body>
@@ -293,12 +293,25 @@ END_HTML
     </body> </html>
     END_HTML
 
-    [:nokogiri].each do |adapter|
-      pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex => true, :adapter => adapter)
-      pm.to_inline_css
-      doc = pm.processed_doc
-      assert_equal 'FAFAFA', doc.at('table')['bgcolor']
-    end
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'FAFAFA', doc.at('table')['bgcolor']
+
+  end
+
+  def test_non_rgb_color
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color:red; } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'red', doc.at('table')['bgcolor']
   end
 
   def test_include_link_tags_option
