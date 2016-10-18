@@ -285,6 +285,21 @@ END_HTML
     end
   end
 
+  def test_empty_css_att
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color: rgb(250, 250, 250); width: "550px"; } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :remove_scripts => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+
+    assert_equal '<table style="width: \'550px\';" bgcolor="FAFAFA"> <tr> <td> Test </td> </tr> </table>', doc.at('table').to_s
+  end
+
   def test_rgb_color
     html = <<-END_HTML
     <html> <head> <style>table { background-color: rgb(250, 250, 250); } </style>
