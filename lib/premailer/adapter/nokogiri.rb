@@ -103,6 +103,11 @@ class Premailer
           end
         end
 
+        # add target="_blank" to all external links
+        doc.search("a:not([href^='#'])").each do |el|
+          el.set_attribute('target', '_blank')
+        end
+
         if @options[:remove_ids]
           # find all anchor's targets and hash them
           targets = []

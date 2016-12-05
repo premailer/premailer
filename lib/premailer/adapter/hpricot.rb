@@ -111,6 +111,11 @@ eos
             end
           end
         end
+       
+        # add target="_blank" to all external links
+        doc.search("a:not([href^='#'])").each do |el|
+          el.set_attribute('target', '_blank')
+        end
 
         if @options[:reset_contenteditable]
           doc.search('*[@contenteditable]').each do |el|
