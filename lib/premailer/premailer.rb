@@ -156,6 +156,7 @@ class Premailer
   # @option options [String] :base_url Used to calculate absolute URLs for local files.
   # @option options [Array(String)] :css Manually specify CSS stylesheets.
   # @option options [Boolean] :css_to_attributes Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
+  # @option options [Boolean] :preserve_style_attribute Preserve original style attribute
   # @option options [String] :css_string Pass CSS as a string
   # @option options [Boolean] :remove_ids Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is false.
   # @option options [Boolean] :remove_classes Remove class attributes. Default is false.
@@ -187,6 +188,7 @@ class Premailer
                 :reset_contenteditable => true,
                 :css => [],
                 :css_to_attributes => true,
+                :preserve_style_attribute => false,
                 :with_html_string => false,
                 :css_string => nil,
                 :preserve_styles => false,
