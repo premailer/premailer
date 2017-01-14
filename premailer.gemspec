@@ -10,6 +10,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
   s.required_ruby_version = '>= 2.0.0'
+  s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
 
   s.add_dependency('css_parser', '>= 1.4.5')
   s.add_dependency('htmlentities', ['>= 4.0.0'])
