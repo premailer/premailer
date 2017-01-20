@@ -53,6 +53,23 @@ premailer.warnings.each do |w|
 end
 ```
 
+## Adapters
+
+Premailer's default adapter is nokogiri if both nokogiri and hpricot are included in the Gemfile list. However, if you want to use a different adapter, you can choose to. 
+
+There are four adapters in total (as of premailer 1.9.1)
+
+1. nokogiri (default)
+2. hpricot (deprecated and will be removed in future premailer releases)
+3. nokogumbo
+4. nokogiri_fast
+
+`NokogiriFast` adapter improves the Algorithmic complexity of the running time by 20x with a slight compensation on memory. To switch to any of these adapters, add the following line. For example, if you want to include the `NokogiriFast` adapter,
+
+```ruby
+Premailer::Adapter.use = :nokogiri_fast
+```
+
 ## Ruby Compatibility
 
 Premailer is tested on Ruby 1.8.7, Ruby 1.9.2, Ruby 1.9.3, and Ruby 2.x.0 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
