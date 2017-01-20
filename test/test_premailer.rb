@@ -242,6 +242,23 @@ END_HTML
     end
   end
 
+  def test_reset_contenteditable
+    html = <<-___
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html> <head> <style type="text/css"> #remove { color:blue; } </style> </head>
+    <body>
+    <div contenteditable="true" id="editable"> Test </div>
+    </body> </html>
+    ___
+    [:nokogiri, :hpricot].each do |adapter|
+  		pm = Premailer.new(html, :with_html_string => true, :reset_contenteditable => true, :adapter => adapter)
+      pm.to_inline_css
+      doc = pm.processed_doc
+  	  assert_nil doc.at('#editable')['contenteditable'],
+        "#{adapter}: contenteditable attribute not removed"
+  	end
+  end
+
   def test_carriage_returns_as_entities
     html = <<-html
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -283,6 +300,35 @@ END_HTML
       assert_equal '500', doc.at('table')['width']
       assert_equal '20', doc.at('td')['height']
     end
+  end
+
+  def test_rgb_color
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color: rgb(250, 250, 250); } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'FAFAFA', doc.at('table')['bgcolor']
+
+  end
+
+  def test_non_rgb_color
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color:red; } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'red', doc.at('table')['bgcolor']
   end
 
   def test_include_link_tags_option
