@@ -158,6 +158,7 @@ class Premailer
   # @option options [Boolean] :css_to_attributes Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
   # @option options [Boolean] :preserve_style_attribute Preserve original style attribute
   # @option options [String] :css_string Pass CSS as a string
+  # @option options [Boolean] :rgb_to_hex_attributes Convert RBG to Hex colors, default false
   # @option options [Boolean] :remove_ids Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is false.
   # @option options [Boolean] :remove_classes Remove class attributes. Default is false.
   # @option options [Boolean] :remove_comments Remove html comments. Default is false.
@@ -181,6 +182,7 @@ class Premailer
                 :line_length => 65,
                 :link_query_string => nil,
                 :base_url => nil,
+                :rgb_to_hex_attributes => true,
                 :remove_classes => false,
                 :remove_ids => false,
                 :remove_comments => false,
