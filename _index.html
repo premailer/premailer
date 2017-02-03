@@ -1,10 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  &#39;Premailer 1.8.7 Documentation&#39;
+  &#39;Premailer 1.9.2 Documentation&#39;
   
 </title>
 
@@ -13,9 +13,8 @@
   <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  hasFrames = window.top.frames.main ? true : false;
+  pathId = null;
   relpath = '';
-  framesUrl = "frames.html#!_index.html";
 </script>
 
 
@@ -26,37 +25,34 @@
 
   </head>
   <body>
-    <div id="header">
-      <div id="menu">
-  
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
 
-  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
 </div>
 
-      <div id="search">
+        <div id="search">
   
     <a class="full_list_link" id="class_list_link"
         href="class_list.html">
-      Class List
-    </a>
-  
-    <a class="full_list_link" id="method_list_link"
-        href="method_list.html">
-      Method List
-    </a>
-  
-    <a class="full_list_link" id="file_list_link"
-        href="file_list.html">
-      File List
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
     </a>
   
 </div>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
 
-    <iframe id="search_frame"></iframe>
-
-    <div id="content"><h1 class="noborder title">'Premailer 1.8.7 Documentation'</h1>
+      <div id="content"><h1 class="noborder title">'Premailer 1.9.2 Documentation'</h1>
 <div id="listing">
   <h1 class="alphaindex">Alphabetic Index</h1>
   
@@ -91,6 +87,11 @@
                 <span class='object_link'><a href="Premailer/Adapter.html" title="Premailer::Adapter (module)">Adapter</a></span>
                 
                   <small>(Premailer)</small>
+                
+              </li>
+            
+              <li>
+                <span class='object_link'><a href="AdapterHelper.html" title="AdapterHelper (module)">AdapterHelper</a></span>
                 
               </li>
             
@@ -130,6 +131,13 @@
               </li>
             
               <li>
+                <span class='object_link'><a href="Premailer/Adapter/NokogiriFast.html" title="Premailer::Adapter::NokogiriFast (module)">NokogiriFast</a></span>
+                
+                  <small>(Premailer::Adapter)</small>
+                
+              </li>
+            
+              <li>
                 <span class='object_link'><a href="Premailer/Adapter/Nokogumbo.html" title="Premailer::Adapter::Nokogumbo (module)">Nokogumbo</a></span>
                 
                   <small>(Premailer::Adapter)</small>
@@ -146,6 +154,21 @@
             
               <li>
                 <span class='object_link'><a href="Premailer.html" title="Premailer (class)">Premailer</a></span>
+                
+              </li>
+            
+          </ul>
+        </ul>
+      
+        
+        <ul id="alpha_R" class="alpha">
+          <li class="letter">R</li>
+          <ul>
+            
+              <li>
+                <span class='object_link'><a href="AdapterHelper/RgbToHex.html" title="AdapterHelper::RgbToHex (module)">RgbToHex</a></span>
+                
+                  <small>(AdapterHelper)</small>
                 
               </li>
             
@@ -175,11 +198,12 @@
 
 </div>
 
-    <div id="footer">
-  Generated on Tue Jun 28 11:36:27 2016 by
+      <div id="footer">
+  Generated on Fri Feb  3 11:30:27 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.9.8 (ruby-2.4.0).
 </div>
 
+    </div>
   </body>
 </html>

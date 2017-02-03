@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
   Module: Premailer::Adapter
   
-    &mdash; &#39;Premailer 1.8.7 Documentation&#39;
+    &mdash; &#39;Premailer 1.9.2 Documentation&#39;
   
 </title>
 
@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  hasFrames = window.top.frames.main ? true : false;
+  pathId = "Premailer::Adapter";
   relpath = '../';
-  framesUrl = "../frames.html#!Premailer/Adapter.html";
 </script>
 
 
@@ -28,63 +27,63 @@
 
   </head>
   <body>
-    <div id="header">
-      <div id="menu">
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
   
     <a href="../_index.html">Index (A)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../Premailer.html" title="Premailer (class)">Premailer</a></span></span>
      &raquo; 
     <span class="title">Adapter</span>
   
-
-  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
-      <div id="search">
+        <div id="search">
   
     <a class="full_list_link" id="class_list_link"
         href="../class_list.html">
-      Class List
-    </a>
-  
-    <a class="full_list_link" id="method_list_link"
-        href="../method_list.html">
-      Method List
-    </a>
-  
-    <a class="full_list_link" id="file_list_link"
-        href="../file_list.html">
-      File List
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
     </a>
   
 </div>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
 
-    <iframe id="search_frame"></iframe>
-
-    <div id="content"><h1>Module: Premailer::Adapter
+      <div id="content"><h1>Module: Premailer::Adapter
   
   
   
 </h1>
+<div class="box_info">
+  
 
-<dl class="box">
-  
-  
-    
-  
-    
   
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/premailer/adapter.rb<span class="defines">,<br />
-  lib/premailer/adapter/hpricot.rb,<br /> lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb</span>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/premailer/adapter.rb<span class="defines">,<br />
+  lib/premailer/adapter/hpricot.rb,<br /> lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb,<br /> lib/premailer/adapter/nokogiri_fast.rb</span>
 </dd>
+  </dl>
   
-</dl>
-<div class="clear"></div>
+</div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
@@ -92,6 +91,7 @@
 
 <ul>
 <li>nokogiri</li>
+<li>nokogiri_fast</li>
 <li>nokogumbo</li>
 <li>hpricot</li>
 </ul>
@@ -106,7 +106,7 @@
 <p class="children">
   
     
-      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Adapter/Hpricot.html" title="Premailer::Adapter::Hpricot (module)">Hpricot</a></span>, <span class='object_link'><a href="Adapter/Nokogiri.html" title="Premailer::Adapter::Nokogiri (module)">Nokogiri</a></span>, <span class='object_link'><a href="Adapter/Nokogumbo.html" title="Premailer::Adapter::Nokogumbo (module)">Nokogumbo</a></span>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Adapter/Hpricot.html" title="Premailer::Adapter::Hpricot (module)">Hpricot</a></span>, <span class='object_link'><a href="Adapter/Nokogiri.html" title="Premailer::Adapter::Nokogiri (module)">Nokogiri</a></span>, <span class='object_link'><a href="Adapter/NokogiriFast.html" title="Premailer::Adapter::NokogiriFast (module)">NokogiriFast</a></span>, <span class='object_link'><a href="Adapter/Nokogumbo.html" title="Premailer::Adapter::Nokogumbo (module)">Nokogumbo</a></span>
     
   
     
@@ -114,11 +114,10 @@
 </p>
 
   <h2>Constant Summary</h2>
-  
-    <dl class="constants">
-      
-        <dt id="REQUIREMENT_MAP-constant" class="">REQUIREMENT_MAP =
-          <div class="docstring">
+  <dl class="constants">
+    
+      <dt id="REQUIREMENT_MAP-constant" class="">REQUIREMENT_MAP =
+        <div class="docstring">
   <div class="discussion">
     <p>adapter to required file mapping.</p>
 
@@ -129,15 +128,15 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span>
+      </dt>
+      <dd><pre class="code"><span class='lbracket'>[</span>
   <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nokogiri</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:nokogiri</span><span class='rbracket'>]</span><span class='comma'>,</span>
+  <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nokogiri</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:nokogiri_fast</span><span class='rbracket'>]</span><span class='comma'>,</span>
   <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nokogumbo</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:nokogumbo</span><span class='rbracket'>]</span><span class='comma'>,</span>
   <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hpricot</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>  <span class='symbol'>:hpricot</span><span class='rbracket'>]</span><span class='comma'>,</span>
 <span class='rbracket'>]</span></pre></dd>
-      
-    </dl>
-  
+    
+  </dl>
 
 
 
@@ -148,7 +147,7 @@
   
     <h2>
       Class Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+      <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
     <ul class="summary">
@@ -156,7 +155,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#default-class_method" title="default (class method)">+ (Object) <strong>default</strong> </a>
+      <a href="#default-class_method" title="default (class method)">.<strong>default</strong>  &#x21d2; Object </a>
     
 
     
@@ -179,7 +178,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#find-class_method" title="find (class method)">+ (Object) <strong>find</strong>(adapter) </a>
+      <a href="#find-class_method" title="find (class method)">.<strong>find</strong>(adapter)  &#x21d2; Object </a>
     
 
     
@@ -202,7 +201,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#use-class_method" title="use (class method)">+ (Object) <strong>use</strong> </a>
+      <a href="#use-class_method" title="use (class method)">.<strong>use</strong>  &#x21d2; Object </a>
     
 
     
@@ -225,7 +224,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#use%3D-class_method" title="use= (class method)">+ (Object) <strong>use=</strong>(new_adapter) </a>
+      <a href="#use=-class_method" title="use= (class method)">.<strong>use=</strong>(new_adapter)  &#x21d2; Object </a>
     
 
     
@@ -257,7 +256,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="default-class_method">
   
-    + (<tt>Object</tt>) <strong>default</strong> 
+    .<strong>default</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -298,7 +297,6 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
-33
 34
 35
 36
@@ -313,17 +311,20 @@ then checks to see which are installed if none are loaded.</p>
 45
 46
 47
-48</pre>
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_default'>default</span>
   <span class='kw'>return</span> <span class='symbol'>:nokogiri</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Nokogiri</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='symbol'>:nokogiri_fast</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>NokogiriFast</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='symbol'>:nokogumbo</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Nokogumbo</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='symbol'>:hpricot</span>  <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Hpricot</span><span class='rparen'>)</span>
 
-  <span class='const'>REQUIREMENT_MAP</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='lparen'>(</span><span class='id identifier rubyid_library'>library</span><span class='comma'>,</span> <span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span><span class='op'>|</span>
+  <span class='const'><span class='object_link'><a href="#REQUIREMENT_MAP-constant" title="Premailer::Adapter::REQUIREMENT_MAP (constant)">REQUIREMENT_MAP</a></span></span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='lparen'>(</span><span class='id identifier rubyid_library'>library</span><span class='comma'>,</span> <span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span><span class='op'>|</span>
     <span class='kw'>begin</span>
       <span class='id identifier rubyid_require'>require</span> <span class='id identifier rubyid_library'>library</span>
       <span class='kw'>return</span> <span class='id identifier rubyid_adapter'>adapter</span>
@@ -342,7 +343,7 @@ then checks to see which are installed if none are loaded.</p>
       <div class="method_details ">
   <h3 class="signature " id="find-class_method">
   
-    + (<tt>Object</tt>) <strong>find</strong>(adapter) 
+    .<strong>find</strong>(adapter)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -381,21 +382,21 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
-58
-59
 60
 61
 62
 63
-64</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_adapter'>adapter</span> <span class='kw'>if</span> <span class='id identifier rubyid_adapter'>adapter</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Module</span><span class='rparen'>)</span>
 
-  <span class='const'>Premailer</span><span class='op'>::</span><span class='const'>Adapter</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_adapter'>adapter</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_capitalize'>capitalize</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="../Premailer.html" title="Premailer (class)">Premailer</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Premailer::Adapter (module)">Adapter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_adapter'>adapter</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_capitalize'>capitalize</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>rescue</span> <span class='const'>NameError</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid adapter: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_adapter'>adapter</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
@@ -407,7 +408,7 @@ then checks to see which are installed if none are loaded.</p>
       <div class="method_details ">
   <h3 class="signature " id="use-class_method">
   
-    + (<tt>Object</tt>) <strong>use</strong> 
+    .<strong>use</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -429,14 +430,14 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
-23
 24
 25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span>
   <span class='kw'>return</span> <span class='ivar'>@use</span> <span class='kw'>if</span> <span class='ivar'>@use</span>
@@ -451,7 +452,7 @@ then checks to see which are installed if none are loaded.</p>
       <div class="method_details ">
   <h3 class="signature " id="use=-class_method">
   
-    + (<tt>Object</tt>) <strong>use=</strong>(new_adapter) 
+    .<strong>use=</strong>(new_adapter)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -490,12 +491,12 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
-52
-53
-54</pre>
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_use='>use=</span><span class='lparen'>(</span><span class='id identifier rubyid_new_adapter'>new_adapter</span><span class='rparen'>)</span>
   <span class='ivar'>@use</span> <span class='op'>=</span> <span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_new_adapter'>new_adapter</span><span class='rparen'>)</span>
@@ -509,11 +510,12 @@ then checks to see which are installed if none are loaded.</p>
 
 </div>
 
-    <div id="footer">
-  Generated on Tue Jun 28 11:36:27 2016 by
+      <div id="footer">
+  Generated on Fri Feb  3 11:30:27 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.9.8 (ruby-2.4.0).
 </div>
 
+    </div>
   </body>
 </html>

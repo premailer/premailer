@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
   Class: Premailer
   
-    &mdash; &#39;Premailer 1.8.7 Documentation&#39;
+    &mdash; &#39;Premailer 1.9.2 Documentation&#39;
   
 </title>
 
@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  hasFrames = window.top.frames.main ? true : false;
+  pathId = "Premailer";
   relpath = '';
-  framesUrl = "frames.html#!Premailer.html";
 </script>
 
 
@@ -28,51 +27,48 @@
 
   </head>
   <body>
-    <div id="header">
-      <div id="menu">
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
   
     <a href="_index.html">Index (P)</a> &raquo;
     
     
     <span class="title">Premailer</span>
   
-
-  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
-      <div id="search">
+        <div id="search">
   
     <a class="full_list_link" id="class_list_link"
         href="class_list.html">
-      Class List
-    </a>
-  
-    <a class="full_list_link" id="method_list_link"
-        href="method_list.html">
-      Method List
-    </a>
-  
-    <a class="full_list_link" id="file_list_link"
-        href="file_list.html">
-      File List
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
     </a>
   
 </div>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
 
-    <iframe id="search_frame"></iframe>
-
-    <div id="content"><h1>Class: Premailer
+      <div id="content"><h1>Class: Premailer
   
   
   
 </h1>
-
-<dl class="box">
+<div class="box_info">
   
-    <dt class="r1">Inherits:</dt>
-    <dd class="r1">
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
       <span class="inheritName">Object</span>
       
         <ul class="fullTree">
@@ -83,27 +79,32 @@
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
       
-      </dd>
-    
+    </dd>
+  </dl>
   
-  
-    
-  
-    
-      <dt class="r2">Includes:</dt>
-      <dd class="r2">CssParser, <span class='object_link'><a href="HtmlToPlainText.html" title="HtmlToPlainText (module)">HtmlToPlainText</a></span>, <span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></dd>
-      
-    
+
   
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/premailer/adapter.rb<span class="defines">,<br />
-  lib/premailer/version.rb,<br /> lib/premailer/premailer.rb,<br /> lib/premailer/adapter/hpricot.rb,<br /> lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb</span>
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd>CssParser, <span class='object_link'><a href="HtmlToPlainText.html" title="HtmlToPlainText (module)">HtmlToPlainText</a></span>, <span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/premailer/adapter.rb<span class="defines">,<br />
+  lib/premailer/version.rb,<br /> lib/premailer/premailer.rb,<br /> lib/premailer/adapter/hpricot.rb,<br /> lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb,<br /> lib/premailer/adapter/nokogiri_fast.rb</span>
 </dd>
+  </dl>
   
-</dl>
-<div class="clear"></div>
+</div>
 
 <h2>Defined Under Namespace</h2>
 <p class="children">
@@ -117,11 +118,10 @@
 </p>
 
   <h2>Constant Summary</h2>
-  
-    <dl class="constants">
-      
-        <dt id="VERSION-constant" class="">VERSION =
-          <div class="docstring">
+  <dl class="constants">
+    
+      <dt id="VERSION-constant" class="">VERSION =
+        <div class="docstring">
   <div class="discussion">
     <p>Premailer version.</p>
 
@@ -132,16 +132,16 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1.8.7</span><span class='tstring_end'>&#39;</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
-      
-        <dt id="CLIENT_SUPPORT_FILE-constant" class="">CLIENT_SUPPORT_FILE =
-          
-        </dt>
-        <dd><pre class="code"><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/../../misc/client_support.yaml</span><span class='tstring_end'>&#39;</span></span></pre></dd>
-      
-        <dt id="RE_UNMERGABLE_SELECTORS-constant" class="">RE_UNMERGABLE_SELECTORS =
-          <div class="docstring">
+      </dt>
+      <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1.9.2</span><span class='tstring_end'>&#39;</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+    
+      <dt id="CLIENT_SUPPORT_FILE-constant" class="">CLIENT_SUPPORT_FILE =
+        
+      </dt>
+      <dd><pre class="code"><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/../../misc/client_support.yaml</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+    
+      <dt id="RE_UNMERGABLE_SELECTORS-constant" class="">RE_UNMERGABLE_SELECTORS =
+        <div class="docstring">
   <div class="discussion">
     <p>Unmergable selectors regexp.</p>
 
@@ -152,11 +152,11 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)</span><span class='regexp_end'>/i</span></span></pre></dd>
-      
-        <dt id="RE_RESET_SELECTORS-constant" class="">RE_RESET_SELECTORS =
-          <div class="docstring">
+      </dt>
+      <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)</span><span class='regexp_end'>/i</span></span></pre></dd>
+    
+      <dt id="RE_RESET_SELECTORS-constant" class="">RE_RESET_SELECTORS =
+        <div class="docstring">
   <div class="discussion">
     <p>Reset selectors regexp.</p>
 
@@ -167,11 +167,11 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$</span><span class='regexp_end'>/</span></span></pre></dd>
-      
-        <dt id="HTML_ENTITIES-constant" class="">HTML_ENTITIES =
-          <div class="docstring">
+      </dt>
+      <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$</span><span class='regexp_end'>/</span></span></pre></dd>
+    
+      <dt id="HTML_ENTITIES-constant" class="">HTML_ENTITIES =
+        <div class="docstring">
   <div class="discussion">
     <p>list of HTMLEntities to fix
 source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-">http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-</a></p>
@@ -183,8 +183,8 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='lbrace'>{</span>
+      </dt>
+      <dd><pre class="code"><span class='lbrace'>{</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8217;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8230;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>...</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8216;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
@@ -197,9 +197,9 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8212;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>--</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&amp;#8213;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>--</span><span class='tstring_end'>&#39;</span></span>
 <span class='rbrace'>}</span></pre></dd>
-      
-        <dt id="RELATED_ATTRIBUTES-constant" class="">RELATED_ATTRIBUTES =
-          <div class="docstring">
+    
+      <dt id="RELATED_ATTRIBUTES-constant" class="">RELATED_ATTRIBUTES =
+        <div class="docstring">
   <div class="discussion">
     
   <div class="note todo">
@@ -223,8 +223,8 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='lbrace'>{</span>
+      </dt>
+      <dd><pre class="code"><span class='lbrace'>{</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h1</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h2</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>h3</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text-align</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>align</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span>
@@ -269,9 +269,9 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-premailer-height</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>height</span><span class='tstring_end'>&#39;</span></span>
   <span class='rbrace'>}</span>
 <span class='rbrace'>}</span></pre></dd>
-      
-        <dt id="WARN_LABEL-constant" class="">WARN_LABEL =
-          <div class="docstring">
+    
+      <dt id="WARN_LABEL-constant" class="">WARN_LABEL =
+        <div class="docstring">
   <div class="discussion">
     <p>Waning level names</p>
 
@@ -282,11 +282,10 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='tstring_content'>NONE</span><span class='words_sep'> </span><span class='tstring_content'>SAFE</span><span class='words_sep'> </span><span class='tstring_content'>POOR</span><span class='words_sep'> </span><span class='tstring_content'>RISKY</span><span class='words_sep'>)</span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='tstring_content'>NONE</span><span class='words_sep'> </span><span class='tstring_content'>SAFE</span><span class='words_sep'> </span><span class='tstring_content'>POOR</span><span class='words_sep'> </span><span class='tstring_content'>RISKY</span><span class='words_sep'>)</span></pre></dd>
+    
+  </dl>
 
 
 
@@ -297,13 +296,13 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   <p class="inherited"><span class='object_link'><a href="Premailer/Warnings.html#NONE-constant" title="Premailer::Warnings::NONE (constant)">Warnings::NONE</a></span>, <span class='object_link'><a href="Premailer/Warnings.html#POOR-constant" title="Premailer::Warnings::POOR (constant)">Warnings::POOR</a></span>, <span class='object_link'><a href="Premailer/Warnings.html#RISKY-constant" title="Premailer::Warnings::RISKY (constant)">Warnings::RISKY</a></span>, <span class='object_link'><a href="Premailer/Warnings.html#SAFE-constant" title="Premailer::Warnings::SAFE (constant)">Warnings::SAFE</a></span></p>
 
 
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
     
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#base_dir-instance_method" title="#base_dir (instance method)">- (String) <strong>base_dir</strong> </a>
+      <a href="#base_dir-instance_method" title="#base_dir (instance method)">#<strong>base_dir</strong>  &#x21d2; String </a>
     
 
     
@@ -331,7 +330,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#base_url-instance_method" title="#base_url (instance method)">- (Object) <strong>base_url</strong> </a>
+      <a href="#base_url-instance_method" title="#base_url (instance method)">#<strong>base_url</strong>  &#x21d2; Object </a>
     
 
     
@@ -359,7 +358,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#doc-instance_method" title="#doc (instance method)">- (Object) <strong>doc</strong> </a>
+      <a href="#doc-instance_method" title="#doc (instance method)">#<strong>doc</strong>  &#x21d2; Object </a>
     
 
     
@@ -387,7 +386,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#html_file-instance_method" title="#html_file (instance method)">- (Object) <strong>html_file</strong> </a>
+      <a href="#html_file-instance_method" title="#html_file (instance method)">#<strong>html_file</strong>  &#x21d2; Object </a>
     
 
     
@@ -415,7 +414,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#processed_doc-instance_method" title="#processed_doc (instance method)">- (Object) <strong>processed_doc</strong> </a>
+      <a href="#processed_doc-instance_method" title="#processed_doc (instance method)">#<strong>processed_doc</strong>  &#x21d2; Object </a>
     
 
     
@@ -443,7 +442,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#unmergable_rules-instance_method" title="#unmergable_rules (instance method)">- (Object) <strong>unmergable_rules</strong> </a>
+      <a href="#unmergable_rules-instance_method" title="#unmergable_rules (instance method)">#<strong>unmergable_rules</strong>  &#x21d2; Object </a>
     
 
     
@@ -476,7 +475,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   
     <h2>
       Class Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+      <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
     <ul class="summary">
@@ -484,7 +483,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#canonicalize-class_method" title="canonicalize (class method)">+ (Object) <strong>canonicalize</strong>(uri) </a>
+      <a href="#canonicalize-class_method" title="canonicalize (class method)">.<strong>canonicalize</strong>(uri)  &#x21d2; Object </a>
     
 
     
@@ -507,7 +506,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#local_data%3F-class_method" title="local_data? (class method)">+ (Boolean) <strong>local_data?</strong>(data) </a>
+      <a href="#local_data%3F-class_method" title="local_data? (class method)">.<strong>local_data?</strong>(data)  &#x21d2; Boolean </a>
     
 
     
@@ -531,7 +530,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   
     <h2>
       Instance Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+      <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
     <ul class="summary">
@@ -539,7 +538,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#append_query_string-instance_method" title="#append_query_string (instance method)">- (Object) <strong>append_query_string</strong>(doc, qs) </a>
+      <a href="#append_query_string-instance_method" title="#append_query_string (instance method)">#<strong>append_query_string</strong>(doc, qs)  &#x21d2; Object </a>
     
 
     
@@ -561,7 +560,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#check_client_support-instance_method" title="#check_client_support (instance method)">- (Object) <strong>check_client_support</strong> </a>
+      <a href="#check_client_support-instance_method" title="#check_client_support (instance method)">#<strong>check_client_support</strong>  &#x21d2; Object </a>
     
 
     
@@ -575,7 +574,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Check CLIENT_SUPPORT_FILE for any CSS warnings.</p>
+    <span class="summary_desc"><div class='inline'><p>Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings.</p>
 </div></span>
   
 </li>
@@ -584,7 +583,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#convert_inline_links-instance_method" title="#convert_inline_links (instance method)">- (Object) <strong>convert_inline_links</strong>(doc, base_uri) </a>
+      <a href="#convert_inline_links-instance_method" title="#convert_inline_links (instance method)">#<strong>convert_inline_links</strong>(doc, base_uri)  &#x21d2; Object </a>
     
 
     
@@ -607,7 +606,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Premailer) <strong>initialize</strong>(html, options = {}) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(html, options = {})  &#x21d2; Premailer </a>
     
 
     
@@ -632,7 +631,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_xhtml%3F-instance_method" title="#is_xhtml? (instance method)">- (Boolean) <strong>is_xhtml?</strong> </a>
+      <a href="#is_xhtml%3F-instance_method" title="#is_xhtml? (instance method)">#<strong>is_xhtml?</strong>  &#x21d2; Boolean </a>
     
 
     
@@ -655,7 +654,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#warnings-instance_method" title="#warnings (instance method)">- (Array(Hash)) <strong>warnings</strong> </a>
+      <a href="#warnings-instance_method" title="#warnings (instance method)">#<strong>warnings</strong>  &#x21d2; Array(Hash) </a>
     
 
     
@@ -702,7 +701,7 @@ source: <a href="http://stackoverflow.com/questions/2812781/how-to-convert-webpa
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></tt>) <strong>initialize</strong>(html, options = {}) 
+    #<strong>initialize</strong>(html, options = {})  &#x21d2; <tt><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></tt> 
   
 
   
@@ -836,6 +835,18 @@ must set the with_html_string option to true.</p>
         </li>
       
         <li>
+          <span class="name">:preserve_style_attribute</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Preserve original style attribute</p>
+</div>
+          
+        </li>
+      
+        <li>
           <span class="name">:css_string</span>
           <span class="type">(<tt>String</tt>)</span>
           <span class="default">
@@ -843,6 +854,18 @@ must set the with_html_string option to true.</p>
           </span>
           
             &mdash; <div class='inline'><p>Pass CSS as a string</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:rgb_to_hex_attributes</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Convert RBG to Hex colors, default false</p>
 </div>
           
         </li>
@@ -1073,8 +1096,6 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-178
-179
 180
 181
 182
@@ -1139,16 +1160,21 @@ must set the with_html_string option to true.</p>
 241
 242
 243
-244</pre>
+244
+245
+246
+247
+248</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 178</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 180</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:warn_level</span> <span class='op'>=&gt;</span> <span class='const'>Warnings</span><span class='op'>::</span><span class='const'>SAFE</span><span class='comma'>,</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:warn_level</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Premailer/Warnings.html#SAFE-constant" title="Premailer::Warnings::SAFE (constant)">SAFE</a></span></span><span class='comma'>,</span>
               <span class='symbol'>:line_length</span> <span class='op'>=&gt;</span> <span class='int'>65</span><span class='comma'>,</span>
               <span class='symbol'>:link_query_string</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
               <span class='symbol'>:base_url</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
+              <span class='symbol'>:rgb_to_hex_attributes</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
               <span class='symbol'>:remove_classes</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:remove_ids</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:remove_comments</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
@@ -1156,6 +1182,7 @@ must set the with_html_string option to true.</p>
               <span class='symbol'>:reset_contenteditable</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
               <span class='symbol'>:css</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>
               <span class='symbol'>:css_to_attributes</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:preserve_style_attribute</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:with_html_string</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:css_string</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
               <span class='symbol'>:preserve_styles</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
@@ -1171,11 +1198,11 @@ must set the with_html_string option to true.</p>
               <span class='symbol'>:escape_url_attributes</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
               <span class='symbol'>:unescaped_ampersand</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:create_shorthands</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
-              <span class='symbol'>:adapter</span> <span class='op'>=&gt;</span> <span class='const'>Adapter</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span><span class='comma'>,</span>
+              <span class='symbol'>:adapter</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="Premailer/Adapter.html" title="Premailer::Adapter (module)">Adapter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_use'><span class='object_link'><a href="Premailer/Adapter.html#use-class_method" title="Premailer::Adapter.use (method)">use</a></span></span><span class='comma'>,</span>
               <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
 
   <span class='ivar'>@html_file</span> <span class='op'>=</span> <span class='id identifier rubyid_html'>html</span>
-  <span class='ivar'>@is_local_file</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:with_html_string</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>Premailer</span><span class='period'>.</span><span class='id identifier rubyid_local_data?'>local_data?</span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='rparen'>)</span>
+  <span class='ivar'>@is_local_file</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:with_html_string</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_local_data?'><span class='object_link'><a href="#local_data%3F-class_method" title="Premailer.local_data? (method)">local_data?</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='rparen'>)</span>
 
   <span class='ivar'>@css_files</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:css</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
 
@@ -1197,7 +1224,7 @@ must set the with_html_string option to true.</p>
     <span class='symbol'>:io_exceptions</span> <span class='op'>=&gt;</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:io_exceptions</span><span class='rbracket'>]</span>
   <span class='rbrace'>}</span><span class='rparen'>)</span>
 
-  <span class='ivar'>@adapter_class</span> <span class='op'>=</span> <span class='const'>Adapter</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:adapter</span><span class='rbracket'>]</span>
+  <span class='ivar'>@adapter_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Premailer/Adapter.html" title="Premailer::Adapter (module)">Adapter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'><span class='object_link'><a href="Premailer/Adapter.html#find-class_method" title="Premailer::Adapter.find (method)">find</a></span></span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:adapter</span><span class='rbracket'>]</span>
 
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='symbol'>:include</span><span class='comma'>,</span> <span class='ivar'>@adapter_class</span><span class='rparen'>)</span>
 
@@ -1226,7 +1253,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details first">
   <h3 class="signature first" id="base_dir-instance_method">
   
-    - (<tt>String</tt>) <strong>base_dir</strong>  <span class="extras">(readonly)</span>
+    #<strong>base_dir</strong>  &#x21d2; <tt>String</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1285,7 +1312,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="base_url-instance_method">
   
-    - (<tt>Object</tt>) <strong>base_url</strong>  <span class="extras">(readonly)</span>
+    #<strong>base_url</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1327,7 +1354,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="doc-instance_method">
   
-    - (<tt>Object</tt>) <strong>doc</strong>  <span class="extras">(readonly)</span>
+    #<strong>doc</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1369,7 +1396,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="html_file-instance_method">
   
-    - (<tt>Object</tt>) <strong>html_file</strong>  <span class="extras">(readonly)</span>
+    #<strong>html_file</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1411,7 +1438,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="processed_doc-instance_method">
   
-    - (<tt>Object</tt>) <strong>processed_doc</strong>  <span class="extras">(readonly)</span>
+    #<strong>processed_doc</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1453,7 +1480,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="unmergable_rules-instance_method">
   
-    - (<tt>Object</tt>) <strong>unmergable_rules</strong>  <span class="extras">(readonly)</span>
+    #<strong>unmergable_rules</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1500,7 +1527,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details first">
   <h3 class="signature first" id="canonicalize-class_method">
   
-    + (<tt>Object</tt>) <strong>canonicalize</strong>(uri) 
+    .<strong>canonicalize</strong>(uri)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1522,20 +1549,20 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-498
-499
-500
-501
 502
 503
 504
 505
 506
 507
-508</pre>
+508
+509
+510
+511
+512</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 498</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 502</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_canonicalize'>canonicalize</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
 </span><span class='id identifier rubyid_u'>u</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_uri'>uri</span> <span class='op'>:</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
@@ -1556,7 +1583,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="local_data?-class_method">
   
-    + (<tt>Boolean</tt>) <strong>local_data?</strong>(data) 
+    .<strong>local_data?</strong>(data)  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -1593,15 +1620,15 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-490
-491
-492
-493
 494
-495</pre>
+495
+496
+497
+498
+499</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 490</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 494</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_local_data?'>local_data?</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>true</span>   <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>IO</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>StringIO</span><span class='rparen'>)</span>
@@ -1623,7 +1650,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details first">
   <h3 class="signature first" id="append_query_string-instance_method">
   
-    - (<tt>Object</tt>) <strong>append_query_string</strong>(doc, qs) 
+    #<strong>append_query_string</strong>(doc, qs)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1635,10 +1662,6 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-347
-348
-349
-350
 351
 352
 353
@@ -1683,10 +1706,14 @@ must set the with_html_string option to true.</p>
 392
 393
 394
-395</pre>
+395
+396
+397
+398
+399</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 347</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 351</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_append_query_string'>append_query_string</span><span class='lparen'>(</span><span class='id identifier rubyid_doc'>doc</span><span class='comma'>,</span> <span class='id identifier rubyid_qs'>qs</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_doc'>doc</span> <span class='kw'>if</span> <span class='id identifier rubyid_qs'>qs</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1745,7 +1772,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="check_client_support-instance_method">
   
-    - (<tt>Object</tt>) <strong>check_client_support</strong> 
+    #<strong>check_client_support</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1767,10 +1794,6 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-511
-512
-513
-514
 515
 516
 517
@@ -1812,13 +1835,17 @@ must set the with_html_string option to true.</p>
 553
 554
 555
-556</pre>
+556
+557
+558
+559
+560</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 511</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 515</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_check_client_support'>check_client_support</span> <span class='comment'># :nodoc:
-</span>  <span class='ivar'>@client_support</span> <span class='op'>||=</span> <span class='const'>YAML</span><span class='op'>::</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='const'>CLIENT_SUPPORT_FILE</span><span class='rparen'>)</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@client_support</span> <span class='op'>||=</span> <span class='const'>YAML</span><span class='op'>::</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#CLIENT_SUPPORT_FILE-constant" title="Premailer::CLIENT_SUPPORT_FILE (constant)">CLIENT_SUPPORT_FILE</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_warnings'>warnings</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_properties'>properties</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1838,7 +1865,7 @@ must set the with_html_string option to true.</p>
         <span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>and</span>
         <span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span>
       <span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_prop'>prop</span><span class='embexpr_end'>}</span><span class='tstring_content'> CSS property</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'>WARN_LABEL</span><span class='lbracket'>[</span><span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
+          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="#WARN_LABEL-constant" title="Premailer::WARN_LABEL (constant)">WARN_LABEL</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
           <span class='symbol'>:clients</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_property_support'>property_support</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported_in</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -1847,7 +1874,7 @@ must set the with_html_string option to true.</p>
     <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span>
     <span class='kw'>if</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*[@</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
       <span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'> HTML attribute</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'>WARN_LABEL</span><span class='lbracket'>[</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
+          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="#WARN_LABEL-constant" title="Premailer::WARN_LABEL (constant)">WARN_LABEL</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
           <span class='symbol'>:clients</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported_in</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -1856,7 +1883,7 @@ must set the with_html_string option to true.</p>
     <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span>
     <span class='kw'>if</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='id identifier rubyid_element'>element</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
       <span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_element'>element</span><span class='embexpr_end'>}</span><span class='tstring_content'> HTML element</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'>WARN_LABEL</span><span class='lbracket'>[</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
+          <span class='symbol'>:level</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="#WARN_LABEL-constant" title="Premailer::WARN_LABEL (constant)">WARN_LABEL</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>support</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span>
           <span class='symbol'>:clients</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported_in</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -1871,7 +1898,7 @@ must set the with_html_string option to true.</p>
       <div class="method_details ">
   <h3 class="signature " id="convert_inline_links-instance_method">
   
-    - (<tt>Object</tt>) <strong>convert_inline_links</strong>(doc, base_uri) 
+    #<strong>convert_inline_links</strong>(doc, base_uri)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1900,10 +1927,6 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <pre class="lines">
 
 
-413
-414
-415
-416
 417
 418
 419
@@ -1943,10 +1966,14 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
 453
 454
 455
-456</pre>
+456
+457
+458
+459
+460</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 413</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 417</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_convert_inline_links'>convert_inline_links</span><span class='lparen'>(</span><span class='id identifier rubyid_doc'>doc</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
 </span>  <span class='id identifier rubyid_base_uri'>base_uri</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span>
@@ -1972,11 +1999,11 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
         <span class='kw'>rescue</span><span class='semicolon'>;</span> <span class='kw'>next</span><span class='semicolon'>;</span> <span class='kw'>end</span>
       <span class='kw'>else</span>
         <span class='kw'>begin</span>
-          <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>Premailer</span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
         <span class='kw'>rescue</span>
           <span class='kw'>begin</span>
             <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_escape_attrs'>escape_attrs</span>
-            <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>Premailer</span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
+            <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
           <span class='kw'>rescue</span><span class='semicolon'>;</span> <span class='kw'>end</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span>
@@ -2000,7 +2027,7 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <div class="method_details ">
   <h3 class="signature " id="is_xhtml?-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>is_xhtml?</strong> 
+    #<strong>is_xhtml?</strong>  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -2035,15 +2062,15 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <pre class="lines">
 
 
-398
-399
-400
-401
 402
-403</pre>
+403
+404
+405
+406
+407</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 398</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 402</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_is_xhtml?'>is_xhtml?</span>
   <span class='id identifier rubyid_intro'>intro</span> <span class='op'>=</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_to_html'>to_html</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>2</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2059,7 +2086,7 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <div class="method_details ">
   <h3 class="signature " id="warnings-instance_method">
   
-    - (<tt>Array(Hash)</tt>) <strong>warnings</strong> 
+    #<strong>warnings</strong>  &#x21d2; <tt>Array(Hash)</tt> 
   
 
   
@@ -2098,17 +2125,17 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <pre class="lines">
 
 
-248
-249
-250
-251
-252</pre>
+252
+253
+254
+255
+256</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 248</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 252</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_warnings'>warnings</span>
-  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>Warnings</span><span class='op'>::</span><span class='const'>NONE</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Premailer/Warnings.html#NONE-constant" title="Premailer::Warnings::NONE (constant)">NONE</a></span></span>
   <span class='ivar'>@css_warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_check_client_support'>check_client_support</span> <span class='kw'>if</span> <span class='ivar'>@css_warnings</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
   <span class='ivar'>@css_warnings</span>
 <span class='kw'>end</span></pre>
@@ -2121,11 +2148,12 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
 
 </div>
 
-    <div id="footer">
-  Generated on Tue Jun 28 11:36:28 2016 by
+      <div id="footer">
+  Generated on Fri Feb  3 11:30:28 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.9.8 (ruby-2.4.0).
 </div>
 
+    </div>
   </body>
 </html>
