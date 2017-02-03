@@ -5,6 +5,7 @@ class Premailer
     # NokogiriFast adapter
     module NokogiriFast
 
+      include AdapterHelper::RgbToHex
       # Merge CSS into the HTML document.
       #
       # @return [String] an HTML.
@@ -77,7 +78,10 @@ class Premailer
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.has_key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
-              el[html_att] = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip if el[html_att].nil? and not merged[css_att].empty?
+              if el[html_att].nil? and not merged[css_att].empty?
+                new_html_att = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
+                el[html_att] = css_att.end_with?('color') && @options[:rgb_to_hex_attributes] ? ensure_hex(new_html_att) : new_html_att
+              end
               merged.instance_variable_get("@declarations").tap do |declarations|
                 unless @options[:preserve_style_attribute]
                   declarations.delete(css_att)

@@ -1,5 +1,3 @@
-
-
 class Premailer
   # Manages the adapter classes. Currently supports:
   #
