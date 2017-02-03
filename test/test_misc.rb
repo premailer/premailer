@@ -218,15 +218,15 @@ END_HTML
       .style3 { font-size: xx-large; }
       .style5 { background-color: #000080; }
     </style>
-		<tr>
-						<td valign="top" class="style3">
-						<!-- MSCellType="ContentHead" -->
-						<strong>PROMOCION CURSOS PRESENCIALES</strong></td>
-						<strong>
-						<td valign="top" style="height: 125px" class="style5">
-						<!-- MSCellType="DecArea" -->
-						<img alt="" src="../../images/CertisegGold.GIF" width="608" height="87" /></td>
-		</tr>
+    <tr>
+      <td valign="top" class="style3">
+      <!-- MSCellType="ContentHead" -->
+      <strong>PROMOCION CURSOS PRESENCIALES</strong></td>
+      <strong>
+      <td valign="top" style="height: 125px" class="style5">
+      <!-- MSCellType="DecArea" -->
+      <img alt="" src="../../images/CertisegGold.GIF" width="608" height="87" /></td>
+    </tr>
 END_HTML
 
     premailer = Premailer.new(html, :with_html_string => true)
@@ -234,6 +234,41 @@ END_HTML
     assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
     refute_match /background: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
     assert_match /#000080/, premailer.processed_doc.search('.style5').first.attributes['bgcolor'].to_s
+  end
+
+  def test_preserve_original_style_attribute
+    html = <<END_HTML
+    <html>
+    <style type="text/css">
+      .style3 { font-size: xx-large; }
+      .style5 { background-color: #000080; }
+    </style>
+    <tr>
+      <td valign="top" class="style3">
+      <!-- MSCellType="ContentHead" -->
+      <strong>PROMOCION CURSOS PRESENCIALES</strong></td>
+      <strong>
+      <td valign="top" style="height: 125px; text-align: center" class="style5">
+      <!-- MSCellType="DecArea" -->
+      <img alt="" src="../../images/CertisegGold.GIF" width="608" height="87" /></td>
+    </tr>
+END_HTML
+
+    premailer = Premailer.new(
+      html,
+      with_html_string: true,
+      preserve_style_attribute: true
+    )
+
+    premailer.to_inline_css
+
+    style5 = premailer.processed_doc.search('.style5').first
+    style5_style = style5.attributes['style'].to_s
+
+    assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
+    assert_match /background: #000080/, style5_style
+    assert_match /text-align: center/, style5_style
+    assert_match /#000080/, style5.attributes['bgcolor'].to_s
   end
 
   # in response to https://github.com/alexdunae/premailer/issues/56
