@@ -79,7 +79,9 @@ class Premailer
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
               el[html_att] = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip if el[html_att].nil? and not merged[css_att].empty?
               merged.instance_variable_get("@declarations").tap do |declarations|
-                declarations.delete(css_att)
+                unless @options[:preserve_style_attribute]
+                  declarations.delete(css_att)
+                end
               end
             end
           end
@@ -241,12 +243,12 @@ class Premailer
         doc
       end
 
-      private 
+      private
 
       # For very large documents, it is useful to trade off some memory for performance.
       # We can build an index of the nodes so we can quickly select by id/class/tagname
-      # instead of search the tree again and again. 
-      # 
+      # instead of search the tree again and again.
+      #
       # @param page The Nokogiri HTML document to index.
       # @return [index, set_of_all_nodes, descendants] The index is a hash from key to set of nodes.
       #         The "descendants" is a hash mapping a node to the set of its descendant nodes.
@@ -311,7 +313,7 @@ class Premailer
 
       # @param index An index hash returned by make_index
       # @param base The base set of nodes within which the given spec is to be matched.
-      # @param intersection_selector A CSS intersection selector string of the form 
+      # @param intersection_selector A CSS intersection selector string of the form
       #             "hello.world" or "#blue.diamond". This should not contain spaces.
       # @return Set of nodes matching the given spec that are present in the base set.
       def narrow_down_nodes(index, base, intersection_selector)
