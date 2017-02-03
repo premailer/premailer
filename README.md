@@ -2,8 +2,8 @@
 
 ## What is this?
 
-For the best HTML e-mail delivery results, CSS should be inline. This is a 
-huge pain and a simple newsletter becomes un-managable very quickly. This 
+For the best HTML e-mail delivery results, CSS should be inline. This is a
+huge pain and a simple newsletter becomes un-managable very quickly. This
 script is my solution.
 
 * CSS styles are converted to inline style attributes
@@ -13,10 +13,6 @@ script is my solution.
 * CSS properties are checked against e-mail client capabilities
   - Based on the Email Standards Project's guides
 * A plain text version is created (optional)
-
-## Premailer 2.0 is coming
-
-I'm looking for input on a version 2.0 update to Premailer. Please visit the [Premailer 2.0 Planning Page](https://github.com/premailer/premailer/wiki/New-Premailer-2.0-Planning) and give me your feedback.
 
 ## Installation
 
@@ -31,7 +27,6 @@ or add it to your `Gemfile` and run `bundle`.
 ## Example
 
 ```ruby
-require 'rubygems' # optional for Ruby 1.9 or above.
 require 'premailer'
 
 premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
@@ -55,14 +50,14 @@ end
 
 ## Adapters
 
-Premailer's default adapter is nokogiri if both nokogiri and hpricot are included in the Gemfile list. However, if you want to use a different adapter, you can choose to. 
+Premailer's default adapter is nokogiri if both nokogiri and hpricot are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.
 
 There are four adapters in total (as of premailer 1.9.1)
 
 1. nokogiri (default)
-2. hpricot (deprecated and will be removed in future premailer releases)
+2. nokogiri_fast
 3. nokogumbo
-4. nokogiri_fast
+4. hpricot (deprecated and will be removed in future premailer releases)
 
 `NokogiriFast` adapter improves the Algorithmic complexity of the running time by 20x with a slight compensation on memory. To switch to any of these adapters, add the following line. For example, if you want to include the `NokogiriFast` adapter,
 
@@ -72,7 +67,7 @@ Premailer::Adapter.use = :nokogiri_fast
 
 ## Ruby Compatibility
 
-Premailer is tested on Ruby 1.8.7, Ruby 1.9.2, Ruby 1.9.3, and Ruby 2.x.0 . It also works on REE. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
+Premailer is tested on Ruby 2.x.0. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
 
 ## Premailer-specific CSS
 
@@ -94,7 +89,7 @@ For example
 table { -premailer-cellspacing: 5; -premailer-width: 500; }
 ```
 
-will result in 
+will result in
 
 ```html
 <table cellspacing='5' width='500'>
@@ -116,9 +111,7 @@ Thanks to [all the wonderful contributors](https://github.com/premailer/premaile
 Thanks to [Greenhood + Company](http://www.greenhood.com/) for sponsoring some of the 1.5.6 updates,
 and to [Campaign Monitor](https://www.campaignmonitor.com/) for supporting the web interface.
 
-The web interface can be found at [premailer.dialect.ca](http://premailer.dialect.ca).
+The source code can be found on [GitHub](https://github.com/premailer/premailer).
 
-The source code can be found on [GitHub](https://github.com/alexdunae/premailer).
-
-Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2012.  See [LICENSE.md](https://github.com/alexdunae/premailer/blob/master/LICENSE.md) for license details.
+Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2017.  See [LICENSE.md](https://github.com/alexdunae/premailer/blob/master/LICENSE.md) for license details.
 
