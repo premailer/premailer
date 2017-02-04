@@ -1,4 +1,4 @@
-# Premailer README [![Build Status](https://travis-ci.org/premailer/premailer.png?branch=master)](https://travis-ci.org/premailer/premailer)
+# Premailer README [![Build Status](https://travis-ci.org/premailer/premailer.png?branch=master)](https://travis-ci.org/premailer/premailer) [![Gem Version](https://badge.fury.io/rb/premailer.svg)](https://badge.fury.io/rb/premailer)
 
 ## What is this?
 
