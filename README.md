@@ -113,5 +113,5 @@ and to [Campaign Monitor](https://www.campaignmonitor.com/) for supporting the w
 
 The source code can be found on [GitHub](https://github.com/premailer/premailer).
 
-Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2017.  See [LICENSE.md](https://github.com/alexdunae/premailer/blob/master/LICENSE.md) for license details.
+Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2017.  See [LICENSE.md](https://github.com/premailer/premailer/blob/master/LICENSE.md) for license details.
 
