@@ -147,7 +147,7 @@ class Premailer
         styles = unmergable_rules.to_s
         if styles.length > 0
           style_tag = doc.create_element "style", "#{styles}"
-          head = doc.at_css('head') || doc.at_css('body').add_previous_sibling('doc.create_element "head"')
+          head = doc.at_css('head') || doc.at_css('body').add_previous_sibling(doc.create_element "head")
           head.children.after(style_tag)
         end
         doc
