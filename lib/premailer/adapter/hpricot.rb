@@ -150,24 +150,17 @@ eos
       end
 
       # Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>)
-      # and write it into the <tt>body</tt>.
+      # and write it into the <tt>head</tt>.
       #
       # <tt>doc</tt> is an Hpricot document and <tt>unmergable_css_rules</tt> is a Css::RuleSet.
       #
       # @return [::Hpricot] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = unmergable_rules.to_s
-
-        unless styles.empty?
-          style_tag = "\n<style type=\"text/css\">\n#{styles}</style>\n"
-          if head = doc.search('head')
-            head.append(style_tag)
-          elsif body = doc.search('body')
-            body.append(style_tag)
-          else
-            doc.inner_html= doc.inner_html << style_tag
-          end
-        end
+        return doc  if styles.empty?
+        style_tag = doc.create_element "style", styles
+        head = doc.at_css('head') || doc.at_css('body').add_previous_sibling(doc.create_element "head")
+        head.children.after(style_tag)
         doc
       end
 

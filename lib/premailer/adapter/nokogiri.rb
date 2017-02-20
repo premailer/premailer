@@ -151,7 +151,7 @@ class Premailer
       # @return [::Nokogiri::XML] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = unmergable_rules.to_s
-        if styles.length > 0
+        unless styles.empty?
           style_tag = doc.create_element "style", "#{styles}"
           head = doc.at_css('head') || doc.at_css('body').add_previous_sibling(doc.create_element "head")
           head.children.after(style_tag)
