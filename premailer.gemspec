@@ -9,14 +9,14 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.author  = "Alex Dunae"
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.1.0'
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
 
   s.add_dependency('css_parser', '>= 1.4.8')
   s.add_dependency('htmlentities', ['>= 4.0.0'])
-  s.add_development_dependency "bundler", "~> 1.3"
+  s.add_development_dependency "bundler", ">= 1.3"
   s.add_development_dependency('rake', ['> 0.8',  '!= 0.9.0'])
-  s.add_development_dependency('nokogiri', '>= 1.4.4', '<= 1.6.8')
+  s.add_development_dependency('nokogiri', '~> 1.7')
   s.add_development_dependency('yard')
   s.add_development_dependency('redcarpet', '~> 3.0')
   s.add_development_dependency('maxitest')

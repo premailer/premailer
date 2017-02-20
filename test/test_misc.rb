@@ -19,7 +19,7 @@ END_HTML
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_commented_out_styles_in_the_body
@@ -35,7 +35,7 @@ END_HTML
     premailer = Premailer.new(html, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\: red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_not_applying_styles_to_the_head
@@ -107,7 +107,7 @@ END_HTML
 
       # should be preserved as unmergeable
 
-      assert_match /color: red/i, premailer.processed_doc.at('body style').inner_html
+      assert_match /color: red/i, premailer.processed_doc.at('head style').inner_html
 
       assert_match /a:hover/i, premailer.processed_doc.at('style').inner_html
 
@@ -125,9 +125,9 @@ END_HTML
     premailer.to_inline_css
 
     # blue should be inlined
-    refute_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+    refute_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
     # red should remain in <style> block
-    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('body style').inner_html
+    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
   def test_unmergable_media_queries
@@ -152,8 +152,8 @@ END_HTML
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       premailer.to_inline_css
 
-      style_tag = premailer.processed_doc.at('body style')
-      assert style_tag, "#{adapter} failed to add a body style tag"
+      style_tag = premailer.processed_doc.at('head style')
+      assert style_tag, "#{adapter} failed to add a head style tag"
 
       style_tag_contents = style_tag.inner_html
 
@@ -420,7 +420,7 @@ END_HTML
 END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
-      assert_match 'content: url(data:image/png;base64,LOTSOFSTUFF)', premailer.to_inline_css
+      assert_match /content:\s*url\(data:image\/png;base64,LOTSOFSTUFF\)/, premailer.to_inline_css
     end
   end
 
