@@ -121,10 +121,10 @@ class Premailer
   # unmergeable CSS rules to be preserved in the head (CssParser)
   attr_reader   :unmergable_rules
 
-  # processed HTML document (Hpricot/Nokogiri)
+  # processed HTML document (Nokogiri/Nokogumbo)
   attr_reader   :processed_doc
 
-  # source HTML document (Hpricot/Nokogiri)
+  # source HTML document (Nokogiri/Nokogumbo)
   attr_reader   :doc
 
   # Warning levels
@@ -174,7 +174,7 @@ class Premailer
   # @option options [String] :input_encoding Manually specify the source documents encoding. This is a good idea. Default is ASCII-8BIT.
   # @option options [Boolean] :replace_html_entities Convert HTML entities to actual characters. Default is false.
   # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
-  # @option options [Symbol] :adapter Which HTML parser to use, either <tt>:nokogiri</tt> or <tt>:hpricot</tt>.  Default is <tt>:hpricot</tt>.
+  # @option options [Symbol] :adapter Which HTML parser to use, <tt>:nokogiri</tt>, <tt>:nokogiri_fast</tt> or <tt>:nokogumbo</tt>.  Default is <tt>:nokogiri</tt>.
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
   # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
   def initialize(html, options = {})
@@ -411,9 +411,9 @@ public
   # Processes <tt>href</tt> <tt>src</tt> and <tt>background</tt> attributes
   # as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attributes.
   #
-  # <tt>doc</tt> is an Hpricot document and <tt>base_uri</tt> is either a string or a URI.
+  # <tt>doc</tt> is a document and <tt>base_uri</tt> is either a string or a URI.
   #
-  # Returns an Hpricot document.
+  # Returns a document.
   def convert_inline_links(doc, base_uri) # :nodoc:
     base_uri = URI.parse(base_uri) unless base_uri.kind_of?(URI)
 

@@ -6,18 +6,6 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 # The test suite will be cleaned up at some point soon.
 class TestMisc < Premailer::TestCase
 
-  # in response to http://github.com/alexdunae/premailer/issues#issue/4
-  #
-  # NB: 2010-11-16 -- after reverting to Hpricot this test can no longer pass.
-  # It's too much of an edge case to get any dev time.
-  def test_parsing_extra_quotes
-    io = StringIO.new('<p></p>
-    <h3 "id="WAR"><a name="WAR"></a>Writes and Resources</h3>
-    <table></table>')
-    premailer = Premailer.new(io, :adapter => :nokogiri)
-    assert_match /<h3>[\s]*<a name="WAR">[\s]*<\/a>[\s]*Writes and Resources[\s]*<\/h3>/i, premailer.to_inline_css
-  end
-
   def test_styles_in_the_body
     html = <<END_HTML
     <html>
@@ -63,7 +51,7 @@ END_HTML
 		</html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       premailer.to_inline_css
 
@@ -107,7 +95,7 @@ END_HTML
 		</body>
 		</html>
 END_HTML
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
       premailer.to_inline_css
       assert_equal 1, premailer.processed_doc.search('head link').length
@@ -160,7 +148,7 @@ END_HTML
     </body> </html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       premailer.to_inline_css
 
@@ -340,13 +328,13 @@ END_HTML
     </html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :remove_scripts => true, :adapter => adapter)
       premailer.to_inline_css
       assert_equal 0, premailer.processed_doc.search('script').length
     end
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :remove_scripts => false, :adapter => adapter)
       premailer.to_inline_css
       assert_equal 1, premailer.processed_doc.search('script').length
@@ -365,7 +353,7 @@ END_HTML
     </html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       assert_match 'bgcolor="#FF0000"', premailer.to_inline_css
     end
@@ -413,7 +401,7 @@ END_HTML
     </body>
     </html>
 END_HTML
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       assert_match 'content: url(good.png)', premailer.to_inline_css
     end
@@ -430,7 +418,7 @@ END_HTML
     </body>
     </html>
 END_HTML
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
       assert_match 'content: url(data:image/png;base64,LOTSOFSTUFF)', premailer.to_inline_css
     end

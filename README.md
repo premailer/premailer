@@ -50,14 +50,13 @@ end
 
 ## Adapters
 
-Premailer's default adapter is nokogiri if both nokogiri and hpricot are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.
+Premailer's default adapter is nokogiri if both nokogiri and nokogumbo are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.
 
-There are four adapters in total (as of premailer 1.9.1)
+There are three adapters in total (as of premailer 1.9.1)
 
 1. nokogiri (default)
 2. nokogiri_fast
 3. nokogumbo
-4. hpricot (deprecated and will be removed in future premailer releases)
 
 `NokogiriFast` adapter improves the Algorithmic complexity of the running time by 20x with a slight compensation on memory. To switch to any of these adapters, add the following line. For example, if you want to include the `NokogiriFast` adapter,
 

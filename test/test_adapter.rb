@@ -10,8 +10,6 @@ class TestAdapter < Premailer::TestCase
   def test_settable_via_use
     Premailer::Adapter.use = :nokogiri
     assert_equal 'Premailer::Adapter::Nokogiri', Premailer::Adapter.use.name
-    Premailer::Adapter.use = :hpricot
-    assert_equal 'Premailer::Adapter::Hpricot', Premailer::Adapter.use.name
     Premailer::Adapter.use = :nokogiri_fast
     assert_equal 'Premailer::Adapter::NokogiriFast', Premailer::Adapter.use.name
     Premailer::Adapter.use = :nokogumbo
@@ -19,14 +17,12 @@ class TestAdapter < Premailer::TestCase
   end
 
   def test_adapters_are_findable_by_symbol
-    assert_equal 'Premailer::Adapter::Hpricot', Premailer::Adapter.find(:hpricot).name
     assert_equal 'Premailer::Adapter::Nokogiri', Premailer::Adapter.find(:nokogiri).name
     assert_equal 'Premailer::Adapter::NokogiriFast', Premailer::Adapter.find(:nokogiri_fast).name
     assert_equal 'Premailer::Adapter::Nokogumbo', Premailer::Adapter.find(:nokogumbo).name
   end
 
   def test_adapters_are_findable_by_class
-    assert_equal 'Premailer::Adapter::Hpricot', Premailer::Adapter.find(Premailer::Adapter::Hpricot).name
     assert_equal 'Premailer::Adapter::Nokogiri', Premailer::Adapter.find(Premailer::Adapter::Nokogiri).name
     assert_equal 'Premailer::Adapter::NokogiriFast', Premailer::Adapter.find(Premailer::Adapter::NokogiriFast).name
     assert_equal 'Premailer::Adapter::Nokogumbo', Premailer::Adapter.find(Premailer::Adapter::Nokogumbo).name

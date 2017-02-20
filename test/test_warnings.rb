@@ -12,8 +12,8 @@ class TestWarnings < Premailer::TestCase
     </body>
 		</html>
 END_HTML
-    
-    [:nokogiri, :hpricot].each do |adapter|
+
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 2, warnings.length
       assert warnings.any? { |w| w[:message] == 'form HTML element'}
@@ -29,7 +29,7 @@ END_HTML
     </body></html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 2, warnings.length
       assert warnings.any? { |w| w[:message] == 'height CSS property'}
@@ -45,7 +45,7 @@ END_HTML
     </body></html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 1, warnings.length
       assert warnings.any? { |w| w[:message] == 'margin-top CSS property'}
@@ -60,7 +60,7 @@ END_HTML
     </body></html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 1, warnings.length
       assert warnings.any? { |w| w[:message] == 'ismap HTML attribute'}
@@ -75,21 +75,21 @@ END_HTML
     </body></html>
 END_HTML
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter, Premailer::Warnings::SAFE)
       assert_equal 2, warnings.length
     end
 
-    [:nokogiri, :hpricot].each do |adapter|
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter, Premailer::Warnings::POOR)
       assert_equal 1, warnings.length
     end
   end
-  
+
 protected
   def get_warnings(html, adapter = :nokogiri, warn_level = Premailer::Warnings::SAFE)
     pm = Premailer.new(html, {:adpater => adapter, :with_html_string => true, :warn_level => warn_level})
     pm.to_inline_css
-    pm.check_client_support  
+    pm.check_client_support
   end
 end

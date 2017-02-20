@@ -9,7 +9,7 @@ class TestLinks < Premailer::TestCase
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :hpricot}
+    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri}
 
     appendable = [
         '/',
@@ -140,7 +140,7 @@ class TestLinks < Premailer::TestCase
   end
 
   def test_resolving_urls_in_doc
-    # force Nokogiri since this consistenly segfaults with Hpricot
+    # force Nokogiri
     base_file = File.dirname(__FILE__) + '/files/base.html'
     base_url = 'https://my.example.com:8080/test-path.html'
     premailer = Premailer.new(base_file, :base_url => base_url, :adapter => :nokogiri)
