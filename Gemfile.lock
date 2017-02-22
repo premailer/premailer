@@ -1,15 +1,15 @@
 GIT
   remote: https://github.com/premailer/css_parser.git
-  revision: a06d6203d1dd27f3411829ca6865ccd2a175907c
+  revision: 831412ecbb6be527c10663c11dde0f3b48601e0a
   specs:
-    css_parser (1.4.8)
+    css_parser (1.4.9)
       addressable
 
 PATH
   remote: .
   specs:
     premailer (1.9.2)
-      css_parser (>= 1.4.8)
+      css_parser (>= 1.4.9)
       htmlentities (>= 4.0.0)
 
 GEM
