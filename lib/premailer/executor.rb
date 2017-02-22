@@ -3,11 +3,12 @@ require 'premailer'
 
 # defaults
 options = {
-  :base_url => nil,
+  :base_url          => nil,
   :link_query_string => nil,
-  :remove_classes => false,
-  :verbose => false,
-  :line_length => 65
+  :remove_classes    => false,
+  :verbose           => false,
+  :line_length       => 65,
+  :adapter           => :nokogiri,
 }
 
 mode = :html
@@ -28,6 +29,10 @@ opts = OptionParser.new do |opts|
     mode = v
   end
 
+  opts.on("--adapter ADAPTER", [:nokogiri, :nokogiri_fast, :nokogumbo], "Adapter: nokogiri, nokogiri_fast or nokogumbo (default: #{options[:adapter]}") do |v|
+    options[:adapter] = v
+  end
+
   opts.on("-b", "--base-url STRING", String, "Base URL, useful for local files") do |v|
     options[:base_url] = v
   end
@@ -40,12 +45,12 @@ opts = OptionParser.new do |opts|
     options[:css] = v
   end
 
-  opts.on("-r", "--remove-classes", "Remove HTML classes") do |v|
-    options[:remove_classes] = v
+  opts.on("-r", "--remove-classes", "Remove HTML classes") do
+    options[:remove_classes] = true
   end
 
-  opts.on("-j", "--remove-scripts", "Remove <script> elements") do |v|
-    options[:remove_scripts] = v
+  opts.on("-j", "--remove-scripts", "Remove <script> elements") do
+    options[:remove_scripts] = true
   end
 
   opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length].to_s})") do |v|
@@ -56,12 +61,12 @@ opts = OptionParser.new do |opts|
     options[:output_encoding] = "US-ASCII"
   end
 
-  opts.on("-d", "--io-exceptions", "Abort on I/O errors") do |v|
-    options[:io_exceptions] = v
+  opts.on("-d", "--io-exceptions", "Abort on I/O errors") do
+    options[:io_exceptions] = true
   end
 
-  opts.on("-v", "--verbose", "Print additional information at runtime") do |v|
-    options[:verbose] = v
+  opts.on("-v", "--verbose", "Print additional information at runtime") do
+    options[:verbose] = true
   end
 
   opts.on_tail("-?", "--help", "Show this message") do
