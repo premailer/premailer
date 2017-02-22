@@ -6,7 +6,7 @@
 <title>
   Module: Premailer::Adapter
   
-    &mdash; &#39;Premailer 1.9.2 Documentation&#39;
+    &mdash; &#39;Premailer 1.9.3 Documentation&#39;
   
 </title>
 
@@ -79,7 +79,7 @@
   <dl>
     <dt>Defined in:</dt>
     <dd>lib/premailer/adapter.rb<span class="defines">,<br />
-  lib/premailer/adapter/hpricot.rb,<br /> lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb,<br /> lib/premailer/adapter/nokogiri_fast.rb</span>
+  lib/premailer/adapter/nokogiri.rb,<br /> lib/premailer/adapter/nokogumbo.rb,<br /> lib/premailer/adapter/nokogiri_fast.rb</span>
 </dd>
   </dl>
   
@@ -93,7 +93,6 @@
 <li>nokogiri</li>
 <li>nokogiri_fast</li>
 <li>nokogumbo</li>
-<li>hpricot</li>
 </ul>
 
 
@@ -106,7 +105,7 @@
 <p class="children">
   
     
-      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Adapter/Hpricot.html" title="Premailer::Adapter::Hpricot (module)">Hpricot</a></span>, <span class='object_link'><a href="Adapter/Nokogiri.html" title="Premailer::Adapter::Nokogiri (module)">Nokogiri</a></span>, <span class='object_link'><a href="Adapter/NokogiriFast.html" title="Premailer::Adapter::NokogiriFast (module)">NokogiriFast</a></span>, <span class='object_link'><a href="Adapter/Nokogumbo.html" title="Premailer::Adapter::Nokogumbo (module)">Nokogumbo</a></span>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Adapter/Nokogiri.html" title="Premailer::Adapter::Nokogiri (module)">Nokogiri</a></span>, <span class='object_link'><a href="Adapter/NokogiriFast.html" title="Premailer::Adapter::NokogiriFast (module)">NokogiriFast</a></span>, <span class='object_link'><a href="Adapter/Nokogumbo.html" title="Premailer::Adapter::Nokogumbo (module)">Nokogumbo</a></span>
     
   
     
@@ -133,7 +132,6 @@
   <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nokogiri</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:nokogiri</span><span class='rbracket'>]</span><span class='comma'>,</span>
   <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nokogiri</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:nokogiri_fast</span><span class='rbracket'>]</span><span class='comma'>,</span>
   <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nokogumbo</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:nokogumbo</span><span class='rbracket'>]</span><span class='comma'>,</span>
-  <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hpricot</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>  <span class='symbol'>:hpricot</span><span class='rbracket'>]</span><span class='comma'>,</span>
 <span class='rbracket'>]</span></pre></dd>
     
   </dl>
@@ -297,6 +295,9 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
+31
+32
+33
 34
 35
 36
@@ -309,20 +310,15 @@ then checks to see which are installed if none are loaded.</p>
 43
 44
 45
-46
-47
-48
-49
-50</pre>
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_default'>default</span>
   <span class='kw'>return</span> <span class='symbol'>:nokogiri</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Nokogiri</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='symbol'>:nokogiri_fast</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>NokogiriFast</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='symbol'>:nokogumbo</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Nokogumbo</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='symbol'>:hpricot</span>  <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Hpricot</span><span class='rparen'>)</span>
 
   <span class='const'><span class='object_link'><a href="#REQUIREMENT_MAP-constant" title="Premailer::Adapter::REQUIREMENT_MAP (constant)">REQUIREMENT_MAP</a></span></span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='lparen'>(</span><span class='id identifier rubyid_library'>library</span><span class='comma'>,</span> <span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span><span class='op'>|</span>
     <span class='kw'>begin</span>
@@ -333,7 +329,7 @@ then checks to see which are installed if none are loaded.</p>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>No suitable adapter for Premailer was found, please install hpricot or nokogiri</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>No suitable adapter for Premailer was found, please install nokogiri or nokogumbo</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -382,16 +378,16 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
+56
+57
+58
+59
 60
 61
-62
-63
-64
-65
-66</pre>
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_adapter'>adapter</span> <span class='kw'>if</span> <span class='id identifier rubyid_adapter'>adapter</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Module</span><span class='rparen'>)</span>
@@ -430,14 +426,14 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
+21
+22
+23
 24
-25
-26
-27
-28</pre>
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span>
   <span class='kw'>return</span> <span class='ivar'>@use</span> <span class='kw'>if</span> <span class='ivar'>@use</span>
@@ -491,12 +487,12 @@ then checks to see which are installed if none are loaded.</p>
       <pre class="lines">
 
 
-54
-55
-56</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/adapter.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_use='>use=</span><span class='lparen'>(</span><span class='id identifier rubyid_new_adapter'>new_adapter</span><span class='rparen'>)</span>
   <span class='ivar'>@use</span> <span class='op'>=</span> <span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_new_adapter'>new_adapter</span><span class='rparen'>)</span>
@@ -511,7 +507,7 @@ then checks to see which are installed if none are loaded.</p>
 </div>
 
       <div id="footer">
-  Generated on Fri Feb  3 11:30:27 2017 by
+  Generated on Wed Feb 22 17:17:04 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.4.0).
 </div>

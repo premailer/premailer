@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; &#39;Premailer 1.9.2 Documentation&#39;
+    &mdash; &#39;Premailer 1.9.3 Documentation&#39;
   
 </title>
 
@@ -57,7 +57,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'><h1>Premailer README <a href="https://travis-ci.org/premailer/premailer"><img src="https://travis-ci.org/premailer/premailer.png?branch=master" alt="Build Status"></a></h1>
+      <div id="content"><div id='filecontents'><h1>Premailer README <a href="https://travis-ci.org/premailer/premailer"><img src="https://travis-ci.org/premailer/premailer.png?branch=master" alt="Build Status"></a> <a href="https://badge.fury.io/rb/premailer"><img src="https://badge.fury.io/rb/premailer.svg" alt="Gem Version"></a></h1>
 
 <h2>What is this?</h2>
 
@@ -118,15 +118,14 @@ script is my solution.</p>
 
 <h2>Adapters</h2>
 
-<p>Premailer&#39;s default adapter is nokogiri if both nokogiri and hpricot are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.</p>
+<p>Premailer&#39;s default adapter is nokogiri if both nokogiri and nokogumbo are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.</p>
 
-<p>There are four adapters in total (as of premailer 1.9.1)</p>
+<p>There are three adapters in total (as of premailer 1.9.1)</p>
 
 <ol>
 <li>nokogiri (default)</li>
 <li>nokogiri_fast</li>
 <li>nokogumbo</li>
-<li>hpricot (deprecated and will be removed in future premailer releases)</li>
 </ol>
 
 <p><code>NokogiriFast</code> adapter improves the Algorithmic complexity of the running time by 20x with a slight compensation on memory. To switch to any of these adapters, add the following line. For example, if you want to include the <code>NokogiriFast</code> adapter,</p>
@@ -202,11 +201,11 @@ and to <a href="https://www.campaignmonitor.com/">Campaign Monitor</a> for suppo
 
 <p>The source code can be found on <a href="https://github.com/premailer/premailer">GitHub</a>.</p>
 
-<p>Copyright by Alex Dunae (dunae.ca, e-mail &#39;code&#39; at the same domain), 2007-2017.  See <a href="https://github.com/alexdunae/premailer/blob/master/LICENSE.md">LICENSE.md</a> for license details.</p>
+<p>Copyright by Alex Dunae (dunae.ca, e-mail &#39;code&#39; at the same domain), 2007-2017.  See <a href="https://github.com/premailer/premailer/blob/master/LICENSE.md">LICENSE.md</a> for license details.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Feb  3 11:30:27 2017 by
+  Generated on Wed Feb 22 17:17:04 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.4.0).
 </div>
