@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    premailer (1.9.3)
+    premailer (1.10.0)
       css_parser (>= 1.4.9)
       htmlentities (>= 4.0.0)
 
@@ -74,4 +74,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   1.14.3
+   1.14.5
