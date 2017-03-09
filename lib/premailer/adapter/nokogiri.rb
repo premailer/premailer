@@ -80,9 +80,9 @@ class Premailer
                 new_html_att = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
                 el[html_att] = css_att.end_with?('color') && @options[:rgb_to_hex_attributes] ? ensure_hex(new_html_att) : new_html_att
               end
-              merged.instance_variable_get("@declarations").tap do |declarations|
-                unless @options[:preserve_style_attribute]
-                  declarations.delete(css_att)
+              unless @options[:preserve_style_attribute]
+                merged.instance_variable_get("@declarations").tap do |declarations|
+                    declarations.delete(css_att)
                 end
               end
             end
