@@ -254,7 +254,7 @@ END_HTML
     style5_style = style5.attributes['style'].to_s
 
     assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
-    assert_match /background: #000080/, style5_style
+    assert_match /background-color: #000080/, style5_style
     assert_match /text-align: center/, style5_style
     assert_match /#000080/, style5.attributes['bgcolor'].to_s
   end
@@ -297,23 +297,6 @@ END_HTML
 
     assert_match /margin: 0 auto/, premailer.processed_doc.search('#page').first.attributes['style'].to_s
     assert_match /border-style: solid none solid solid;/, premailer.processed_doc.search('p').first.attributes['style'].to_s
-  end
-
-  def test_sorting_style_attributes
-    html = <<END_HTML
-    <html>
-    <style type="text/css">
-      #page { right: 10px; left: 5px }
-    </style>
-    <body>
-      <div id='page'>test</div>
-    </body>
-    </html>
-END_HTML
-
-    premailer = Premailer.new(html, :with_html_string => true)
-    premailer.to_inline_css
-    assert_equal "left: 5px; right: 10px;", premailer.processed_doc.search('#page').first.attributes['style'].to_s
   end
 
   def test_removing_scripts

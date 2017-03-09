@@ -9,3 +9,5 @@
 /pkg/
 /.bundle/
 /*.sublime-*
+/Gemfile.lock
+

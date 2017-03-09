@@ -2,6 +2,7 @@ require 'yaml'
 require 'open-uri'
 require 'digest/md5'
 require 'cgi'
+require 'addressable'
 require 'css_parser'
 
 require 'premailer/adapter'

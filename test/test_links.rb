@@ -43,7 +43,7 @@ class TestLinks < Premailer::TestCase
     premailer.processed_doc.search('a').each do |el|
       href = el.attributes['href'].to_s
       next if href.nil? or href.empty?
-      uri = URI.parse(href)
+      uri = Addressable::URI.parse(href)
       assert_match qs, uri.query, "missing query string for #{el.to_s}"
     end
 
@@ -111,21 +111,21 @@ class TestLinks < Premailer::TestCase
   end
 
   def test_resolving_urls_from_uri
-    base_uri = URI.parse('http://example.com/')
+    base_uri = Addressable::URI.parse('http://example.com/')
     ['test.html', '/test.html', './test.html',
      'test/../test.html', 'test/../test/../test.html'].each do |q|
       assert_equal 'http://example.com/test.html', Premailer.resolve_link(q, base_uri), q
     end
 
-    base_uri = URI.parse('https://example.net:80/~basedir/')
+    base_uri = Addressable::URI.parse('https://example.net:80/~basedir/')
     assert_equal 'https://example.net:80/~basedir/test.html?var=1#anchor', Premailer.resolve_link('test/../test/../test.html?var=1#anchor', base_uri)
 
     # base URI with a query string
-    base_uri = URI.parse('http://example.com/dir/index.cfm?newsletterID=16')
+    base_uri = Addressable::URI.parse('http://example.com/dir/index.cfm?newsletterID=16')
     assert_equal 'http://example.com/dir/index.cfm?link=15', Premailer.resolve_link('?link=15', base_uri)
 
     # URI preceded by a space
-    base_uri = URI.parse('http://example.com/')
+    base_uri = Addressable::URI.parse('http://example.com/')
     assert_equal 'http://example.com/path', Premailer.resolve_link(' path', base_uri)
   end
 

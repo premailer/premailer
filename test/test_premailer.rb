@@ -110,7 +110,7 @@ END_HTML
       html = '<td style="background-color: #FFF;"></td>'
       premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
       premailer.to_inline_css
-      assert_equal ';', premailer.processed_doc.search('td').first.attributes['style'].to_s
+      assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s
       assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s
     end
   end
@@ -120,7 +120,7 @@ END_HTML
       html = '<td style="background-color: #FFF;"></td>'
       premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => false})
       premailer.to_inline_css
-      assert_match /background: #FFF/, premailer.processed_doc.at_css('td').attributes['style'].to_s
+      assert_match /background-color: #FFF/, premailer.processed_doc.at_css('td').attributes['style'].to_s
     end
   end
 

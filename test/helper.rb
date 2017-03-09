@@ -9,7 +9,7 @@ class Premailer::TestCase < Minitest::Test
 
   def setup
     stub_request(:any, /premailer\.dev\/*/).to_return do |request|
-      file_path = BASE_PATH + URI.parse(request.uri).path
+      file_path = BASE_PATH + Addressable::URI.parse(request.uri).path
       if File.exists?(file_path)
         { :status => 200, :body => File.open(file_path) }
       else

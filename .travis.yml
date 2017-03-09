@@ -4,7 +4,6 @@ branches:
   only: master
 matrix:
   fast_finish: true
-before_install: rm Gemfile.lock
 language: ruby
 rvm:
   - 2.1.9

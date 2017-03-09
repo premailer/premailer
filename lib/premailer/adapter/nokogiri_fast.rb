@@ -79,7 +79,7 @@ class Premailer
           if Premailer::RELATED_ATTRIBUTES.has_key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
               if el[html_att].nil? and not merged[css_att].empty?
-                new_html_att = merged[css_att].gsub(/url\(['|"](.*)['|"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
+                new_html_att = merged[css_att].gsub(/url\(['"](.*)['"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
                 el[html_att] = css_att.end_with?('color') && @options[:rgb_to_hex_attributes] ? ensure_hex(new_html_att) : new_html_att
               end
               unless @options[:preserve_style_attribute]
@@ -93,10 +93,7 @@ class Premailer
           merged.create_shorthand! if @options[:create_shorthands]
 
           # write the inline STYLE attribute
-          # split by ';' but ignore those in brackets
-          attributes = Premailer.escape_string(merged.declarations_to_s).split(/;(?![^(]*\))/).map(&:strip)
-          attributes = attributes.map { |attr| [attr.split(':').first, attr] }.sort_by { |pair| pair.first }.map { |pair| pair[1] }
-          el['style'] = attributes.join('; ') + ";"
+          el['style'] = merged.declarations_to_s
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules)
