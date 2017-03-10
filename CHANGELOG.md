@@ -1,5 +1,9 @@
 ## Premailer CHANGELOG
 
+### Version 1.10.2
+
+ * Fix LoadError addressable with Addressable 2.3.8
+
 ### Version 1.10.1
 
  * Depends on css_parser 1.4.10.
