@@ -487,9 +487,7 @@ public
   #
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
-    return true   if data.is_a?(IO) || data.is_a?(StringIO)
-    return true   if data =~ /\Afile:\/\//i
-    return false  if data =~ /\A(?:(https?|ftp):)\/\//i
+    return false  if data.kind_of?(String) && data =~ /\A(?:(https?|ftp):)\/\//i
     true
   end
 
