@@ -465,11 +465,6 @@ public
   end
 
   # @private
-  def self.escape_string(str) # :nodoc:
-    str.gsub(/"/ , "'")
-  end
-
-  # @private
   def self.resolve_link(path, base_path) # :nodoc:
     path.strip!
     resolved = nil
