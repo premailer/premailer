@@ -70,13 +70,6 @@ END_HTML
     end
   end
 
-  def test_escaping_strings
-    local_setup
-
-    str = %q{url("/images/test.png");}
-    assert_equal("url(\'/images/test.png\');", Premailer.escape_string(str))
-  end
-
   def test_preserving_ignored_style_elements
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       local_setup('ignore.html', :adapter => adapter)
