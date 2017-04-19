@@ -114,8 +114,8 @@ END_HTML
     assert lens.max <= 20
   end
 
-  def test_wrapping_lines_with_spaces
-    assert_plaintext "Long line\nnew line", 'Long     line new line', nil ,10
+  def test_wrapping_lines_with_many_spaces
+    assert_plaintext "Long     line\nnext line", "Long     line next line", nil ,14
   end
 
   def test_img_alt_tags
