@@ -1,5 +1,10 @@
 ## Premailer CHANGELOG
 
+### Version 1.10.3
+
+ * Keep consecutive whitespaces.
+ * Depends on css_parser 1.5.0.
+
 ### Version 1.10.2
 
  * Fix LoadError addressable with Addressable 2.3.8
