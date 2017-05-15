@@ -188,6 +188,15 @@ END_HTML
                      "<h1><a href='http://example.com/'>Test</a></h1>"
   end
 
+  def test_unterminated_anchor_tag
+    assert_plaintext("Example -->", <<-HTML)
+            <th>
+          <!-- <a href="https://www.example.com">
+                Example -->
+            </th>
+    HTML
+  end
+
   def assert_plaintext(out, raw, msg = nil, line_length = 65)
     assert_equal out, convert_to_text(raw, line_length), msg
   end
