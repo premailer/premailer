@@ -1,5 +1,9 @@
 ## Premailer CHANGELOG
 
+### Version 1.10.4
+
+ * Exponential regexp in convert_to_text fixed.
+
 ### Version 1.10.3
 
  * Keep consecutive whitespaces.
