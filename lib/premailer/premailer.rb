@@ -164,6 +164,7 @@ class Premailer
   # @option options [Boolean] :remove_comments Remove html comments. Default is false.
   # @option options [Boolean] :remove_scripts Remove <tt>script</tt> elements. Default is true.
   # @option options [Boolean] :reset_contenteditable Remove <tt>contenteditable</tt> attributes. Default is true.
+  # @option options [Boolean] :preserve_mailchimp_tags Whether to preserve pipes in MailChimp tags (e.g. <tt>*|UNSUB|*</tt>).  Default is false.
   # @option options [Boolean] :preserve_styles Whether to preserve any <tt>link rel=stylesheet</tt> and <tt>style</tt> elements.  Default is false.
   # @option options [Boolean] :preserve_reset Whether to preserve styles associated with the MailChimp reset code. Default is true.
   # @option options [Boolean] :with_html_string Whether the html param should be treated as a raw string. Default is false.
@@ -193,6 +194,7 @@ class Premailer
                 :preserve_style_attribute => false,
                 :with_html_string => false,
                 :css_string => nil,
+                :preserve_mailchimp_tags => false,
                 :preserve_styles => false,
                 :preserve_reset => true,
                 :verbose => false,

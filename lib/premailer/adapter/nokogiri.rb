@@ -214,6 +214,10 @@ class Premailer
             thing.gsub! entity, replacement
           end
         end
+        # Preseve pipes in MailChimp tags (e.g. *|UNSUB|*)
+        if @options[:preserve_mailchimp_tags] == true and thing.is_a?(String)
+          thing.gsub!(/\*%7C(\w+)%7C\*/) { "*|#{$1}|*" }
+        end
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
         # However, we really don't want to hardcode this. ASCII-8BIT should be the default, but not the only option.
         if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
