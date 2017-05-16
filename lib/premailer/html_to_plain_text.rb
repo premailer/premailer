@@ -31,7 +31,7 @@ module HtmlToPlainText
     txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # links
-    txt.gsub!(/<a\s.*?href=["'](mailto:)?([^"']*)["'][^>]*>((.|\s)*?)<\/a>/i) do |s|
+    txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^"']*)["'][^>]*>(.*?)<\/a>/im) do |s|
       if $3.empty?
         ''
       elsif $3.strip.downcase == $2.strip.downcase
