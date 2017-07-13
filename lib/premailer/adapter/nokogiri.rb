@@ -221,7 +221,7 @@ class Premailer
           doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) { |c| c.recover }
         else
           default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
-          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) { |c| c.recover }
+          doc = ::Nokogiri::HTML.fragment(thing, nil, @options[:input_encoding] || default_encoding) { |c| c.recover }
         end
 
         # Fix for removing any CDATA tags from both style and script tags inserted per
