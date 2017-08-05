@@ -149,11 +149,17 @@ class Premailer
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = unmergable_rules.to_s
         unless styles.empty?
-          style_tag = doc.create_element "style", "#{styles}"
-          head = doc.at_css('head')
-          head ||=  doc.root.first_element_child.add_previous_sibling(doc.create_element "head")  if doc.root && doc.root.first_element_child
-          head ||=  doc.add_child(doc.create_element "head")
-          head << style_tag
+          if @options[:html_fragment]
+            style_tag = ::Nokogiri::XML::Node.new("style", doc)
+            style_tag.content = styles
+            doc.add_child(style_tag)
+          else
+            style_tag = doc.create_element "style", "#{styles}"
+            head = doc.at_css('head')
+            head ||=  doc.root.first_element_child.add_previous_sibling(doc.create_element "head")  if doc.root && doc.root.first_element_child
+            head ||=  doc.add_child(doc.create_element "head")
+            head << style_tag
+          end
         end
         doc
       end
@@ -221,7 +227,11 @@ class Premailer
           doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) { |c| c.recover }
         else
           default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
-          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) { |c| c.recover }
+          doc = if @options[:html_fragment]
+            ::Nokogiri::HTML.fragment(thing, @options[:input_encoding] || default_encoding)
+          else
+            ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) { |c| c.recover }
+          end
         end
 
         # Fix for removing any CDATA tags from both style and script tags inserted per
