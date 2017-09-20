@@ -150,12 +150,19 @@ class Premailer
       # @return [::Nokogiri::XML] a document.
       def write_unmergable_css_rules(doc, unmergable_rules) # :nodoc:
         styles = unmergable_rules.to_s
-        return doc  if styles.empty?
-        style_tag = doc.create_element "style", styles
-        head = doc.at_css('head')
-        head ||=  doc.root.first_element_child.add_previous_sibling(doc.create_element "head")  if doc.root && doc.root.first_element_child
-        head ||=  doc.add_child(doc.create_element "head")
-        head << style_tag
+        unless styles.empty?
+          if @options[:html_fragment]
+            style_tag = ::Nokogiri::XML::Node.new("style", doc)
+            style_tag.content = styles
+            doc.add_child(style_tag)
+          else
+            style_tag = doc.create_element "style", styles
+            head = doc.at_css('head')
+            head ||= doc.root.first_element_child.add_previous_sibling(doc.create_element "head") if doc.root && doc.root.first_element_child
+            head ||= doc.add_child(doc.create_element "head")
+            head << style_tag
+          end
+        end
         doc
       end
 
@@ -217,12 +224,16 @@ class Premailer
         end
         # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
         # However, we really don't want to hardcode this. ASCII-8BIT should be the default, but not the only option.
-        if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
+        encoding = if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
           thing = thing.force_encoding(@options[:input_encoding]).encode!
-          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding]) { |c| c.recover }
+          @options[:input_encoding]
         else
-          default_encoding = RUBY_PLATFORM == 'java' ? nil : 'BINARY'
-          doc = ::Nokogiri::HTML(thing, nil, @options[:input_encoding] || default_encoding) { |c| c.recover }
+          @options[:input_encoding] || RUBY_PLATFORM == 'java' ? nil : 'BINARY'
+        end
+        doc = if @options[:html_fragment]
+          ::Nokogiri::HTML.fragment(thing, encoding)
+        else
+          ::Nokogiri::HTML(thing, nil, encoding) { |c| c.recover }
         end
 
         # Fix for removing any CDATA tags from both style and script tags inserted per
