@@ -177,6 +177,7 @@ class Premailer
   # @option options [Symbol] :adapter Which HTML parser to use, <tt>:nokogiri</tt>, <tt>:nokogiri_fast</tt> or <tt>:nokogumbo</tt>.  Default is <tt>:nokogiri</tt>.
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
   # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
+  # @option options [Boolean] :html_fragment Handle HTML fragment without any HTML content wrappers. Default is false.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
@@ -206,6 +207,7 @@ class Premailer
                 :escape_url_attributes => true,
                 :unescaped_ampersand => false,
                 :create_shorthands => true,
+                :html_fragment => false,
                 :adapter => Adapter.use,
                 }.merge(options)
 

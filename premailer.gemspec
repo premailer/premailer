@@ -12,7 +12,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.required_ruby_version = '>= 2.1.0'
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
 
-  s.add_runtime_dependency('css_parser', '>= 1.4.10')
+  s.add_runtime_dependency('css_parser', '>= 1.6.0')
   s.add_runtime_dependency('htmlentities', ['>= 4.0.0'])
   s.add_runtime_dependency 'addressable'
   s.add_development_dependency "bundler", ">= 1.3"

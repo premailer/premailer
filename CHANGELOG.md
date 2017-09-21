@@ -1,5 +1,10 @@
 ## Premailer CHANGELOG
 
+### Version 1.11.0
+
+* Support for HTML fragments rendering (without enforcing of doctype, head, body). See :html_fragment option.
+* Depends on css_parser 1.6.0.
+
 ### Version 1.10.4
 
  * Exponential regexp in convert_to_text fixed.
