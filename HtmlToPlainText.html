@@ -6,7 +6,7 @@
 <title>
   Module: HtmlToPlainText
   
-    &mdash; &#39;Premailer 1.10.0 Documentation&#39;
+    &mdash; &#39;Premailer 1.11.0 Documentation&#39;
   
 </title>
 
@@ -294,9 +294,7 @@
 106
 107
 108
-109
-110
-111</pre>
+109</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/premailer/html_to_plain_text.rb', line 10</span>
@@ -325,7 +323,7 @@
 </span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;img.+?alt=\&#39;([^\&#39;]*)\&#39;[^&gt;]*\&gt;</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>\1</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 
   <span class='comment'># links
-</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;a\s.*?href=[&quot;&#39;](mailto:)?([^&quot;&#39;]*)[&quot;&#39;][^&gt;]*&gt;((.|\s)*?)&lt;\/a&gt;</span><span class='regexp_end'>/i</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&lt;a\s[^\n]*?href=[&quot;&#39;](mailto:)?([^&quot;&#39;]*)[&quot;&#39;][^&gt;]*&gt;(.*?)&lt;\/a&gt;</span><span class='regexp_end'>/im</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
     <span class='kw'>if</span> <span class='backref'>$3</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
       <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
     <span class='kw'>elsif</span> <span class='backref'>$3</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>==</span> <span class='backref'>$2</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span>
@@ -380,10 +378,8 @@
 </span>  <span class='id identifier rubyid_he'>he</span> <span class='op'>=</span> <span class='const'>HTMLEntities</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_txt'>txt</span> <span class='op'>=</span> <span class='id identifier rubyid_he'>he</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='rparen'>)</span>
 
-  <span class='comment'># no more than two consecutive spaces
-</span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'> {2,}</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-
-  <span class='id identifier rubyid_txt'>txt</span> <span class='op'>=</span> <span class='id identifier rubyid_word_wrap'>word_wrap</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='comma'>,</span> <span class='id identifier rubyid_line_length'>line_length</span><span class='rparen'>)</span>
+  <span class='comment'># word wrap
+</span>  <span class='id identifier rubyid_txt'>txt</span> <span class='op'>=</span> <span class='id identifier rubyid_word_wrap'>word_wrap</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='comma'>,</span> <span class='id identifier rubyid_line_length'>line_length</span><span class='rparen'>)</span>
 
   <span class='comment'># remove linefeeds (\r\n and \r -&gt; \n)
 </span>  <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\r\n?</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -433,14 +429,14 @@
       <pre class="lines">
 
 
+112
+113
 114
 115
-116
-117
-118</pre>
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/html_to_plain_text.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/html_to_plain_text.rb', line 112</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_word_wrap'>word_wrap</span><span class='lparen'>(</span><span class='id identifier rubyid_txt'>txt</span><span class='comma'>,</span> <span class='id identifier rubyid_line_length'>line_length</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_txt'>txt</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_line'>line</span><span class='op'>|</span>
@@ -457,9 +453,9 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Feb 22 22:42:38 2017 by
+  Generated on Fri Sep 29 20:46:45 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.8 (ruby-2.3.0).
+  0.9.9 (ruby-2.4.0).
 </div>
 
     </div>

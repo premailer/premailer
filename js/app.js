@@ -224,7 +224,12 @@ function navExpander() {
 }
 
 function mainFocus() {
-  $('#main')[0].focus();
+  var hash = window.location.hash;
+  if (hash !== '' && $(hash)[0]) {
+    $(hash)[0].scrollIntoView();
+  }
+
+  setTimeout(function() { $('#main').focus(); }, 10);
 }
 
 $(document).ready(function() {

@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; &#39;Premailer 1.10.0 Documentation&#39;
+    &mdash; &#39;Premailer 1.11.0 Documentation&#39;
   
 </title>
 
@@ -120,13 +120,15 @@ script is my solution.</p>
 
 <p>Premailer&#39;s default adapter is nokogiri if both nokogiri and nokogumbo are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.</p>
 
-<p>There are three adapters in total (as of premailer 1.9.1)</p>
+<p>There are three adapters in total (as of premailer 1.10.0)</p>
 
 <ol>
 <li>nokogiri (default)</li>
 <li>nokogiri_fast</li>
 <li>nokogumbo</li>
 </ol>
+
+<p>hpricot adapter removed due to its EOL, please use <code>~&gt;1.9.0</code> version if You still need it..</p>
 
 <p><code>NokogiriFast</code> adapter improves the Algorithmic complexity of the running time by 20x with a slight compensation on memory. To switch to any of these adapters, add the following line. For example, if you want to include the <code>NokogiriFast</code> adapter,</p>
 
@@ -135,7 +137,7 @@ script is my solution.</p>
 
 <h2>Ruby Compatibility</h2>
 
-<p>Premailer is tested on Ruby 2.x.0. JRuby support is close; contributors are welcome.  Checkout the latest build status on the <a href="https://travis-ci.org/#!/premailer/premailer">Travis CI dashboard</a>.</p>
+<p>Premailer is tested on Ruby 2.1 and above. JRuby support is close; contributors are welcome.  Checkout the latest build status on the <a href="https://travis-ci.org/#!/premailer/premailer">Travis CI dashboard</a>.</p>
 
 <h2>Premailer-specific CSS</h2>
 
@@ -205,9 +207,9 @@ and to <a href="https://www.campaignmonitor.com/">Campaign Monitor</a> for suppo
 </div></div>
 
       <div id="footer">
-  Generated on Wed Feb 22 22:42:37 2017 by
+  Generated on Fri Sep 29 20:46:45 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.8 (ruby-2.3.0).
+  0.9.9 (ruby-2.4.0).
 </div>
 
     </div>

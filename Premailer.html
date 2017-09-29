@@ -6,7 +6,7 @@
 <title>
   Class: Premailer
   
-    &mdash; &#39;Premailer 1.10.0 Documentation&#39;
+    &mdash; &#39;Premailer 1.11.0 Documentation&#39;
   
 </title>
 
@@ -133,7 +133,7 @@
 
 </div>
       </dt>
-      <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1.10.0</span><span class='tstring_end'>&#39;</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1.11.0</span><span class='tstring_end'>&#39;</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
     
       <dt id="CLIENT_SUPPORT_FILE-constant" class="">CLIENT_SUPPORT_FILE =
         
@@ -1086,6 +1086,18 @@ must set the with_html_string option to true.</p>
           
         </li>
       
+        <li>
+          <span class="name">:html_fragment</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Handle HTML fragment without any HTML content wrappers. Default is false.</p>
+</div>
+          
+        </li>
+      
     </ul>
   
 
@@ -1096,7 +1108,6 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-180
 181
 182
 183
@@ -1164,10 +1175,12 @@ must set the with_html_string option to true.</p>
 245
 246
 247
-248</pre>
+248
+249
+250</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 181</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_html'>html</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:warn_level</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Premailer/Warnings.html#SAFE-constant" title="Premailer::Warnings::SAFE (constant)">SAFE</a></span></span><span class='comma'>,</span>
@@ -1198,6 +1211,7 @@ must set the with_html_string option to true.</p>
               <span class='symbol'>:escape_url_attributes</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
               <span class='symbol'>:unescaped_ampersand</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:create_shorthands</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+              <span class='symbol'>:html_fragment</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
               <span class='symbol'>:adapter</span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="Premailer/Adapter.html" title="Premailer::Adapter (module)">Adapter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_use'><span class='object_link'><a href="Premailer/Adapter.html#use-class_method" title="Premailer::Adapter.use (method)">use</a></span></span><span class='comma'>,</span>
               <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
 
@@ -1213,9 +1227,9 @@ must set the with_html_string option to true.</p>
   <span class='ivar'>@unmergable_rules</span> <span class='op'>=</span> <span class='kw'>nil</span>
 
   <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:base_url</span><span class='rbracket'>]</span>
-    <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:base_url</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:base_url</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='kw'>not</span> <span class='ivar'>@is_local_file</span>
-    <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@html_file</span><span class='rparen'>)</span>
+    <span class='ivar'>@base_url</span> <span class='op'>=</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@html_file</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 
   <span class='ivar'>@css_parser</span> <span class='op'>=</span> <span class='const'>CssParser</span><span class='op'>::</span><span class='const'>Parser</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span>
@@ -1549,23 +1563,23 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
+497
+498
+499
+500
+501
 502
 503
 504
 505
 506
-507
-508
-509
-510
-511
-512</pre>
+507</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 502</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 497</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_canonicalize'>canonicalize</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
-</span><span class='id identifier rubyid_u'>u</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_uri'>uri</span> <span class='op'>:</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+</span><span class='id identifier rubyid_u'>u</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_uri'>uri</span> <span class='op'>:</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
 <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_normalize!'>normalize!</span>
 <span class='id identifier rubyid_newpath'>newpath</span> <span class='op'>=</span> <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span>
 <span class='kw'>while</span> <span class='id identifier rubyid_newpath'>newpath</span><span class='period'>.</span><span class='id identifier rubyid_gsub!'>gsub!</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>([^/]+)/\.\./?</span><span class='regexp_end'>}</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_match'>match</span><span class='op'>|</span>
@@ -1620,20 +1634,16 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-494
-495
-496
-497
-498
-499</pre>
+491
+492
+493
+494</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 494</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 491</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_local_data?'>local_data?</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>true</span>   <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>IO</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>StringIO</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>true</span>   <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\Afile:\/\/</span><span class='regexp_end'>/i</span></span>
-  <span class='kw'>return</span> <span class='kw'>false</span>  <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A(?:(https?|ftp):)\/\/</span><span class='regexp_end'>/i</span></span>
+  <span class='kw'>return</span> <span class='kw'>false</span>  <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A(?:(https?|ftp):)\/\/</span><span class='regexp_end'>/i</span></span>
   <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1662,8 +1672,6 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
-351
-352
 353
 354
 355
@@ -1710,10 +1718,12 @@ must set the with_html_string option to true.</p>
 396
 397
 398
-399</pre>
+399
+400
+401</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 351</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 353</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_append_query_string'>append_query_string</span><span class='lparen'>(</span><span class='id identifier rubyid_doc'>doc</span><span class='comma'>,</span> <span class='id identifier rubyid_qs'>qs</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_doc'>doc</span> <span class='kw'>if</span> <span class='id identifier rubyid_qs'>qs</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1736,7 +1746,7 @@ must set the with_html_string option to true.</p>
     <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_href'>href</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[\#\{\[\&lt;\%]</span><span class='regexp_end'>/</span></span> <span class='comment'># don&#39;t bother with anchors or special-looking links
 </span>
     <span class='kw'>begin</span>
-      <span class='id identifier rubyid_href'>href</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_href'>href</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_href'>href</span> <span class='op'>=</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_href'>href</span><span class='rparen'>)</span>
 
       <span class='kw'>if</span> <span class='id identifier rubyid_current_host'>current_host</span> <span class='kw'>and</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_host'>host</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_host'>host</span> <span class='op'>!=</span> <span class='id identifier rubyid_current_host'>current_host</span>
         <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skipping append_query_string for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='tstring_content'> because host is no good</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:verbose</span><span class='rbracket'>]</span>
@@ -1756,7 +1766,7 @@ must set the with_html_string option to true.</p>
       <span class='kw'>end</span>
 
       <span class='id identifier rubyid_el'>el</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>href</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-    <span class='kw'>rescue</span> <span class='const'>URI</span><span class='op'>::</span><span class='const'>Error</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='kw'>rescue</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='op'>::</span><span class='const'>InvalidURIError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
       <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skipping append_query_string for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_href'>href</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='tstring_content'> (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:verbose</span><span class='rbracket'>]</span>
       <span class='kw'>next</span>
     <span class='kw'>end</span>
@@ -1794,6 +1804,11 @@ must set the with_html_string option to true.</p>
       <pre class="lines">
 
 
+510
+511
+512
+513
+514
 515
 516
 517
@@ -1834,15 +1849,10 @@ must set the with_html_string option to true.</p>
 552
 553
 554
-555
-556
-557
-558
-559
-560</pre>
+555</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 515</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 510</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_check_client_support'>check_client_support</span> <span class='comment'># :nodoc:
 </span>  <span class='ivar'>@client_support</span> <span class='op'>||=</span> <span class='const'>YAML</span><span class='op'>::</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#CLIENT_SUPPORT_FILE-constant" title="Premailer::CLIENT_SUPPORT_FILE (constant)">CLIENT_SUPPORT_FILE</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1927,8 +1937,6 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <pre class="lines">
 
 
-417
-418
 419
 420
 421
@@ -1970,13 +1978,15 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
 457
 458
 459
-460</pre>
+460
+461
+462</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 417</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 419</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_convert_inline_links'>convert_inline_links</span><span class='lparen'>(</span><span class='id identifier rubyid_doc'>doc</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
-</span>  <span class='id identifier rubyid_base_uri'>base_uri</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span>
+</span>  <span class='id identifier rubyid_base_uri'>base_uri</span> <span class='op'>=</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_append_qs'>append_qs</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:link_query_string</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
   <span class='id identifier rubyid_escape_attrs'>escape_attrs</span> <span class='op'>=</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:escape_url_attributes</span><span class='rbracket'>]</span>
@@ -1995,7 +2005,7 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
 
       <span class='kw'>if</span> <span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^http</span><span class='regexp_end'>/i</span></span>
         <span class='kw'>begin</span>
-          <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='rparen'>)</span>
         <span class='kw'>rescue</span><span class='semicolon'>;</span> <span class='kw'>next</span><span class='semicolon'>;</span> <span class='kw'>end</span>
       <span class='kw'>else</span>
         <span class='kw'>begin</span>
@@ -2003,13 +2013,13 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
         <span class='kw'>rescue</span>
           <span class='kw'>begin</span>
             <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_escape_attrs'>escape_attrs</span>
-            <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
+            <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Premailer (class)">Premailer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_resolve_link'>resolve_link</span><span class='lparen'>(</span><span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='rparen'>)</span>
           <span class='kw'>rescue</span><span class='semicolon'>;</span> <span class='kw'>end</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span>
 
       <span class='comment'># make sure &#39;merged&#39; is a URI
-</span>      <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>URI</span><span class='rparen'>)</span>
+</span>      <span class='id identifier rubyid_merged'>merged</span> <span class='op'>=</span> <span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Addressable</span><span class='op'>::</span><span class='const'>URI</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='id identifier rubyid_attribute'>attribute</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_merged'>merged</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
     <span class='kw'>end</span> <span class='comment'># end of each tag
 </span>  <span class='kw'>end</span> <span class='comment'># end of each attrs
@@ -2062,15 +2072,15 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <pre class="lines">
 
 
-402
-403
 404
 405
 406
-407</pre>
+407
+408
+409</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 402</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 404</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_is_xhtml?'>is_xhtml?</span>
   <span class='id identifier rubyid_intro'>intro</span> <span class='op'>=</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_to_html'>to_html</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>2</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2125,14 +2135,14 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
       <pre class="lines">
 
 
-252
-253
 254
 255
-256</pre>
+256
+257
+258</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 252</span>
+      <pre class="code"><span class="info file"># File 'lib/premailer/premailer.rb', line 254</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_warnings'>warnings</span>
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:warn_level</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="Premailer/Warnings.html" title="Premailer::Warnings (module)">Warnings</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Premailer/Warnings.html#NONE-constant" title="Premailer::Warnings::NONE (constant)">NONE</a></span></span>
@@ -2149,9 +2159,9 @@ as well as CSS <tt>url()</tt> declarations found in inline <tt>style</tt> attrib
 </div>
 
       <div id="footer">
-  Generated on Wed Feb 22 22:42:38 2017 by
+  Generated on Fri Sep 29 20:46:45 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.8 (ruby-2.3.0).
+  0.9.9 (ruby-2.4.0).
 </div>
 
     </div>
