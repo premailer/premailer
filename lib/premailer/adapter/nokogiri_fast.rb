@@ -228,7 +228,7 @@ class Premailer
           thing = thing.force_encoding(@options[:input_encoding]).encode!
           @options[:input_encoding]
         else
-          @options[:input_encoding] || RUBY_PLATFORM == 'java' ? nil : 'BINARY'
+          @options[:input_encoding] || (RUBY_PLATFORM == 'java' ? nil : 'BINARY')
         end
         doc = if @options[:html_fragment]
           ::Nokogiri::HTML.fragment(thing, encoding)
