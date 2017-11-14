@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    premailer (1.11.0)
+    premailer (1.11.1)
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
@@ -27,7 +27,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     docile (1.1.5)
-    hashdiff (0.3.6)
+    hashdiff (0.3.7)
     htmlentities (4.3.4)
     json (2.1.0)
     maxitest (2.4.0)
@@ -38,8 +38,8 @@ GEM
       mini_portile2 (~> 2.3.0)
     nokogumbo (1.4.13)
       nokogiri
-    public_suffix (3.0.0)
-    rake (12.1.0)
+    public_suffix (3.0.1)
+    rake (12.2.1)
     redcarpet (3.4.0)
     safe_yaml (1.0.4)
     simplecov (0.14.1)
@@ -50,8 +50,8 @@ GEM
     term-ansicolor (1.6.0)
       tins (~> 1.0)
     thor (0.19.4)
-    tins (1.15.0)
-    webmock (3.0.1)
+    tins (1.15.1)
+    webmock (3.1.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -75,4 +75,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   1.16.0.pre.2
+   1.16.0

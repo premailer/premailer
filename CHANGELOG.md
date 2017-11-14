@@ -1,5 +1,8 @@
 ## Premailer CHANGELOG
 
+### Version 1.11.1
+* Fix input encoding in nokogiri adapters.
+
 ### Version 1.11.0
 
 * Support for HTML fragments rendering (without enforcing of doctype, head, body). See :html_fragment option.
