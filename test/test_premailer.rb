@@ -104,7 +104,7 @@ END_HTML
       premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
       premailer.to_inline_css
       assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s
-      assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s
+      assert_equal '#FFFFFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s
     end
   end
 
@@ -276,7 +276,7 @@ END_HTML
     pm.to_inline_css
     doc = pm.processed_doc
 
-    assert_match /<table[^>]+550px.+bgcolor="FAFAFA"/, doc.at('table').to_s
+    assert_match /<table[^>]+550px.+bgcolor="#FAFAFA"/, doc.at('table').to_s
   end
 
   def test_rgb_color
@@ -290,8 +290,7 @@ END_HTML
     pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :remove_scripts => true, :adapter => :nokogiri)
     pm.to_inline_css
     doc = pm.processed_doc
-    assert_equal 'FAFAFA', doc.at('table')['bgcolor']
-
+    assert_equal '#FAFAFA', doc.at('table')['bgcolor']
   end
 
   def test_non_rgb_color
@@ -306,6 +305,21 @@ END_HTML
     pm.to_inline_css
     doc = pm.processed_doc
     assert_equal 'red', doc.at('table')['bgcolor']
+  end
+
+  def test_blending_rgba_color
+    html = <<-END_HTML
+    <html> <head> <style>body { background-color: #c8c8c8; } table { background-color: rgba(100,100,100,0.50) } td { background-color: rgba(50,50,50,0.70)}</style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :remove_scripts => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal '#969696', doc.at('table')['bgcolor']
+    assert_equal '#505050', doc.at('td')['bgcolor']
   end
 
   def test_include_link_tags_option

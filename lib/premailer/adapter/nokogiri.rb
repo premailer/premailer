@@ -5,7 +5,7 @@ class Premailer
     # Nokogiri adapter
     module Nokogiri
 
-      include AdapterHelper::RgbToHex
+      include RgbToHex
       # Merge CSS into the HTML document.
       #
       # @return [String] an HTML.
@@ -78,7 +78,7 @@ class Premailer
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
               if el[html_att].nil? and not merged[css_att].empty?
                 new_html_att = merged[css_att].gsub(/url\(['"](.*)['"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
-                el[html_att] = css_att.end_with?('color') && @options[:rgb_to_hex_attributes] ? ensure_hex(new_html_att) : new_html_att
+                el[html_att] = css_att.end_with?('color') && @options[:rgb_to_hex_attributes] ? ensure_hex(new_html_att, el) : new_html_att
               end
               unless @options[:preserve_style_attribute]
                 merged.instance_variable_get("@declarations").tap do |declarations|
