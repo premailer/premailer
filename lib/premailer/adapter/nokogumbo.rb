@@ -79,10 +79,10 @@ class Premailer
               if el[html_att].nil? and not merged[css_att].empty?
                 new_html_att = merged[css_att].gsub(/url\(['"](.*)['"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
                 if @options[:rgb_to_hex_attributes] && css_att.end_with?('color')
-                  new_html_att = ensure_hex(new_html_att, el)
+                  new_html_att = ensure_hex(new_html_att, el).to_s
                 end
                 el[html_att] = new_html_att
-                merged[css_att] = new_html_att.declarations_to_s
+                merged[css_att] = new_html_att
               end
               unless @options[:preserve_style_attribute]
                 merged.instance_variable_get("@declarations").tap do |declarations|
