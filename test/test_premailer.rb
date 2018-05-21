@@ -398,6 +398,18 @@ END_HTML
     assert_equal '100', premailer.processed_doc.at('img')["height"]
   end
 
+  def test_img_with_dimensional_style_should_have_html_dimension_attribute_with_no_unit
+    html = <<-END_HTML
+    <img src="aa.jpg" width="100px" height="40px"></img>
+    END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+    premailer.to_inline_css
+    assert_equal '100', premailer.processed_doc.at('img')["width"]
+    assert_equal '40', premailer.processed_doc.at('img')["height"]
+  end
+
+
 
   def silence_stderr(&block)
     orig_stderr = $stderr

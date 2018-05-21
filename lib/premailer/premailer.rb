@@ -234,7 +234,7 @@ class Premailer
       :io_exceptions => @options[:io_exceptions]
     })
 
-    @adapter_class = Adapter.find :nokogiri #@options[:adapter]
+    @adapter_class = Adapter.find @options[:adapter]
 
     self.class.send(:include, @adapter_class)
 
