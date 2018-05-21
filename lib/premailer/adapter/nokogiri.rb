@@ -13,6 +13,16 @@ class Premailer
         doc = @processed_doc
         @unmergable_rules = CssParser::Parser.new
 
+        doc.search("img").each do |el|
+          number_attr_reg = /\:[\'\"]?(\d+)/
+          if el['style'] =~ /width#{number_attr_reg}/
+            el.set_attribute('width', $~[1])
+          end
+          if el['style'] =~ /height#{number_attr_reg}/
+            el.set_attribute('height', $~[1])
+          end
+        end
+
         # Give all styles already in style attributes a specificity of 1000
         # per http://www.w3.org/TR/CSS21/cascade.html#specificity
         doc.search("*[@style]").each do |el|

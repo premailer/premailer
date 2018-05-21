@@ -3,6 +3,11 @@
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestPremailer < Premailer::TestCase
+    # tests are order dependent
+  def self.test_order
+    :alpha
+  end
+
   def test_special_characters_nokogiri
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
@@ -381,6 +386,18 @@ END_HTML
     pm = Premailer.new(html, :with_html_string => true, :css_string => css, :adapter => :nokogiri, input_encoding: 'UTF-8')
     pm.to_inline_css
   end
+
+  def test_img_with_dimensional_style_should_have_html_dimension_attribute_too__for_old_outlook_compatibility
+    html = <<-END_HTML
+    <img src="aa.jpg" style="width:70px;height:'100px'"></img>
+    END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+    premailer.to_inline_css
+    assert_equal '70', premailer.processed_doc.at('img')["width"]
+    assert_equal '100', premailer.processed_doc.at('img')["height"]
+  end
+
 
   def silence_stderr(&block)
     orig_stderr = $stderr
