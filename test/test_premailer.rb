@@ -3,11 +3,6 @@
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestPremailer < Premailer::TestCase
-    # tests are order dependent
-  def self.test_order
-    :alpha
-  end
-
   def test_special_characters_nokogiri
     html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
