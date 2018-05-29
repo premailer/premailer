@@ -21,14 +21,14 @@ module HtmlToPlainText
     # eg. the following formats:
     # <img alt="" />
     # <img alt="">
-    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\>/i, '\1')
+    txt.gsub!(/<img[^>]+?alt=\"([^\"]*)\"[^>]*\>/i, '\1')
 
     # for img tags with '' for attribute quotes
     # with or without closing tag
     # eg. the following formats:
     # <img alt='' />
     # <img alt=''>
-    txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
+    txt.gsub!(/<img[^>]+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # links
     txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^"']*)["'][^>]*>(.*?)<\/a>/im) do |s|

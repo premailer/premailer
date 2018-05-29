@@ -130,6 +130,10 @@ END_HTML
     assert_plaintext 'Example ( http://example.com/ )', "<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'/></a>"
     # <img alt=''>
     assert_plaintext 'Example ( http://example.com/ )', "<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'></a>"
+    # <img /> a60cc657c190b6f4cdb83ebe9f1c5bfad <img alt=\"\"> ae48b4c58d668b8ce5bd80bbe2cc28237
+    assert_plaintext "a60cc657c190b6f4cdb83ebe9f1c5bfad\nae48b4c58d668b8ce5bd80bbe2cc28237", "<img /> a60cc657c190b6f4cdb83ebe9f1c5bfad <img alt=\"\"> ae48b4c58d668b8ce5bd80bbe2cc28237"
+    # <img> a60cc657c190b6f4cdb83ebe9f1c5bfad <img alt=\"\"> ae48b4c58d668b8ce5bd80bbe2cc28237
+    assert_plaintext "a60cc657c190b6f4cdb83ebe9f1c5bfad\nae48b4c58d668b8ce5bd80bbe2cc28237", "<img> a60cc657c190b6f4cdb83ebe9f1c5bfad <img alt=\"\"> ae48b4c58d668b8ce5bd80bbe2cc28237"
   end
 
   def test_links
