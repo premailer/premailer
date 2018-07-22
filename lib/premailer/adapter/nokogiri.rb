@@ -14,11 +14,12 @@ class Premailer
         @unmergable_rules = CssParser::Parser.new
 
         doc.search("img").each do |el|
+          none_id = /(?<![\w\-])/
           number_attr_reg = /:\s*[\'\"]?(\d+)/
-          if el['style'] =~ /width#{number_attr_reg}/
+          if el['style'] =~ /#{none_id}width#{number_attr_reg}/
             el.set_attribute('width', $~[1])
           end
-          if el['style'] =~ /height#{number_attr_reg}/
+          if el['style'] =~ /#{none_id}height#{number_attr_reg}/
             el.set_attribute('height', $~[1])
           end
           if el['width'] =~ /\d+/
