@@ -150,7 +150,7 @@ END_HTML
     assert !Premailer.local_data?( 'http://example.com/path/' )
 
     # the old way is deprecated but should still work
-    premailer = Premailer.new( StringIO.new('a') )
+    premailer = Premailer.new( StringIO.new('a'), :adapter => :nokogiri )
     silence_stderr do
       assert premailer.local_uri?( '/path/' )
     end
@@ -370,7 +370,7 @@ END_HTML
     files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
     html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
 
-    premailer = Premailer.new(html_string, :with_html_string => true)
+    premailer = Premailer.new(html_string, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
   end
 
