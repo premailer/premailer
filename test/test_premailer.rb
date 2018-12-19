@@ -100,17 +100,23 @@ END_HTML
 
   def test_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      html = '<td style="background-color: #FFF;"></td>'
+      html = '<table><td style="background-color: #FFF;"></td></table>'
       premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
       premailer.to_inline_css
-      assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s
-      assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s
+
+      assert_equal '',
+        premailer.processed_doc.search('td').first.attributes['style'].to_s,
+        "adapter: #{adapter}"
+
+      assert_equal '#FFF',
+        premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s,
+        "adapter: #{adapter}"
     end
   end
 
   def test_avoid_changing_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      html = '<td style="background-color: #FFF;"></td>'
+      html = '<table><td style="background-color: #FFF;"></td></table>'
       premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => false})
       premailer.to_inline_css
       assert_match /background-color: #FFF/, premailer.processed_doc.at_css('td').attributes['style'].to_s
