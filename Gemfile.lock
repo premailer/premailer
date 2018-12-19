@@ -32,12 +32,12 @@ GEM
     json (2.1.0)
     maxitest (2.4.0)
       minitest (>= 5.0.0, < 5.11.0)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.10.3)
-    nokogiri (1.8.4)
-      mini_portile2 (~> 2.3.0)
-    nokogumbo (1.4.13)
-      nokogiri
+    nokogiri (1.9.1)
+      mini_portile2 (~> 2.4.0)
+    nokogumbo (2.0.1)
+      nokogiri (~> 1.8, >= 1.8.4)
     public_suffix (3.0.1)
     rake (12.2.1)
     redcarpet (3.4.0)
@@ -66,8 +66,8 @@ DEPENDENCIES
   css_parser!
   jruby-openssl
   maxitest
-  nokogiri (~> 1.8.2)
-  nokogumbo
+  nokogiri (~> 1.9.1)
+  nokogumbo (~> 2.0.1)
   premailer!
   rake (> 0.8, != 0.9.0)
   redcarpet (~> 3.0)
@@ -75,4 +75,4 @@ DEPENDENCIES
   yard (~> 0.9.11)
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
