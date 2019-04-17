@@ -130,6 +130,21 @@ END_HTML
     assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
+
+  def test_drop_unmergable_rules
+    html = <<END_HTML
+    <html> <head> <style type="text/css"> a { color:blue; } a:hover { color: red; } </style> </head>
+    <p><a>Test</a></p>
+    </body> </html>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true, :verbose => true, :drop_unmergeable_css_rules => true)
+    premailer.to_inline_css
+
+    # no <style> block should exist
+    assert_nil premailer.processed_doc.at('head style')
+  end  
+
   def test_unmergable_media_queries
     html = <<END_HTML
     <html> <head>
