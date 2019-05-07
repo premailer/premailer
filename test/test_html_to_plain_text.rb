@@ -173,6 +173,12 @@ END_HTML
 
     # same text and link
     assert_plaintext 'http://example.com', '<a href="http://example.com">http://example.com</a>'
+
+    # link that includes a single quote
+    assert_plaintext "King's Gambit ( https://en.wikipedia.org/wiki/King's_Gambit )", "<a href=\"https://en.wikipedia.org/wiki/King's_Gambit\">King's Gambit</a>"
+
+    # link that includes double quotes
+    assert_plaintext '"Weird Al" Yankovic ( https://en.wikipedia.org/wiki/%22Weird_Al%22_Yankovic )', '<a href="https://en.wikipedia.org/wiki/%22Weird_Al%22_Yankovic">"Weird Al" Yankovic</a>', nil, 100
   end
 
   # see https://github.com/alexdunae/premailer/issues/72
