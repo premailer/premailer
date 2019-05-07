@@ -33,8 +33,19 @@ module HtmlToPlainText
     # remove script tags and content
     txt.gsub!(/<script.*\/script>/m, '')
 
-    # links
-    txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^"']*)["'][^>]*>(.*?)<\/a>/im) do |s|
+    # links with double quotes
+    txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^"]*)["][^>]*>(.*?)<\/a>/im) do |s|
+      if $3.empty?
+        ''
+      elsif $3.strip.downcase == $2.strip.downcase
+        $3.strip
+      else
+        $3.strip + ' ( ' + $2.strip + ' )'
+      end
+    end
+
+    # links with single quotes
+    txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^']*)['][^>]*>(.*?)<\/a>/im) do |s|
       if $3.empty?
         ''
       elsif $3.strip.downcase == $2.strip.downcase
