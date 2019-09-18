@@ -35,6 +35,17 @@ END_HTML
     assert_match /Test/, premailer.to_plain_text
   end
 
+  def test_to_plain_text_with_script
+    html = <<END_HTML
+    <script>
+    window.location.href
+    </script>
+END_HTML
+
+    premailer = Premailer.new(html, :with_html_string => true)
+    assert_empty premailer.to_plain_text
+  end
+
   def test_specialchars
     assert_plaintext 'cédille garçon & à ñ', 'c&eacute;dille gar&#231;on &amp; &agrave; &ntilde;'
   end
