@@ -5,7 +5,7 @@ class TestHtmlToPlainText < Premailer::TestCase
   include HtmlToPlainText
 
   def test_to_plain_text_with_fragment
-    premailer = Premailer.new('<p>Test</p>', :with_html_string => true)
+    premailer = Premailer.new('<p>Test</p>', :adapter => :nokogiri, :with_html_string => true)
     assert_match /Test/, premailer.to_plain_text
   end
 
@@ -19,7 +19,7 @@ class TestHtmlToPlainText < Premailer::TestCase
 		</html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     assert_match /Test/, premailer.to_plain_text
   end
 
@@ -31,7 +31,7 @@ END_HTML
 		<p>Test
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     assert_match /Test/, premailer.to_plain_text
   end
 
@@ -56,7 +56,7 @@ END_HTML
 		</p>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     assert_match /Test line 2/, premailer.to_plain_text
   end
 
@@ -82,7 +82,7 @@ END_HTML
     <!-- end text/html -->
     <p>text</p>
 END_HTML
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     assert_match /test\n\ntext/, premailer.to_plain_text
   end
 

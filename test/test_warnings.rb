@@ -88,7 +88,7 @@ END_HTML
 
 protected
   def get_warnings(html, adapter = :nokogiri, warn_level = Premailer::Warnings::SAFE)
-    pm = Premailer.new(html, {:adpater => adapter, :with_html_string => true, :warn_level => warn_level})
+    pm = Premailer.new(html, {:adapter => adapter, :with_html_string => true, :warn_level => warn_level})
     pm.to_inline_css
     pm.check_client_support
   end
