@@ -402,7 +402,7 @@ public
 
   # Check for an XHTML doctype
   def is_xhtml?
-    intro = @doc.to_html.strip.split("\n")[0..2].join(' ')
+    intro = @doc.to_xhtml.strip.split("\n")[0..2].join(' ')
     is_xhtml = !!(intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
     $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
     is_xhtml

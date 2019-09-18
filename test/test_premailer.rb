@@ -27,7 +27,7 @@ class TestPremailer < Premailer::TestCase
   def test_detecting_html
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('base.html', :adapter => adapter)
-      assert !@premailer.is_xhtml?, "Using: #{adapter}"
+      refute @premailer.is_xhtml?, "Using: #{adapter}"
     end
   end
 
