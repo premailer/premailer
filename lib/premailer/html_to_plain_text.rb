@@ -30,6 +30,9 @@ module HtmlToPlainText
     # <img alt=''>
     txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
+    # remove script tags and content
+    txt.gsub!(/<script.*\/script>/m, '')
+
     # links with double quotes
     txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^"]*)["][^>]*>(.*?)<\/a>/im) do |s|
       if $3.empty?

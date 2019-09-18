@@ -16,7 +16,7 @@ class TestMisc < Premailer::TestCase
 		</html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
     assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
@@ -32,7 +32,7 @@ END_HTML
 		</html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
     assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
@@ -76,7 +76,7 @@ END_HTML
 		</html>
     END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
     premailer.processed_doc.search('p').each do |el|
       assert_match /red/i, el['style']
@@ -121,7 +121,7 @@ END_HTML
 		</body> </html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true, :verbose => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true, :verbose => true)
     premailer.to_inline_css
 
     # blue should be inlined
@@ -175,7 +175,7 @@ END_HTML
 		</html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
     assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
   end
@@ -191,7 +191,7 @@ END_HTML
 		</html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
     assert_match /color: red/, premailer.processed_doc.at('a').attributes['style'].to_s
   end
@@ -217,7 +217,7 @@ END_HTML
     </tr>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
     assert_match /font-size: xx-large/, premailer.processed_doc.search('.style3').first.attributes['style'].to_s
     refute_match /background: #000080/, premailer.processed_doc.search('.style5').first.attributes['style'].to_s
@@ -244,6 +244,7 @@ END_HTML
 
     premailer = Premailer.new(
       html,
+      adapter: :nokogiri,
       with_html_string: true,
       preserve_style_attribute: true
     )
@@ -292,7 +293,7 @@ END_HTML
     </html>
 END_HTML
 
-    premailer = Premailer.new(html, :with_html_string => true)
+    premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
     assert_match /margin: 0 auto/, premailer.processed_doc.search('#page').first.attributes['style'].to_s

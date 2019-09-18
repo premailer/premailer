@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestLinks < Premailer::TestCase
   def test_empty_query_string
-    premailer = Premailer.new('<p>Test</p>', :with_html_string => true, :link_query_string => ' ')
+    premailer = Premailer.new('<p>Test</p>', :adapter => :nokogiri, :with_html_string => true, :link_query_string => ' ')
     premailer.to_inline_css
   end
 
@@ -62,14 +62,14 @@ class TestLinks < Premailer::TestCase
   def test_stripping_extra_question_marks_from_query_string
     qs = '??utm_source=1234'
 
-    premailer = Premailer.new("<a href='/test/?'>Link</a> <a href='/test/'>Link</a>", :link_query_string => qs, :with_html_string => true)
+    premailer = Premailer.new("<a href='/test/?'>Link</a> <a href='/test/'>Link</a>", :adapter => :nokogiri, :link_query_string => qs, :with_html_string => true)
     premailer.to_inline_css
 
     premailer.processed_doc.search('a').each do |a|
       assert_equal '/test/?utm_source=1234', a['href'].to_s
     end
 
-    premailer = Premailer.new("<a href='/test/?123&456'>Link</a>", :link_query_string => qs, :with_html_string => true)
+    premailer = Premailer.new("<a href='/test/?123&456'>Link</a>", :adapter => :nokogiri, :link_query_string => qs, :with_html_string => true)
     premailer.to_inline_css
 
     assert_equal '/test/?123&456&amp;utm_source=1234', premailer.processed_doc.at('a')['href']
@@ -78,7 +78,7 @@ class TestLinks < Premailer::TestCase
   def test_unescape_ampersand
     qs = 'utm_source=1234'
 
-    premailer = Premailer.new("<a href='/test/?q=query'>Link</a>", :link_query_string => qs, :with_html_string => true, :unescaped_ampersand => true)
+    premailer = Premailer.new("<a href='/test/?q=query'>Link</a>", :adapter => :nokogiri, :link_query_string => qs, :with_html_string => true, :unescaped_ampersand => true)
     premailer.to_inline_css
 
     premailer.processed_doc.search('a').each do |a|
@@ -88,13 +88,13 @@ class TestLinks < Premailer::TestCase
 
   def test_preserving_links
     html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
-    premailer = Premailer.new(html.to_s, :link_query_string => '', :with_html_string => true)
+    premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :link_query_string => '', :with_html_string => true)
     premailer.to_inline_css
 
     assert_equal 'http://example.com/index.php?pram1=one&pram2=two', premailer.processed_doc.at('a')['href']
 
     html = "<a href='http://example.com/index.php?pram1=one&pram2=two'>Link</a>"
-    premailer = Premailer.new(html.to_s, :link_query_string => 'qs', :with_html_string => true)
+    premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :link_query_string => 'qs', :with_html_string => true)
     premailer.to_inline_css
 
     assert_equal 'http://example.com/index.php?pram1=one&pram2=two&amp;qs', premailer.processed_doc.at('a')['href']
@@ -166,7 +166,7 @@ class TestLinks < Premailer::TestCase
     ]
 
     html = convertable.collect {|url| "<a href='#{url}'>Link</a>" }
-    premailer = Premailer.new(html.to_s, :base_url => "http://example.com", :with_html_string => true)
+    premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "http://example.com", :with_html_string => true)
 
     premailer.processed_doc.search('a').each do |el|
       href = el.attributes['href'].to_s
@@ -192,7 +192,7 @@ class TestLinks < Premailer::TestCase
 
     html = not_convertable.collect {|url| "<a href='#{url}'>Link</a>" }
 
-    premailer = Premailer.new(html.to_s, :base_url => "example.com", :with_html_string => true)
+    premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "example.com", :with_html_string => true)
     premailer.to_inline_css
 
     premailer.processed_doc.search('a').each do |el|
