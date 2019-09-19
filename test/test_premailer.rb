@@ -38,6 +38,13 @@ class TestPremailer < Premailer::TestCase
     end
   end
 
+  def test_detecting_plain_text
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      remote_setup('plain.txt', :adapter => adapter)
+      refute @premailer.is_xhtml?, "Using: #{adapter}"
+    end
+  end
+
   def test_self_closing_xhtml_tags
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('xhtml.html', :adapter => adapter)
