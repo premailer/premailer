@@ -8,4 +8,8 @@ platforms :jruby do
   gem 'jruby-openssl'
 end
 
+group :development, :test do
+  gem 'pry'
+end
+
 gemspec

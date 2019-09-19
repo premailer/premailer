@@ -5,11 +5,10 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.email    = "akzhan.abdulin@gmail.com"
   s.homepage = "https://github.com/premailer/premailer"
   s.description = "Improve the rendering of HTML emails by making CSS inline, converting links and warning about unsupported code."
-  s.has_rdoc = true
   s.author  = "Alex Dunae"
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
-  s.required_ruby_version = '>= 2.1.0'
+  s.required_ruby_version = '>= 2.3.0'
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
 
   s.add_runtime_dependency('css_parser', '>= 1.6.0')
