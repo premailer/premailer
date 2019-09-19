@@ -5,6 +5,11 @@ require 'htmlentities'
 module HtmlToPlainText
 
   # Returns the text in UTF-8 format with all HTML tags removed
+  #   
+  # HTML content can be omitted from the output by surrounding it in the following comments:   
+  #
+  # <!-- start text/html -->
+  # <!-- end text/html -->
   #
   # TODO: add support for DL, OL
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
