@@ -151,14 +151,14 @@ class Premailer
   #
   # @param [Hash] options the options to handle html with.
   # @option options [Fixnum] :line_length Line length used by to_plain_text. Default is 65.
-  # @option options [Fixnum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}).
+  # @option options [Fixnum] :warn_level What level of CSS compatibility warnings to show (see {Premailer::Warnings}, default is Warnings::SAFE).
   # @option options [String] :link_query_string A string to append to every <tt>a href=""</tt> link. Do not include the initial <tt>?</tt>.
   # @option options [String] :base_url Used to calculate absolute URLs for local files.
   # @option options [Array(String)] :css Manually specify CSS stylesheets.
-  # @option options [Boolean] :css_to_attributes Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
+  # @option options [Boolean] :css_to_attributes Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor). Default is true.
   # @option options [Boolean] :preserve_style_attribute Preserve original style attribute
   # @option options [String] :css_string Pass CSS as a string
-  # @option options [Boolean] :rgb_to_hex_attributes Convert RBG to Hex colors, default false
+  # @option options [Boolean] :rgb_to_hex_attributes Convert RBG to Hex colors. Default is false.
   # @option options [Boolean] :remove_ids Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs.  Default is false.
   # @option options [Boolean] :remove_classes Remove class attributes. Default is false.
   # @option options [Boolean] :remove_comments Remove html comments. Default is false.
