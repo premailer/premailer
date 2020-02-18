@@ -79,3 +79,6 @@ DEPENDENCIES
   rake (> 0.8, != 0.9.0)
   redcarpet (~> 3.0)
   webmock
+
+BUNDLED WITH
+   2.1.2
