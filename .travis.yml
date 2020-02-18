@@ -5,6 +5,7 @@ matrix:
   fast_finish: true
 language: ruby
 before_install:
+  - gem update --system
   - gem update bundler
 rvm:
   - 2.3
