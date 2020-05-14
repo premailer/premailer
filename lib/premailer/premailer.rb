@@ -178,6 +178,7 @@ class Premailer
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
   # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
   # @option options [Boolean] :html_fragment Handle HTML fragment without any HTML content wrappers. Default is false.
+  # @option options [Boolean] :drop_unmergeable_css_rules Do not include unmergeable css rules in a <tt><style><tt> tag. Default is false.  
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
@@ -209,6 +210,7 @@ class Premailer
                 :create_shorthands => true,
                 :html_fragment => false,
                 :adapter => Adapter.use,
+                :drop_unmergeable_css_rules => false
                 }.merge(options)
 
     @html_file = html
