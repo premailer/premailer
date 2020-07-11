@@ -97,6 +97,19 @@ will result in
 <table cellspacing='5' width='500'>
 ```
 
+## Configuration options
+
+The behavior of Premailer can be configured by passing options in the initializer.
+
+For example, the following will accept HTML from a string and will exclude unmergeable css from being added to the `<head>` of the output document.
+
+```ruby
+premailer = Premailer.new(html_string, with_html_string: true, drop_unmergeable_css_rules: true)
+```
+
+[See here for a full list of the available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method).
+
+
 ## Contributions
 
 Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Fork and patch to your heart's content.  Please don't increment the version numbers, though.
