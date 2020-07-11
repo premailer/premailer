@@ -1,7 +1,6 @@
 require 'bundler/setup'
 require 'rake/testtask'
 require "bundler/gem_tasks"
-require 'yard'
 require 'bump/tasks'
 
 GEM_ROOT = File.dirname(__FILE__).freeze  unless defined?(GEM_ROOT)
@@ -55,10 +54,6 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/test_*.rb']
   t.verbose = false
   t.warning = false
-end
-
-YARD::Rake::YardocTask.new do |yard|
-  yard.options << "--title='Premailer #{Premailer::VERSION} Documentation'"
 end
 
 task :default => [:test]

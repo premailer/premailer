@@ -17,7 +17,6 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_development_dependency "bundler", ">= 1.3"
   s.add_development_dependency('rake', ['> 0.8',  '!= 0.9.0'])
   s.add_development_dependency('nokogiri', '~> 1.8.2')
-  s.add_development_dependency('yard', '~> 0.9.11')
   s.add_development_dependency('redcarpet', '~> 3.0')
   s.add_development_dependency('maxitest')
   s.add_development_dependency('coveralls')
