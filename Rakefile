@@ -2,6 +2,7 @@ require 'bundler/setup'
 require 'rake/testtask'
 require "bundler/gem_tasks"
 require 'yard'
+require 'bump/tasks'
 
 GEM_ROOT = File.dirname(__FILE__).freeze  unless defined?(GEM_ROOT)
 

@@ -23,5 +23,6 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_development_dependency('coveralls')
   s.add_development_dependency('webmock')
   s.add_development_dependency('nokogumbo')
+  s.add_development_dependency('bump')
 end
 
