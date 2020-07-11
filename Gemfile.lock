@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    premailer (1.11.1)
+    premailer (1.12.0)
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
