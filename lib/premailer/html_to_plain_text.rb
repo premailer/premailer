@@ -5,8 +5,8 @@ require 'htmlentities'
 module HtmlToPlainText
 
   # Returns the text in UTF-8 format with all HTML tags removed
-  #   
-  # HTML content can be omitted from the output by surrounding it in the following comments:   
+  #
+  # HTML content can be omitted from the output by surrounding it in the following comments:
   #
   # <!-- start text/html -->
   # <!-- end text/html -->
@@ -26,14 +26,14 @@ module HtmlToPlainText
     # eg. the following formats:
     # <img alt="" />
     # <img alt="">
-    txt.gsub!(/<img.+?alt=\"([^\"]*)\"[^>]*\>/i, '\1')
+    txt.gsub!(/<img[^>]+?alt=\"([^\"]*)\"[^>]*\>/i, '\1')
 
     # for img tags with '' for attribute quotes
     # with or without closing tag
     # eg. the following formats:
     # <img alt='' />
     # <img alt=''>
-    txt.gsub!(/<img.+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
+    txt.gsub!(/<img[^>]+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
 
     # remove script tags and content
     txt.gsub!(/<script.*\/script>/m, '')
