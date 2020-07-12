@@ -1,5 +1,8 @@
 ## Premailer CHANGELOG
 
+### Version 1.12.1
+* Fix greedy script regex.
+
 ### Version 1.11.1
 * Fix input encoding in nokogiri adapters.
 
