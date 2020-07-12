@@ -12,6 +12,7 @@ module HtmlToPlainText
   # <!-- end text/html -->
   #
   # TODO: add support for DL, OL
+  # TODO: this is not safe and needs a real html parser to work
   def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
     txt = html
 
@@ -26,17 +27,17 @@ module HtmlToPlainText
     # eg. the following formats:
     # <img alt="" />
     # <img alt="">
-    txt.gsub!(/<img[^>]+?alt=\"([^\"]*)\"[^>]*\>/i, '\1')
+    txt.gsub!(/<img[^>]+?alt="([^"]*)"[^>]*>/i, '\1')
 
     # for img tags with '' for attribute quotes
     # with or without closing tag
     # eg. the following formats:
     # <img alt='' />
     # <img alt=''>
-    txt.gsub!(/<img[^>]+?alt=\'([^\']*)\'[^>]*\>/i, '\1')
+    txt.gsub!(/<img[^>]+?alt='([^']*)'[^>]*>/i, '\1')
 
     # remove script tags and content
-    txt.gsub!(/<script.*\/script>/m, '')
+    txt.gsub!(/<script.*?\/script>/m, '')
 
     # links with double quotes
     txt.gsub!(/<a\s[^\n]*?href=["'](mailto:)?([^"]*)["][^>]*>(.*?)<\/a>/im) do |s|
@@ -75,12 +76,12 @@ module HtmlToPlainText
       hlength = line_length if hlength > line_length
 
       case hlevel
-        when 1   # H1, asterisks above and below
-          htext = ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength)
-        when 2   # H1, dashes above and below
-          htext = ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength)
-        else     # H3-H6, dashes below
-          htext = htext + "\n" + ('-' * hlength)
+      when 1   # H1, asterisks above and below
+        htext = ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength)
+      when 2   # H1, dashes above and below
+        htext = ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength)
+      else     # H3-H6, dashes below
+        htext = htext + "\n" + ('-' * hlength)
       end
 
       "\n\n" + htext + "\n\n"
