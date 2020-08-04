@@ -206,7 +206,7 @@ class Premailer
           @base_dir = File.dirname(input)
           thing = File.open(input, 'r')
         else
-          thing = open(input)
+          thing = URI.open(input)
         end
 
         if thing.respond_to?(:read)
