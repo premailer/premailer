@@ -309,7 +309,7 @@ protected
               link_uri = File.join(File.dirname(@html_file), tag.attributes['href'].to_s.sub!(@base_url.to_s, ''))
             end
             # if the file does not exist locally, try to grab the remote reference
-            unless File.exists?(link_uri)
+            unless File.exist?(link_uri)
               link_uri = Premailer.resolve_link(tag.attributes['href'].to_s, @html_file)
             end
           else
