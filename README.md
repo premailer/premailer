@@ -68,7 +68,7 @@ Premailer::Adapter.use = :nokogiri_fast
 
 ## Ruby Compatibility
 
-Premailer is tested on Ruby 2.1 and above. JRuby support is close; contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
+See .travis.yml for which ruby versions are tested. JRuby support is close, contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
 
 ## Premailer-specific CSS
 
