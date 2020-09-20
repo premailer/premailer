@@ -80,7 +80,7 @@ class Premailer
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_att, html_att|
               if el[html_att].nil? and not merged[css_att].empty?
                 new_html_att = merged[css_att].gsub(/url\(['"](.*)['"]\)/, '\1').gsub(/;$|\s*!important/, '').strip
-                new_html_att = new_html_att.gsub(/(\d+)px/, '\1') if css_att.in?(%w[width height])
+                new_html_att = new_html_att.gsub(/(\d+)px/, '\1') if %w[width height].include?(css_att)
                 el[html_att] = css_att.end_with?('color') && @options[:rgb_to_hex_attributes] ? ensure_hex(new_html_att) : new_html_att
               end
               unless @options[:preserve_style_attribute]
