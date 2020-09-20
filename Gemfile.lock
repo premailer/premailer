@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    premailer (1.13.1)
+    premailer (1.14.0)
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
