@@ -1,10 +1,13 @@
 ## Premailer CHANGELOG
 
+### Verion 1.14.0
+* Convert inline html 100px to 100
+
 ### Verion 1.13.1
 * Replace deprecated File.exists? with File.exist? (fixes Ruby 2.8 deprecation warning)
 
 ### Verion 1.13.0
-* Fix URI.open deprecation warnings 
+* Fix URI.open deprecation warnings
 
 ### Version 1.12.1
 * Fix greedy script regex.
