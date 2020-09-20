@@ -88,7 +88,7 @@ class Premailer
                 new_val.gsub!(/;$|\s*!important/, '').strip!
 
                 # For width and height tags, remove px units
-                new_val.gsub!(/(\d+)px/, '\1') if %w[width height].include?(css_attr)
+                new_val.gsub!(/(\d+)px/, '\1') if %w[width height].include?(html_attr)
 
                 # For color-related tags, convert RGB to hex if specified by options
                 new_val = ensure_hex(new_val) if css_attr.end_with?('color') && @options[:rgb_to_hex_attributes]

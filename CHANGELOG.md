@@ -1,5 +1,8 @@
 ## Premailer CHANGELOG
 
+### Verion 1.14.1
+* Fix to converting inline html 100px to 100
+
 ### Verion 1.14.0
 * Convert inline html 100px to 100
 
