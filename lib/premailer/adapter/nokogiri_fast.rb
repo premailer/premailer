@@ -82,7 +82,7 @@ class Premailer
                 new_val = merged[css_attr].dup
 
                 # Remove url() function wrapper
-                new_val.gsub!(/url\(['"](.*)['"]\)/, '\1')
+                new_val.gsub!(/url\((['"])(.*?)\1\)/, '\2')
 
                 # Remove !important, trailing semi-colon, and leading/trailing whitespace
                 new_val.gsub!(/;$|\s*!important/, '').strip!
