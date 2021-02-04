@@ -178,7 +178,7 @@ class Premailer
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
   # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
   # @option options [Boolean] :html_fragment Handle HTML fragment without any HTML content wrappers. Default is false.
-  # @option options [Boolean] :drop_unmergeable_css_rules Do not include unmergeable css rules in a <tt><style><tt> tag. Default is false.  
+  # @option options [Boolean] :drop_unmergeable_css_rules Do not include unmergeable css rules in a <tt><style><tt> tag. Default is false.
   def initialize(html, options = {})
     @options = {:warn_level => Warnings::SAFE,
                 :line_length => 65,
@@ -499,14 +499,8 @@ public
   def self.canonicalize(uri) # :nodoc:
     u = uri.kind_of?(Addressable::URI) ? uri : Addressable::URI.parse(uri.to_s)
     u.normalize!
-    newpath = u.path
-    while newpath.gsub!(%r{([^/]+)/\.\./?}) { |match|
-        $1 == '..' ? match : ''
-      } do end
-      newpath = newpath.gsub(%r{/\./}, '/').sub(%r{/\.\z}, '/')
-      u.path = newpath
-      u.to_s
-    end
+    u.to_s
+  end
 
   # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
   def check_client_support # :nodoc:
