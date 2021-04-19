@@ -1,5 +1,8 @@
 ## Premailer CHANGELOG
 
+### Verion 1.14.3
+* add existing license to gemspec
+
 ### Verion 1.14.2
 * fix greedy url() parsing
 
