@@ -5,6 +5,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.email    = "akzhan.abdulin@gmail.com"
   s.homepage = "https://github.com/premailer/premailer"
   s.description = "Improve the rendering of HTML emails by making CSS inline, converting links and warning about unsupported code."
+  s.license = "BSD-3-Clause"
   s.author  = "Alex Dunae"
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
