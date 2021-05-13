@@ -42,13 +42,10 @@ module HtmlToPlainText
     # links
     txt.gsub!(/<a\s+([^>]+)>(.*?)<\/a>/im) do |s|
       text = $2.strip
-      href = nil
 
-      ["'", '"'].each() do |quote_char|
-        match = /href=#{quote_char}(mailto:)?([^#{quote_char}]*)#{quote_char}/.match(s)
-        if !match.nil?
-          href = match[2]
-        end
+      match = /href=(['"])(?:mailto:)?(.+?)\1/.match(s)
+      if match
+        href = match[2]
       end
 
       if text.empty?
