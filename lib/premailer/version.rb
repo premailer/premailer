@@ -1,4 +1,4 @@
 class Premailer
   # Premailer version.
-  VERSION = '1.14.3'.freeze
+  VERSION = '1.15.0'.freeze
 end

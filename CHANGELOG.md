@@ -1,5 +1,8 @@
 ## Premailer CHANGELOG
 
+### Verion 1.15.0
+* improve a href parsing
+
 ### Verion 1.14.3
 * add existing license to gemspec
 
