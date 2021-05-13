@@ -222,6 +222,15 @@ END_HTML
     HTML
   end
 
+  def test_link_with_no_href
+    assert_plaintext 'foobar ( http://example.com/ )', '<a>foo</a><a href="http://example.com/">bar</a>'
+    assert_plaintext 'foobar ( http://example.com/ )', "<a>foo</a><a href='http://example.com/'>bar</a>"
+    assert_plaintext 'foobar ( http://example.com/ )', '<a attr="attr">foo</a><a href="http://example.com/">bar</a>'
+    assert_plaintext 'foobar ( http://example.com/ )', '<a attr=\'attr\'>foo</a><a href="http://example.com/">bar</a>'
+    assert_plaintext 'foobar ( http://example.com/ )', "<a attr='attr'>foo</a><a href='http://example.com/'>bar</a>"
+    assert_plaintext 'foobar ( http://example.com/ )', "<a attr=\"attr\">foo</a><a href='http://example.com/'>bar</a>"
+  end
+
   def assert_plaintext(out, raw, msg = nil, line_length = 65)
     assert_equal out, convert_to_text(raw, line_length), msg
   end
