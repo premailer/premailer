@@ -40,7 +40,7 @@ module HtmlToPlainText
     txt.gsub!(/<script.*?\/script>/m, '')
 
     # links
-    txt.gsub!(/<a[\s]+([^>]+)>((?:.(?!\<\/a\>))*.)<\/a>/im) do |s|
+    txt.gsub!(/<a\s+([^>]+)>(.*?)<\/a>/im) do |s|
       text = $2.strip
       href = nil
 
