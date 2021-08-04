@@ -193,7 +193,7 @@ class Premailer
                 :reset_contenteditable => true,
                 :css => [],
                 :css_to_attributes => true,
-                :preserve_style_attribute => false,
+                :preserve_style_attribute => true,
                 :with_html_string => false,
                 :css_string => nil,
                 :preserve_styles => false,
