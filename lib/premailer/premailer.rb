@@ -97,6 +97,7 @@ class Premailer
     'td' => {
       'text-align' => 'align',
       'background-color' => 'bgcolor',
+      'background-image' => 'background',
       'vertical-align' => 'valign',
       '-premailer-width' => 'width',
       '-premailer-height' => 'height'
