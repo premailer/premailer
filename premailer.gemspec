@@ -15,6 +15,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_runtime_dependency('css_parser', '>= 1.6.0')
   s.add_runtime_dependency('htmlentities', ['>= 4.0.0'])
   s.add_runtime_dependency 'addressable'
+  s.add_runtime_dependency 'rexml'
   s.add_development_dependency "bundler", ">= 1.3"
   s.add_development_dependency('rake', ['> 0.8',  '!= 0.9.0'])
   s.add_development_dependency('nokogiri', '~> 1.8.2')

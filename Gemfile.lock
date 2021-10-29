@@ -5,6 +5,7 @@ PATH
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
+      rexml
 
 GEM
   remote: https://rubygems.org/
@@ -42,6 +43,7 @@ GEM
     public_suffix (4.0.1)
     rake (12.3.3)
     redcarpet (3.5.0)
+    rexml (3.2.5)
     safe_yaml (1.0.5)
     simplecov (0.16.1)
       docile (~> 1.1)
@@ -75,4 +77,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.1.4
+   2.2.22
