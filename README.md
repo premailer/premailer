@@ -1,4 +1,4 @@
-# Premailer README [![Build Status](https://travis-ci.org/premailer/premailer.svg?branch=master)](https://travis-ci.org/premailer/premailer) [![Gem Version](https://badge.fury.io/rb/premailer.svg)](https://badge.fury.io/rb/premailer)
+# Premailer README [![CI](https://github.com/premailer/premailer/actions/workflows/actions.yml/badge.svg)](https://github.com/premailer/premailer/actions/workflows/actions.yml) [![Gem Version](https://badge.fury.io/rb/premailer.svg)](https://badge.fury.io/rb/premailer)
 
 ## What is this?
 
@@ -68,7 +68,7 @@ Premailer::Adapter.use = :nokogiri_fast
 
 ## Ruby Compatibility
 
-See .travis.yml for which ruby versions are tested. JRuby support is close, contributors are welcome.  Checkout the latest build status on the [Travis CI dashboard](https://travis-ci.org/#!/premailer/premailer).
+See .github/workflows/actions.yml for which ruby versions are tested. JRuby support is close, contributors are welcome.
 
 ## Premailer-specific CSS
 
