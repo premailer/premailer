@@ -124,6 +124,16 @@ END_HTML
     end
   end
 
+  def test_border_width
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      html = '<style>.card { border-width: 1px; }</style>' \
+        '<table><td class="card">Hello</td></table>'
+      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => false})
+      premailer.to_inline_css
+      assert_match /border-width: 1px/, premailer.processed_doc.at_css('td').attributes['style'].to_s, "Using: #{adapter}"
+    end
+  end
+
   def test_importing_remote_css
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('base.html', :adapter => adapter)
