@@ -1,6 +1,6 @@
 require 'yaml'
 require 'open-uri'
-require 'digest/md5'
+require 'digest/sha2'
 require 'cgi'
 require 'addressable/uri'
 require 'css_parser'

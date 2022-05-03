@@ -125,13 +125,13 @@ class Premailer
           doc.search("a[@href^='#']").each do |el|
             target = el.get_attribute('href')[1..-1]
             targets << target
-            el.set_attribute('href', "#" + Digest::MD5.hexdigest(target))
+            el.set_attribute('href', "#" + Digest::SHA256.hexdigest(target))
           end
           # hash ids that are links target, delete others
           doc.search("*[@id]").each do |el|
             id = el.get_attribute('id')
             if targets.include?(id)
-              el.set_attribute('id', Digest::MD5.hexdigest(id))
+              el.set_attribute('id', Digest::SHA256.hexdigest(id))
             else
               el.remove_attribute('id')
             end
