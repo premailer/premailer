@@ -33,13 +33,13 @@ GEM
     maxitest (4.1.0)
       minitest (>= 5.0.0, < 5.15.0)
     method_source (1.0.0)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.8.0)
     minitest (5.14.4)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
-    nokogiri (1.8.5-java)
-    nokogumbo (2.0.5)
-      nokogiri (~> 1.8, >= 1.8.4)
+    nokogiri (1.13.4)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    nokogiri (1.13.4-java)
+      racc (~> 1.4)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -48,6 +48,8 @@ GEM
       method_source (~> 1.0)
       spoon (~> 0.0)
     public_suffix (4.0.6)
+    racc (1.6.0)
+    racc (1.6.0-java)
     rake (13.0.6)
     redcarpet (3.5.1)
     rexml (3.2.5)
@@ -79,8 +81,7 @@ DEPENDENCIES
   coveralls
   jruby-openssl
   maxitest
-  nokogiri (~> 1.8.2)
-  nokogumbo
+  nokogiri (~> 1.13)
   premailer!
   pry
   rake (> 0.8, != 0.9.0)
@@ -88,4 +89,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.2.0.rc.2
+   2.3.6

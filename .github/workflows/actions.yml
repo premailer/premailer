@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         task: ["test"]
-        ruby: [ '2.5', '2.6', '2.7', '3.0' ]
+        ruby: [ '2.7', '3.0' ]
     name: ${{ matrix.ruby }} rake ${{ matrix.task }}
     steps:
     - uses: actions/checkout@v2
