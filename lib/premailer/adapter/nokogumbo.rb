@@ -1,5 +1,3 @@
-require 'nokogumbo'
-
 class Premailer
   module Adapter
     # Nokogiri adapter
