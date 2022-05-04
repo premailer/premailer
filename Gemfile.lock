@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    premailer (1.15.0)
+    premailer (1.16.0)
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
@@ -21,7 +21,7 @@ GEM
       tins (~> 1.6)
     crack (0.4.5)
       rexml
-    css_parser (1.10.0)
+    css_parser (1.11.0)
       addressable
     docile (1.4.0)
     ffi (1.15.4-java)
@@ -89,4 +89,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.3.6
+   2.3.12
