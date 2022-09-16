@@ -1,5 +1,8 @@
 ## Premailer CHANGELOG
 
+### Unreleased
+* Support ignoring rule set exceptions from CSS Parser
+
 ### Verion 1.16.0
 * drop ruby 2.5 and 2.6
 * change id generation from MD5 -> SHA-256
