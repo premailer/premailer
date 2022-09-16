@@ -200,6 +200,7 @@ class Premailer
                 :verbose => false,
                 :debug => false,
                 :io_exceptions => false,
+                :rule_set_exceptions => true,
                 :include_link_tags => true,
                 :include_style_tags => true,
                 :input_encoding => 'ASCII-8BIT',
@@ -233,7 +234,8 @@ class Premailer
     @css_parser = CssParser::Parser.new({
       :absolute_paths => true,
       :import => true,
-      :io_exceptions => @options[:io_exceptions]
+      :io_exceptions => @options[:io_exceptions],
+      :rule_set_exceptions => @options[:rule_set_exceptions]
     })
 
     @adapter_class = Adapter.find @options[:adapter]
