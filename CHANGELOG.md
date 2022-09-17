@@ -1,6 +1,8 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+
+### Verion 1.17.0
 * Support ignoring rule set exceptions from CSS Parser
 
 ### Verion 1.16.0
