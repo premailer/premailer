@@ -395,4 +395,25 @@ END_HTML
   ensure
     $stderr = orig_stderr
   end
+
+
+  def test_invalid_css
+    html = <<-END_HTML
+      <html><head> <style type="text/css">
+        h1 {
+          color: !important;
+        }
+      </style></head><body>
+        <div style="color: !important;">Test</div>
+      </body></html>
+    END_HTML
+
+    assert_raises(ArgumentError) do
+      pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+      pm.to_inline_css
+    end
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri, rule_set_exceptions: false)
+    pm.to_inline_css
+  end
 end
