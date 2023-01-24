@@ -231,11 +231,6 @@ class Premailer
             thing.gsub! entity, replacement
           end
         end
-        # Default encoding is ASCII-8BIT (binary) per http://groups.google.com/group/nokogiri-talk/msg/0b81ef0dc180dc74
-        # However, we really don't want to hardcode this. ASCII-8BIT should be the default, but not the only option.
-        if thing.is_a?(String) and RUBY_VERSION =~ /1.9/
-          thing = thing.force_encoding(@options[:input_encoding]).encode!
-        end
         doc = if @options[:html_fragment]
           ::Nokogiri::HTML5.fragment(thing)
         else
