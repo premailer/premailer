@@ -507,8 +507,8 @@ public
 
   # Check <tt>CLIENT_SUPPORT_FILE</tt> for any CSS warnings
   def check_client_support # :nodoc:
-    kwargs = RUBY_VERSION >= "3.1.0" ? { aliases: true } : {}
-    @client_support ||= YAML::load(File.open(CLIENT_SUPPORT_FILE), **kwargs)
+    kwargs = Psych::VERSION >= '4' ? { aliases: true } : {}
+    @client_support ||= Psych.load(File.open(CLIENT_SUPPORT_FILE), **kwargs)
 
     warnings = []
     properties = []
