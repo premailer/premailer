@@ -404,7 +404,8 @@ END_HTML
           color: !important;
         }
       </style></head><body>
-        <div style="color: !important;">Test</div>
+        <div style="color: !important;">Test no color</div>
+        <div style="margin: 0px 0px 0px 0 px;">Test invalid margin</div>
       </body></html>
     END_HTML
 

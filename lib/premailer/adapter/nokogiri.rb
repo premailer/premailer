@@ -73,7 +73,11 @@ class Premailer
 
           # Perform style folding
           merged = CssParser.merge(declarations)
-          merged.expand_shorthand!
+          begin
+            merged.expand_shorthand!
+          rescue ArgumentError => e
+            raise e if @options[:rule_set_exceptions]
+          end
 
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.has_key?(el.name) && @options[:css_to_attributes]
