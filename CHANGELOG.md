@@ -2,32 +2,41 @@
 
 ### Unreleased
 
-### Verion 1.17.0
+### Version 1.20.0
+* Catch errors during expand_shorthand and handle using rule_set_exceptions
+
+### Version 1.19.0
+* Conditionally set YAML loading arguments based on psych gem version
+
+### Version 1.18.0
+* Use new rule_set_exceptions in nokogiri adapter to swallow invalid css errors silently
+
+### Version 1.17.0
 * Support ignoring rule set exceptions from CSS Parser
 
-### Verion 1.16.0
+### Version 1.16.0
 * drop ruby 2.5 and 2.6
 * change id generation from MD5 -> SHA-256
 
-### Verion 1.15.0
+### Version 1.15.0
 * improve a href parsing
 
-### Verion 1.14.3
+### Version 1.14.3
 * add existing license to gemspec
 
-### Verion 1.14.2
+### Version 1.14.2
 * fix greedy url() parsing
 
-### Verion 1.14.1
+### Version 1.14.1
 * Fix to converting inline html 100px to 100
 
-### Verion 1.14.0
+### Version 1.14.0
 * Convert inline html 100px to 100
 
-### Verion 1.13.1
+### Version 1.13.1
 * Replace deprecated File.exists? with File.exist? (fixes Ruby 2.8 deprecation warning)
 
-### Verion 1.13.0
+### Version 1.13.0
 * Fix URI.open deprecation warnings
 
 ### Version 1.12.1
