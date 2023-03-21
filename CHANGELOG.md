@@ -1,6 +1,7 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+* Use rule_set_exceptions in nokogiri_fast and nokogumbo adapters
 
 ### Version 1.20.0
 * Catch errors during expand_shorthand and handle using rule_set_exceptions
