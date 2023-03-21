@@ -397,7 +397,7 @@ END_HTML
   end
 
 
-  def test_invalid_css
+  def test_invalid_css_nokogiri
     html = <<-END_HTML
       <html><head> <style type="text/css">
         h1 {
@@ -417,7 +417,7 @@ END_HTML
     pm.to_inline_css
   end
 
-  def test_invalid_shorthand_css
+  def test_invalid_shorthand_css_nokogiri
     html = <<-END_HTML
       <html><head></head><body>
       <div style="margin: 0px 0px 0px 0 px;">Test invalid margin</div>
@@ -430,6 +430,78 @@ END_HTML
     end
 
     pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri, rule_set_exceptions: false)
+    pm.to_inline_css
+  end
+
+  def test_invalid_css_nokogiri_fast
+    html = <<-END_HTML
+      <html><head> <style type="text/css">
+        h1 {
+          color: !important;
+        }
+      </style></head><body>
+        <div style="color: !important;">Test no color</div>
+      </body></html>
+    END_HTML
+
+    assert_raises(ArgumentError) do
+      pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri_fast)
+      pm.to_inline_css
+    end
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri_fast, rule_set_exceptions: false)
+    pm.to_inline_css
+  end
+
+  def test_invalid_shorthand_css_nokogiri_fast
+    html = <<-END_HTML
+      <html><head></head><body>
+      <div style="margin: 0px 0px 0px 0 px;">Test invalid margin</div>
+      </body></html>
+    END_HTML
+
+    assert_raises(ArgumentError) do
+      pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri_fast)
+      pm.to_inline_css
+    end
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri_fast, rule_set_exceptions: false)
+    pm.to_inline_css
+  end
+
+  def test_invalid_css_nokogumbo
+    html = <<-END_HTML
+      <html><head> <style type="text/css">
+        h1 {
+          color: !important;
+        }
+      </style></head><body>
+        <div style="color: !important;">Test no color</div>
+      </body></html>
+    END_HTML
+
+    assert_raises(ArgumentError) do
+      pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogumbo)
+      pm.to_inline_css
+    end
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogumbo, rule_set_exceptions: false)
+    pm.to_inline_css
+  end
+
+  def test_invalid_shorthand_css_nokogumbo
+    html = <<-END_HTML
+      <html><head></head><body>
+      <div style="margin: 0px 0px 0px 0 px;">Test invalid margin</div>
+      </body></html>
+    END_HTML
+
+    assert_raises(ArgumentError) do
+      pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogumbo)
+      pm.to_inline_css
+    end
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogumbo, rule_set_exceptions: false)
     pm.to_inline_css
   end
 end

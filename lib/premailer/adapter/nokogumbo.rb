@@ -61,13 +61,21 @@ class Premailer
 
           declarations = []
           style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
-            rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
-            declarations << rs
+            begin
+              rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
+              declarations << rs
+            rescue ArgumentError => e
+              raise e if @options[:rule_set_exceptions]
+            end
           end
 
           # Perform style folding
           merged = CssParser.merge(declarations)
-          merged.expand_shorthand!
+          begin
+            merged.expand_shorthand!
+          rescue ArgumentError => e
+            raise e if @options[:rule_set_exceptions]
+          end
 
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.has_key?(el.name) && @options[:css_to_attributes]
