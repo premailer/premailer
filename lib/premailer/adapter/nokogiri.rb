@@ -65,6 +65,7 @@ class Premailer
           style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
             begin
               rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
+              rs.expand_shorthand! # skip rulesets that will raise in CssParser.merge where they are not rescued
               declarations << rs
             rescue ArgumentError => e
               raise e if @options[:rule_set_exceptions]
