@@ -396,7 +396,6 @@ END_HTML
     $stderr = orig_stderr
   end
 
-
   def test_invalid_css_nokogiri
     html = <<-END_HTML
       <html><head> <style type="text/css">
@@ -405,6 +404,26 @@ END_HTML
         }
       </style></head><body>
         <div style="color: !important;">Test no color</div>
+      </body></html>
+    END_HTML
+
+    assert_raises(ArgumentError) do
+      pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
+      pm.to_inline_css
+    end
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri, rule_set_exceptions: false)
+    pm.to_inline_css
+  end
+
+  def test_invalid_wildcard_css_in_head_nokogiri
+    html = <<-END_HTML
+      <html><head> <style type="text/css">
+        * {
+          margin:0px 0px 10px ! 0px;
+        }
+      </style></head><body>
+        <div style="margin:0px 0px 10px ! 0px;"></div>
       </body></html>
     END_HTML
 
