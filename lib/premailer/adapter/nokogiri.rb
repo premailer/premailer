@@ -61,19 +61,20 @@ class Premailer
         doc.search("*[@style]").each do |el|
           style = el.attributes['style'].to_s
 
-          declarations = []
-          style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
-            begin
-              rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
-              rs.expand_shorthand! # skip rulesets that will raise in CssParser.merge where they are not rescued
-              declarations << rs
-            rescue ArgumentError => e
-              raise e if @options[:rule_set_exceptions]
-            end
+          declarations = style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).filter_map do |declaration|
+            CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
+          rescue ArgumentError => e
+            raise e if @options[:rule_set_exceptions]
           end
 
           # Perform style folding
-          merged = CssParser.merge(declarations)
+          merged = begin
+            CssParser.merge(declarations)
+          rescue ArgumentError => e
+            raise e if @options[:rule_set_exceptions]
+            Premailer::RuleSet.new(nil, nil)
+          end
+
           begin
             merged.expand_shorthand!
           rescue ArgumentError => e
