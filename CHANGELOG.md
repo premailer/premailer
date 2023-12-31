@@ -2,6 +2,9 @@
 
 ### Unreleased
 
+### Version 1.22.0
+* Use rule_set_exceptions in for expand_shorthand!
+
 ### Version 1.21.0
 * Use rule_set_exceptions in nokogiri_fast and nokogumbo adapters
 
