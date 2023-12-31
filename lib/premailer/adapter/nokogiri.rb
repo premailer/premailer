@@ -61,14 +61,12 @@ class Premailer
         doc.search("*[@style]").each do |el|
           style = el.attributes['style'].to_s
 
-          declarations = []
-          style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).each do |declaration|
-            begin
-              rs = CssParser::RuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
-              declarations << rs
-            rescue ArgumentError => e
-              raise e if @options[:rule_set_exceptions]
-            end
+          declarations = style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).filter_map do |declaration|
+            rs = Premailer::CachedRuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
+            rs.expand_shorthand!
+            rs
+          rescue ArgumentError => e
+            raise e if @options[:rule_set_exceptions]
           end
 
           # Perform style folding
