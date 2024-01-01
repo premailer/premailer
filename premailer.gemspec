@@ -11,6 +11,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.executables      = ['premailer']
   s.required_ruby_version = '>= 2.7.0'
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
+  s.metadata['rubygems_mfa_required'] = 'true'
 
   s.add_runtime_dependency 'css_parser', '>= 1.12.0'
   s.add_runtime_dependency 'htmlentities', ['>= 4.0.0']
