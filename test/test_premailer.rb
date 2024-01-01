@@ -9,11 +9,10 @@ class TestPremailer < Premailer::TestCase
     assert_equal 'c&Atilde;&copy;dille c&eacute; &amp; gar&Atilde;&sect;on gar&ccedil;on &Atilde;&nbsp; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
   end
 
-  # TODO: assertion is not correct see https://github.com/premailer/premailer/issues/430
   def test_special_characters_nokogiri_remote
     remote_setup('chars.html', :adapter => :nokogiri)
     @premailer.to_inline_css
-    assert_equal 'c&Atilde;&copy;dille c&eacute; &amp; gar&Atilde;&sect;on gar&ccedil;on &Atilde;&nbsp; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
+    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
   end
 
   #def test_cyrillic_nokogiri_remote
