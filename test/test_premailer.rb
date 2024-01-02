@@ -17,6 +17,13 @@ class TestPremailer < Premailer::TestCase
     assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
   end
 
+  def test_utf8_encoding
+    html = "<p>é &nbsp; &copy;</p>"
+    premailer = Premailer.new(html, with_html_string: true, adapter: :nokogiri, input_encoding: 'UTF-8')
+    premailer.to_inline_css
+    assert_equal 'é   ©', premailer.processed_doc.at('p').inner_html
+  end
+
   #def test_cyrillic_nokogiri_remote
   #  if RUBY_VERSION =~ /1.9/
   #    remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
