@@ -1,19 +1,27 @@
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestPremailer < Premailer::TestCase
-  # TODO: assertion is not correct see https://github.com/premailer/premailer/issues/430
   def test_special_characters_nokogiri
-    html = 	'<p>cédille c&eacute; & garçon gar&#231;on à &agrave; &nbsp; &amp; &copy;</p>'
+    # Force encoding to ISO-8859 because strings are encoded to UTF-8 by default.
+    # This allows the Nokogiri adapter to use html entities, like `&eacute;`
+    # instead of `é` (`\xe9`).
+    html = "<p>c\xe9dille c&eacute; & gar\xe7on gar&#231;on \xe0 &agrave; &nbsp; &amp; &copy;</p>".dup.force_encoding('iso-8859-1')
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
     premailer.to_inline_css
-    assert_equal 'c&Atilde;&copy;dille c&eacute; &amp; gar&Atilde;&sect;on gar&ccedil;on &Atilde;&nbsp; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
+    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
   end
 
-  # TODO: assertion is not correct see https://github.com/premailer/premailer/issues/430
   def test_special_characters_nokogiri_remote
     remote_setup('chars.html', :adapter => :nokogiri)
     @premailer.to_inline_css
-    assert_equal 'c&Atilde;&copy;dille c&eacute; &amp; gar&Atilde;&sect;on gar&ccedil;on &Atilde;&nbsp; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
+    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
+  end
+
+  def test_utf8_encoding
+    html = "<p>é &nbsp; &copy;</p>"
+    premailer = Premailer.new(html, with_html_string: true, adapter: :nokogiri, input_encoding: 'UTF-8')
+    premailer.to_inline_css
+    assert_equal 'é   ©', premailer.processed_doc.at('p').inner_html
   end
 
   #def test_cyrillic_nokogiri_remote
