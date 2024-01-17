@@ -9,7 +9,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.author  = "Alex Dunae"
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
-  s.required_ruby_version = '>= 2.7.0'
+  s.required_ruby_version = '>= 3.0'
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
   s.metadata['rubygems_mfa_required'] = 'true'
 

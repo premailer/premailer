@@ -1,6 +1,7 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+* Drop Ruby 2.7 compatibility
 
 ### Version 1.22.0
 * Use rule_set_exceptions in for expand_shorthand!
