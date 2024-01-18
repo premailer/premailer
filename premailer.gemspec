@@ -18,7 +18,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_runtime_dependency 'addressable'
   s.add_development_dependency "bundler", ">= 1.3"
   s.add_development_dependency 'rake', ['> 0.8',  '!= 0.9.0']
-  s.add_development_dependency 'nokogiri', '~> 1.13'
+  s.add_development_dependency 'nokogiri', '~> 1.16'
   s.add_development_dependency 'redcarpet', '~> 3.0'
   s.add_development_dependency 'maxitest'
   s.add_development_dependency 'coveralls'
