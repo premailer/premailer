@@ -2,6 +2,7 @@
 
 ### Unreleased
 * Drop Ruby 2.7 compatibility
+* Require Nokogiri >= 1.16
 
 ### Version 1.22.0
 * Use rule_set_exceptions in for expand_shorthand!

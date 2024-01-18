@@ -3,18 +3,19 @@ require File.expand_path(File.dirname(__FILE__)) + '/helper'
 class TestPremailer < Premailer::TestCase
   def test_special_characters_nokogiri
     # Force encoding to ISO-8859 because strings are encoded to UTF-8 by default.
-    # This allows the Nokogiri adapter to use html entities, like `&eacute;`
-    # instead of `é` (`\xe9`).
+    # After some recent changes in libxml2 bundled by Nokogiri, some html
+    # entities will be rendered as their ISO-8859-1 representation
     html = "<p>c\xe9dille c&eacute; & gar\xe7on gar&#231;on \xe0 &agrave; &nbsp; &amp; &copy;</p>".dup.force_encoding('iso-8859-1')
     premailer = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri)
     premailer.to_inline_css
-    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', premailer.processed_doc.at('p').inner_html
+    assert_equal "c\xE9dille c\xE9 &amp; gar\xE7on gar\xE7on \xE0 \xE0 \xA0 &amp; \xA9".dup.force_encoding('iso-8859-1'), premailer.processed_doc.at('p').inner_html
   end
 
   def test_special_characters_nokogiri_remote
     remote_setup('chars.html', :adapter => :nokogiri)
     @premailer.to_inline_css
-    assert_equal 'c&eacute;dille c&eacute; &amp; gar&ccedil;on gar&ccedil;on &agrave; &agrave; &nbsp; &amp; &copy;', @premailer.processed_doc.at('p').inner_html
+    # Force encoding to ISO-8859 because strings are encoded to UTF-8 by default.
+    assert_equal "c\xE9dille c\xE9 &amp; gar\xE7on gar\xE7on \xE0 \xE0 \xA0 &amp; \xA9".dup.force_encoding('iso-8859-1'), @premailer.processed_doc.at('p').inner_html
   end
 
   def test_utf8_encoding
