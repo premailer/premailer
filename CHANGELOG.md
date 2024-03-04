@@ -3,6 +3,7 @@
 ### Unreleased
 * Drop Ruby 2.7 compatibility
 * Require Nokogiri >= 1.16
+* Add support for no-comma rgb() functions when `rgb_to_hex_attributes: true`
 
 ### Version 1.22.0
 * Use rule_set_exceptions in for expand_shorthand!

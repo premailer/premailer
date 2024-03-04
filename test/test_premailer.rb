@@ -306,7 +306,48 @@ END_HTML
     pm.to_inline_css
     doc = pm.processed_doc
     assert_equal 'FAFAFA', doc.at('table')['bgcolor']
+  end
 
+  def test_rgb_color_without_commas_and_with_alpha_modifier
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color: rgb(250 250 250 / 1); } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :remove_scripts => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'FAFAFA', doc.at('table')['bgcolor']
+  end
+
+  def test_rgb_color_without_commas_and_with_percentage_modifier
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color: rgb(250 250 250 / 15%); } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :remove_scripts => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'FAFAFA', doc.at('table')['bgcolor']
+  end
+
+  def test_rgb_color_is_not_matched_without_three_color_arguments
+    html = <<-END_HTML
+    <html> <head> <style>table { background-color: rgb(111 222 / 1); } </style>
+    <body>
+    <table> <tr> <td> Test </td> </tr> </table>
+    </body> </html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :rgb_to_hex_attributes => true, :remove_scripts => true, :adapter => :nokogiri)
+    pm.to_inline_css
+    doc = pm.processed_doc
+    assert_equal 'rgb(111 222 / 1)', doc.at('table')['bgcolor']
   end
 
   def test_non_rgb_color
