@@ -97,6 +97,36 @@ will result in
 <table cellspacing='5' width='500'>
 ```
 
+## Plain text version
+
+Premailer can generate a plain text version of your HTML. Links and images will be inlined.
+
+For example
+
+```html
+<a href="https://example.com" >
+  <img src="https://github.com/premailer.png" alt="Premailer Logo" />
+</a>
+```
+
+will become
+
+```text
+Premailer Logo ( https://example.com )
+```
+
+To ignore/omit a section of HTML content from the plain text version, wrap it with the following comments.
+
+```html
+<!-- start text/html -->
+<p>This will be omitted from the plain text version.</p>
+<p>
+  This is extremely helpful for <strong>removing email headers and footers</strong>
+  that aren't needed in the text version.
+</p>
+<!-- end text/html -->
+```
+
 ## Configuration options
 
 The behavior of Premailer can be configured by passing options in the initializer.
