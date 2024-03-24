@@ -4,7 +4,7 @@
 
 For the best HTML e-mail delivery results, CSS should be inline. This is a
 huge pain and a simple newsletter becomes un-managable very quickly. This
-script is my solution.
+gem is a solution.
 
 * CSS styles are converted to inline style attributes
   - Checks `style` and `link[rel=stylesheet]` tags and preserves existing inline attributes
@@ -12,35 +12,26 @@ script is my solution.
   - Checks links in `href`, `src` and CSS `url('')`
 * CSS properties are checked against e-mail client capabilities
   - Based on the Email Standards Project's guides
-* A [plain text version](https://premailer.github.io/premailer/HtmlToPlainText.html) is created (optional)
+* A [plain text version](#plain-text-version) is created (optional)
 
 ## Installation
-
-Install the Premailer gem from RubyGems.
 
 ```bash
 gem install premailer
 ```
-
-or add it to your `Gemfile` and run `bundle`.
 
 ## Example
 
 ```ruby
 require 'premailer'
 
-premailer = Premailer.new('http://example.com/myfile.html', :warn_level => Premailer::Warnings::SAFE)
+premailer = Premailer.new('http://example.com/myfile.html', warn_level: Premailer::Warnings::SAFE)
 
-# Write the plain-text output
-# This must come before to_inline_css (https://github.com/premailer/premailer/issues/201)
-File.open("output.txt", "w") do |fout|
-  fout.puts premailer.to_plain_text
-end
+# Write the plain-text output (must come before to_inline_css)
+File.write "output.txt", premailer.to_plain_text
 
 # Write the HTML output
-File.open("output.html", "w") do |fout|
-  fout.puts premailer.to_inline_css
-end
+File.write "output.html", premailer.to_inline_css
 
 # Output any CSS warnings
 premailer.warnings.each do |w|
@@ -50,17 +41,13 @@ end
 
 ## Adapters
 
-Premailer's default adapter is nokogiri if both nokogiri and nokogumbo are included in the Gemfile list. However, if you want to use a different adapter, you can choose to.
-
-There are three adapters in total (as of premailer 1.10.0)
-
 1. nokogiri (default)
-2. nokogiri_fast
+2. nokogiri_fast (20x speed, more memory)
 3. nokogumbo
 
-hpricot adapter removed due to its EOL, please use `~>1.9.0` version if You still need it..
+(hpricot adapter removed, use `~>1.9.0` version if you need it)
 
-`NokogiriFast` adapter improves the Algorithmic complexity of the running time by 20x with a slight compensation on memory. To switch to any of these adapters, add the following line. For example, if you want to include the `NokogiriFast` adapter,
+Picking an adapter:
 
 ```ruby
 Premailer::Adapter.use = :nokogiri_fast
@@ -129,20 +116,24 @@ To ignore/omit a section of HTML content from the plain text version, wrap it wi
 
 ## Configuration options
 
-The behavior of Premailer can be configured by passing options in the initializer.
-
-For example, the following will accept HTML from a string and will exclude unmergeable css from being added to the `<head>` of the output document.
-
+For example:
 ```ruby
-premailer = Premailer.new(html_string, with_html_string: true, drop_unmergeable_css_rules: true)
+Premailer.new(
+  html, # html as string
+  with_html_string: true,
+  drop_unmergeable_css_rules: true
+)
 ```
 
-[See here for a full list of the available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method).
+[available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
 
 
 ## Contributions
 
-Contributions are most welcome.  Premailer was rotting away in a private SVN repository for too long and could use some TLC.  Fork and patch to your heart's content.  Please don't increment the version numbers, though.
+Contributions are most welcome.
+Premailer was rotting away in a private SVN repository for too long and could use some TLC.
+Fork and patch to your heart's content.
+Please don't increment the version numbers.
 
 A few areas that are particularly in need of love:
 
@@ -159,4 +150,3 @@ and to [Campaign Monitor](https://www.campaignmonitor.com/) for supporting the w
 The source code can be found on [GitHub](https://github.com/premailer/premailer).
 
 Copyright by Alex Dunae (dunae.ca, e-mail 'code' at the same domain), 2007-2017.  See [LICENSE.md](https://github.com/premailer/premailer/blob/master/LICENSE.md) for license details.
-
