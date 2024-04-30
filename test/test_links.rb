@@ -159,13 +159,13 @@ class TestLinks < Premailer::TestCase
   end
 
   def test_convertable_inline_links
-    convertable = [
+    convertible = [
         'my/path/to',
         'other/path',
         '/'
     ]
 
-    html = convertable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = convertible.collect {|url| "<a href='#{url}'>Link</a>" }
     premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "http://example.com", :with_html_string => true)
 
     premailer.processed_doc.search('a').each do |el|

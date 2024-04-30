@@ -15,7 +15,7 @@
 # fout.close
 #
 # # Write the plain-text output
-# fout = File.open("ouput.txt", "w")
+# fout = File.open("output.txt", "w")
 # fout.puts premailer.to_plain_text
 # fout.close
 #
