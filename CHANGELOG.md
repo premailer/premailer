@@ -1,6 +1,7 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+* Removes frozen string errors with RUBYOPT="--enable-frozen-string-literal"
 
 ### Version 1.23.0
 * Drop Ruby 2.7 compatibility
