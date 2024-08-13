@@ -235,6 +235,7 @@ class Premailer
 
         # Handle HTML entities
         if @options[:replace_html_entities] == true and thing.is_a?(String)
+          thing = +thing
           HTML_ENTITIES.map do |entity, replacement|
             thing.gsub! entity, replacement
           end
