@@ -264,7 +264,7 @@ class Premailer
 
 protected
   def load_css_from_local_file!(path)
-    css_block = ''
+    css_block = +''
     path.gsub!(/\Afile:/, '')
     begin
       File.open(path, "r") do |file|
@@ -358,6 +358,7 @@ public
   def append_query_string(doc, qs)
     return doc if qs.nil?
 
+    qs = +qs
     qs.to_s.gsub!(/^[\?]*/, '').strip!
     return doc if qs.empty?
 
@@ -473,6 +474,7 @@ public
 
   # @private
   def self.resolve_link(path, base_path) # :nodoc:
+    path = +path
     path.strip!
     resolved = nil
     if path =~ /\A(?:(https?|ftp|file):)\/\//i
