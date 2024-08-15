@@ -1,6 +1,8 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+
+### Version 1.24.0
 * Removes frozen string errors with RUBYOPT="--enable-frozen-string-literal"
 
 ### Version 1.23.0
