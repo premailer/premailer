@@ -6,6 +6,9 @@ on:
     branches: [master]
 jobs:
   test:
+    env:
+      # make un-frozen strings fail so we see where we'd be sending warnings in ruby 3.4+
+      RUBYOPT: "--enable-frozen-string-literal"
     runs-on: ubuntu-latest
     strategy:
       matrix:
