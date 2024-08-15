@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require './lib/premailer/version'
 
 Gem::Specification.new "premailer", Premailer::VERSION do |s|
@@ -9,7 +10,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.author  = "Alex Dunae"
   s.files            = `git ls-files lib misc LICENSE.md README.md`.split("\n")
   s.executables      = ['premailer']
-  s.required_ruby_version = '>= 3.0'
+  s.required_ruby_version = '>= 3.0' # keep in sync with .github/workflows/actions.yml and .rubocop.yml
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
   s.metadata['rubygems_mfa_required'] = 'true'
 
@@ -21,8 +22,7 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_development_dependency 'nokogiri', '~> 1.16'
   s.add_development_dependency 'redcarpet', '~> 3.0'
   s.add_development_dependency 'maxitest'
-  s.add_development_dependency 'coveralls'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'bump'
+  s.add_development_dependency 'rubocop', '~> 1.62.1' # locked to make bundle update not add new rules
 end
-

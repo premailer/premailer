@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Premailer
   # Manages the adapter classes. Currently supports:
   #

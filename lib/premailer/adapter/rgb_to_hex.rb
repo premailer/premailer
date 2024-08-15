@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # RGB helper for adapters, currently only nokogiri supported
 
 module AdapterHelper

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'bundler/setup'
 require 'rake/testtask'
 require "bundler/gem_tasks"
@@ -56,4 +57,8 @@ Rake::TestTask.new do |t|
   t.warning = false
 end
 
-task :default => [:test]
+task :rubocop do
+  sh "rubocop --parallel"
+end
+
+task default: [:test, :rubocop]

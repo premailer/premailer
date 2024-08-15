@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Premailer
   class CachedRuleSet < CssParser::RuleSet
     # we call this early to find errors but css-parser calls it in .merge again

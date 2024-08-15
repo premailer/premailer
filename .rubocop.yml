@@ -1,0 +1,84 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0 # keep in sync with .github/workflows/actions.yml and premailer.gemspec
+  SuggestExtensions: false # TODO: disable and add rubocop-rake
+
+Style/StringLiterals:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: false
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/FirstHashElementLineBreak:
+  Enabled: true # Opt-in
+
+# Opt-in
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true # Opt-in
+
+Layout/FirstMethodParameterLineBreak:
+  Enabled: true # Opt-in
+
+# https://github.com/rubocop-hq/rubocop/issues/5891
+Style/SpecialGlobalVars:
+  Enabled: false
+
+Style/WordArray:
+  EnforcedStyle: brackets
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/GuardClause:
+  Enabled: false
+
+Style/EmptyElse:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/CombinableLoops:
+  Enabled: false
+
+Lint/Void:
+  Enabled: false
+
+Security/MarshalLoad:
+  Enabled: false
+
+Lint/EmptyBlock:
+  Exclude: [test/**/*.rb]
+
+Naming/MethodParameterName:
+  Exclude: [test/**/*.rb]
+
+# TODO: remove
+Style/HashSyntax:
+  Enabled: false

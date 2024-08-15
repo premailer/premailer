@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Premailer processes HTML and CSS to improve e-mail deliverability.
 #
 # Premailer's main function is to render all CSS as inline <tt>style</tt>
@@ -141,7 +142,7 @@ class Premailer
   include Warnings
 
   # Waning level names
-  WARN_LABEL = %w(NONE SAFE POOR RISKY)
+  WARN_LABEL = ['NONE', 'SAFE', 'POOR', 'RISKY']
 
   # Create a new Premailer object.
   #
@@ -355,12 +356,12 @@ public
     media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   end
 
-  def append_query_string(doc, qs)
-    return doc if qs.nil?
+  def append_query_string(doc, queries)
+    return doc if queries.nil?
 
-    qs = +qs
-    qs.to_s.gsub!(/^[\?]*/, '').strip!
-    return doc if qs.empty?
+    queries = +queries
+    queries.to_s.gsub!(/^[\?]*/, '').strip!
+    return doc if queries.empty?
 
     begin
       current_host = @base_url.host
@@ -368,7 +369,7 @@ public
       current_host = nil
     end
 
-    $stderr.puts "Attempting to append_query_string: #{qs}" if @options[:verbose]
+    $stderr.puts "Attempting to append_query_string: #{queries}" if @options[:verbose]
 
     doc.search('a').each do|el|
       href = el.attributes['href'].to_s.strip
@@ -391,9 +392,9 @@ public
 
         if href.query and not href.query.empty?
           amp = @options[:unescaped_ampersand] ? '&' : '&amp;'
-          href.query = href.query + amp + qs
+          href.query = href.query + amp + queries
         else
-          href.query = qs
+          href.query = queries
         end
 
         el['href'] = href.to_s
