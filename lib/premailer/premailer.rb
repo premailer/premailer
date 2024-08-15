@@ -213,8 +213,7 @@ class Premailer
                 :create_shorthands => true,
                 :html_fragment => false,
                 :adapter => Adapter.use,
-                :drop_unmergeable_css_rules => false
-                }.merge(options)
+                :drop_unmergeable_css_rules => false}.merge(options)
 
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
@@ -269,7 +268,7 @@ protected
     path.gsub!(/\Afile:/, '')
     begin
       File.open(path, "r") do |file|
-        while line = file.gets
+        while (line = file.gets)
           css_block << line
         end
       end
@@ -371,7 +370,7 @@ public
 
     $stderr.puts "Attempting to append_query_string: #{queries}" if @options[:verbose]
 
-    doc.search('a').each do|el|
+    doc.search('a').each do |el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
 
@@ -380,7 +379,7 @@ public
       begin
         href = Addressable::URI.parse(href)
 
-        if current_host and href.host != nil and href.host != current_host
+        if current_host and !href.host.nil? and href.host != current_host
           $stderr.puts "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
           next
         end

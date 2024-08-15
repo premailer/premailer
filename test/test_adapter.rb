@@ -30,9 +30,9 @@ class TestAdapter < Premailer::TestCase
   end
 
   def test_raises_argument_error
-    assert_raises(ArgumentError, "Invalid adapter: unknown") {
+    assert_raises(ArgumentError, "Invalid adapter: unknown") do
       Premailer::Adapter.find(:unknown)
-    }
+    end
   end
 
 end

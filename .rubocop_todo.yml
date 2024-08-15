@@ -169,35 +169,12 @@ Layout/LeadingCommentSpace:
   Exclude:
     - 'test/test_premailer.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineHashBraceLayout:
-  Exclude:
-    - 'lib/premailer/premailer.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 Layout/SpaceAfterComma:
   Exclude:
     - 'lib/premailer/premailer.rb'
     - 'test/test_html_to_plain_text.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/SpaceAroundKeyword:
-  Exclude:
-    - 'lib/premailer/premailer.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowForAlignment, EnforcedStyleForExponentOperator, EnforcedStyleForRationalLiterals.
-# SupportedStylesForExponentOperator: space, no_space
-# SupportedStylesForRationalLiterals: space, no_space
-Layout/SpaceAroundOperators:
-  Exclude:
-    - 'test/helper.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -208,12 +185,6 @@ Layout/SpaceBeforeBlockBraces:
   Exclude:
     - 'lib/premailer/adapter.rb'
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/SpaceBeforeComma:
-  Exclude:
-    - 'test/test_html_to_plain_text.rb'
 
 # Offense count: 13
 # This cop supports safe autocorrection (--autocorrect).
@@ -249,33 +220,12 @@ Layout/SpaceInsideParens:
     - 'lib/premailer/html_to_plain_text.rb'
     - 'test/test_premailer.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingEmptyLines:
-  Exclude:
-    - 'bin/premailer'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowInHeredoc.
-Layout/TrailingWhitespace:
-  Exclude:
-    - 'test/test_misc.rb'
-
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'test/test_warnings.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Lint/AmbiguousOperatorPrecedence:
-  Exclude:
-    - 'test/test_html_to_plain_text.rb'
 
 # Offense count: 60
 # This cop supports safe autocorrection (--autocorrect).
@@ -285,13 +235,6 @@ Lint/AmbiguousRegexpLiteral:
     - 'test/test_html_to_plain_text.rb'
     - 'test/test_misc.rb'
     - 'test/test_premailer.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'lib/premailer/premailer.rb'
 
 # Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).
@@ -308,11 +251,6 @@ Lint/RedundantStringCoercion:
     - 'lib/premailer/executor.rb'
     - 'lib/premailer/premailer.rb'
     - 'test/test_links.rb'
-
-# Offense count: 1
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'lib/premailer/executor.rb'
 
 # Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
@@ -335,27 +273,12 @@ Lint/UnusedBlockArgument:
     - 'lib/premailer/html_to_plain_text.rb'
     - 'lib/premailer/premailer.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'lib/premailer/html_to_plain_text.rb'
-
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AutoCorrect.
 Lint/UselessAssignment:
   Exclude:
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: lowercase, uppercase
-Naming/HeredocDelimiterCase:
-  Exclude:
-    - 'test/test_premailer.rb'
 
 # Offense count: 3
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.
@@ -394,25 +317,6 @@ Style/AndOr:
     - 'lib/premailer/adapter/nokogumbo.rb'
     - 'lib/premailer/premailer.rb'
     - 'test/test_links.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, AllowedMethods, AllowedPatterns, AllowBracesOnProceduralOneLiners, BracesRequiredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# AllowedMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'test/test_adapter.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'test/helper.rb'
 
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
@@ -534,13 +438,6 @@ Style/Next:
     - 'lib/premailer/adapter/nokogumbo.rb'
     - 'lib/premailer/premailer.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: IncludeSemanticChanges.
-Style/NonNilCheck:
-  Exclude:
-    - 'lib/premailer/premailer.rb'
-
 # Offense count: 8
 # This cop supports safe autocorrection (--autocorrect).
 Style/Not:
@@ -549,12 +446,6 @@ Style/Not:
     - 'lib/premailer/adapter/nokogiri_fast.rb'
     - 'lib/premailer/adapter/nokogumbo.rb'
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Strict, AllowedNumbers, AllowedPatterns.
-Style/NumericLiterals:
-  MinDigits: 6
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
@@ -586,21 +477,6 @@ Style/PreferredHashMethods:
     - 'lib/premailer/adapter/nokogiri_fast.rb'
     - 'lib/premailer/adapter/nokogumbo.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle, AllowedCompactTypes.
-# SupportedStyles: compact, exploded
-Style/RaiseArgs:
-  Exclude:
-    - 'lib/premailer/adapter.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Methods.
-Style/RedundantArgument:
-  Exclude:
-    - 'lib/premailer/adapter.rb'
-
 # Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantBegin:
@@ -608,12 +484,6 @@ Style/RedundantBegin:
     - 'lib/premailer/adapter.rb'
     - 'lib/premailer/adapter/nokogiri_fast.rb'
     - 'lib/premailer/adapter/nokogumbo.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantException:
-  Exclude:
-    - 'lib/premailer/adapter.rb'
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -636,25 +506,12 @@ Style/RedundantRegexpEscape:
     - 'test/helper.rb'
     - 'test/test_misc.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'lib/premailer/adapter/nokogiri_fast.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantSelf:
   Exclude:
     - 'lib/premailer/adapter.rb'
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantStringEscape:
-  Exclude:
-    - 'test/test_premailer.rb'
 
 # Offense count: 22
 # This cop supports safe autocorrection (--autocorrect).
@@ -759,22 +616,6 @@ Style/SymbolProc:
     - 'lib/premailer/adapter.rb'
     - 'lib/premailer/adapter/nokogiri.rb'
     - 'lib/premailer/adapter/nokogiri_fast.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Exclude:
-    - 'lib/premailer/adapter.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInHashLiteral:
-  Exclude:
-    - 'lib/premailer/executor.rb'
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).

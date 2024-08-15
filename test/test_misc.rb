@@ -144,7 +144,7 @@ END_HTML
 
     # no <style> block should exist
     assert_nil premailer.processed_doc.at('head style')
-  end  
+  end
 
   def test_unmergable_media_queries
     html = <<END_HTML

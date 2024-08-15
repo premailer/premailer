@@ -315,7 +315,7 @@ class Premailer
         index.default = Set.new
         descendants.default = Set.new
 
-        return index, Set.new(all_nodes), descendants
+        [index, Set.new(all_nodes), descendants]
       end
 
       # @param doc The top level document
