@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestHtmlToPlainText < Premailer::TestCase
@@ -126,7 +127,7 @@ END_HTML
   end
 
   def test_wrapping_lines_with_many_spaces
-    assert_plaintext "Long     line\nnext line", "Long     line next line", nil ,14
+    assert_plaintext "Long     line\nnext line", "Long     line next line", nil,14
   end
 
   def test_img_alt_tags
@@ -185,7 +186,7 @@ END_HTML
     assert_plaintext 'Link ( [[!unsubscribe]] )', '<a href="[[!unsubscribe]]">Link</a>'
 
     # empty link gets dropped, and shouldn't run forever
-    assert_plaintext(("This is some more text\n\n" * 14 + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
+    assert_plaintext((("This is some more text\n\n" * 14) + "This is some more text"), "<a href=\"test\"></a>#{"\n<p>This is some more text</p>" * 15}")
 
     # links that go outside of line should wrap nicely
     assert_plaintext "Long text before the actual link and then LINK TEXT \n( http://www.long.link ) and then more text that does not wrap", 'Long text before the actual link and then <a href="http://www.long.link"/>LINK TEXT</a> and then more text that does not wrap'
@@ -204,7 +205,7 @@ END_HTML
   def test_multiple_links_per_line
     assert_plaintext 'This is link1 ( http://www.google.com ) and link2 ( http://www.google.com ) is next.',
                      '<p>This is <a href="http://www.google.com" >link1</a> and <a href="http://www.google.com" >link2 </a> is next.</p>',
-                     nil, 10000
+                     nil, 10_000
   end
 
   # see https://github.com/alexdunae/premailer/issues/72

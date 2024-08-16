@@ -1,4 +1,5 @@
 # coding: utf-8
+# frozen_string_literal: true
 require 'htmlentities'
 
 # Support functions for Premailer
@@ -13,7 +14,7 @@ module HtmlToPlainText
   #
   # TODO: add support for DL, OL
   # TODO: this is not safe and needs a real html parser to work
-  def convert_to_text(html, line_length = 65, from_charset = 'UTF-8')
+  def convert_to_text(html, line_length = 65, _from_charset = 'UTF-8')
     txt = +html
 
     # strip text ignored html. Useful for removing

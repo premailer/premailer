@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'optparse'
 require 'premailer'
 
@@ -8,12 +9,12 @@ options = {
   :remove_classes    => false,
   :verbose           => false,
   :line_length       => 65,
-  :adapter           => :nokogiri,
+  :adapter           => :nokogiri
 }
 
 mode = :html
 
-opts = OptionParser.new do |opts|
+parser = OptionParser.new do |opts|
   opts.banner = "Improve the rendering of HTML emails by making CSS inline among other things. Takes a path to a local file, a URL or a pipe as input.\n\n"
   opts.define_head "Usage: premailer <optional uri|optional path> [options]"
   opts.separator ""
@@ -79,7 +80,7 @@ opts = OptionParser.new do |opts|
     exit
   end
 end
-opts.parse!
+parser.parse!
 
 $stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
 
@@ -98,7 +99,7 @@ end
 if input
   premailer = Premailer.new(input, options)
 else
-  puts opts
+  puts parser
   exit 1
 end
 

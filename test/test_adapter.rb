@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestAdapter < Premailer::TestCase
@@ -29,9 +30,9 @@ class TestAdapter < Premailer::TestCase
   end
 
   def test_raises_argument_error
-    assert_raises(ArgumentError, "Invalid adapter: unknown") {
+    assert_raises(ArgumentError, "Invalid adapter: unknown") do
       Premailer::Adapter.find(:unknown)
-    }
+    end
   end
 
 end

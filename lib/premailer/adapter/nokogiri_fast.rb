@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'nokogiri'
 
 class Premailer
@@ -96,7 +97,7 @@ class Premailer
                 new_val.gsub!(/;$|\s*!important/, '').strip!
 
                 # For width and height tags, remove px units
-                new_val.gsub!(/(\d+)px/, '\1') if %w[width height].include?(html_attr)
+                new_val.gsub!(/(\d+)px/, '\1') if ['width', 'height'].include?(html_attr)
 
                 # For color-related tags, convert RGB to hex if specified by options
                 new_val = ensure_hex(new_val) if css_attr.end_with?('color') && @options[:rgb_to_hex_attributes]
@@ -255,7 +256,7 @@ class Premailer
         # Fix for removing any CDATA tags from both style and script tags inserted per
         # https://github.com/sparklemotion/nokogiri/issues/311 and
         # https://github.com/premailer/premailer/issues/199
-        %w(style script).each do |tag|
+        ['style', 'script'].each do |tag|
           doc.search(tag).children.each do |child|
             child.swap(child.text()) if child.cdata?
           end
@@ -314,7 +315,7 @@ class Premailer
         index.default = Set.new
         descendants.default = Set.new
 
-        return index, Set.new(all_nodes), descendants
+        [index, Set.new(all_nodes), descendants]
       end
 
       # @param doc The top level document

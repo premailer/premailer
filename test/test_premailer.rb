@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 class TestPremailer < Premailer::TestCase
@@ -220,7 +221,7 @@ END_HTML
       assert_nil doc.at('#remove'), "Using: #{adapter}"
       assert_nil doc.at('#keep'), "Using: #{adapter}"
       hashed_id = doc.at('a')['href'][1..-1]
-      refute_nil doc.at("\##{hashed_id}"), "Using: #{adapter}"
+      refute_nil doc.at("##{hashed_id}"), "Using: #{adapter}"
     end
   end
 
@@ -241,12 +242,12 @@ END_HTML
   end
 
   def test_carriage_returns_as_entities
-    html = <<-html
+    html = <<-HTML
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
     <body>\n\r<p>test</p>\n\r<p>test</p>
     </body></html>
-    html
+    HTML
 
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)

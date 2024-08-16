@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Premailer processes HTML and CSS to improve e-mail deliverability.
 #
 # Premailer's main function is to render all CSS as inline <tt>style</tt>
@@ -141,7 +142,7 @@ class Premailer
   include Warnings
 
   # Waning level names
-  WARN_LABEL = %w(NONE SAFE POOR RISKY)
+  WARN_LABEL = ['NONE', 'SAFE', 'POOR', 'RISKY']
 
   # Create a new Premailer object.
   #
@@ -212,8 +213,7 @@ class Premailer
                 :create_shorthands => true,
                 :html_fragment => false,
                 :adapter => Adapter.use,
-                :drop_unmergeable_css_rules => false
-                }.merge(options)
+                :drop_unmergeable_css_rules => false}.merge(options)
 
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
@@ -268,7 +268,7 @@ protected
     path.gsub!(/\Afile:/, '')
     begin
       File.open(path, "r") do |file|
-        while line = file.gets
+        while (line = file.gets)
           css_block << line
         end
       end
@@ -355,12 +355,12 @@ public
     media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   end
 
-  def append_query_string(doc, qs)
-    return doc if qs.nil?
+  def append_query_string(doc, queries)
+    return doc if queries.nil?
 
-    qs = +qs
-    qs.to_s.gsub!(/^[\?]*/, '').strip!
-    return doc if qs.empty?
+    queries = +queries
+    queries.to_s.gsub!(/^[\?]*/, '').strip!
+    return doc if queries.empty?
 
     begin
       current_host = @base_url.host
@@ -368,9 +368,9 @@ public
       current_host = nil
     end
 
-    $stderr.puts "Attempting to append_query_string: #{qs}" if @options[:verbose]
+    $stderr.puts "Attempting to append_query_string: #{queries}" if @options[:verbose]
 
-    doc.search('a').each do|el|
+    doc.search('a').each do |el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
 
@@ -379,7 +379,7 @@ public
       begin
         href = Addressable::URI.parse(href)
 
-        if current_host and href.host != nil and href.host != current_host
+        if current_host and !href.host.nil? and href.host != current_host
           $stderr.puts "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
           next
         end
@@ -391,9 +391,9 @@ public
 
         if href.query and not href.query.empty?
           amp = @options[:unescaped_ampersand] ? '&' : '&amp;'
-          href.query = href.query + amp + qs
+          href.query = href.query + amp + queries
         else
-          href.query = qs
+          href.query = queries
         end
 
         el['href'] = href.to_s

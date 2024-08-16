@@ -1,4 +1,5 @@
 # encoding: UTF-8
+# frozen_string_literal: true
 require File.expand_path(File.dirname(__FILE__)) + '/helper'
 
 # Random tests for specific issues.
@@ -143,7 +144,7 @@ END_HTML
 
     # no <style> block should exist
     assert_nil premailer.processed_doc.at('head style')
-  end  
+  end
 
   def test_unmergable_media_queries
     html = <<END_HTML

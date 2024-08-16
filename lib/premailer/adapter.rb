@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Premailer
   # Manages the adapter classes. Currently supports:
   #
@@ -14,7 +15,7 @@ class Premailer
     REQUIREMENT_MAP = [
       ["nokogiri", :nokogiri],
       ["nokogiri", :nokogiri_fast],
-      ["nokogumbo", :nokogumbo],
+      ["nokogumbo", :nokogumbo]
     ]
 
     # Returns the adapter to use.
@@ -42,7 +43,7 @@ class Premailer
         end
       end
 
-      raise RuntimeError.new("No suitable adapter for Premailer was found, please install nokogiri or nokogumbo")
+      raise "No suitable adapter for Premailer was found, please install nokogiri or nokogumbo"
     end
 
     # Sets the adapter to use.
@@ -56,7 +57,7 @@ class Premailer
     def self.find(adapter)
       return adapter if adapter.is_a?(Module)
 
-      Premailer::Adapter.const_get("#{adapter.to_s.split('_').map{|s| s.capitalize}.join('')}")
+      Premailer::Adapter.const_get("#{adapter.to_s.split('_').map{|s| s.capitalize}.join}")
     rescue NameError
       raise ArgumentError, "Invalid adapter: #{adapter}"
     end

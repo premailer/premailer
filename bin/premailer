@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # This binary used in rubygems environment only as part of installed gem
 
 require 'premailer/executor'
-
