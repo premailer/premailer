@@ -265,7 +265,7 @@ class Premailer
 protected
   def load_css_from_local_file!(path)
     css_block = +''
-    path.gsub!(/\Afile:/, '')
+    path.delete_prefix!('file:')
     begin
       File.open(path, "r") do |file|
         while (line = file.gets)
@@ -374,7 +374,7 @@ public
       href = el.attributes['href'].to_s.strip
       next if href.nil? or href.empty?
 
-      next if href[0,1] =~ /[\#\{\[\<\%]/ # don't bother with anchors or special-looking links
+      next if /[\#\{\[\<\%]/.match?(href[0,1]) # don't bother with anchors or special-looking links
 
       begin
         href = Addressable::URI.parse(href)
@@ -436,11 +436,11 @@ public
       tags.each do |tag|
         # skip links that look like they have merge tags
         # and mailto, ftp, etc...
-        if tag.attributes[attribute].to_s =~ /^([\%\<\{\#\[]|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:|cid:)/i
+        if /^([\%\<\{\#\[]|data:|tel:|file:|sms:|callto:|facetime:|mailto:|ftp:|gopher:|cid:)/i.match?(tag.attributes[attribute].to_s)
           next
         end
 
-        if tag.attributes[attribute].to_s =~ /^http/i
+        if /^http/i.match?(tag.attributes[attribute].to_s)
           begin
             merged = Addressable::URI.parse(tag.attributes[attribute])
           rescue; next; end
@@ -477,7 +477,7 @@ public
     path = +path
     path.strip!
     resolved = nil
-    if path =~ /\A(?:(https?|ftp|file):)\/\//i
+    if /\A(?:(https?|ftp|file):)\/\//i.match?(path)
       resolved = path
       Premailer.canonicalize(resolved)
     elsif base_path.kind_of?(Addressable::URI)

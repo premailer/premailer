@@ -51,7 +51,7 @@ module HtmlToPlainText
 
       if text.empty?
         ''
-      elsif href.nil? || text.strip.downcase == href.strip.downcase
+      elsif href.nil? || text.strip.casecmp(href.strip) == 0
         text.strip
       else
         text.strip + ' ( ' + href.strip + ' )'
