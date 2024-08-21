@@ -25,4 +25,5 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'bump'
   s.add_development_dependency 'rubocop', '~> 1.62.1' # locked to make bundle update not add new rules
+  s.add_development_dependency 'rubocop-performance'
 end

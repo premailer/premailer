@@ -5,6 +5,7 @@ class Premailer
   module Adapter
     # NokogiriFast adapter
     module NokogiriFast
+      WIDTH_AND_HEIGHT = ['width', 'height'].freeze
 
       include AdapterHelper::RgbToHex
       # Merge CSS into the HTML document.
@@ -37,7 +38,7 @@ class Premailer
             @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration), media_types) unless @options[:preserve_styles]
           else
             begin
-              if selector =~ Premailer::RE_RESET_SELECTORS
+              if Premailer::RE_RESET_SELECTORS.match?(selector)
                 # this is in place to preserve the MailChimp CSS reset: http://github.com/mailchimp/Email-Blueprints/
                 # however, this doesn't mean for testing pur
                 @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless !@options[:preserve_reset]
@@ -97,7 +98,7 @@ class Premailer
                 new_val.gsub!(/;$|\s*!important/, '').strip!
 
                 # For width and height tags, remove px units
-                new_val.gsub!(/(\d+)px/, '\1') if ['width', 'height'].include?(html_attr)
+                new_val.gsub!(/(\d+)px/, '\1') if WIDTH_AND_HEIGHT.include?(html_attr)
 
                 # For color-related tags, convert RGB to hex if specified by options
                 new_val = ensure_hex(new_val) if css_attr.end_with?('color') && @options[:rgb_to_hex_attributes]
@@ -106,7 +107,7 @@ class Premailer
               end
 
               unless @options[:preserve_style_attribute]
-                merged.instance_variable_get("@declarations").tap do |declarations|
+                merged.instance_variable_get(:@declarations).tap do |declarations|
                   declarations.delete(css_attr)
                 end
               end
@@ -355,7 +356,7 @@ class Premailer
       # It will return nil when such a selector is passed, so you can take
       # action on the falsity of the return value.
       def match_selector(index, all_nodes, descendants, selector)
-        if /[^-a-zA-Z0-9_\s.#]/.match(selector) then
+        if /[^-a-zA-Z0-9_\s.#]/.match?(selector) then
           return nil
         end
 
