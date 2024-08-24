@@ -2,7 +2,7 @@
 
 ### Unreleased
 
-### Version 1.25.0
+### Version 1.26.0
 * Bump css_parser to 1.19 to avoid deprecations
 
 ### Version 1.25.0
