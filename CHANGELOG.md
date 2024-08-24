@@ -1,6 +1,10 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+* Bump css_parser to 1.19 to avoid deprecations
+
+### Version 1.25.0
+* Performance and frozen strings fixes
 
 ### Version 1.24.0
 * Removes frozen string errors with RUBYOPT="--enable-frozen-string-literal"

@@ -29,13 +29,13 @@ class Premailer
           selector.gsub!(/([\s]|^)([\w]+)/) { |m| $1.to_s + $2.to_s.downcase }
 
           if Premailer.is_media_query?(media_types) || selector =~ Premailer::RE_UNMERGABLE_SELECTORS
-            @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration), media_types) unless @options[:preserve_styles]
+            @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration), media_types) unless @options[:preserve_styles]
           else
             begin
               if Premailer::RE_RESET_SELECTORS.match?(selector)
                 # this is in place to preserve the MailChimp CSS reset: http://github.com/mailchimp/Email-Blueprints/
                 # however, this doesn't mean for testing pur
-                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selector, declaration)) unless !@options[:preserve_reset]
+                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration)) unless !@options[:preserve_reset]
               end
 
               # Change single ID CSS selectors into xpath so that we can match more
@@ -64,7 +64,7 @@ class Premailer
           style = el.attributes['style'].to_s
 
           declarations = style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/).filter_map do |declaration|
-            rs = Premailer::CachedRuleSet.new(nil, declaration[1].to_s, declaration[0].to_i)
+            rs = Premailer::CachedRuleSet.new(block: declaration[1].to_s, specificity: declaration[0].to_i)
             rs.expand_shorthand!
             rs
           rescue ArgumentError => e
