@@ -1,6 +1,8 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+
+### Version 1.25.0
 * Bump css_parser to 1.19 to avoid deprecations
 
 ### Version 1.25.0
