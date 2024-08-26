@@ -427,7 +427,7 @@ END_HTML
   def test_newlines_in_attributes
     html = <<-END_HTML
       <html><head></head><body>
-      <div style="\ncolor: red;\npadding: 10px 12px;\n\">Test red with padding</div>
+      <div style="\ncolor: red;\npadding: 10px 12px;\n">Test red with padding</div>
       </body></html>
     END_HTML
 
