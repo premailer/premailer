@@ -424,4 +424,19 @@ END_HTML
     end
   end
 
+  def test_newlines_in_attributes
+    html = <<-END_HTML
+      <html><head></head><body>
+      <div style="\ncolor: red;\npadding: 10px 12px;\n\">Test red with padding</div>
+      </body></html>
+    END_HTML
+
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      pm.to_inline_css
+      doc = pm.processed_doc
+
+      assert_equal 'color: red; padding: 10px 12px;', doc.at('div').attributes['style'].to_s
+    end
+  end
 end
