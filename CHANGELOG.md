@@ -2,6 +2,9 @@
 
 ### Unreleased
 
+### Version 1.27.0
+* Support multiline inline styles [issue](https://github.com/premailer/premailer/issues/458)
+
 ### Version 1.26.0
 * Bump css_parser to 1.19 to avoid deprecations
 
