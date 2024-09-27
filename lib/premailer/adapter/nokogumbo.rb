@@ -78,7 +78,7 @@ class Premailer
           end
 
           # Duplicate CSS attributes as HTML attributes
-          if Premailer::RELATED_ATTRIBUTES.has_key?(el.name) && @options[:css_to_attributes]
+          if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
               if el[html_attr].nil? and not merged[css_attr].empty?
                 new_val = merged[css_attr].dup

@@ -97,3 +97,7 @@ Layout/LineLength:
 
 Style/RegexpLiteral:
   Enabled: false
+
+# just easier to read
+Style/PerlBackrefs:
+  Enabled: false
