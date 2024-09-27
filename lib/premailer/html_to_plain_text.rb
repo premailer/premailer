@@ -122,7 +122,7 @@ module HtmlToPlainText
 
     # the word messes up the parens
     txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |_s|
-      ($1 == "\n" ? $1 : '' ) + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '' )
+      ($1 == "\n" ? $1 : '') + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '')
     end
 
     txt.strip

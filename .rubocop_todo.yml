@@ -211,15 +211,6 @@ Layout/SpaceInsideHashLiteralBraces:
     - 'test/test_premailer.rb'
     - 'test/test_warnings.rb'
 
-# Offense count: 12
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, compact, no_space
-Layout/SpaceInsideParens:
-  Exclude:
-    - 'lib/premailer/html_to_plain_text.rb'
-    - 'test/test_premailer.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:

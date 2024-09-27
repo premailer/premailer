@@ -162,14 +162,14 @@ END_HTML
   end
 
   def test_local_remote_check
-    assert Premailer.local_data?( StringIO.new('a') )
-    assert Premailer.local_data?( '/path/' )
-    assert !Premailer.local_data?( 'http://example.com/path/' )
+    assert Premailer.local_data?(StringIO.new('a'))
+    assert Premailer.local_data?('/path/')
+    assert !Premailer.local_data?('http://example.com/path/')
 
     # the old way is deprecated but should still work
-    premailer = Premailer.new( StringIO.new('a'), :adapter => :nokogiri )
+    premailer = Premailer.new(StringIO.new('a'), :adapter => :nokogiri)
     silence_stderr do
-      assert premailer.local_uri?( '/path/' )
+      assert premailer.local_uri?('/path/')
     end
   end
 
