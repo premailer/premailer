@@ -297,10 +297,3 @@ Naming/PredicateName:
 Security/IoMethods:
   Exclude:
     - 'test/test_premailer.rb'
-
-# Offense count: 3
-Security/Open:
-  Exclude:
-    - 'lib/premailer/adapter/nokogiri.rb'
-    - 'lib/premailer/adapter/nokogiri_fast.rb'
-    - 'lib/premailer/adapter/nokogumbo.rb'

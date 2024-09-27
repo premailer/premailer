@@ -223,7 +223,7 @@ class Premailer
           @base_dir = File.dirname(input)
           thing = File.open(input, 'r')
         else
-          thing = URI.open(input)
+          thing = URI.parse(input).open
         end
 
         if thing.respond_to?(:read)
