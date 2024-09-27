@@ -7,7 +7,7 @@ module AdapterHelper
       str.to_i.to_s(16).rjust(2, '0').upcase
     end
 
-    def is_rgb?(color)
+    def rgb?(color)
       pattern = %r{
       rgb
       \(\s*                    # literal open, with optional whitespace
@@ -24,7 +24,7 @@ module AdapterHelper
     end
 
     def ensure_hex(color)
-      match_data = is_rgb?(color)
+      match_data = rgb?(color)
       if match_data
         "#{to_hex(match_data[1])}#{to_hex(match_data[2])}#{to_hex(match_data[3])}"
       else
