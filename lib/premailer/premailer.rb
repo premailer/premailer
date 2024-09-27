@@ -425,7 +425,6 @@ public
   def convert_inline_links(doc, base_uri) # :nodoc:
     base_uri = Addressable::URI.parse(base_uri) unless base_uri.is_a?(Addressable::URI)
 
-    append_qs = @options[:link_query_string] || ''
     escape_attrs = @options[:escape_url_attributes]
 
     ['href', 'src', 'background'].each do |attribute|
@@ -476,7 +475,6 @@ public
   def self.resolve_link(path, base_path) # :nodoc:
     path = +path
     path.strip!
-    resolved = nil
     if /\A(?:(https?|ftp|file):)\/\//i.match?(path)
       resolved = path
       Premailer.canonicalize(resolved)
@@ -517,7 +515,7 @@ public
 
     # Get a list off CSS properties
     @processed_doc.search("*[@style]").each do |el|
-      style_url = el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*:/i) do |s|
+      el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*:/i) do |s|
         properties.push($1)
       end
     end
