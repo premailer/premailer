@@ -57,7 +57,7 @@ class Premailer
     def self.find(adapter)
       return adapter if adapter.is_a?(Module)
 
-      Premailer::Adapter.const_get("#{adapter.to_s.split('_').map(&:capitalize).join}")
+      Premailer::Adapter.const_get(adapter.to_s.split('_').map(&:capitalize).join.to_s)
     rescue NameError
       raise ArgumentError, "Invalid adapter: #{adapter}"
     end

@@ -33,7 +33,7 @@ class Premailer
     end
 
     def remote_setup(f = 'base.html', opts = {})
-      @premailer = Premailer.new(BASE_URI + "#{f}", opts)
+      @premailer = Premailer.new(BASE_URI + f.to_s, opts)
       @premailer.to_inline_css
       @doc = @premailer.processed_doc
     end

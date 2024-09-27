@@ -175,7 +175,7 @@ class Premailer
             style_tag.content = styles
             doc.add_child(style_tag)
           else
-            style_tag = doc.create_element "style", "#{styles}"
+            style_tag = doc.create_element "style", styles.to_s
             head = doc.at_css('head')
             head ||=  doc.root.first_element_child.add_previous_sibling(doc.create_element "head")  if doc.root&.first_element_child
             head ||=  doc.add_child(doc.create_element "head")
