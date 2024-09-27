@@ -12,27 +12,27 @@ class TestLinks < Premailer::TestCase
     opts = { :base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri }
 
     appendable = [
-        '/',
-        opts[:base_url],
-        'https://example.com/tester',
-        'images/',
-        "#{opts[:base_url]}test.html?cn=tf&amp;c=20&amp;ord=random",
-        '?query=string'
+      '/',
+      opts[:base_url],
+      'https://example.com/tester',
+      'images/',
+      "#{opts[:base_url]}test.html?cn=tf&amp;c=20&amp;ord=random",
+      '?query=string'
     ]
 
     not_appendable = [
-        '%DONOTCONVERT%',
-        '{DONOTCONVERT}',
-        '[DONOTCONVERT]',
-        '<DONOTCONVERT>',
-        '{@msg-txturl}',
-        '[[!unsubscribe]]',
-        '#relative',
-        'tel:5555551212',
-        'http://example.net/',
-        'mailto:premailer@example.com',
-        'ftp://example.com',
-        'gopher://gopher.floodgap.com/1/fun/twitpher'
+      '%DONOTCONVERT%',
+      '{DONOTCONVERT}',
+      '[DONOTCONVERT]',
+      '<DONOTCONVERT>',
+      '{@msg-txturl}',
+      '[[!unsubscribe]]',
+      '#relative',
+      'tel:5555551212',
+      'http://example.net/',
+      'mailto:premailer@example.com',
+      'ftp://example.com',
+      'gopher://gopher.floodgap.com/1/fun/twitpher'
     ]
 
     html = appendable.collect { |url| "<a href='#{url}'>Link</a>" }
@@ -160,9 +160,9 @@ class TestLinks < Premailer::TestCase
 
   def test_convertable_inline_links
     convertible = [
-        'my/path/to',
-        'other/path',
-        '/'
+      'my/path/to',
+      'other/path',
+      '/'
     ]
 
     html = convertible.collect { |url| "<a href='#{url}'>Link</a>" }
@@ -176,18 +176,18 @@ class TestLinks < Premailer::TestCase
 
   def test_non_convertable_inline_links
     not_convertable = [
-        '%DONOTCONVERT%',
-        '{DONOTCONVERT}',
-        '[DONOTCONVERT]',
-        '<DONOTCONVERT>',
-        '{@msg-txturl}',
-        '[[!unsubscribe]]',
-        '#relative',
-        'tel:5555551212',
-        'mailto:premailer@example.com',
-        'ftp://example.com',
-        'gopher://gopher.floodgap.com/1/fun/twitpher',
-        'cid:13443452066.10392logo.jpeg@inline_attachment'
+      '%DONOTCONVERT%',
+      '{DONOTCONVERT}',
+      '[DONOTCONVERT]',
+      '<DONOTCONVERT>',
+      '{@msg-txturl}',
+      '[[!unsubscribe]]',
+      '#relative',
+      'tel:5555551212',
+      'mailto:premailer@example.com',
+      'ftp://example.com',
+      'gopher://gopher.floodgap.com/1/fun/twitpher',
+      'cid:13443452066.10392logo.jpeg@inline_attachment'
     ]
 
     html = not_convertable.collect { |url| "<a href='#{url}'>Link</a>" }

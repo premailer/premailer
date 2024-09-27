@@ -4,12 +4,12 @@ require 'premailer'
 
 # defaults
 options = {
-  :base_url          => nil,
+  :base_url => nil,
   :link_query_string => nil,
-  :remove_classes    => false,
-  :verbose           => false,
-  :line_length       => 65,
-  :adapter           => :nokogiri
+  :remove_classes => false,
+  :verbose => false,
+  :line_length => 65,
+  :adapter => :nokogiri
 }
 
 mode = :html

@@ -39,10 +39,6 @@ Layout/EmptyLineAfterGuardClause:
 Layout/FirstHashElementLineBreak:
   Enabled: true # Opt-in
 
-# Opt-in
-Layout/FirstMethodArgumentLineBreak:
-  Enabled: true # Opt-in
-
 Layout/FirstMethodParameterLineBreak:
   Enabled: true # Opt-in
 
@@ -116,4 +112,7 @@ Style/FetchEnvVar:
 
 # just ugly
 Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Layout/FirstMethodArgumentLineBreak:
   Enabled: false

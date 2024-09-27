@@ -182,38 +182,40 @@ class Premailer
   # @option options [Boolean] :html_fragment Handle HTML fragment without any HTML content wrappers. Default is false.
   # @option options [Boolean] :drop_unmergeable_css_rules Do not include unmergeable css rules in a <tt><style><tt> tag. Default is false.
   def initialize(html, options = {})
-    @options = { :warn_level => Warnings::SAFE,
-                :line_length => 65,
-                :link_query_string => nil,
-                :base_url => nil,
-                :rgb_to_hex_attributes => true,
-                :remove_classes => false,
-                :remove_ids => false,
-                :remove_comments => false,
-                :remove_scripts => true,
-                :reset_contenteditable => true,
-                :css => [],
-                :css_to_attributes => true,
-                :preserve_style_attribute => false,
-                :with_html_string => false,
-                :css_string => nil,
-                :preserve_styles => false,
-                :preserve_reset => true,
-                :verbose => false,
-                :debug => false,
-                :io_exceptions => false,
-                :rule_set_exceptions => true,
-                :include_link_tags => true,
-                :include_style_tags => true,
-                :input_encoding => 'ASCII-8BIT',
-                :output_encoding => nil,
-                :replace_html_entities => false,
-                :escape_url_attributes => true,
-                :unescaped_ampersand => false,
-                :create_shorthands => true,
-                :html_fragment => false,
-                :adapter => Adapter.use,
-                :drop_unmergeable_css_rules => false }.merge(options)
+    @options = {
+      :warn_level => Warnings::SAFE,
+      :line_length => 65,
+      :link_query_string => nil,
+      :base_url => nil,
+      :rgb_to_hex_attributes => true,
+      :remove_classes => false,
+      :remove_ids => false,
+      :remove_comments => false,
+      :remove_scripts => true,
+      :reset_contenteditable => true,
+      :css => [],
+      :css_to_attributes => true,
+      :preserve_style_attribute => false,
+      :with_html_string => false,
+      :css_string => nil,
+      :preserve_styles => false,
+      :preserve_reset => true,
+      :verbose => false,
+      :debug => false,
+      :io_exceptions => false,
+      :rule_set_exceptions => true,
+      :include_link_tags => true,
+      :include_style_tags => true,
+      :input_encoding => 'ASCII-8BIT',
+      :output_encoding => nil,
+      :replace_html_entities => false,
+      :escape_url_attributes => true,
+      :unescaped_ampersand => false,
+      :create_shorthands => true,
+      :html_fragment => false,
+      :adapter => Adapter.use,
+      :drop_unmergeable_css_rules => false
+    }.merge(options)
 
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
@@ -232,12 +234,14 @@ class Premailer
       @base_url = Addressable::URI.parse(@html_file)
     end
 
-    @css_parser = CssParser::Parser.new({
-      :absolute_paths => true,
-      :import => true,
-      :io_exceptions => @options[:io_exceptions],
-      :rule_set_exceptions => @options[:rule_set_exceptions]
-    })
+    @css_parser = CssParser::Parser.new(
+      {
+        :absolute_paths => true,
+        :import => true,
+        :io_exceptions => @options[:io_exceptions],
+        :rule_set_exceptions => @options[:rule_set_exceptions]
+      }
+    )
 
     @adapter_class = Adapter.find @options[:adapter]
 
@@ -527,27 +531,39 @@ public
       if property_support.include?(prop) &&
           property_support[prop].include?('support') &&
           (property_support[prop]['support'] >= @options[:warn_level])
-        warnings.push({ :message => "#{prop} CSS property",
+        warnings.push(
+          {
+            :message => "#{prop} CSS property",
             :level => WARN_LABEL[property_support[prop]['support']],
-            :clients => property_support[prop]['unsupported_in'].join(', ') })
+            :clients => property_support[prop]['unsupported_in'].join(', ')
+          }
+        )
       end
     end
 
     @client_support['attributes'].each do |attribute, data|
       next unless data['support'] >= @options[:warn_level]
       if @doc.search("*[@#{attribute}]").length > 0
-        warnings.push({ :message => "#{attribute} HTML attribute",
+        warnings.push(
+          {
+            :message => "#{attribute} HTML attribute",
             :level => WARN_LABEL[data['support']],
-            :clients => data['unsupported_in'].join(', ') })
+            :clients => data['unsupported_in'].join(', ')
+          }
+        )
       end
     end
 
     @client_support['elements'].each do |element, data|
       next unless data['support'] >= @options[:warn_level]
       if @doc.search(element).length > 0
-        warnings.push({ :message => "#{element} HTML element",
+        warnings.push(
+          {
+            :message => "#{element} HTML element",
             :level => WARN_LABEL[data['support']],
-            :clients => data['unsupported_in'].join(', ') })
+            :clients => data['unsupported_in'].join(', ')
+          }
+        )
       end
     end
 

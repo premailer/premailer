@@ -123,46 +123,6 @@ Layout/ExtraSpacing:
     - 'test/test_misc.rb'
 
 # Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/FirstArrayElementIndentation:
-  Exclude:
-    - 'test/test_links.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_braces
-Layout/FirstHashElementIndentation:
-  EnforcedStyle: consistent
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultilineFinalElement.
-Layout/FirstHashElementLineBreak:
-  Exclude:
-    - 'lib/premailer/premailer.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultilineFinalElement.
-Layout/FirstMethodArgumentLineBreak:
-  Exclude:
-    - 'lib/premailer/premailer.rb'
-
-# Offense count: 11
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultipleStyles, EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle.
-# SupportedHashRocketStyles: key, separator, table
-# SupportedColonStyles: key, separator, table
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Layout/HashAlignment:
-  Exclude:
-    - 'lib/premailer/executor.rb'
-    - 'lib/premailer/premailer.rb'
-
-# Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:
   Exclude:
