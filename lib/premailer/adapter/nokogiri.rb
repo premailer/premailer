@@ -195,7 +195,7 @@ class Premailer
         html_src = ''
         begin
           html_src = @doc.at("body").inner_html
-        rescue
+        rescue StandardError
         end
 
         html_src = @doc.to_html unless html_src and not html_src.empty?

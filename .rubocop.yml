@@ -94,3 +94,6 @@ Style/StringConcatenation:
 # TODO: slowly reduce and fix the auto-generated clunky code
 Layout/LineLength:
   Max: 268
+
+Style/RegexpLiteral:
+  Enabled: false
