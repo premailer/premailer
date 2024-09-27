@@ -16,7 +16,7 @@ class Premailer
       ["nokogiri", :nokogiri],
       ["nokogiri", :nokogiri_fast],
       ["nokogumbo", :nokogumbo]
-    ]
+    ].freeze
 
     # Returns the adapter to use.
     def self.use

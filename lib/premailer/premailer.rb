@@ -57,7 +57,7 @@ class Premailer
     "&#8211;" => '-',
     "&#8212;" => '--',
     "&#8213;" => '--'
-  }
+  }.freeze
 
   # list of CSS attributes that can be rendered as HTML attributes
   #
@@ -107,7 +107,7 @@ class Premailer
       '-premailer-width' => 'width',
       '-premailer-height' => 'height'
     }
-  }
+  }.freeze
 
   # URI of the HTML file used
   attr_reader   :html_file
@@ -142,7 +142,7 @@ class Premailer
   include Warnings
 
   # Waning level names
-  WARN_LABEL = ['NONE', 'SAFE', 'POOR', 'RISKY']
+  WARN_LABEL = ['NONE', 'SAFE', 'POOR', 'RISKY'].freeze
 
   # Create a new Premailer object.
   #

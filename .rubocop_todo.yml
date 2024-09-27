@@ -396,13 +396,3 @@ Style/MethodCallWithoutArgsParentheses:
 Style/MultilineIfThen:
   Exclude:
     - 'lib/premailer/adapter/nokogiri_fast.rb'
-
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/premailer/adapter.rb'
-    - 'lib/premailer/premailer.rb'
-    - 'test/helper.rb'
