@@ -396,7 +396,7 @@ END_HTML
     html_special_characters = "©"
     html_entities_characters = /&#169;/
     expected_html = /#{html_entities_characters}/
-    pm = Premailer.new(html_special_characters, :output_encoding => "US-ASCII", :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8");
+    pm = Premailer.new(html_special_characters, :output_encoding => "US-ASCII", :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8")
     assert_match expected_html, pm.to_inline_css
   end
 

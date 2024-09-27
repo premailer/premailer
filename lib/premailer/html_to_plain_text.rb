@@ -69,7 +69,10 @@ module HtmlToPlainText
 
       # determine maximum line length
       hlength = 0
-      htext.each_line { |l| llength = l.strip.length; hlength = llength if llength > hlength }
+      htext.each_line do |l|
+        llength = l.strip.length
+        hlength = llength if llength > hlength
+      end
       hlength = line_length if hlength > line_length
 
       case hlevel
