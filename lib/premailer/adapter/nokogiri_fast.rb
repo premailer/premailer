@@ -54,7 +54,7 @@ class Premailer
                 end
               end
             rescue ::Nokogiri::SyntaxError, RuntimeError, ArgumentError
-              $stderr.puts "CSS syntax error with selector: #{selector}" if @options[:verbose]
+              warn "CSS syntax error with selector: #{selector}" if @options[:verbose]
               next
             end
           end

@@ -82,7 +82,7 @@ parser = OptionParser.new do |opts|
 end
 parser.parse!
 
-$stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
+warn "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
 
 premailer = nil
 input = nil

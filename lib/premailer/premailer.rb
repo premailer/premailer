@@ -320,10 +320,10 @@ protected
           end
 
           if Premailer.local_data?(link_uri)
-            $stderr.puts "Loading css from local file: " + link_uri if @options[:verbose]
+            warn "Loading css from local file: " + link_uri if @options[:verbose]
             load_css_from_local_file!(link_uri)
           else
-            $stderr.puts "Loading css from uri: " + link_uri if @options[:verbose]
+            warn "Loading css from uri: " + link_uri if @options[:verbose]
             @css_parser.load_uri!(link_uri, {:only_media_types => [:screen, :handheld]})
           end
 
@@ -368,7 +368,7 @@ public
       current_host = nil
     end
 
-    $stderr.puts "Attempting to append_query_string: #{queries}" if @options[:verbose]
+    warn "Attempting to append_query_string: #{queries}" if @options[:verbose]
 
     doc.search('a').each do |el|
       href = el.attributes['href'].to_s.strip
@@ -380,7 +380,7 @@ public
         href = Addressable::URI.parse(href)
 
         if current_host and !href.host.nil? and href.host != current_host
-          $stderr.puts "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
+          warn "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
           next
         end
 
@@ -398,7 +398,7 @@ public
 
         el['href'] = href.to_s
       rescue Addressable::URI::InvalidURIError => e
-        $stderr.puts "Skipping append_query_string for: #{href.to_s} (#{e.message})" if @options[:verbose]
+        warn "Skipping append_query_string for: #{href.to_s} (#{e.message})" if @options[:verbose]
         next
       end
 
@@ -410,7 +410,7 @@ public
   def is_xhtml?
     intro = @doc.to_xhtml.strip.split("\n")[0..2].join(' ')
     is_xhtml = !!(intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
-    $stderr.puts "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
+    warn "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
     is_xhtml
   end
 
