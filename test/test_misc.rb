@@ -5,7 +5,6 @@ require __dir__ + '/helper'
 #
 # The test suite will be cleaned up at some point soon.
 class TestMisc < Premailer::TestCase
-
   def test_styles_in_the_body
     html = <<END_HTML
     <html>
@@ -110,7 +109,6 @@ END_HTML
       assert_match /color: red/i, premailer.processed_doc.at('head style').inner_html
 
       assert_match /a:hover/i, premailer.processed_doc.at('style').inner_html
-
     end
   end
 
@@ -129,7 +127,6 @@ END_HTML
     # red should remain in <style> block
     assert_match /a:hover[\s]*\{[\s]*color:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
-
 
   def test_drop_unmergable_rules
     html = <<END_HTML
@@ -179,7 +176,6 @@ END_HTML
       assert_match /@media screen and \(orientation: portrait\) \{.*?a \{.*?color: green;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with type to style"
     end
-
   end
 
   def test_unmergable_rules_with_no_body

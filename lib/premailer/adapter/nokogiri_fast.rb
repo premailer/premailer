@@ -27,7 +27,6 @@ class Premailer
 
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
-
           # Save un-mergable rules separately
           selector.gsub!(/:link([\s]*)+/i) { |_m| $1 }
 
@@ -69,12 +68,10 @@ class Premailer
 
           declarations = []
           style.scan(/\[SPEC=([\d]+)\[(.[^\]]*)\]\]/m).each do |declaration|
-
             rs = CssParser::RuleSet.new(block: declaration[1].to_s, specificity: declaration[0].to_i)
             declarations << rs
           rescue ArgumentError => e
             raise e if @options[:rule_set_exceptions]
-
           end
 
           # Perform style folding
@@ -190,7 +187,6 @@ class Premailer
         end
         doc
       end
-
 
       # Converts the HTML document to a format suitable for plain-text e-mail.
       #

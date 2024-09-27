@@ -25,6 +25,7 @@ class Premailer
     def default_test; end
 
     protected
+
     def local_setup(f = 'base.html', opts = {})
       base_file = BASE_PATH + '/' + f
       premailer = Premailer.new(base_file, opts)
@@ -37,6 +38,5 @@ class Premailer
       @premailer.to_inline_css
       @doc = @premailer.processed_doc
     end
-
   end
 end

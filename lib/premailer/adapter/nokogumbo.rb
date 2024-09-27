@@ -183,7 +183,6 @@ class Premailer
         doc
       end
 
-
       # Converts the HTML document to a format suitable for plain-text e-mail.
       #
       # If present, uses the <body> element as its base; otherwise uses the whole document.
@@ -256,7 +255,6 @@ class Premailer
 
         doc
       end
-
     end
   end
 end

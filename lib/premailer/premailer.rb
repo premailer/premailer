@@ -267,6 +267,7 @@ class Premailer
   end
 
 protected
+
   def load_css_from_local_file!(path)
     css_block = +''
     path.delete_prefix!('file:')
@@ -339,10 +340,9 @@ protected
     end
   end
 
-
-
 # here be deprecated methods
 public
+
   # @private
   # @deprecated
   def local_uri?(uri) # :nodoc:
@@ -405,7 +405,6 @@ public
         warn "Skipping append_query_string for: #{href} (#{e.message})" if @options[:verbose]
         next
       end
-
     end
     doc
   end

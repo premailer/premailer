@@ -2,7 +2,6 @@
 require __dir__ + '/helper'
 
 class TestAdapter < Premailer::TestCase
-
   def test_default
     require 'nokogiri'
     assert_equal :nokogiri, Premailer::Adapter.default
@@ -34,5 +33,4 @@ class TestAdapter < Premailer::TestCase
       Premailer::Adapter.find(:unknown)
     end
   end
-
 end

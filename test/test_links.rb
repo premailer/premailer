@@ -98,7 +98,6 @@ class TestLinks < Premailer::TestCase
     premailer.to_inline_css
 
     assert_equal 'http://example.com/index.php?pram1=one&pram2=two&amp;qs', premailer.processed_doc.at('a')['href']
-
   end
 
   def test_resolving_urls_from_string

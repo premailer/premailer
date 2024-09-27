@@ -6,7 +6,6 @@ class Premailer
   # * nokogiri_fast
   # * nokogumbo
   module Adapter
-
     autoload :Nokogiri, 'premailer/adapter/nokogiri'
     autoload :NokogiriFast, 'premailer/adapter/nokogiri_fast'
     autoload :Nokogumbo, 'premailer/adapter/nokogumbo'
@@ -59,6 +58,5 @@ class Premailer
     rescue NameError
       raise ArgumentError, "Invalid adapter: #{adapter}"
     end
-
   end
 end

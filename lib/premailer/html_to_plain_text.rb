@@ -3,7 +3,6 @@ require 'htmlentities'
 
 # Support functions for Premailer
 module HtmlToPlainText
-
   # Returns the text in UTF-8 format with all HTML tags removed
   #
   # HTML content can be omitted from the output by surrounding it in the following comments:

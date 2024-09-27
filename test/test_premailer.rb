@@ -255,7 +255,6 @@ END_HTML
     end
   end
 
-
   def test_advanced_selectors
     remote_setup('base.html', :adapter => :nokogiri)
     assert_match /italic/, @doc.at('h2 + h3')['style']
