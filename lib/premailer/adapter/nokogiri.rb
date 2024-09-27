@@ -32,10 +32,10 @@ class Premailer
             @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration), media_types) unless @options[:preserve_styles]
           else
             begin
-              if Premailer::RE_RESET_SELECTORS.match?(selector)
+              if Premailer::RE_RESET_SELECTORS.match?(selector) && !!@options[:preserve_reset]
                 # this is in place to preserve the MailChimp CSS reset: http://github.com/mailchimp/Email-Blueprints/
                 # however, this doesn't mean for testing pur
-                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration)) unless !@options[:preserve_reset]
+                @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration))
               end
 
               # Change single ID CSS selectors into xpath so that we can match more
