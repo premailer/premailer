@@ -149,7 +149,7 @@ END_HTML
   def test_importing_css_as_string
     files_base = __dir__ + '/files/'
 
-    css_string = IO.read(File.join(files_base, 'import.css'))
+    css_string = File.read(File.join(files_base, 'import.css'))
 
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       premailer = Premailer.new(File.join(files_base, 'no_css.html'), {:css_string => css_string, :adapter => adapter})
@@ -425,7 +425,7 @@ END_HTML
   # exception would be raised: ActionView::Template::Error: bad URI(is not URI?)
   def test_line_starting_with_uri_in_html_with_linked_css
     files_base = __dir__ + '/files/'
-    html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
+    html_string = File.read(File.join(files_base, 'html_with_uri.html'))
 
     premailer = Premailer.new(html_string, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css

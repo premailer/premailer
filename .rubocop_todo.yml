@@ -291,9 +291,3 @@ Naming/PredicateName:
     - 'spec/**/*'
     - 'lib/premailer/adapter/rgb_to_hex.rb'
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Security/IoMethods:
-  Exclude:
-    - 'test/test_premailer.rb'
