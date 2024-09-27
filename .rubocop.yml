@@ -83,3 +83,14 @@ Naming/MethodParameterName:
 # TODO: remove
 Style/HashSyntax:
   Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+# most of these read better as they are
+Style/StringConcatenation:
+  Enabled: false
+
+# TODO: slowly reduce and fix the auto-generated clunky code
+Layout/LineLength:
+  Max: 268
