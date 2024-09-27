@@ -390,9 +390,3 @@ Style/MethodCallWithoutArgsParentheses:
     - 'lib/premailer/adapter/nokogiri.rb'
     - 'lib/premailer/adapter/nokogiri_fast.rb'
     - 'lib/premailer/adapter/nokogumbo.rb'
-
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-Style/MultilineIfThen:
-  Exclude:
-    - 'lib/premailer/adapter/nokogiri_fast.rb'

@@ -283,7 +283,7 @@ class Premailer
         page.traverse do |node|
           all_nodes.push(node)
 
-          if node != page then
+          if node != page
             index_ancestry(page, node, node.parent, descendants)
           end
 
@@ -294,7 +294,7 @@ class Premailer
           # Index the node by all class attributes it possesses.
           # Classes are modestly selective. Usually more than tag names
           # but less selective than ids.
-          if node.has_attribute?("class") then
+          if node.has_attribute?("class")
             node.get_attribute("class").split(/\s+/).each do |c|
               c = '.' + c
               index[c] = (index[c] || Set.new).add(node)
@@ -303,7 +303,7 @@ class Premailer
 
           # Index the node by its "id" attribute if it has one.
           # This is usually the most selective of the three.
-          if node.has_attribute?("id") then
+          if node.has_attribute?("id")
             id = '#' + node.get_attribute("id")
             index[id] = (index[id] || Set.new).add(node)
           end
@@ -325,9 +325,9 @@ class Premailer
       # @param descendants The running hash map of node -> set of nodes that maps descendants of a node.
       # @return The descendants argument after updating it.
       def index_ancestry(doc, elem, parent, descendants)
-        if parent then
+        if parent
           descendants[parent] = (descendants[parent] || Set.new).add(elem)
-          if doc != parent then
+          if doc != parent
             index_ancestry(doc, elem, parent.parent, descendants)
           end
         end
@@ -356,14 +356,14 @@ class Premailer
       # It will return nil when such a selector is passed, so you can take
       # action on the falsity of the return value.
       def match_selector(index, all_nodes, descendants, selector)
-        if /[^-a-zA-Z0-9_\s.#]/.match?(selector) then
+        if /[^-a-zA-Z0-9_\s.#]/.match?(selector)
           return nil
         end
 
         take_children = false
         selector.split(/\s+/).reduce(all_nodes) do |base, spec|
           desc = base
-          if take_children then
+          if take_children
             desc = Set.new
             base.each do |n|
               desc.merge(descendants[n])
