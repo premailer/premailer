@@ -80,7 +80,7 @@ class Premailer
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
-              if el[html_attr].nil? and not merged[css_attr].empty?
+              if el[html_attr].nil? and !merged[css_attr].empty?
                 new_val = merged[css_attr].dup
 
                 # Remove url() function wrapper
@@ -196,7 +196,7 @@ class Premailer
         rescue StandardError
         end
 
-        html_src = @doc.to_html unless html_src and not html_src.empty?
+        html_src = @doc.to_html unless html_src and !html_src.empty?
         convert_to_text(html_src, @options[:line_length], @html_encoding)
       end
 

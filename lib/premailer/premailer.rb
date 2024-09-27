@@ -228,7 +228,7 @@ class Premailer
 
     if @options[:base_url]
       @base_url = Addressable::URI.parse(@options.delete(:base_url))
-    elsif not @is_local_file
+    elsif !@is_local_file
       @base_url = Addressable::URI.parse(@html_file)
     end
 
@@ -389,7 +389,7 @@ public
           next
         end
 
-        if href.query and not href.query.empty?
+        if href.query and !href.query.empty?
           amp = @options[:unescaped_ampersand] ? '&' : '&amp;'
           href.query = href.query + amp + queries
         else

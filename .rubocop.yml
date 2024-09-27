@@ -101,3 +101,7 @@ Style/RegexpLiteral:
 # just easier to read
 Style/PerlBackrefs:
   Enabled: false
+
+# often easier to read
+Style/Next:
+  Enabled: false
