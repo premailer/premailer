@@ -331,12 +331,3 @@ Style/ClassCheck:
 Style/CommentedKeyword:
   Exclude:
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'lib/premailer/html_to_plain_text.rb'
-    - 'lib/premailer/premailer.rb'
