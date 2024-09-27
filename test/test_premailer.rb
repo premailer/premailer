@@ -220,7 +220,7 @@ END_HTML
       doc = pm.processed_doc
       assert_nil doc.at('#remove'), "Using: #{adapter}"
       assert_nil doc.at('#keep'), "Using: #{adapter}"
-      hashed_id = doc.at('a')['href'][1..-1]
+      hashed_id = doc.at('a')['href'][1..]
       refute_nil doc.at("##{hashed_id}"), "Using: #{adapter}"
     end
   end

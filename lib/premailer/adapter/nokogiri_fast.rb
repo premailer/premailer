@@ -137,7 +137,7 @@ class Premailer
           # find all anchor's targets and hash them
           targets = []
           doc.search("a[@href^='#']").each do |el|
-            target = el.get_attribute('href')[1..-1]
+            target = el.get_attribute('href')[1..]
             targets << target
             el.set_attribute('href', "#" + Digest::SHA256.hexdigest(target))
           end
