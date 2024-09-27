@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require File.expand_path(File.dirname(__FILE__)) + '/helper'
+require __dir__ + '/helper'
 
 class TestPremailer < Premailer::TestCase
   def test_special_characters_nokogiri
@@ -147,7 +147,7 @@ END_HTML
   end
 
   def test_importing_css_as_string
-    files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
+    files_base = __dir__ + '/files/'
 
     css_string = IO.read(File.join(files_base, 'import.css'))
 
@@ -424,7 +424,7 @@ END_HTML
   # Premailer should not identify the html string as a URI. Otherwise the following
   # exception would be raised: ActionView::Template::Error: bad URI(is not URI?)
   def test_line_starting_with_uri_in_html_with_linked_css
-    files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
+    files_base = __dir__ + '/files/'
     html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
 
     premailer = Premailer.new(html_string, :adapter => :nokogiri, :with_html_string => true)

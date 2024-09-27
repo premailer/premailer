@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require File.expand_path(File.dirname(__FILE__)) + '/helper'
+require __dir__ + '/helper'
 
 class TestWarnings < Premailer::TestCase
   def test_element_warnings

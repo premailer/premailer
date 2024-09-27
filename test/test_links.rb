@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require File.expand_path(File.dirname(__FILE__)) + '/helper'
+require __dir__ + '/helper'
 
 class TestLinks < Premailer::TestCase
   def test_empty_query_string

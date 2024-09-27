@@ -7,7 +7,7 @@ require 'premailer'
 class Premailer
   class TestCase < Minitest::Test
     BASE_URI  = 'http://premailer.dev/'
-    BASE_PATH = File.expand_path(File.dirname(__FILE__)) + '/files'
+    BASE_PATH = __dir__ + '/files'
 
     def setup
       stub_request(:any, /premailer\.dev\/*/).to_return do |request|

@@ -340,16 +340,3 @@ Style/ConditionalAssignment:
   Exclude:
     - 'lib/premailer/html_to_plain_text.rb'
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-Style/Dir:
-  Exclude:
-    - 'test/future_tests.rb'
-    - 'test/helper.rb'
-    - 'test/test_adapter.rb'
-    - 'test/test_html_to_plain_text.rb'
-    - 'test/test_links.rb'
-    - 'test/test_misc.rb'
-    - 'test/test_premailer.rb'
-    - 'test/test_warnings.rb'
