@@ -515,7 +515,7 @@ public
 
     # Get a list off CSS properties
     @processed_doc.search("*[@style]").each do |el|
-      el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*:/i) do |s|
+      el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*:/i) do |_s|
         properties.push($1)
       end
     end

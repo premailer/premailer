@@ -59,7 +59,7 @@ module HtmlToPlainText
 
     # handle headings (H1-H6)
     txt.gsub!(/(<\/h[1-6]>)/i, "\n\\1") # move closing tags to new lines
-    txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |s|
+    txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |_s|
       hlevel = $1.to_i
 
       htext = $2
@@ -121,7 +121,7 @@ module HtmlToPlainText
     txt.gsub!(/[\n]{3,}/, "\n\n")
 
     # the word messes up the parens
-    txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |s|
+    txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |_s|
       ($1 == "\n" ? $1 : '' ) + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '' )
     end
 
