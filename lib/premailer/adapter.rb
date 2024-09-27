@@ -6,7 +6,6 @@ class Premailer
   # * nokogiri_fast
   # * nokogumbo
   module Adapter
-
     autoload :Nokogiri, 'premailer/adapter/nokogiri'
     autoload :NokogiriFast, 'premailer/adapter/nokogiri_fast'
     autoload :Nokogumbo, 'premailer/adapter/nokogumbo'
@@ -16,12 +15,12 @@ class Premailer
       ["nokogiri", :nokogiri],
       ["nokogiri", :nokogiri_fast],
       ["nokogumbo", :nokogumbo]
-    ]
+    ].freeze
 
     # Returns the adapter to use.
     def self.use
       return @use if @use
-      self.use = self.default
+      self.use = default
       @use
     end
 
@@ -35,12 +34,10 @@ class Premailer
       return :nokogumbo if defined?(::Nokogumbo)
 
       REQUIREMENT_MAP.each do |(library, adapter)|
-        begin
-          require library
-          return adapter
-        rescue LoadError
-          next
-        end
+        require library
+        return adapter
+      rescue LoadError
+        next
       end
 
       raise "No suitable adapter for Premailer was found, please install nokogiri or nokogumbo"
@@ -57,10 +54,9 @@ class Premailer
     def self.find(adapter)
       return adapter if adapter.is_a?(Module)
 
-      Premailer::Adapter.const_get("#{adapter.to_s.split('_').map{|s| s.capitalize}.join}")
+      Premailer::Adapter.const_get(adapter.to_s.split('_').map(&:capitalize).join.to_s)
     rescue NameError
       raise ArgumentError, "Invalid adapter: #{adapter}"
     end
-
   end
 end

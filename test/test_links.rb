@@ -1,6 +1,5 @@
-# encoding: UTF-8
 # frozen_string_literal: true
-require File.expand_path(File.dirname(__FILE__)) + '/helper'
+require __dir__ + '/helper'
 
 class TestLinks < Premailer::TestCase
   def test_empty_query_string
@@ -10,53 +9,53 @@ class TestLinks < Premailer::TestCase
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri}
+    opts = { :base_url => 'http://example.com/', :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri }
 
     appendable = [
-        '/',
-        opts[:base_url],
-        'https://example.com/tester',
-        'images/',
-        "#{opts[:base_url]}test.html?cn=tf&amp;c=20&amp;ord=random",
-        '?query=string'
+      '/',
+      opts[:base_url],
+      'https://example.com/tester',
+      'images/',
+      "#{opts[:base_url]}test.html?cn=tf&amp;c=20&amp;ord=random",
+      '?query=string'
     ]
 
     not_appendable = [
-        '%DONOTCONVERT%',
-        '{DONOTCONVERT}',
-        '[DONOTCONVERT]',
-        '<DONOTCONVERT>',
-        '{@msg-txturl}',
-        '[[!unsubscribe]]',
-        '#relative',
-        'tel:5555551212',
-        'http://example.net/',
-        'mailto:premailer@example.com',
-        'ftp://example.com',
-        'gopher://gopher.floodgap.com/1/fun/twitpher'
+      '%DONOTCONVERT%',
+      '{DONOTCONVERT}',
+      '[DONOTCONVERT]',
+      '<DONOTCONVERT>',
+      '{@msg-txturl}',
+      '[[!unsubscribe]]',
+      '#relative',
+      'tel:5555551212',
+      'http://example.net/',
+      'mailto:premailer@example.com',
+      'ftp://example.com',
+      'gopher://gopher.floodgap.com/1/fun/twitpher'
     ]
 
-    html = appendable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = appendable.collect { |url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
     premailer.to_inline_css
 
     premailer.processed_doc.search('a').each do |el|
       href = el.attributes['href'].to_s
-      next if href.nil? or href.empty?
+      next if href.nil? || href.empty?
       uri = Addressable::URI.parse(href)
-      assert_match qs, uri.query, "missing query string for #{el.to_s}"
+      assert_match qs, uri.query, "missing query string for #{el}"
     end
 
-    html = not_appendable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = not_appendable.collect { |url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
     premailer.to_inline_css
 
     premailer.processed_doc.search('a').each do |el|
       href = el['href']
-      next if href.nil? or href.empty?
-      assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable.to_s}"
+      next if href.nil? || href.empty?
+      assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable}"
     end
   end
 
@@ -99,7 +98,6 @@ class TestLinks < Premailer::TestCase
     premailer.to_inline_css
 
     assert_equal 'http://example.com/index.php?pram1=one&pram2=two&amp;qs', premailer.processed_doc.at('a')['href']
-
   end
 
   def test_resolving_urls_from_string
@@ -161,12 +159,12 @@ class TestLinks < Premailer::TestCase
 
   def test_convertable_inline_links
     convertible = [
-        'my/path/to',
-        'other/path',
-        '/'
+      'my/path/to',
+      'other/path',
+      '/'
     ]
 
-    html = convertible.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = convertible.collect { |url| "<a href='#{url}'>Link</a>" }
     premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "http://example.com", :with_html_string => true)
 
     premailer.processed_doc.search('a').each do |el|
@@ -177,21 +175,21 @@ class TestLinks < Premailer::TestCase
 
   def test_non_convertable_inline_links
     not_convertable = [
-        '%DONOTCONVERT%',
-        '{DONOTCONVERT}',
-        '[DONOTCONVERT]',
-        '<DONOTCONVERT>',
-        '{@msg-txturl}',
-        '[[!unsubscribe]]',
-        '#relative',
-        'tel:5555551212',
-        'mailto:premailer@example.com',
-        'ftp://example.com',
-        'gopher://gopher.floodgap.com/1/fun/twitpher',
-        'cid:13443452066.10392logo.jpeg@inline_attachment'
+      '%DONOTCONVERT%',
+      '{DONOTCONVERT}',
+      '[DONOTCONVERT]',
+      '<DONOTCONVERT>',
+      '{@msg-txturl}',
+      '[[!unsubscribe]]',
+      '#relative',
+      'tel:5555551212',
+      'mailto:premailer@example.com',
+      'ftp://example.com',
+      'gopher://gopher.floodgap.com/1/fun/twitpher',
+      'cid:13443452066.10392logo.jpeg@inline_attachment'
     ]
 
-    html = not_convertable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = not_convertable.collect { |url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "example.com", :with_html_string => true)
     premailer.to_inline_css

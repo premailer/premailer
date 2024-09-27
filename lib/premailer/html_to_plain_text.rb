@@ -1,10 +1,8 @@
-# coding: utf-8
 # frozen_string_literal: true
 require 'htmlentities'
 
 # Support functions for Premailer
 module HtmlToPlainText
-
   # Returns the text in UTF-8 format with all HTML tags removed
   #
   # HTML content can be omitted from the output by surrounding it in the following comments:
@@ -60,7 +58,7 @@ module HtmlToPlainText
 
     # handle headings (H1-H6)
     txt.gsub!(/(<\/h[1-6]>)/i, "\n\\1") # move closing tags to new lines
-    txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |s|
+    txt.gsub!(/[\s]*<h([1-6]+)[^>]*>[\s]*(.*)[\s]*<\/h[1-6]+>/i) do |_s|
       hlevel = $1.to_i
 
       htext = $2
@@ -69,17 +67,21 @@ module HtmlToPlainText
 
       # determine maximum line length
       hlength = 0
-      htext.each_line { |l| llength = l.strip.length; hlength = llength if llength > hlength }
+      htext.each_line do |l|
+        llength = l.strip.length
+        hlength = llength if llength > hlength
+      end
       hlength = line_length if hlength > line_length
 
-      case hlevel
-      when 1   # H1, asterisks above and below
-        htext = ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength)
-      when 2   # H1, dashes above and below
-        htext = ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength)
-      else     # H3-H6, dashes below
-        htext = htext + "\n" + ('-' * hlength)
-      end
+      htext =
+        case hlevel
+        when 1   # H1, asterisks above and below
+          ('*' * hlength) + "\n" + htext + "\n" + ('*' * hlength)
+        when 2   # H1, dashes above and below
+          ('-' * hlength) + "\n" + htext + "\n" + ('-' * hlength)
+        else # H3-H6, dashes below
+          htext + "\n" + ('-' * hlength)
+        end
 
       "\n\n" + htext + "\n\n"
     end
@@ -118,8 +120,8 @@ module HtmlToPlainText
     txt.gsub!(/[\n]{3,}/, "\n\n")
 
     # the word messes up the parens
-    txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |s|
-      ($1 == "\n" ? $1 : '' ) + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '' )
+    txt.gsub!(/\(([ \n])(http[^)]+)([\n ])\)/) do |_s|
+      ($1 == "\n" ? $1 : '') + '( ' + $2 + ' )' + ($3 == "\n" ? $1 : '')
     end
 
     txt.strip

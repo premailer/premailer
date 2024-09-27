@@ -1,4 +1,3 @@
-inherit_from: .rubocop_todo.yml
 require: rubocop-performance
 
 AllCops:
@@ -37,10 +36,6 @@ Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
 Layout/FirstHashElementLineBreak:
-  Enabled: true # Opt-in
-
-# Opt-in
-Layout/FirstMethodArgumentLineBreak:
   Enabled: true # Opt-in
 
 Layout/FirstMethodParameterLineBreak:
@@ -83,3 +78,48 @@ Naming/MethodParameterName:
 # TODO: remove
 Style/HashSyntax:
   Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+# most of these read better as they are
+Style/StringConcatenation:
+  Enabled: false
+
+# TODO: slowly reduce and fix the auto-generated clunky code
+Layout/LineLength:
+  Max: 268
+
+Style/RegexpLiteral:
+  Enabled: false
+
+# just easier to read
+Style/PerlBackrefs:
+  Enabled: false
+
+# often easier to read
+Style/Next:
+  Enabled: false
+
+# often easier to read
+Style/IfUnlessModifier:
+    Enabled: false
+
+# just unnecessary
+Style/FetchEnvVar:
+  Enabled: false
+
+# just ugly
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: false
+
+# TODO: go through these and at least add comments
+Lint/SuppressedException:
+  Exclude:
+  - 'lib/premailer/adapter/nokogiri.rb'
+  - 'lib/premailer/adapter/nokogiri_fast.rb'
+  - 'lib/premailer/adapter/nokogumbo.rb'
+  - 'lib/premailer/premailer.rb'

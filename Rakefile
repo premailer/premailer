@@ -4,10 +4,10 @@ require 'rake/testtask'
 require "bundler/gem_tasks"
 require 'bump/tasks'
 
-GEM_ROOT = File.dirname(__FILE__).freeze  unless defined?(GEM_ROOT)
+GEM_ROOT = File.dirname(__FILE__).freeze unless defined?(GEM_ROOT)
 
 lib_path = File.expand_path('lib', GEM_ROOT)
-$LOAD_PATH.unshift(lib_path)  unless $LOAD_PATH.include? lib_path
+$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include? lib_path
 
 require 'premailer/version'
 
@@ -18,7 +18,7 @@ task :inline do
   url = ENV['url']
   output = ENV['output']
 
-  if !url or url.empty? or !output or output.empty?
+  if !url || url.empty? || !output || output.empty?
     puts 'Usage: rake inline url=http://example.com/ output=output.html'
     exit
   end
@@ -38,7 +38,7 @@ task :text do
   url = ENV['url']
   output = ENV['output']
 
-  if !url or url.empty? or !output or output.empty?
+  if !url || url.empty? || !output || output.empty?
     puts 'Usage: rake text url=http://example.com/ output=output.txt'
     exit
   end

@@ -4,12 +4,12 @@ require 'premailer'
 
 # defaults
 options = {
-  :base_url          => nil,
+  :base_url => nil,
   :link_query_string => nil,
-  :remove_classes    => false,
-  :verbose           => false,
-  :line_length       => 65,
-  :adapter           => :nokogiri
+  :remove_classes => false,
+  :verbose => false,
+  :line_length => 65,
+  :adapter => :nokogiri
 }
 
 mode = :html
@@ -54,11 +54,11 @@ parser = OptionParser.new do |opts|
     options[:remove_scripts] = true
   end
 
-  opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length].to_s})") do |v|
+  opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length]})") do |v|
     options[:line_length] = v
   end
 
-  opts.on("-e", "--entities", "Output HTML entities instead of UTF-8 when using Nokogiri") do |v|
+  opts.on("-e", "--entities", "Output HTML entities instead of UTF-8 when using Nokogiri") do |_v|
     options[:output_encoding] = "US-ASCII"
   end
 
@@ -82,7 +82,7 @@ parser = OptionParser.new do |opts|
 end
 parser.parse!
 
-$stderr.puts "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
+warn "Processing in #{mode} mode with options #{options.inspect}" if options[:verbose]
 
 premailer = nil
 input = nil

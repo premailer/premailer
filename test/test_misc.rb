@@ -1,12 +1,10 @@
-# encoding: UTF-8
 # frozen_string_literal: true
-require File.expand_path(File.dirname(__FILE__)) + '/helper'
+require __dir__ + '/helper'
 
 # Random tests for specific issues.
 #
 # The test suite will be cleaned up at some point soon.
 class TestMisc < Premailer::TestCase
-
   def test_styles_in_the_body
     html = <<END_HTML
     <html>
@@ -20,7 +18,7 @@ END_HTML
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color:\s*red/i, premailer.processed_doc.at('p')['style']
   end
 
   def test_commented_out_styles_in_the_body
@@ -36,7 +34,7 @@ END_HTML
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color:\s*red/i, premailer.processed_doc.at('p')['style']
   end
 
   def test_not_applying_styles_to_the_head
@@ -97,7 +95,7 @@ END_HTML
 		</html>
 END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
+      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true, :adapter => adapter)
       premailer.to_inline_css
       assert_equal 1, premailer.processed_doc.search('head link').length
       assert_equal 1, premailer.processed_doc.search('head style').length
@@ -111,7 +109,6 @@ END_HTML
       assert_match /color: red/i, premailer.processed_doc.at('head style').inner_html
 
       assert_match /a:hover/i, premailer.processed_doc.at('style').inner_html
-
     end
   end
 
@@ -126,11 +123,10 @@ END_HTML
     premailer.to_inline_css
 
     # blue should be inlined
-    refute_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+    refute_match /a:hover[\s]*\{[\s]*color:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
     # red should remain in <style> block
-    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+    assert_match /a:hover[\s]*\{[\s]*color:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
-
 
   def test_drop_unmergable_rules
     html = <<END_HTML
@@ -180,7 +176,6 @@ END_HTML
       assert_match /@media screen and \(orientation: portrait\) \{.*?a \{.*?color: green;.*?\}.*?\}/m, style_tag_contents,
                    "#{adapter}: Failed to add media query with type to style"
     end
-
   end
 
   def test_unmergable_rules_with_no_body
@@ -193,7 +188,7 @@ END_HTML
 
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
-    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
+    assert_match /a:hover[\s]*\{[\s]*color:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7

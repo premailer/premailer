@@ -7,7 +7,7 @@ require 'premailer'
 class Premailer
   class TestCase < Minitest::Test
     BASE_URI  = 'http://premailer.dev/'
-    BASE_PATH = File.expand_path(File.dirname(__FILE__)) + '/files'
+    BASE_PATH = __dir__ + '/files'
 
     def setup
       stub_request(:any, /premailer\.dev\/*/).to_return do |request|
@@ -19,12 +19,13 @@ class Premailer
         end
       end
 
-      stub_request(:get, /my\.example\.com\:8080\/*/).to_return(:status => 200, :body => "", :headers => {})
+      stub_request(:get, /my\.example\.com:8080\/*/).to_return(:status => 200, :body => "", :headers => {})
     end
 
     def default_test; end
 
     protected
+
     def local_setup(f = 'base.html', opts = {})
       base_file = BASE_PATH + '/' + f
       premailer = Premailer.new(base_file, opts)
@@ -33,10 +34,9 @@ class Premailer
     end
 
     def remote_setup(f = 'base.html', opts = {})
-      @premailer = Premailer.new(BASE_URI + "#{f}", opts)
+      @premailer = Premailer.new(BASE_URI + f.to_s, opts)
       @premailer.to_inline_css
       @doc = @premailer.processed_doc
     end
-
   end
 end

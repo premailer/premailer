@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require File.expand_path(File.dirname(__FILE__)) + '/helper'
+require __dir__ + '/helper'
 
 class TestPremailer < Premailer::TestCase
   def test_special_characters_nokogiri
@@ -26,32 +26,32 @@ class TestPremailer < Premailer::TestCase
     assert_equal 'é   ©', premailer.processed_doc.at('p').inner_html
   end
 
-  #def test_cyrillic_nokogiri_remote
+  # def test_cyrillic_nokogiri_remote
   #  if RUBY_VERSION =~ /1.9/
   #    remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
   #  	@premailer.to_inline_css
   #    assert_equal Encoding.find('ISO-8859-5'), @premailer.processed_doc.at('p').inner_html.encoding
   #  end
-  #end
+  # end
 
   def test_detecting_html
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('base.html', :adapter => adapter)
-      refute @premailer.is_xhtml?, "Using: #{adapter}"
+      refute @premailer.xhtml?, "Using: #{adapter}"
     end
   end
 
   def test_detecting_xhtml
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('xhtml.html', :adapter => adapter)
-      assert @premailer.is_xhtml?, "Using: #{adapter}"
+      assert @premailer.xhtml?, "Using: #{adapter}"
     end
   end
 
   def test_detecting_plain_text
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('plain.txt', :adapter => adapter)
-      refute @premailer.is_xhtml?, "Using: #{adapter}"
+      refute @premailer.xhtml?, "Using: #{adapter}"
     end
   end
 
@@ -118,7 +118,7 @@ END_HTML
   def test_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       html = '<table><td style="background-color: #FFF;"></td></table>'
-      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
+      premailer = Premailer.new(html, { :with_html_string => true, :adapter => adapter, :css_to_attributes => true })
       premailer.to_inline_css
       assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s, "Using: #{adapter}"
       assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s, "Using: #{adapter}"
@@ -128,7 +128,7 @@ END_HTML
   def test_avoid_changing_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       html = '<table><td style="background-color: #FFF;"></td></table>'
-      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => false})
+      premailer = Premailer.new(html, { :with_html_string => true, :adapter => adapter, :css_to_attributes => false })
       premailer.to_inline_css
       assert_match /background-color: #FFF/, premailer.processed_doc.at_css('td').attributes['style'].to_s, "Using: #{adapter}"
     end
@@ -147,12 +147,12 @@ END_HTML
   end
 
   def test_importing_css_as_string
-    files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
+    files_base = __dir__ + '/files/'
 
-    css_string = IO.read(File.join(files_base, 'import.css'))
+    css_string = File.read(File.join(files_base, 'import.css'))
 
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      premailer = Premailer.new(File.join(files_base, 'no_css.html'), {:css_string => css_string, :adapter => adapter})
+      premailer = Premailer.new(File.join(files_base, 'no_css.html'), { :css_string => css_string, :adapter => adapter })
       premailer.to_inline_css
       @doc = premailer.processed_doc
 
@@ -162,14 +162,14 @@ END_HTML
   end
 
   def test_local_remote_check
-    assert Premailer.local_data?( StringIO.new('a') )
-    assert Premailer.local_data?( '/path/' )
-    assert !Premailer.local_data?( 'http://example.com/path/' )
+    assert Premailer.local_data?(StringIO.new('a'))
+    assert Premailer.local_data?('/path/')
+    assert !Premailer.local_data?('http://example.com/path/')
 
     # the old way is deprecated but should still work
-    premailer = Premailer.new( StringIO.new('a'), :adapter => :nokogiri )
+    premailer = Premailer.new(StringIO.new('a'), :adapter => :nokogiri)
     silence_stderr do
-      assert premailer.local_uri?( '/path/' )
+      assert premailer.local_uri?('/path/')
     end
   end
 
@@ -220,7 +220,7 @@ END_HTML
       doc = pm.processed_doc
       assert_nil doc.at('#remove'), "Using: #{adapter}"
       assert_nil doc.at('#keep'), "Using: #{adapter}"
-      hashed_id = doc.at('a')['href'][1..-1]
+      hashed_id = doc.at('a')['href'][1..]
       refute_nil doc.at("##{hashed_id}"), "Using: #{adapter}"
     end
   end
@@ -254,7 +254,6 @@ END_HTML
       assert_match /\n/, pm.to_inline_css, "Using: #{adapter}"
     end
   end
-
 
   def test_advanced_selectors
     remote_setup('base.html', :adapter => :nokogiri)
@@ -396,7 +395,7 @@ END_HTML
     html_special_characters = "©"
     html_entities_characters = /&#169;/
     expected_html = /#{html_entities_characters}/
-    pm = Premailer.new(html_special_characters, :output_encoding => "US-ASCII", :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8");
+    pm = Premailer.new(html_special_characters, :output_encoding => "US-ASCII", :with_html_string => true, :adapter => :nokogiri, :input_encoding => "UTF-8")
     assert_match expected_html, pm.to_inline_css
   end
 
@@ -424,8 +423,8 @@ END_HTML
   # Premailer should not identify the html string as a URI. Otherwise the following
   # exception would be raised: ActionView::Template::Error: bad URI(is not URI?)
   def test_line_starting_with_uri_in_html_with_linked_css
-    files_base = File.expand_path(File.dirname(__FILE__)) + '/files/'
-    html_string = IO.read(File.join(files_base, 'html_with_uri.html'))
+    files_base = __dir__ + '/files/'
+    html_string = File.read(File.join(files_base, 'html_with_uri.html'))
 
     premailer = Premailer.new(html_string, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
