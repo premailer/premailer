@@ -19,7 +19,7 @@ END_HTML
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color:\s*red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color:\s*red/i, premailer.processed_doc.at('p')['style']
   end
 
   def test_commented_out_styles_in_the_body
@@ -35,7 +35,7 @@ END_HTML
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color:\s*red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color:\s*red/i, premailer.processed_doc.at('p')['style']
   end
 
   def test_not_applying_styles_to_the_head
@@ -96,7 +96,7 @@ END_HTML
 		</html>
 END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true,  :adapter => adapter)
+      premailer = Premailer.new(html, :with_html_string => true, :preserve_styles => true, :adapter => adapter)
       premailer.to_inline_css
       assert_equal 1, premailer.processed_doc.search('head link').length
       assert_equal 1, premailer.processed_doc.search('head style').length

@@ -109,19 +109,6 @@ Layout/EmptyLinesAroundModuleBody:
     - 'lib/premailer/adapter/nokogumbo.rb'
     - 'lib/premailer/html_to_plain_text.rb'
 
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowForAlignment, AllowBeforeTrailingComments, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'Rakefile'
-    - 'lib/premailer/adapter/nokogiri.rb'
-    - 'lib/premailer/premailer.rb'
-    - 'premailer.gemspec'
-    - 'test/helper.rb'
-    - 'test/test_links.rb'
-    - 'test/test_misc.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:

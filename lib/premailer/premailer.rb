@@ -498,7 +498,7 @@ public
   #
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
-    return false  if data.is_a?(String) && data =~ /\A(?:(https?|ftp):)\/\//i
+    return false if data.is_a?(String) && data =~ /\A(?:(https?|ftp):)\/\//i
     true
   end
 

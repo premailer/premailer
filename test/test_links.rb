@@ -9,7 +9,7 @@ class TestLinks < Premailer::TestCase
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    opts = { :base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri }
+    opts = { :base_url => 'http://example.com/', :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri }
 
     appendable = [
       '/',

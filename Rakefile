@@ -4,10 +4,10 @@ require 'rake/testtask'
 require "bundler/gem_tasks"
 require 'bump/tasks'
 
-GEM_ROOT = File.dirname(__FILE__).freeze  unless defined?(GEM_ROOT)
+GEM_ROOT = File.dirname(__FILE__).freeze unless defined?(GEM_ROOT)
 
 lib_path = File.expand_path('lib', GEM_ROOT)
-$LOAD_PATH.unshift(lib_path)  unless $LOAD_PATH.include? lib_path
+$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include? lib_path
 
 require 'premailer/version'
 
