@@ -9,7 +9,7 @@ class TestLinks < Premailer::TestCase
 
   def test_appending_link_query_string
     qs = 'utm_source=1234&tracking=good&amp;doublescape'
-    opts = {:base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri}
+    opts = { :base_url => 'http://example.com/',  :link_query_string => qs, :with_html_string => true, :adapter => :nokogiri }
 
     appendable = [
         '/',
@@ -35,7 +35,7 @@ class TestLinks < Premailer::TestCase
         'gopher://gopher.floodgap.com/1/fun/twitpher'
     ]
 
-    html = appendable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = appendable.collect { |url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
     premailer.to_inline_css
@@ -47,7 +47,7 @@ class TestLinks < Premailer::TestCase
       assert_match qs, uri.query, "missing query string for #{el}"
     end
 
-    html = not_appendable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = not_appendable.collect { |url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, opts)
     premailer.to_inline_css
@@ -165,7 +165,7 @@ class TestLinks < Premailer::TestCase
         '/'
     ]
 
-    html = convertible.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = convertible.collect { |url| "<a href='#{url}'>Link</a>" }
     premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "http://example.com", :with_html_string => true)
 
     premailer.processed_doc.search('a').each do |el|
@@ -190,7 +190,7 @@ class TestLinks < Premailer::TestCase
         'cid:13443452066.10392logo.jpeg@inline_attachment'
     ]
 
-    html = not_convertable.collect {|url| "<a href='#{url}'>Link</a>" }
+    html = not_convertable.collect { |url| "<a href='#{url}'>Link</a>" }
 
     premailer = Premailer.new(html.to_s, :adapter => :nokogiri, :base_url => "example.com", :with_html_string => true)
     premailer.to_inline_css

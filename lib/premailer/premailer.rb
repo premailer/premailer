@@ -64,16 +64,16 @@ class Premailer
   # @todo too much repetition
   # @todo background=""
   RELATED_ATTRIBUTES = {
-    'h1' => {'text-align' => 'align'},
-    'h2' => {'text-align' => 'align'},
-    'h3' => {'text-align' => 'align'},
-    'h4' => {'text-align' => 'align'},
-    'h5' => {'text-align' => 'align'},
-    'h6' => {'text-align' => 'align'},
-    'p' => {'text-align' => 'align'},
-    'div' => {'text-align' => 'align'},
-    'blockquote' => {'text-align' => 'align'},
-    'body' => {'background-color' => 'bgcolor'},
+    'h1' => { 'text-align' => 'align' },
+    'h2' => { 'text-align' => 'align' },
+    'h3' => { 'text-align' => 'align' },
+    'h4' => { 'text-align' => 'align' },
+    'h5' => { 'text-align' => 'align' },
+    'h6' => { 'text-align' => 'align' },
+    'p' => { 'text-align' => 'align' },
+    'div' => { 'text-align' => 'align' },
+    'blockquote' => { 'text-align' => 'align' },
+    'body' => { 'background-color' => 'bgcolor' },
     'table' => {
       '-premailer-align' => 'align',
       'background-color' => 'bgcolor',
@@ -182,7 +182,7 @@ class Premailer
   # @option options [Boolean] :html_fragment Handle HTML fragment without any HTML content wrappers. Default is false.
   # @option options [Boolean] :drop_unmergeable_css_rules Do not include unmergeable css rules in a <tt><style><tt> tag. Default is false.
   def initialize(html, options = {})
-    @options = {:warn_level => Warnings::SAFE,
+    @options = { :warn_level => Warnings::SAFE,
                 :line_length => 65,
                 :link_query_string => nil,
                 :base_url => nil,
@@ -213,7 +213,7 @@ class Premailer
                 :create_shorthands => true,
                 :html_fragment => false,
                 :adapter => Adapter.use,
-                :drop_unmergeable_css_rules => false}.merge(options)
+                :drop_unmergeable_css_rules => false }.merge(options)
 
     @html_file = html
     @is_local_file = @options[:with_html_string] || Premailer.local_data?(html)
@@ -280,7 +280,7 @@ protected
   end
 
   def load_css_from_string(css_string)
-    @css_parser.add_block!(css_string, {:base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld]})
+    @css_parser.add_block!(css_string, { :base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld] })
   end
 
   # @private
@@ -324,7 +324,7 @@ protected
             load_css_from_local_file!(link_uri)
           else
             warn "Loading css from uri: " + link_uri if @options[:verbose]
-            @css_parser.load_uri!(link_uri, {:only_media_types => [:screen, :handheld]})
+            @css_parser.load_uri!(link_uri, { :only_media_types => [:screen, :handheld] })
           end
 
         elsif tag.to_s.strip =~ /^<style/i && @options[:include_style_tags]
@@ -374,7 +374,7 @@ public
       href = el.attributes['href'].to_s.strip
       next if href.nil? || href.empty?
 
-      next if /[\#\{\[\<\%]/.match?(href[0,1]) # don't bother with anchors or special-looking links
+      next if /[\#\{\[\<\%]/.match?(href[0, 1]) # don't bother with anchors or special-looking links
 
       begin
         href = Addressable::URI.parse(href)
@@ -468,7 +468,7 @@ public
 
   # @private
   def self.media_query?(media_types)
-    media_types&.any?{|mt| mt.to_s.count('()') >= 2 }
+    media_types&.any? { |mt| mt.to_s.count('()') >= 2 }
   end
 
   # @private
@@ -527,27 +527,27 @@ public
       if property_support.include?(prop) &&
           property_support[prop].include?('support') &&
           (property_support[prop]['support'] >= @options[:warn_level])
-        warnings.push({:message => "#{prop} CSS property",
+        warnings.push({ :message => "#{prop} CSS property",
             :level => WARN_LABEL[property_support[prop]['support']],
-            :clients => property_support[prop]['unsupported_in'].join(', ')})
+            :clients => property_support[prop]['unsupported_in'].join(', ') })
       end
     end
 
     @client_support['attributes'].each do |attribute, data|
       next unless data['support'] >= @options[:warn_level]
       if @doc.search("*[@#{attribute}]").length > 0
-        warnings.push({:message => "#{attribute} HTML attribute",
+        warnings.push({ :message => "#{attribute} HTML attribute",
             :level => WARN_LABEL[data['support']],
-            :clients => data['unsupported_in'].join(', ')})
+            :clients => data['unsupported_in'].join(', ') })
       end
     end
 
     @client_support['elements'].each do |element, data|
       next unless data['support'] >= @options[:warn_level]
       if @doc.search(element).length > 0
-        warnings.push({:message => "#{element} HTML element",
+        warnings.push({ :message => "#{element} HTML element",
             :level => WARN_LABEL[data['support']],
-            :clients => data['unsupported_in'].join(', ')})
+            :clients => data['unsupported_in'].join(', ') })
       end
     end
 

@@ -26,13 +26,13 @@ class TestPremailer < Premailer::TestCase
     assert_equal 'é   ©', premailer.processed_doc.at('p').inner_html
   end
 
-  #def test_cyrillic_nokogiri_remote
+  # def test_cyrillic_nokogiri_remote
   #  if RUBY_VERSION =~ /1.9/
   #    remote_setup('iso-8859-5.html', :adapter => :nokogiri) #, :encoding => 'iso-8859-5')
   #  	@premailer.to_inline_css
   #    assert_equal Encoding.find('ISO-8859-5'), @premailer.processed_doc.at('p').inner_html.encoding
   #  end
-  #end
+  # end
 
   def test_detecting_html
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
@@ -118,7 +118,7 @@ END_HTML
   def test_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       html = '<table><td style="background-color: #FFF;"></td></table>'
-      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => true})
+      premailer = Premailer.new(html, { :with_html_string => true, :adapter => adapter, :css_to_attributes => true })
       premailer.to_inline_css
       assert_equal '', premailer.processed_doc.search('td').first.attributes['style'].to_s, "Using: #{adapter}"
       assert_equal '#FFF', premailer.processed_doc.search('td').first.attributes['bgcolor'].to_s, "Using: #{adapter}"
@@ -128,7 +128,7 @@ END_HTML
   def test_avoid_changing_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       html = '<table><td style="background-color: #FFF;"></td></table>'
-      premailer = Premailer.new(html, {:with_html_string => true, :adapter => adapter, :css_to_attributes => false})
+      premailer = Premailer.new(html, { :with_html_string => true, :adapter => adapter, :css_to_attributes => false })
       premailer.to_inline_css
       assert_match /background-color: #FFF/, premailer.processed_doc.at_css('td').attributes['style'].to_s, "Using: #{adapter}"
     end
@@ -152,7 +152,7 @@ END_HTML
     css_string = File.read(File.join(files_base, 'import.css'))
 
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      premailer = Premailer.new(File.join(files_base, 'no_css.html'), {:css_string => css_string, :adapter => adapter})
+      premailer = Premailer.new(File.join(files_base, 'no_css.html'), { :css_string => css_string, :adapter => adapter })
       premailer.to_inline_css
       @doc = premailer.processed_doc
 

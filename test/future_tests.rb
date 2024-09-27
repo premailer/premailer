@@ -27,7 +27,7 @@ class TestPremailer < Premailer::TestCase
 
   def test_merging_cellpadding
     flunk 'Not implemented'
-    local_setup('cellpadding.html', {:prefer_cellpadding => true})
+    local_setup('cellpadding.html', { :prefer_cellpadding => true })
     assert_equal '0', @doc.at('#t1')['cellpadding']
     assert_match /padding:/i, @doc.at('#t1 td')['style']
 
