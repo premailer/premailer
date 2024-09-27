@@ -39,9 +39,9 @@ class Premailer
   CLIENT_SUPPORT_FILE = File.dirname(__FILE__) + '/../../misc/client_support.yaml'
 
   # Unmergable selectors regexp.
-  RE_UNMERGABLE_SELECTORS = /(\:(visited|active|hover|focus|after|before|selection|target|first\-(line|letter))|^\@)/i
+  RE_UNMERGABLE_SELECTORS = /(:(visited|active|hover|focus|after|before|selection|target|first-(line|letter))|^@)/i
   # Reset selectors regexp.
-  RE_RESET_SELECTORS = /^(\:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
+  RE_RESET_SELECTORS = /^(:\#outlook|body.*|\.ReadMsgBody|\.ExternalClass|img|\#backgroundTable)$/
 
   # list of HTMLEntities to fix
   # source: http://stackoverflow.com/questions/2812781/how-to-convert-webpage-apostrophe-8217-to-ascii-39-in-ruby-1-
@@ -301,7 +301,7 @@ protected
     tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore']), style:not([@data-premailer='ignore'])")
     if tags
       tags.each do |tag|
-        if tag.to_s.strip =~ /^\<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media']) && @options[:include_link_tags]
+        if tag.to_s.strip =~ /^<link/i && tag.attributes['href'] && media_type_ok?(tag.attributes['media']) && @options[:include_link_tags]
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
 
@@ -327,7 +327,7 @@ protected
             @css_parser.load_uri!(link_uri, {:only_media_types => [:screen, :handheld]})
           end
 
-        elsif tag.to_s.strip =~ /^\<style/i && @options[:include_style_tags]
+        elsif tag.to_s.strip =~ /^<style/i && @options[:include_style_tags]
           @css_parser.add_block!(tag.inner_html, :base_uri => @base_url, :base_dir => @base_dir, :only_media_types => [:screen, :handheld])
         end
       end
@@ -517,7 +517,7 @@ public
 
     # Get a list off CSS properties
     @processed_doc.search("*[@style]").each do |el|
-      style_url = el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*\:/i) do |s|
+      style_url = el.attributes['style'].to_s.gsub(/([\w\-]+)[\s]*:/i) do |s|
         properties.push($1)
       end
     end

@@ -20,7 +20,7 @@ END_HTML
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color:\s*red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_commented_out_styles_in_the_body
@@ -36,7 +36,7 @@ END_HTML
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
 
-    assert_match /color\:\s*red/i,  premailer.processed_doc.at('p')['style']
+    assert_match /color:\s*red/i,  premailer.processed_doc.at('p')['style']
   end
 
   def test_not_applying_styles_to_the_head
@@ -126,9 +126,9 @@ END_HTML
     premailer.to_inline_css
 
     # blue should be inlined
-    refute_match /a\:hover[\s]*\{[\s]*color\:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+    refute_match /a:hover[\s]*\{[\s]*color:[\s]*blue[\s]*;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
     # red should remain in <style> block
-    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
+    assert_match /a:hover[\s]*\{[\s]*color:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('head style').inner_html
   end
 
 
@@ -193,7 +193,7 @@ END_HTML
 
     premailer = Premailer.new(html, :adapter => :nokogiri, :with_html_string => true)
     premailer.to_inline_css
-    assert_match /a\:hover[\s]*\{[\s]*color\:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
+    assert_match /a:hover[\s]*\{[\s]*color:[\s]*red;[\s]*\}/i, premailer.processed_doc.at('style').inner_html
   end
 
   # in response to https://github.com/alexdunae/premailer/issues#issue/7

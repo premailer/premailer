@@ -30,22 +30,22 @@ class TestPremailer < Premailer::TestCase
     flunk 'Not implemented'
     local_setup('cellpadding.html', {:prefer_cellpadding => true})
     assert_equal '0', @doc.at('#t1')['cellpadding']
-    assert_match /padding\:/i, @doc.at('#t1 td')['style']
+    assert_match /padding:/i, @doc.at('#t1 td')['style']
 
     assert_equal '5', @doc.at('#t2')['cellpadding']
-    refute_match /padding\:/i, @doc.at('#t2 td')['style']
+    refute_match /padding:/i, @doc.at('#t2 td')['style']
 
     assert_nil @doc.at('#t3')['cellpadding']
-    assert_match /padding\:/i, @doc.at('#t3 td')['style']
+    assert_match /padding:/i, @doc.at('#t3 td')['style']
 
     assert_nil @doc.at('#t4')['cellpadding']
-    assert_match /padding\:/i, @doc.at('#t4a')['style']
-    assert_match /padding\:/i, @doc.at('#t4b')['style']
+    assert_match /padding:/i, @doc.at('#t4a')['style']
+    assert_match /padding:/i, @doc.at('#t4b')['style']
   end
 
   def test_preserving_media_queries
     flunk 'Not implemented'
     local_setup
-    assert_match /display\: none/i, @doc.at('#iphone')['style']
+    assert_match /display: none/i, @doc.at('#iphone')['style']
   end
 end

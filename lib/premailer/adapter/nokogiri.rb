@@ -63,7 +63,7 @@ class Premailer
         doc.search("*[@style]").each do |el|
           style = el.attributes['style'].to_s
 
-          declarations = style.scan(/\[SPEC\=([\d]+)\[(.[^\]\]]*)\]\]/m).filter_map do |declaration|
+          declarations = style.scan(/\[SPEC=([\d]+)\[(.[^\]\]]*)\]\]/m).filter_map do |declaration|
             rs = Premailer::CachedRuleSet.new(block: declaration[1].to_s, specificity: declaration[0].to_i)
             rs.expand_shorthand!
             rs

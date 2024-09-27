@@ -19,7 +19,7 @@ class Premailer
         end
       end
 
-      stub_request(:get, /my\.example\.com\:8080\/*/).to_return(:status => 200, :body => "", :headers => {})
+      stub_request(:get, /my\.example\.com:8080\/*/).to_return(:status => 200, :body => "", :headers => {})
     end
 
     def default_test; end
