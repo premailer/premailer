@@ -1,4 +1,3 @@
-inherit_from: .rubocop_todo.yml
 require: rubocop-performance
 
 AllCops:
@@ -116,3 +115,11 @@ Lint/AmbiguousRegexpLiteral:
 
 Layout/FirstMethodArgumentLineBreak:
   Enabled: false
+
+# TODO: go through these and at least add comments
+Lint/SuppressedException:
+  Exclude:
+  - 'lib/premailer/adapter/nokogiri.rb'
+  - 'lib/premailer/adapter/nokogiri_fast.rb'
+  - 'lib/premailer/adapter/nokogumbo.rb'
+  - 'lib/premailer/premailer.rb'
