@@ -325,9 +325,3 @@ Style/AndOr:
 Style/ClassCheck:
   Exclude:
     - 'lib/premailer/premailer.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/CommentedKeyword:
-  Exclude:
-    - 'lib/premailer/premailer.rb'

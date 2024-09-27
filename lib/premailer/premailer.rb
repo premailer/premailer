@@ -458,8 +458,8 @@ public
         # make sure 'merged' is a URI
         merged = Addressable::URI.parse(merged.to_s) unless merged.kind_of?(Addressable::URI)
         tag[attribute] = merged.to_s
-      end # end of each tag
-    end # end of each attrs
+      end
+    end
 
     doc.search("*[@style]").each do |el|
       el['style'] = CssParser.convert_uris(el.attributes['style'].to_s, base_uri)
