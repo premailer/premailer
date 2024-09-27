@@ -305,7 +305,7 @@ protected
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
 
-          if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.kind_of?(String)
+          if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.is_a?(String)
             link_uri = if @options[:with_html_string]
               tag.attributes['href'].to_s.sub(@base_url.to_s, '')
             else
@@ -423,7 +423,7 @@ public
   #
   # Returns a document.
   def convert_inline_links(doc, base_uri) # :nodoc:
-    base_uri = Addressable::URI.parse(base_uri) unless base_uri.kind_of?(Addressable::URI)
+    base_uri = Addressable::URI.parse(base_uri) unless base_uri.is_a?(Addressable::URI)
 
     append_qs = @options[:link_query_string] || ''
     escape_attrs = @options[:escape_url_attributes]
@@ -456,7 +456,7 @@ public
         end
 
         # make sure 'merged' is a URI
-        merged = Addressable::URI.parse(merged.to_s) unless merged.kind_of?(Addressable::URI)
+        merged = Addressable::URI.parse(merged.to_s) unless merged.is_a?(Addressable::URI)
         tag[attribute] = merged.to_s
       end
     end
@@ -480,10 +480,10 @@ public
     if /\A(?:(https?|ftp|file):)\/\//i.match?(path)
       resolved = path
       Premailer.canonicalize(resolved)
-    elsif base_path.kind_of?(Addressable::URI)
+    elsif base_path.is_a?(Addressable::URI)
       resolved = base_path.join(path)
       Premailer.canonicalize(resolved)
-    elsif base_path.kind_of?(String) and base_path =~ /\A(?:(?:https?|ftp|file):)\/\//i
+    elsif base_path.is_a?(String) and base_path =~ /\A(?:(?:https?|ftp|file):)\/\//i
       resolved = Addressable::URI.parse(base_path)
       resolved = resolved.join(path)
       Premailer.canonicalize(resolved)
@@ -496,13 +496,13 @@ public
   #
   # IO objects return true, as do strings that look like URLs.
   def self.local_data?(data)
-    return false  if data.kind_of?(String) && data =~ /\A(?:(https?|ftp):)\/\//i
+    return false  if data.is_a?(String) && data =~ /\A(?:(https?|ftp):)\/\//i
     true
   end
 
   # from http://www.ruby-forum.com/topic/140101
   def self.canonicalize(uri) # :nodoc:
-    u = uri.kind_of?(Addressable::URI) ? uri : Addressable::URI.parse(uri.to_s)
+    u = uri.is_a?(Addressable::URI) ? uri : Addressable::URI.parse(uri.to_s)
     u.normalize!
     u.to_s
   end
