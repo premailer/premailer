@@ -241,7 +241,7 @@ class Premailer
 
     @adapter_class = Adapter.find @options[:adapter]
 
-    self.extend(@adapter_class)
+    extend(@adapter_class)
 
     @doc = load_html(@html_file)
 

@@ -21,7 +21,7 @@ class Premailer
     # Returns the adapter to use.
     def self.use
       return @use if @use
-      self.use = self.default
+      self.use = default
       @use
     end
 
