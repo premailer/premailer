@@ -35,12 +35,10 @@ class Premailer
       return :nokogumbo if defined?(::Nokogumbo)
 
       REQUIREMENT_MAP.each do |(library, adapter)|
-        begin
-          require library
-          return adapter
-        rescue LoadError
-          next
-        end
+        require library
+        return adapter
+      rescue LoadError
+        next
       end
 
       raise "No suitable adapter for Premailer was found, please install nokogiri or nokogumbo"

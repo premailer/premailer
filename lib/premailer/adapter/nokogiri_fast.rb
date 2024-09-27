@@ -69,12 +69,12 @@ class Premailer
 
           declarations = []
           style.scan(/\[SPEC=([\d]+)\[(.[^\]\]]*)\]\]/m).each do |declaration|
-            begin
-              rs = CssParser::RuleSet.new(block: declaration[1].to_s, specificity: declaration[0].to_i)
-              declarations << rs
-            rescue ArgumentError => e
-              raise e if @options[:rule_set_exceptions]
-            end
+
+            rs = CssParser::RuleSet.new(block: declaration[1].to_s, specificity: declaration[0].to_i)
+            declarations << rs
+          rescue ArgumentError => e
+            raise e if @options[:rule_set_exceptions]
+
           end
 
           # Perform style folding
