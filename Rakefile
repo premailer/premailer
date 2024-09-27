@@ -18,7 +18,7 @@ task :inline do
   url = ENV['url']
   output = ENV['output']
 
-  if !url or url.empty? or !output or output.empty?
+  if !url || url.empty? || !output || output.empty?
     puts 'Usage: rake inline url=http://example.com/ output=output.html'
     exit
   end
@@ -38,7 +38,7 @@ task :text do
   url = ENV['url']
   output = ENV['output']
 
-  if !url or url.empty? or !output or output.empty?
+  if !url || url.empty? || !output || output.empty?
     puts 'Usage: rake text url=http://example.com/ output=output.txt'
     exit
   end

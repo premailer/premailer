@@ -43,7 +43,7 @@ class Premailer
               selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
 
               doc.search(selector).each do |el|
-                if el.elem? and (el.name != 'head' and el.parent.name != 'head')
+                if el.elem? && ((el.name != 'head') && (el.parent.name != 'head'))
                   # Add a style attribute or append to the existing one
                   block = "[SPEC=#{specificity}[#{declaration}]]"
                   el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
@@ -82,7 +82,7 @@ class Premailer
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
-              if el[html_attr].nil? and !merged[css_attr].empty?
+              if el[html_attr].nil? && !merged[css_attr].empty?
                 new_val = merged[css_attr].dup
 
                 # Remove url() function wrapper
@@ -117,9 +117,9 @@ class Premailer
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules) unless @options[:drop_unmergeable_css_rules]
 
-        if @options[:remove_classes] or @options[:remove_comments]
+        if @options[:remove_classes] || @options[:remove_comments]
           doc.traverse do |el|
-            if el.comment? and @options[:remove_comments]
+            if el.comment? && @options[:remove_comments]
               el.remove
             elsif el.element?
               el.remove_attribute('class') if @options[:remove_classes]
@@ -198,7 +198,7 @@ class Premailer
         rescue StandardError
         end
 
-        html_src = @doc.to_html unless html_src and !html_src.empty?
+        html_src = @doc.to_html unless html_src && !html_src.empty?
         convert_to_text(html_src, @options[:line_length], @html_encoding)
       end
 
@@ -219,7 +219,7 @@ class Premailer
         thing = nil
 
         # TODO: duplicate options
-        if @options[:with_html_string] or @options[:inline] or input.respond_to?(:read)
+        if @options[:with_html_string] || @options[:inline] || input.respond_to?(:read)
           thing = input
         elsif @is_local_file
           @base_dir = File.dirname(input)
@@ -236,7 +236,7 @@ class Premailer
         doc = nil
 
         # Handle HTML entities
-        if @options[:replace_html_entities] == true and thing.is_a?(String)
+        if (@options[:replace_html_entities] == true) && thing.is_a?(String)
           thing = +thing
           HTML_ENTITIES.map do |entity, replacement|
             thing.gsub! entity, replacement

@@ -305,7 +305,7 @@ protected
           # A user might want to <link /> to a local css file that is also mirrored on the site
           # but the local one is different (e.g. newer) than the live file, premailer will now choose the local file
 
-          if tag.attributes['href'].to_s.include? @base_url.to_s and @html_file.is_a?(String)
+          if tag.attributes['href'].to_s.include?(@base_url.to_s) && @html_file.is_a?(String)
             link_uri = if @options[:with_html_string]
               tag.attributes['href'].to_s.sub(@base_url.to_s, '')
             else
@@ -351,7 +351,7 @@ public
   # @private
   def media_type_ok?(media_types)
     media_types = media_types.to_s
-    return true if media_types.nil? or media_types.empty?
+    return true if media_types.nil? || media_types.empty?
     media_types.split(/[\s]+|,/).any? { |media_type| media_type.strip =~ /screen|handheld|all/i }
   end
 
@@ -372,24 +372,24 @@ public
 
     doc.search('a').each do |el|
       href = el.attributes['href'].to_s.strip
-      next if href.nil? or href.empty?
+      next if href.nil? || href.empty?
 
       next if /[\#\{\[\<\%]/.match?(href[0,1]) # don't bother with anchors or special-looking links
 
       begin
         href = Addressable::URI.parse(href)
 
-        if current_host and !href.host.nil? and href.host != current_host
+        if current_host && !href.host.nil? && (href.host != current_host)
           warn "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
           next
         end
 
-        if href.scheme and href.scheme != 'http' and href.scheme != 'https'
+        if href.scheme && (href.scheme != 'http') && (href.scheme != 'https')
           puts "Skipping append_query_string for: #{href.to_s} because scheme is no good" if @options[:verbose]
           next
         end
 
-        if href.query and !href.query.empty?
+        if href.query && !href.query.empty?
           amp = @options[:unescaped_ampersand] ? '&' : '&amp;'
           href.query = href.query + amp + queries
         else
@@ -483,7 +483,7 @@ public
     elsif base_path.is_a?(Addressable::URI)
       resolved = base_path.join(path)
       Premailer.canonicalize(resolved)
-    elsif base_path.is_a?(String) and base_path =~ /\A(?:(?:https?|ftp|file):)\/\//i
+    elsif base_path.is_a?(String) && base_path =~ (/\A(?:(?:https?|ftp|file):)\/\//i)
       resolved = Addressable::URI.parse(base_path)
       resolved = resolved.join(path)
       Premailer.canonicalize(resolved)
@@ -526,9 +526,9 @@ public
 
     property_support = @client_support['css_properties']
     properties.each do |prop|
-      if property_support.include?(prop) and
-          property_support[prop].include?('support') and
-          property_support[prop]['support'] >= @options[:warn_level]
+      if property_support.include?(prop) &&
+          property_support[prop].include?('support') &&
+          (property_support[prop]['support'] >= @options[:warn_level])
         warnings.push({:message => "#{prop} CSS property",
             :level => WARN_LABEL[property_support[prop]['support']],
             :clients => property_support[prop]['unsupported_in'].join(', ')})
