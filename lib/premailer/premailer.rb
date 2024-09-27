@@ -266,7 +266,7 @@ class Premailer
     @css_warnings
   end
 
-protected
+  protected
 
   def load_css_from_local_file!(path)
     css_block = +''
@@ -301,7 +301,7 @@ protected
     end
   end
 
-    # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
+  # Load CSS included in <tt>style</tt> and <tt>link</tt> tags from an HTML document.
   def load_css_from_html! # :nodoc:
     tags = @doc.search("link[@rel='stylesheet']:not([@data-premailer='ignore']), style:not([@data-premailer='ignore'])")
     if tags
@@ -340,8 +340,8 @@ protected
     end
   end
 
-# here be deprecated methods
-public
+  # here be deprecated methods
+  public
 
   # @private
   # @deprecated
@@ -350,7 +350,7 @@ public
     Premailer.local_data?(uri)
   end
 
-# here be instance methods
+  # here be instance methods
 
   # @private
   def media_type_ok?(media_types)

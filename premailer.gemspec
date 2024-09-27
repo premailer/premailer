@@ -14,16 +14,16 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
   s.metadata['rubygems_mfa_required'] = 'true'
 
+  s.add_runtime_dependency 'addressable'
   s.add_runtime_dependency 'css_parser', '>= 1.19.0'
   s.add_runtime_dependency 'htmlentities', ['>= 4.0.0']
-  s.add_runtime_dependency 'addressable'
-  s.add_development_dependency "bundler", ">= 1.3"
-  s.add_development_dependency 'rake', ['> 0.8', '!= 0.9.0']
-  s.add_development_dependency 'nokogiri', '~> 1.16'
-  s.add_development_dependency 'redcarpet', '~> 3.0'
-  s.add_development_dependency 'maxitest'
-  s.add_development_dependency 'webmock'
   s.add_development_dependency 'bump'
+  s.add_development_dependency "bundler", ">= 1.3"
+  s.add_development_dependency 'maxitest'
+  s.add_development_dependency 'nokogiri', '~> 1.16'
+  s.add_development_dependency 'rake', ['> 0.8', '!= 0.9.0']
+  s.add_development_dependency 'redcarpet', '~> 3.0'
   s.add_development_dependency 'rubocop', '~> 1.62.1' # locked to make bundle update not add new rules
   s.add_development_dependency 'rubocop-performance'
+  s.add_development_dependency 'webmock'
 end
