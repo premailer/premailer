@@ -105,3 +105,11 @@ Style/PerlBackrefs:
 # often easier to read
 Style/Next:
   Enabled: false
+
+# often easier to read
+Style/IfUnlessModifier:
+    Enabled: false
+
+# just unnecessary
+Style/FetchEnvVar:
+  Enabled: false

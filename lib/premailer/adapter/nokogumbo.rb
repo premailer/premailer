@@ -250,7 +250,7 @@ class Premailer
         # https://github.com/premailer/premailer/issues/199
         ['style', 'script'].each do |tag|
           doc.search(tag).children.each do |child|
-            child.swap(child.text()) if child.cdata?
+            child.swap(child.text) if child.cdata?
           end
         end
 
