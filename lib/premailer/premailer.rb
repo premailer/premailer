@@ -407,7 +407,7 @@ public
   end
 
   # Check for an XHTML doctype
-  def is_xhtml?
+  def xhtml?
     intro = @doc.to_xhtml.strip.split("\n")[0..2].join(' ')
     is_xhtml = !!(intro =~ /w3c\/\/[\s]*dtd[\s]+xhtml/i)
     warn "Is XHTML? #{is_xhtml.inspect}\nChecked:\n#{intro}" if @options[:debug]
@@ -468,7 +468,7 @@ public
   end
 
   # @private
-  def self.is_media_query?(media_types)
+  def self.media_query?(media_types)
     media_types&.any?{|mt| mt.to_s.count('()') >= 2 }
   end
 

@@ -34,7 +34,7 @@ class Premailer
           # Convert element names to lower case
           selector.gsub!(/([\s]|^)([\w]+)/) { |m| $1.to_s + $2.to_s.downcase }
 
-          if Premailer.is_media_query?(media_types) || selector =~ Premailer::RE_UNMERGABLE_SELECTORS
+          if Premailer.media_query?(media_types) || selector =~ Premailer::RE_UNMERGABLE_SELECTORS
             @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration), media_types) unless @options[:preserve_styles]
           else
             begin
@@ -159,7 +159,7 @@ class Premailer
         end
 
         @processed_doc = doc
-        if is_xhtml?
+        if xhtml?
           # we don't want to encode carriage returns
           @processed_doc.to_xhtml(:encoding => @options[:output_encoding]).gsub(/&\#(xD|13);/i, "\r")
         else
@@ -211,7 +211,7 @@ class Premailer
       # Gets the original HTML as a string.
       # @return [String] HTML.
       def to_s
-        if is_xhtml?
+        if xhtml?
           @doc.to_xhtml(:encoding => nil)
         else
           @doc.to_html(:encoding => nil)

@@ -37,21 +37,21 @@ class TestPremailer < Premailer::TestCase
   def test_detecting_html
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('base.html', :adapter => adapter)
-      refute @premailer.is_xhtml?, "Using: #{adapter}"
+      refute @premailer.xhtml?, "Using: #{adapter}"
     end
   end
 
   def test_detecting_xhtml
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('xhtml.html', :adapter => adapter)
-      assert @premailer.is_xhtml?, "Using: #{adapter}"
+      assert @premailer.xhtml?, "Using: #{adapter}"
     end
   end
 
   def test_detecting_plain_text
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       remote_setup('plain.txt', :adapter => adapter)
-      refute @premailer.is_xhtml?, "Using: #{adapter}"
+      refute @premailer.xhtml?, "Using: #{adapter}"
     end
   end
 
