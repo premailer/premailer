@@ -244,14 +244,6 @@ Lint/DuplicateRegexpCharacterClassElement:
     - 'lib/premailer/adapter/nokogiri_fast.rb'
     - 'lib/premailer/adapter/nokogumbo.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-Lint/RedundantStringCoercion:
-  Exclude:
-    - 'lib/premailer/executor.rb'
-    - 'lib/premailer/premailer.rb'
-    - 'test/test_links.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:

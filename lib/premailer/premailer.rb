@@ -380,12 +380,12 @@ public
         href = Addressable::URI.parse(href)
 
         if current_host && !href.host.nil? && (href.host != current_host)
-          warn "Skipping append_query_string for: #{href.to_s} because host is no good" if @options[:verbose]
+          warn "Skipping append_query_string for: #{href} because host is no good" if @options[:verbose]
           next
         end
 
         if href.scheme && (href.scheme != 'http') && (href.scheme != 'https')
-          puts "Skipping append_query_string for: #{href.to_s} because scheme is no good" if @options[:verbose]
+          puts "Skipping append_query_string for: #{href} because scheme is no good" if @options[:verbose]
           next
         end
 
@@ -398,7 +398,7 @@ public
 
         el['href'] = href.to_s
       rescue Addressable::URI::InvalidURIError => e
-        warn "Skipping append_query_string for: #{href.to_s} (#{e.message})" if @options[:verbose]
+        warn "Skipping append_query_string for: #{href} (#{e.message})" if @options[:verbose]
         next
       end
 

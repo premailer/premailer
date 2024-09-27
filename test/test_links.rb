@@ -44,7 +44,7 @@ class TestLinks < Premailer::TestCase
       href = el.attributes['href'].to_s
       next if href.nil? || href.empty?
       uri = Addressable::URI.parse(href)
-      assert_match qs, uri.query, "missing query string for #{el.to_s}"
+      assert_match qs, uri.query, "missing query string for #{el}"
     end
 
     html = not_appendable.collect {|url| "<a href='#{url}'>Link</a>" }
@@ -55,7 +55,7 @@ class TestLinks < Premailer::TestCase
     premailer.processed_doc.search('a').each do |el|
       href = el['href']
       next if href.nil? || href.empty?
-      assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable.to_s}"
+      assert not_appendable.include?(href), "link #{href} should not be converted: see #{not_appendable}"
     end
   end
 

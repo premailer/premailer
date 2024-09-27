@@ -54,7 +54,7 @@ parser = OptionParser.new do |opts|
     options[:remove_scripts] = true
   end
 
-  opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length].to_s})") do |v|
+  opts.on("-l", "--line-length N", Integer, "Line length for plaintext (default: #{options[:line_length]})") do |v|
     options[:line_length] = v
   end
 
