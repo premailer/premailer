@@ -227,23 +227,6 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'test/test_warnings.rb'
 
-# Offense count: 60
-# This cop supports safe autocorrection (--autocorrect).
-Lint/AmbiguousRegexpLiteral:
-  Exclude:
-    - 'test/future_tests.rb'
-    - 'test/test_html_to_plain_text.rb'
-    - 'test/test_misc.rb'
-    - 'test/test_premailer.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Lint/DuplicateRegexpCharacterClassElement:
-  Exclude:
-    - 'lib/premailer/adapter/nokogiri.rb'
-    - 'lib/premailer/adapter/nokogiri_fast.rb'
-    - 'lib/premailer/adapter/nokogumbo.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:

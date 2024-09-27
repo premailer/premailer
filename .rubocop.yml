@@ -113,3 +113,7 @@ Style/IfUnlessModifier:
 # just unnecessary
 Style/FetchEnvVar:
   Enabled: false
+
+# just ugly
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
