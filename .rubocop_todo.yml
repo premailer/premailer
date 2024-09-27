@@ -220,13 +220,6 @@ Layout/SpaceInsideParens:
     - 'lib/premailer/html_to_plain_text.rb'
     - 'test/test_premailer.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowedMethods, AllowedPatterns.
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'test/test_warnings.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:

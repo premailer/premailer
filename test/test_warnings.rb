@@ -16,8 +16,8 @@ END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 2, warnings.length
-      assert warnings.any? { |w| w[:message] == 'form HTML element'}
-      assert warnings.any? { |w| w[:message] == 'link HTML element'}
+      assert(warnings.any? { |w| w[:message] == 'form HTML element'})
+      assert(warnings.any? { |w| w[:message] == 'link HTML element'})
     end
   end
 
@@ -32,8 +32,8 @@ END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 2, warnings.length
-      assert warnings.any? { |w| w[:message] == 'height CSS property'}
-      assert warnings.any? { |w| w[:message] == 'margin CSS property'}
+      assert(warnings.any? { |w| w[:message] == 'height CSS property'})
+      assert(warnings.any? { |w| w[:message] == 'margin CSS property'})
     end
   end
 
@@ -48,7 +48,7 @@ END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 1, warnings.length
-      assert warnings.any? { |w| w[:message] == 'margin-top CSS property'}
+      assert(warnings.any? { |w| w[:message] == 'margin-top CSS property'})
     end
   end
 
@@ -63,7 +63,7 @@ END_HTML
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       warnings = get_warnings(html, adapter)
       assert_equal 1, warnings.length
-      assert warnings.any? { |w| w[:message] == 'ismap HTML attribute'}
+      assert(warnings.any? { |w| w[:message] == 'ismap HTML attribute'})
     end
   end
 
