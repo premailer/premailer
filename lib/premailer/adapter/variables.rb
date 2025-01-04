@@ -24,7 +24,7 @@ module AdapterHelper
     private
 
     def css_variables
-      root_variables = @css_parser.find_by_selector(":root").reduce({}) do |memo, rule|
+      @css_variables ||= @css_parser.find_by_selector(":root").reduce({}) do |memo, rule|
         rules = rule.split(";")
         rules.each do |rule|
           rule = rule.strip
