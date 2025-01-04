@@ -264,21 +264,6 @@ class Premailer
 
         doc
       end
-
-      private
-
-      def css_variables
-        @css_variables ||= @css_parser.find_by_selector(":root").reduce({}) do |memo, rule|
-          rules = rule.split(";")
-          rules.each do |rule|
-            rule = rule.strip
-            if match = rule.match(/--([^:]+):(.+)/)
-              memo[match[1].strip] = match[2].strip
-            end
-          end
-          memo
-        end
-      end
     end
   end
 end
