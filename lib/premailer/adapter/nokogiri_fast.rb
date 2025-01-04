@@ -8,6 +8,8 @@ class Premailer
       WIDTH_AND_HEIGHT = ['width', 'height'].freeze
 
       include AdapterHelper::RgbToHex
+      include AdapterHelper::Variables
+
       # Merge CSS into the HTML document.
       #
       # @return [String] an HTML.
