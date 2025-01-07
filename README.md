@@ -61,13 +61,13 @@ See .github/workflows/actions.yml for which ruby versions are tested. JRuby supp
 
 Premailer looks for a few CSS attributes that make working with tables a bit easier.
 
-| CSS Attribute           | Availability                                                                             |
-| ----------------------- | ---------------------------------------------------------------------------------------- |
-| -premailer-width        | Available on `table`, `th` and `td` elements                                             |
-| -premailer-height       | Available on `table`, `tr`, `th` and `td` elements                                       |
-| -premailer-cellpadding  | Available on `table` elements                                                            |
-| -premailer-cellspacing  | Available on `table` elements                                                            |
-| -premailer-align        | Available on `table` elements                                                            |
+| CSS Attribute | Availability |
+| ------------- | ------------ |
+| -premailer-width | Available on `table`, `th` and `td` elements |
+| -premailer-height | Available on `table`, `tr`, `th` and `td` elements |
+| -premailer-cellpadding | Available on `table` elements |
+| -premailer-cellspacing | Available on `table` elements |
+| -premailer-align | Available on `table` elements |
 | data-premailer="ignore" | Available on `link` and `style` elements. Premailer will ignore these elements entirely. |
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
