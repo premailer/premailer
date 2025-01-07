@@ -127,6 +127,30 @@ Premailer.new(
 
 [available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
 
+## CSS Variables
+
+If you make use of CSS variables in your emails, Premailer will load any CSS variables
+defined in `:root` and interpolate them into the inline styles. For example:
+
+```
+<html>
+   <body>
+      <style type="text/css"> :root { --red: #f00; --yellow: #ff0; } </style>
+      <style type="text/css"> p { color: var(--red); border: 1px solid var(--yellow); } </style>
+      <p>Test</p>
+   </body>
+</html>
+```
+
+...will result in the following inline styles:
+
+```
+<html>
+   <body>
+      <p style="color: #f00; border: 1px solid #ff0;">Test</p>
+   </body>
+</html>
+```
 
 ## Contributions
 

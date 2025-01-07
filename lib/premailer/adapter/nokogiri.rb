@@ -8,6 +8,7 @@ class Premailer
       WIDTH_AND_HIGHT = ['width', 'height'].freeze
 
       include AdapterHelper::RgbToHex
+      include AdapterHelper::Variables
       # Merge CSS into the HTML document.
       #
       # @return [String] an HTML.
@@ -20,8 +21,12 @@ class Premailer
         doc.search("*[@style]").each do |el|
           el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
         end
+
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
+          # Replace declarations referencing CSS variables with their parsed values
+          declaration = map_variables(declaration)
+
           # Save un-mergable rules separately
           selector.gsub!(/:link([\s]*)+/i) { |_m| $1 }
 
