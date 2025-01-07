@@ -2,7 +2,6 @@
 
 module AdapterHelper
   module Variables
-    CSS_VARIABLE_REGEX = /\bvar\(\s*--([^\s)]+)\s*\)/
     # Takes a CSS declaration string and replaces any `var(--my-variable-name)` references with
     # variables loaded from document's styles
     def map_variables(styles)
@@ -27,14 +26,18 @@ module AdapterHelper
 
     private
 
+    CSS_VARIABLE_REGEX = /\bvar\(\s*--([^\s)]+)\s*\)/
+
+    private_constant :CSS_VARIABLE_REGEX
+
     def css_variables
       @css_variables ||= @css_parser.find_by_selector(":root").each_with_object({}) do |ruleset, memo|
         rules = ruleset.split(";")
         rules.each do |rule|
           rule.strip!
-          match = rule.match(/--([^:\s]+):(.+)/)
+          match = rule.match(/--([^:\s]+):\s*(.+)/)
           if match
-            memo[match[1].strip] = match[2].strip
+            memo[match[1]] = match[2]
           end
         end
       end
