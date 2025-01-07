@@ -21,7 +21,7 @@ module AdapterHelper
         final_declarations.push(declaration)
       end
 
-      final_declarations.join(";")
+      final_declarations.join("; ")
     end
 
     private
