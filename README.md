@@ -129,7 +129,7 @@ Premailer.new(
 
 ## CSS Variables
 
-If you make use of CSS variables in your emails, Premailer will interpolate any CSS variables
+If you make use of CSS variables in your emails, Premailer will load any CSS variables
 defined in `:root` and interpolate them into the inline styles. For example:
 
 ```
