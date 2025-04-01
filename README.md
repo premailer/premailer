@@ -127,6 +127,75 @@ Premailer.new(
 
 [available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
 
+## Support for CSS variables
+
+The gem does not automatically replace CSS variables with their static values.
+
+For example, if a variable is used to set the `font-weight` of an `h1` element, the result will be
+```html
+<h1 style="
+  font-size:3rem;
+  font-weight:var(--bulma-content-heading-weight);">
+  Title</h1>
+```
+
+This causes the `font-weight` value to be the CSS variable call `var(--bulma-content-heading-weight);` instead of its static value.
+
+### Replace CSS variable calls with their static values
+
+The following section instructs how to replace CSS variables with their static value in the context of a Ruby on Rails application.
+
+Install the `postcss-css-variables` plugin for PostCSS to process the CSS variables.
+
+```shell
+yarn add postcss postcss-cli postcss-css-variables
+```
+
+To configure the plugin, create the file `postcss.config.js` in the root directory with the content:
+
+```javascript
+module.exports = {
+    plugins: [
+        // https://github.com/MadLittleMods/postcss-css-variables to transform the css
+      require("postcss-css-variables")({
+        preserve: false, // Set to false to replace variables with static values
+      }),
+    ],
+  };
+```
+
+In the `package.json` file, add the new "build:emails" to the scripts.<br>Replace `./app/assets/stylesheets/emails.css` with your file path:
+```json
+"scripts": {
+  "build:emails": "postcss ./app/assets/stylesheets/emails.css -o ./app/assets/builds/emails.css"
+}
+```
+
+The previous script processes and overwrites the file at `./app/assets/stylesheets/emails.css` with PostCSS using its `postcss-css-variables` plugin, replacing the CSS variables with their static value.
+
+If the file to be processed is not `.css`, but `.scss`, it needs to be converted first to `.css`, then have its variables replaced. The script would then be
+
+```json
+"scripts": {
+  "build:emails": "sass ./app/assets/stylesheets/emails.scss:./app/assets/builds/emails.css --no-source-map --load-path=node_modules && postcss ./app/assets/builds/emails.css -o ./app/assets/builds/emails.css"
+}
+```
+
+Next, to execute the script when running `bin/dev`, add the following line in the file `Procfile.dev`
+
+```
+emails_css: yarn build:emails --watch
+```
+
+The srcipt can also be executed separately with the command
+
+```shell
+yarn build:emails
+```
+
+### Caveat
+
+The variables must be declared before use. Otherwise, their values when called will be set to `undefined`.
 
 ## Contributions
 
