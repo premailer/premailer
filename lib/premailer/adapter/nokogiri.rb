@@ -116,6 +116,7 @@ class Premailer
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules) unless @options[:drop_unmergeable_css_rules]
+        @unmergable_rules = nil
 
         if @options[:remove_classes] || @options[:remove_comments]
           doc.traverse do |el|
