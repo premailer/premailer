@@ -11,7 +11,7 @@ class Premailer
       # @return [String] an HTML.
       def to_inline_css
         doc = @processed_doc
-        @unmergable_rules = CssParser::Parser.new
+        reset_unmergable_rules!
 
         # Give all styles already in style attributes a specificity of 1000
         # per http://www.w3.org/TR/CSS21/cascade.html#specificity

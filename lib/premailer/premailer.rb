@@ -178,6 +178,7 @@ class Premailer
   # @option options [Boolean] :escape_url_attributes URL Escapes href, src, and background attributes on elements. Default is true.
   # @option options [Symbol] :adapter Which HTML parser to use, <tt>:nokogiri</tt>, <tt>:nokogiri_fast</tt> or <tt>:nokogumbo</tt>.  Default is <tt>:nokogiri</tt>.
   # @option options [String] :output_encoding Output encoding option for Nokogiri adapter. Should be set to "US-ASCII" to output HTML entities instead of Unicode characters.
+  # @option options [CssParser::Parser] :unmergable_rules_parser A reusable CssParser::Parser instance for collecting unmergable CSS rules. When provided, to_inline_css clears and reuses it instead of allocating a new parser each time. This prevents memory growth in long-lived processes where MRI's conservative GC may pin parser objects.
   # @option options [Boolean] :create_shorthands Combine several properties into a shorthand one, e.g. font: style weight size. Default is true.
   # @option options [Boolean] :html_fragment Handle HTML fragment without any HTML content wrappers. Default is false.
   # @option options [Boolean] :drop_unmergeable_css_rules Do not include unmergeable css rules in a <tt><style><tt> tag. Default is false.
@@ -226,7 +227,7 @@ class Premailer
 
     @base_url = nil
     @base_dir = nil
-    @unmergable_rules = nil
+    @unmergable_rules = @options[:unmergable_rules_parser]
 
     if @options[:base_url]
       @base_url = Addressable::URI.parse(@options.delete(:base_url))
@@ -281,6 +282,27 @@ class Premailer
       load_css_from_string(css_block)
     rescue StandardError => e
       raise e if @options[:io_exceptions]
+    end
+  end
+
+  # Reset or initialize the @unmergable_rules parser for reuse across
+  # calls to to_inline_css. When a reusable parser was provided via the
+  # :unmergable_rules_parser option, it is cleared rather than replaced,
+  # avoiding new allocations that MRI's conservative GC may never collect
+  # in long-lived processes.
+  #
+  # The fallback path only clears @rules because that is the only state
+  # accumulated by to_inline_css; @loaded_uris and @blocks are unused in
+  # this context.
+  def reset_unmergable_rules!
+    if @unmergable_rules
+      if @unmergable_rules.respond_to?(:clear!)
+        @unmergable_rules.clear!
+      else
+        @unmergable_rules.instance_variable_get(:@rules).clear
+      end
+    else
+      @unmergable_rules = CssParser::Parser.new
     end
   end
 
