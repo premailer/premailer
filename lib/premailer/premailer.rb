@@ -340,6 +340,25 @@ class Premailer
     end
   end
 
+  # Free native Nokogiri/libxml2 memory held by this instance.
+  #
+  # After calling +to_inline_css+ or +to_plain_text+, the Premailer instance
+  # retains live Nokogiri documents that pin native libxml2 memory. Ruby's GC
+  # cannot see this native memory pressure, so in high-throughput scenarios
+  # (e.g. email rendering in Sidekiq workers) native memory can accumulate
+  # unboundedly. Call +cleanup!+ when you are done with the instance to
+  # release that memory immediately.
+  #
+  # After calling this method the instance is no longer usable.
+  def cleanup!
+    @processed_doc.unlink rescue nil
+    @doc.unlink rescue nil if @doc != @processed_doc
+    @doc = nil
+    @processed_doc = nil
+    @css_parser = nil
+    @unmergable_rules = nil
+  end
+
   # here be deprecated methods
   public
 
