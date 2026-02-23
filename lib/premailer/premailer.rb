@@ -351,12 +351,8 @@ class Premailer
   #
   # After calling this method the instance is no longer usable.
   def cleanup!
-    begin
-      @processed_doc&.unlink
-      @doc&.unlink if @doc != @processed_doc
-    rescue
-      nil
-    end
+    @processed_doc&.unlink
+    @doc&.unlink
     @doc = nil
     @processed_doc = nil
     @css_parser = nil
