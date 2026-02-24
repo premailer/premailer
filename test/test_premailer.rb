@@ -573,4 +573,17 @@ END_HTML
     pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogumbo, rule_set_exceptions: false)
     pm.to_inline_css
   end
+
+  def test_cleanup_frees_memory_and_output_is_usable
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      pm = Premailer.new('<p>test</p>', :with_html_string => true, :adapter => adapter)
+      result = pm.to_inline_css
+      pm.cleanup!
+
+      assert_nil pm.doc, "Using: #{adapter}"
+      assert_nil pm.processed_doc, "Using: #{adapter}"
+      assert_nil pm.unmergable_rules, "Using: #{adapter}"
+      assert_match /test/, result, "Using: #{adapter}"
+    end
+  end
 end
