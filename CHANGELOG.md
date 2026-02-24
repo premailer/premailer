@@ -2,6 +2,10 @@
 
 ### Unreleased
 
+### Version 1.28.0
+* drop EOL rubies
+* add cleanup! to reclaim memory
+
 ### Version 1.27.0
 * Support multiline inline styles [issue](https://github.com/premailer/premailer/issues/458)
 

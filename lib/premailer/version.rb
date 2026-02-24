@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 class Premailer
   # Premailer version.
-  VERSION = '1.27.0'
+  VERSION = '1.28.0'
 end
