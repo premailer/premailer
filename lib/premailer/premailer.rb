@@ -340,6 +340,9 @@ class Premailer
     end
   end
 
+  # here be deprecated methods
+  public
+
   # Free native Nokogiri/libxml2 memory held by this instance.
   #
   # After calling +to_inline_css+ or +to_plain_text+, the Premailer instance
@@ -358,9 +361,6 @@ class Premailer
     @css_parser = nil
     @unmergable_rules = nil
   end
-
-  # here be deprecated methods
-  public
 
   # @private
   # @deprecated
