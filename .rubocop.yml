@@ -2,7 +2,7 @@ require: rubocop-performance
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.0 # keep in sync with .github/workflows/actions.yml and premailer.gemspec
+  TargetRubyVersion: 3.3 # keep in sync with .github/workflows/actions.yml and premailer.gemspec
   SuggestExtensions: false # TODO: disable and add rubocop-rake
 
 Style/StringLiterals:
