@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         task: ["test"]
-        ruby: [ '3.3' ] # TODO: add 3.4 and 4.0
+        ruby: [ '3.3', '3.4', '4.0' ]
         include:
           - task: rubocop
             ruby: '3.3' # lowest supported version
