@@ -583,6 +583,9 @@ END_HTML
       assert_nil pm.doc, "Using: #{adapter}"
       assert_nil pm.processed_doc, "Using: #{adapter}"
       assert_nil pm.unmergable_rules, "Using: #{adapter}"
+      assert_nil pm.instance_variable_get(:@html_file), "Using: #{adapter}"
+      assert_nil pm.instance_variable_get(:@css_warnings), "Using: #{adapter}"
+      assert_nil pm.instance_variable_get(:@css_files), "Using: #{adapter}"
       assert_match /test/, result, "Using: #{adapter}"
     end
   end

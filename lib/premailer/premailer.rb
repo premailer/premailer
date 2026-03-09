@@ -360,6 +360,9 @@ class Premailer
     @processed_doc = nil
     @css_parser = nil
     @unmergable_rules = nil
+    @html_file = nil
+    @css_warnings = nil
+    @css_files = nil
   end
 
   # @private
