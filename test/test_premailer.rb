@@ -574,6 +574,28 @@ END_HTML
     pm.to_inline_css
   end
 
+  # nokogiri_fast and nokogumbo inline raw declaration text at match time and
+  # leave the invalid declaration in the style attribute instead.
+  def test_invalid_declaration_only_match_keeps_empty_style_nokogiri
+    html = <<-END_HTML
+      <html><head> <style type="text/css">
+        p { margin: 0px 0px 0px 0 px; }
+      </style></head><body>
+        <p>one</p>
+        <p>two</p>
+      </body></html>
+    END_HTML
+
+    pm = Premailer.new(html, :with_html_string => true, :adapter => :nokogiri, rule_set_exceptions: false)
+    pm.to_inline_css
+    paragraphs = pm.processed_doc.search('p')
+    assert_equal 2, paragraphs.size
+    paragraphs.each do |p|
+      refute_nil p['style']
+      assert_equal '', p['style']
+    end
+  end
+
   def test_cleanup_frees_memory_and_output_is_usable
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       pm = Premailer.new('<p>test</p>', :with_html_string => true, :adapter => adapter)

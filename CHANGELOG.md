@@ -1,6 +1,7 @@
 ## Premailer CHANGELOG
 
 ### Unreleased
+* Nokogiri adapter: track matched rules per node instead of `[SPEC=n[...]]` style-attribute markers and cache style folding per unique rule combination — 5-6x faster `to_inline_css` on large documents with identical output. Elements whose only matched rule has an invalid declaration now keep `style=""` (matching marker behavior) when `rule_set_exceptions` is disabled.
 
 ### Version 1.28.0
 * drop EOL rubies

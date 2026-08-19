@@ -15,10 +15,21 @@ class Premailer
         doc = @processed_doc
         @unmergable_rules = CssParser::Parser.new
 
+        # Accumulate matched rule sets per node in memory instead of
+        # round-tripping them through style attributes as [SPEC=n[...]]
+        # string markers (which costs two libxml2 attribute round-trips per
+        # element plus a regex re-scan, and dominates allocation churn).
+        rules_by_node = {}
+
         # Give all styles already in style attributes a specificity of 1000
         # per http://www.w3.org/TR/CSS21/cascade.html#specificity
+        # Identical style strings (repeated components) share one rule set so
+        # the fold cache below can hit on them.
+        rule_set_cache = {}
         doc.search("*[@style]").each do |el|
-          el['style'] = '[SPEC=1000[' + el.attributes['style'] + ']]'
+          style = el.attributes['style'].to_s
+          rs = rule_set_cache.fetch(style) { rule_set_cache[style] = build_rule_set(style, 1000) }
+          rules_by_node[el] = rs ? [rs] : []
         end
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
@@ -42,11 +53,25 @@ class Premailer
               # than one element.  Added to work around dodgy generated code.
               selector.gsub!(/\A\#([\w_\-]+)\Z/, '*[@id=\1]')
 
+              rule_set = nil
+              rule_set_missing = false
               doc.search(selector).each do |el|
                 if el.elem? && ((el.name != 'head') && (el.parent.name != 'head'))
-                  # Add a style attribute or append to the existing one
-                  block = "[SPEC=#{specificity}[#{declaration}]]"
-                  el['style'] = (el.attributes['style'].to_s ||= '') + ' ' + block
+                  # Enroll the element even when the rule below fails to build:
+                  # the marker implementation wrote the style attribute before
+                  # parsing, so matched elements end up with style="" when
+                  # their only rule is invalid and exceptions are disabled.
+                  rules = (rules_by_node[el] ||= [])
+                  next if rule_set_missing
+
+                  # One shared rule set per CSS rule; merge never mutates inputs
+                  # (CachedRuleSet#expand_shorthand! is idempotent by design).
+                  rule_set ||= build_rule_set(declaration, specificity)
+                  if rule_set.nil?
+                    rule_set_missing = true
+                    next
+                  end
+                  rules << rule_set
                 end
               end
             rescue ::Nokogiri::SyntaxError, RuntimeError, ArgumentError
@@ -59,60 +84,28 @@ class Premailer
         # Remove script tags
         doc.search("script").remove if @options[:remove_scripts]
 
-        # Read STYLE attributes and perform folding
-        doc.search("*[@style]").each do |el|
-          style = el.attributes['style'].to_s
+        # Perform style folding. Elements sharing the same matched rule sets
+        # (ubiquitous in table-based email markup) fold to the same result, so
+        # the merge/expand/collapse/serialize pipeline runs once per unique
+        # (element name, rule list) pair instead of once per element.
+        fold_cache = {}
+        rules_by_node.each do |el, declarations|
+          related = Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
+          # Rule sets are interned above, so default identity hashing makes
+          # them usable directly as cache key elements.
+          cache_key = [related ? el.name : nil, *declarations]
 
-          declarations = style.scan(/\[SPEC=([\d]+)\[(.[^\]]*)\]\]/m).filter_map do |declaration|
-            rs = Premailer::CachedRuleSet.new(block: declaration[1].to_s, specificity: declaration[0].to_i)
-            rs.expand_shorthand!
-            rs
-          rescue ArgumentError => e
-            raise e if @options[:rule_set_exceptions]
+          folded = fold_cache[cache_key] ||= fold_declarations(declarations, related ? el.name : nil)
+          style, attributes = folded
+
+          # Write the inline STYLE attribute first so the attribute order for
+          # elements that had no style attribute matches the marker-based
+          # implementation (style attr was created during selector matching).
+          el['style'] = style
+
+          attributes&.each do |html_attr, value|
+            el[html_attr] = value if el[html_attr].nil?
           end
-
-          # Perform style folding
-          merged = CssParser.merge(declarations)
-          begin
-            merged.expand_shorthand!
-          rescue ArgumentError => e
-            raise e if @options[:rule_set_exceptions]
-          end
-
-          # Duplicate CSS attributes as HTML attributes
-          if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
-            Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
-              if el[html_attr].nil? && !merged[css_attr].empty?
-                new_val = merged[css_attr].dup
-
-                # Remove url() function wrapper
-                new_val.gsub!(/url\((['"])(.*?)\1\)/, '\2')
-
-                # Remove !important, trailing semi-colon, and leading/trailing whitespace
-                new_val.gsub!(/;$|\s*!important/, '').strip!
-
-                # For width and height tags, remove px units
-                new_val.gsub!(/(\d+)px/, '\1') if WIDTH_AND_HIGHT.include?(html_attr)
-
-                # For color-related tags, convert RGB to hex if specified by options
-                new_val = ensure_hex(new_val) if css_attr.end_with?('color') && @options[:rgb_to_hex_attributes]
-
-                el[html_attr] = new_val
-              end
-
-              unless @options[:preserve_style_attribute]
-                merged.instance_variable_get(:@declarations).tap do |declarations|
-                  declarations.delete(css_attr)
-                end
-              end
-            end
-          end
-
-          # Collapse multiple rules into one as much as possible.
-          merged.create_shorthand! if @options[:create_shorthands]
-
-          # write the inline STYLE attribute
-          el['style'] = merged.declarations_to_s
         end
 
         doc = write_unmergable_css_rules(doc, @unmergable_rules) unless @options[:drop_unmergeable_css_rules]
@@ -159,6 +152,72 @@ class Premailer
         else
           @processed_doc.to_html(:encoding => @options[:output_encoding])
         end
+      end
+
+      # Merge a list of rule sets into a final style string plus the HTML
+      # attribute duplications (bgcolor/align/...) for RELATED_ATTRIBUTES
+      # elements. Element-independent: the per-element "attribute already
+      # set" guard stays with the caller.
+      def fold_declarations(declarations, related_el_name) # :nodoc:
+        merged = CssParser.merge(declarations)
+        if merged.equal?(declarations[0])
+          # CssParser.merge returns its input untouched when given a single
+          # rule set; copy it before the destructive fold pipeline below so
+          # rule sets shared across elements are not corrupted.
+          merged = CssParser::RuleSet.new(block: merged.declarations_to_s, specificity: merged.specificity)
+        end
+        begin
+          merged.expand_shorthand!
+        rescue ArgumentError => e
+          raise e if @options[:rule_set_exceptions]
+        end
+
+        attributes = nil
+        # Duplicate CSS attributes as HTML attributes
+        if related_el_name
+          Premailer::RELATED_ATTRIBUTES[related_el_name].each do |css_attr, html_attr|
+            unless merged[css_attr].empty?
+              new_val = merged[css_attr].dup
+
+              # Remove url() function wrapper
+              new_val.gsub!(/url\((['"])(.*?)\1\)/, '\2')
+
+              # Remove !important, trailing semi-colon, and leading/trailing whitespace
+              new_val.gsub!(/;$|\s*!important/, '').strip!
+
+              # For width and height tags, remove px units
+              new_val.gsub!(/(\d+)px/, '\1') if WIDTH_AND_HIGHT.include?(html_attr)
+
+              # For color-related tags, convert RGB to hex if specified by options
+              new_val = ensure_hex(new_val) if css_attr.end_with?('color') && @options[:rgb_to_hex_attributes]
+
+              (attributes ||= []) << [html_attr, new_val]
+            end
+
+            unless @options[:preserve_style_attribute]
+              merged.instance_variable_get(:@declarations).tap do |declarations|
+                declarations.delete(css_attr)
+              end
+            end
+          end
+        end
+
+        # Collapse multiple rules into one as much as possible.
+        merged.create_shorthand! if @options[:create_shorthands]
+
+        # write the inline STYLE attribute
+        [merged.declarations_to_s, attributes]
+      end
+
+      # Build an expanded rule set for folding. Returns nil (and optionally
+      # swallows the error, mirroring the old fold-time rescue) on bad CSS.
+      def build_rule_set(block, specificity) # :nodoc:
+        rs = Premailer::CachedRuleSet.new(block: block, specificity: specificity)
+        rs.expand_shorthand!
+        rs
+      rescue ArgumentError => e
+        raise e if @options[:rule_set_exceptions]
+        nil
       end
 
       # Create a <tt>style</tt> element with un-mergable rules (e.g. <tt>:hover</tt>)

@@ -434,4 +434,89 @@ END_HTML
       assert_equal 'color: red; padding: 10px 12px;', doc.at('div').attributes['style'].to_s
     end
   end
+
+  def test_folding_shared_rules_does_not_corrupt_them
+    html = <<-END_HTML
+      <html><head><style>
+        td { background-color: #fff; }
+        .x { color: red; }
+      </style></head><body>
+      <table><tr>
+        <td>one</td>
+        <td class="x">two</td>
+      </tr></table>
+      </body></html>
+    END_HTML
+
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      premailer.to_inline_css
+      tds = premailer.processed_doc.search('td')
+      assert_equal '#fff', tds[0]['bgcolor'], "Using: #{adapter}"
+      assert_equal '#fff', tds[1]['bgcolor'], "Using: #{adapter}"
+      assert_equal 'color: red;', tds[1]['style'], "Using: #{adapter}"
+    end
+  end
+
+  def test_css_to_attributes_only_applies_to_related_elements
+    html = <<-END_HTML
+      <html><head><style>
+        .x { background-color: #bada55; }
+      </style></head><body>
+      <table><tr><td class="x">cell</td></tr></table>
+      <div class="x">div</div>
+      </body></html>
+    END_HTML
+
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      premailer.to_inline_css
+      doc = premailer.processed_doc
+      assert_equal '#bada55', doc.at('td')['bgcolor'], "Using: #{adapter}"
+      assert_equal '', doc.at('td')['style'], "Using: #{adapter}"
+      assert_equal 'background-color: #bada55;', doc.at('div')['style'], "Using: #{adapter}"
+      assert_nil doc.at('div')['bgcolor'], "Using: #{adapter}"
+    end
+  end
+
+  def test_css_to_attributes_preserves_existing_html_attributes
+    html = <<-END_HTML
+      <html><head><style>
+        td { background-color: #fff; }
+      </style></head><body>
+      <table><tr>
+        <td>a</td>
+        <td bgcolor="#000">b</td>
+        <td>c</td>
+      </tr></table>
+      </body></html>
+    END_HTML
+
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      premailer.to_inline_css
+      tds = premailer.processed_doc.search('td')
+      assert_equal ['#fff', '#000', '#fff'], tds.map { |td| td['bgcolor'] }, "Using: #{adapter}"
+      assert_equal ['', '', ''], tds.map { |td| td['style'] }, "Using: #{adapter}"
+    end
+  end
+
+  def test_repeated_identical_style_attributes_fold_identically
+    html = <<-END_HTML
+      <html><head><style>
+        p { padding: 1px; }
+      </style></head><body>
+      <p style="color: green">a</p>
+      <p style="color: green">b</p>
+      </body></html>
+    END_HTML
+
+    expected = ['color: green; padding: 1px;'] * 2
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      premailer.to_inline_css
+      styles = premailer.processed_doc.search('p').map { |p| p['style'] }
+      assert_equal expected, styles, "Using: #{adapter}"
+    end
+  end
 end
