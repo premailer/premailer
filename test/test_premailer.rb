@@ -87,6 +87,24 @@ END_HTML
     end
   end
 
+  def test_area_tags_with_query_strings
+    html = <<END_HTML
+    <html>
+    <map name="test">
+      <area shape="rect" coords="0,0,50,50" href="https://example.com/one" alt="One">
+    </map>
+    </html>
+END_HTML
+
+    qs = 'testing=123'
+
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      premailer = Premailer.new(html, :with_html_string => true, :link_query_string => qs, :adapter => adapter)
+      premailer.to_inline_css
+      assert_match /testing=123/, premailer.processed_doc.search('area').first.attributes['href'].to_s, "Using: #{adapter}"
+    end
+  end
+
   def test_preserving_ignored_style_elements
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       local_setup('ignore.html', :adapter => adapter)

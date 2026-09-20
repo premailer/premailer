@@ -396,7 +396,7 @@ class Premailer
 
     warn "Attempting to append_query_string: #{queries}" if @options[:verbose]
 
-    doc.search('a').each do |el|
+    doc.search('a, area').each do |el|
       href = el.attributes['href'].to_s.strip
       next if href.nil? || href.empty?
 
