@@ -127,6 +127,16 @@ Premailer.new(
 
 [available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
 
+### Loading CSS from local/private hosts
+
+css_parser 3+ blocks fetching remote CSS (`<link>`, `@import`) from hosts that resolve to loopback/private IPs
+or do not resolve at all, to prevent SSRF.
+Those styles are silently dropped (unless `io_exceptions: true`).
+To allow them, when the html is trusted:
+```ruby
+Premailer.new(html, with_html_string: true, allow_local_network: true)
+```
+
 ## Support for CSS variables
 
 The gem does not automatically replace CSS variables with their static values.

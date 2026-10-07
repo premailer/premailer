@@ -34,7 +34,8 @@ class Premailer
     end
 
     def remote_setup(f = 'base.html', opts = {})
-      @premailer = Premailer.new(BASE_URI + f.to_s, opts)
+      # premailer.dev does not resolve, css_parser SSRF filter would block @import before webmock
+      @premailer = Premailer.new(BASE_URI + f.to_s, { allow_local_network: true }.merge(opts))
       @premailer.to_inline_css
       @doc = @premailer.processed_doc
     end
