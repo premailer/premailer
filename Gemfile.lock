@@ -9,9 +9,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.8)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
+    base64 (0.3.0)
     bigdecimal (4.0.1)
     bigdecimal (4.0.1-java)
     bump (0.10.0)
@@ -19,8 +20,10 @@ GEM
     crack (1.0.1)
       bigdecimal
       rexml
-    css_parser (2.0.0)
+    css_parser (3.3.0)
       addressable
+      base64
+      ssrf_filter (~> 1.5)
     drb (2.2.3)
     ffi (1.17.3-java)
     hashdiff (1.2.1)
@@ -61,7 +64,7 @@ GEM
       method_source (~> 1.0)
       reline (>= 0.6.0)
       spoon (~> 0.0)
-    public_suffix (7.0.2)
+    public_suffix (7.0.5)
     racc (1.8.1)
     racc (1.8.1-java)
     rainbow (3.1.1)
@@ -91,6 +94,7 @@ GEM
     ruby-progressbar (1.13.0)
     spoon (0.0.6)
       ffi
+    ssrf_filter (1.6.0)
     unicode-display_width (2.6.0)
     webmock (3.26.1)
       addressable (>= 2.8.0)

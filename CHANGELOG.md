@@ -2,6 +2,8 @@
 
 ### Unreleased
 
+* Add `allow_local_network` option to allow css_parser 3+ to fetch CSS from local/private hosts
+
 ### Version 1.31.0
 
 * Append link_query_string to <area> tags too
