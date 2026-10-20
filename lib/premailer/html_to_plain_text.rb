@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'htmlentities'
+require_relative 'html_entities'
 
 # Support functions for Premailer
 module HtmlToPlainText
@@ -102,8 +102,7 @@ module HtmlToPlainText
     txt.gsub!(/<\/?[^>]*>/, '')
 
     # decode HTML entities
-    he = HTMLEntities.new
-    txt = he.decode(txt)
+    txt = decode_html(txt)
 
     # word wrap
     txt = word_wrap(txt, line_length)
@@ -125,6 +124,21 @@ module HtmlToPlainText
     end
 
     txt.strip
+  end
+
+  # XHTML decoding adapted from htmlentities 4.4.2
+  def decode_html(txt)
+    txt.encode(Encoding::UTF_8).gsub(/&(?:([a-z][a-z0-9]{1,7})|#([0-9]{1,7})|#x([0-9a-f]{1,6}))(;|(?=\n|<))/i) do |entity|
+      if $1 && (codepoint = HTML_ENTITIES[$1])
+        codepoint.chr(Encoding::UTF_8)
+      elsif $2
+        $2.to_i(10).chr(Encoding::UTF_8)
+      elsif $3
+        $3.to_i(16).chr(Encoding::UTF_8)
+      else
+        entity
+      end
+    end
   end
 
   # Taken from Rails' word_wrap helper (http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap)

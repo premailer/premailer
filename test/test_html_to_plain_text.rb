@@ -50,6 +50,33 @@ END_HTML
     assert_plaintext 'cédille garçon & à ñ', 'c&eacute;dille gar&#231;on &amp; &agrave; &ntilde;'
   end
 
+  def test_named_entities
+    assert_plaintext "\"'&<> © € Α α ϑ 〈 〉", '&quot;&apos;&amp;&lt;&gt; &copy; &euro; &Alpha; &alpha; &thetasym; &lang; &rang;'
+  end
+
+  def test_numeric_entities
+    assert_plaintext "A A A 😀 😀", '&#65; &#x41; &#X0041; &#128512; &#x1F600;'
+  end
+
+  def test_unknown_and_malformed_entities
+    text = '&unknown; &AMP; &#; &#x; &#-1; &#xZZ; &#00000065; &#x0000041;'
+    assert_plaintext text, text
+    assert_plaintext '&amp &copy text', '&amp &copy text'
+  end
+
+  def test_entities_without_semicolons_before_newlines
+    assert_plaintext "&\n©\nA\nA", "&amp\n&copy\n&#65\n&#x41\n"
+  end
+
+  def test_entities_are_decoded_once_after_stripping_tags
+    assert_plaintext '<b>&lt;</b>', '<p>&lt;b&gt;&amp;lt;&lt;/b&gt;</p>'
+  end
+
+  def test_entities_with_out_of_range_codepoints
+    assert_raises(RangeError) { convert_to_text('&#1114112;') }
+    assert_raises(RangeError) { convert_to_text('&#x110000;') }
+  end
+
   def test_stripping_whitespace
     assert_plaintext "text\ntext", "  \ttext\ntext\n"
     assert_plaintext "a\na", "  \na \n a \t"
