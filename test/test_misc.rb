@@ -519,4 +519,30 @@ END_HTML
       assert_equal expected, styles, "Using: #{adapter}"
     end
   end
+
+  def test_selectors_requiring_a_class_absent_from_the_document_are_not_searched
+    html = <<~END_HTML
+      <html><body>
+      <p class="intro lead">Intro</p>
+      <a href="doc.pdf">PDF</a>
+      </body></html>
+    END_HTML
+    css = '.missing p { color: red; } p.intro.missing { color: red; } .intro.lead { color: blue; } ' \
+          'a[href$=".pdf"] { color: green; } p .x, p.lead { font-weight: bold; }'
+
+    [false, true].each do |html_fragment|
+      premailer = Premailer.new(html, adapter: :nokogiri, with_html_string: true, css_string: css, html_fragment: html_fragment)
+      searched = []
+      premailer.processed_doc.define_singleton_method(:search) do |*args|
+        searched << args.first
+        super(*args)
+      end
+      premailer.to_inline_css
+
+      assert_empty searched.grep(/missing/)
+
+      assert_equal 'color: blue; font-weight: bold;', premailer.processed_doc.at('p')['style']
+      assert_equal 'color: green;', premailer.processed_doc.at('a')['style']
+    end
+  end
 end
