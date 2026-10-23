@@ -15,6 +15,6 @@ Gem::Specification.new "premailer", Premailer::VERSION do |s|
   s.metadata['rubygems_mfa_required'] = 'true'
 
   s.add_runtime_dependency 'addressable'
-  s.add_runtime_dependency 'css_parser', '>= 1.19.0'
+  s.add_runtime_dependency 'css_parser', '>= 3.1.0'
   s.add_runtime_dependency 'htmlentities', ['>= 4.0.0']
 end

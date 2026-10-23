@@ -143,6 +143,11 @@ To allow them, when the html is trusted:
 Premailer.new(html, with_html_string: true, allow_local_network: true)
 ```
 
+### Subresource Integrity
+
+Remote `<link rel="stylesheet">` tags with an `integrity` attribute are verified before inlining.
+A stylesheet whose hash does not match is dropped (or raises `CssParser::IntegrityError` with `io_exceptions: true`).
+
 ## Support for CSS variables
 
 The gem does not automatically replace CSS variables with their static values.

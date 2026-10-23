@@ -2,6 +2,8 @@
 require __dir__ + '/helper'
 
 class TestPremailer < Premailer::TestCase
+  INTEGRITY_CSS = 'p { color: red; }'
+
   def test_special_characters_nokogiri
     # Force encoding to ISO-8859 because strings are encoded to UTF-8 by default.
     # After some recent changes in libxml2 bundled by Nokogiri, some html
@@ -207,6 +209,33 @@ END_HTML
 
       # import.css sets .hide to { display: none }
       assert_match /display: none/, @doc.at('#hide01')['style'], "Using: #{adapter}"
+    end
+  end
+
+  def test_link_tag_integrity_match_inlines_css
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      doc = inline_with_integrity_link("sha384-#{Digest::SHA384.base64digest(INTEGRITY_CSS)}", :adapter => adapter)
+      assert_match /color: red/, doc.at('p')['style'], "Using: #{adapter}"
+    end
+  end
+
+  def test_link_tag_integrity_mismatch_drops_css
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      doc = inline_with_integrity_link("sha384-#{Digest::SHA384.base64digest('p { color: blue; }')}", :adapter => adapter)
+      assert_nil doc.at('p')['style'], "Using: #{adapter}"
+    end
+  end
+
+  def test_link_tag_integrity_mismatch_raises_with_io_exceptions
+    assert_raises CssParser::IntegrityError do
+      inline_with_integrity_link("sha384-#{Digest::SHA384.base64digest('p { color: blue; }')}", :io_exceptions => true)
+    end
+  end
+
+  def test_link_tag_without_integrity_inlines_css
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      doc = inline_with_integrity_link(nil, :adapter => adapter)
+      assert_match /color: red/, doc.at('p')['style'], "Using: #{adapter}"
     end
   end
 
@@ -674,5 +703,17 @@ END_HTML
       assert_nil pm.instance_variable_get(:@css_files), "Using: #{adapter}"
       assert_match /test/, result, "Using: #{adapter}"
     end
+  end
+
+  protected
+
+  def inline_with_integrity_link(integrity, opts = {})
+    stub_request(:get, 'http://cdn.example.com/integrity.css').to_return(:status => 200, :body => INTEGRITY_CSS.dup)
+    integrity_attr = integrity ? %( integrity="#{integrity}") : ''
+    html = %(<html><head><link rel="stylesheet" href="http://cdn.example.com/integrity.css"#{integrity_attr}></head><body><p>test</p></body></html>)
+    # css_parser's SSRF filter resolves DNS itself, so webmock stubs only apply with allow_local_network
+    premailer = Premailer.new(html, { :with_html_string => true, :allow_local_network => true }.merge(opts))
+    premailer.to_inline_css
+    premailer.processed_doc
   end
 end

@@ -4,6 +4,7 @@
 
 * Omit style and script metadata content from plain-text output (#255).
 * Preserve gradient backgrounds in inline CSS instead of moving them to the URL-only HTML `background` attribute.
+* Verify Subresource Integrity of `<link rel="stylesheet" integrity="...">` stylesheets before inlining them (requires css_parser 3.1+)
 
 ### Version 1.32.0
 
