@@ -150,11 +150,14 @@ END_HTML
       'conic-gradient(from 45deg, red, blue)',
       'repeating-linear-gradient(red, blue 10px)',
       '-webkit-linear-gradient(red, blue)',
-      'url("image.png"), linear-gradient(red, blue)'
+      'url("image.png"), linear-gradient(red, blue)',
+      'image-set(linear-gradient(red, blue) 1x)',
+      'cross-fade(linear-gradient(red, blue), url("image.png"), 50%)'
     ]
+    preserve_style_options = [false, true]
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       gradients.each do |gradient|
-        [false, true].each do |preserve_style|
+        preserve_style_options.each do |preserve_style|
           html = "<table style='background-image: #{gradient}'><tr><td>hi</td></tr></table>"
           premailer = Premailer.new(html, with_html_string: true, adapter: adapter, preserve_style_attribute: preserve_style)
           premailer.to_inline_css
@@ -173,8 +176,9 @@ END_HTML
   end
 
   def test_background_urls_still_become_html_attributes
+    images = ['image.png', 'linear-gradient(red,blue).png']
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
-      ['image.png', 'linear-gradient(red,blue).png'].each do |image|
+      images.each do |image|
         html = "<table style='background-image: url(\"#{image}\")'><tr><td>hi</td></tr></table>"
         premailer = Premailer.new(html, with_html_string: true, adapter: adapter)
         premailer.to_inline_css
