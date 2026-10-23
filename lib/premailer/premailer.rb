@@ -59,6 +59,9 @@ class Premailer
     "&#8213;" => '--'
   }.freeze
 
+  # Gradient functions cannot be represented by a URL-only HTML background attribute.
+  GRADIENT_FUNCTION = /(?:\A|,)\s*(?:-[a-z]+-)?(?:repeating-)?(?:linear|radial|conic)-gradient\(/i
+
   # list of CSS attributes that can be rendered as HTML attributes
   #
   # @todo too much repetition

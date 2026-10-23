@@ -143,6 +143,48 @@ END_HTML
     end
   end
 
+  def test_gradient_backgrounds_remain_in_css
+    gradients = [
+      'linear-gradient(red, blue)',
+      'radial-gradient(#000000, #3300ff)',
+      'conic-gradient(from 45deg, red, blue)',
+      'repeating-linear-gradient(red, blue 10px)',
+      '-webkit-linear-gradient(red, blue)',
+      'url("image.png"), linear-gradient(red, blue)'
+    ]
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      gradients.each do |gradient|
+        [false, true].each do |preserve_style|
+          html = "<table style='background-image: #{gradient}'><tr><td>hi</td></tr></table>"
+          premailer = Premailer.new(html, with_html_string: true, adapter: adapter, preserve_style_attribute: preserve_style)
+          premailer.to_inline_css
+          table = premailer.processed_doc.at('table')
+          assert_includes table['style'], gradient, "Using: #{adapter}"
+          assert_nil table['background'], "Using: #{adapter}"
+        end
+      end
+      html = '<table background="fallback.png" style="background: radial-gradient(#000000, #3300ff)"><tr><td>hi</td></tr></table>'
+      premailer = Premailer.new(html, with_html_string: true, adapter: adapter)
+      premailer.to_inline_css
+      table = premailer.processed_doc.at('table')
+      assert_includes table['style'], 'radial-gradient(#000000, #3300ff)', "Using: #{adapter}"
+      assert_equal 'fallback.png', table['background'], "Using: #{adapter}"
+    end
+  end
+
+  def test_background_urls_still_become_html_attributes
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      ['image.png', 'linear-gradient(red,blue).png'].each do |image|
+        html = "<table style='background-image: url(\"#{image}\")'><tr><td>hi</td></tr></table>"
+        premailer = Premailer.new(html, with_html_string: true, adapter: adapter)
+        premailer.to_inline_css
+        table = premailer.processed_doc.at('table')
+        assert_equal image, table['background'], "Using: #{adapter}"
+        refute_match /background-image/, table['style'], "Using: #{adapter}"
+      end
+    end
+  end
+
   def test_avoid_changing_css_to_attributes
     [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
       html = '<table><td style="background-color: #FFF;"></td></table>'
