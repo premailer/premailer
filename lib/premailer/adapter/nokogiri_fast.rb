@@ -85,7 +85,7 @@ class Premailer
           # Duplicate CSS attributes as HTML attributes
           if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
-              next if css_attr == 'background-image' && css_gradient?(merged[css_attr])
+              next if css_gradient?(css_attr, merged)
 
               if el[html_attr].nil? && !merged[css_attr].empty?
                 new_val = merged[css_attr].dup
