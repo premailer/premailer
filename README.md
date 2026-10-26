@@ -75,6 +75,9 @@ Premailer looks for a few CSS attributes that make working with tables a bit eas
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
 
+Background image URLs on tables are copied to the HTML `background` attribute.
+Gradients remain in inline CSS because that attribute only supports image URLs.
+
 For example
 
 ```css
