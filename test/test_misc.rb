@@ -520,15 +520,15 @@ END_HTML
     end
   end
 
-  def test_selectors_requiring_a_class_absent_from_the_document_are_not_searched
+  def test_selectors_requiring_a_class_absent_from_the_document_are_not_searched_once_classes_are_indexed
     html = <<~END_HTML
       <html><body>
       <p class="intro lead">Intro</p>
       <a href="doc.pdf">PDF</a>
       </body></html>
     END_HTML
-    css = '.missing p { color: red; } p.intro.missing { color: red; } .intro.lead { color: blue; } ' \
-          'a[href$=".pdf"] { color: green; } p .x, p.lead { font-weight: bold; }'
+    css = '.missing-a p { color: red; } .missing-b { color: red; } p.intro.missing-c { color: red; } ' \
+          '.intro.lead { color: blue; } a[href$=".pdf"] { color: green; } p .missing-d, p.lead { font-weight: bold; }'
 
     [false, true].each do |html_fragment|
       premailer = Premailer.new(html, adapter: :nokogiri, with_html_string: true, css_string: css, html_fragment: html_fragment)
@@ -539,7 +539,7 @@ END_HTML
       end
       premailer.to_inline_css
 
-      assert_empty searched.grep(/missing/)
+      assert_equal ['.missing-a p', '.missing-b'], searched.grep(/missing/)
 
       assert_equal 'color: blue; font-weight: bold;', premailer.processed_doc.at('p')['style']
       assert_equal 'color: green;', premailer.processed_doc.at('a')['style']
