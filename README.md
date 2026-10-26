@@ -39,6 +39,9 @@ premailer.warnings.each do |w|
 end
 ```
 
+The plain-text version excludes the contents of `<style>` and `<script>`
+elements, including styles retained in HTML with `preserve_styles: true`.
+
 ## Adapters
 
 1. nokogiri (default)
