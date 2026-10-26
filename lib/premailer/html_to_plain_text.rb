@@ -20,6 +20,9 @@ module HtmlToPlainText
     # text version
     txt.gsub!(/<!-- start text\/html -->.*?<!-- end text\/html -->/m, '')
 
+    # Metadata is not readable text, even when styles are preserved in HTML.
+    txt.gsub!(/<(script|style)\b[^>]*>.*?<\/\1\s*>/im, '')
+
     # replace images with their alt attributes
     # for img tags with "" for attribute quotes
     # with or without closing tag
@@ -34,9 +37,6 @@ module HtmlToPlainText
     # <img alt='' />
     # <img alt=''>
     txt.gsub!(/<img[^>]+?alt='([^']*)'[^>]*>/i, '\1')
-
-    # remove script tags and content
-    txt.gsub!(/<script.*?\/script>/m, '')
 
     # links
     txt.gsub!(/<a\s+([^>]+)>(.*?)<\/a>/im) do |s|

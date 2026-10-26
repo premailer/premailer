@@ -46,6 +46,31 @@ END_HTML
     assert_empty premailer.to_plain_text
   end
 
+  def test_plain_text_omits_preserved_style_metadata
+    html = '<body><style>@media screen { p { color: red; } }</style><p>Hello</p><script>hidden()</script></body>'
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter, :preserve_styles => true)
+      assert_equal 'Hello', pm.to_plain_text, "Using: #{adapter}"
+      assert_match /@media/, pm.to_inline_css
+      assert_equal 'Hello', pm.to_plain_text
+    end
+  end
+
+  def test_multiple_metadata_blocks_keep_intervening_text
+    html = '<style>a {color:red}</style>First<style>b {color:blue}</style> second<script>one()</script> third<script>two()</script>'
+    assert_plaintext 'First second third', html
+  end
+
+  def test_metadata_tags_are_case_insensitive_and_multiline
+    html = "<STYLE type='text/css'>\np { color:red }\n</STYLE><p>Hello</p><SCRIPT>\nsecret()\n</SCRIPT>"
+    assert_plaintext 'Hello', html
+  end
+
+  def test_escaped_metadata_markup_is_readable_text
+    assert_plaintext '<style>example</style>', '&lt;style&gt;example&lt;/style&gt;'
+    assert_plaintext '<script>example</script>', '&lt;script&gt;example&lt;/script&gt;'
+  end
+
   def test_specialchars
     assert_plaintext 'cédille garçon & à ñ', 'c&eacute;dille gar&#231;on &amp; &agrave; &ntilde;'
   end
