@@ -494,6 +494,11 @@ class Premailer
     doc
   end
 
+  # Only left/right floats have an equivalent legacy image alignment.
+  def self.float_to_align?(value) # :nodoc:
+    value.match?(/\A\s*(?:left|right)\s*(?:!important\s*)?;?\s*\z/i)
+  end
+
   # @private
   def self.media_query?(media_types)
     media_types&.any? { |mt| mt.to_s.count('()') >= 2 }
