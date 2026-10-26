@@ -271,6 +271,29 @@ class Premailer
 
   protected
 
+  # Keep e.g. background-image: image-set(linear-gradient(red, blue), url(a.png))
+  # in CSS: a URL-only HTML background attribute cannot represent its gradient.
+  def css_gradient?(css_attr, merged) # :nodoc:
+    return false unless css_attr == 'background-image'
+
+    # Ignore gradient-like text inside URLs and quoted strings.
+    value = merged[css_attr].gsub(CssParser::URI_RX, '').gsub(CssParser::RE_STRING, '')
+    value.match?(
+      /(?:\A|[,(])\s*                 # Start of a value, list item, or nested function
+        (?:-[a-z]+-)?                 # Optional vendor prefix, e.g. -webkit-
+        (?:repeating-)?               # Optional repeating gradient
+        (?:linear|radial|conic)-gradient\( # Supported gradient function names
+      /ix
+    )
+  end
+
+  # Only left/right floats have an equivalent legacy image alignment.
+  def css_float_without_alignment?(css_attr, merged) # :nodoc:
+    return false unless css_attr == 'float'
+
+    !merged[css_attr].match?(/\A\s*(?:left|right)\s*(?:!important\s*)?;?\s*\z/i)
+  end
+
   def load_css_from_local_file!(path)
     css_block = +''
     path.delete_prefix!('file:')
@@ -492,11 +515,6 @@ class Premailer
       el['style'] = CssParser.convert_uris(el.attributes['style'].to_s, base_uri)
     end
     doc
-  end
-
-  # Only left/right floats have an equivalent legacy image alignment.
-  def self.float_to_align?(value) # :nodoc:
-    value.match?(/\A\s*(?:left|right)\s*(?:!important\s*)?;?\s*\z/i)
   end
 
   # @private

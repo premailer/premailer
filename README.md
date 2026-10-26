@@ -39,6 +39,9 @@ premailer.warnings.each do |w|
 end
 ```
 
+The plain-text version excludes the contents of `<style>` and `<script>`
+elements, including styles retained in HTML with `preserve_styles: true`.
+
 ## Adapters
 
 1. nokogiri (default)
@@ -75,6 +78,9 @@ Premailer looks for a few CSS attributes that make working with tables a bit eas
 | data-premailer="ignore" | Available on `link` and `style` elements. Premailer will ignore these elements entirely. |
 
 Each of these CSS declarations will be copied to appropriate element's attribute.
+
+Background image URLs on tables are copied to the HTML `background` attribute.
+Gradients remain in inline CSS because that attribute only supports image URLs.
 
 For example
 
