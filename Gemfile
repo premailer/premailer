@@ -17,6 +17,7 @@ gem 'webmock', group: :development
 gem 'rubocop-performance', group: :development
 gem 'rubocop', '~> 1.62.1', group: :development # locked to make bundle update not add new rules
 gem 'redcarpet', '~> 3.0', group: :development
+gem 'yard', '~> 0.9', group: :development
 gem 'rake', ['> 0.8', '!= 0.9.0'], group: :development
 gem 'nokogiri', '~> 1.16', group: :development
 gem 'maxitest', group: :development # add_development_dependency

@@ -3,6 +3,7 @@
 ### Unreleased
 
 * Nokogiri adapter: skip the document search of selectors requiring a class no element carries, which cannot match
+* Preserve unmappable image float values in CSS instead of creating invalid align attributes (#179).
 * Omit style and script metadata content from plain-text output (#255).
 * Preserve gradient backgrounds in inline CSS instead of moving them to the URL-only HTML `background` attribute.
 
