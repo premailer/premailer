@@ -248,7 +248,9 @@ class Premailer
         end
         encoding = @options[:input_encoding] || (RUBY_PLATFORM == 'java' ? nil : 'BINARY')
         doc = if @options[:html_fragment]
-          ::Nokogiri::HTML.fragment(thing, encoding)
+          # libxml2 cannot serialize a fragment parsed as binary (sparklemotion/nokogiri#553):
+          # without an encoding, Nokogiri uses the string's own, or UTF-8 if it is binary.
+          ::Nokogiri::HTML.fragment(thing, (encoding unless encoding.to_s.match?(/\A(ASCII-8BIT|BINARY)\z/i)))
         else
           ::Nokogiri::HTML(thing, nil, encoding, &:recover)
         end
