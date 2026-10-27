@@ -133,6 +133,8 @@ Premailer.new(
 
 [available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
 
+For the current options, see the [constructor source](https://github.com/premailer/premailer/blob/master/lib/premailer/premailer.rb).
+
 ### Loading CSS from local/private hosts
 
 css_parser 3+ blocks fetching remote CSS (`<link>`, `@import`) from hosts that resolve to loopback/private IPs
@@ -224,6 +226,29 @@ A few areas that are particularly in need of love:
 
 * Improved test coverage
 * Move un-repeated background images defined in CSS for Outlook
+
+## Generating API documentation
+
+Generate the API reference with [YARD](https://yardoc.org/) from the repository root:
+
+```sh
+bundle install
+bundle exec yard doc
+```
+
+Open the generated files in a browser. On macOS:
+
+```sh
+open doc/index.html # all docs
+open doc/Premailer.html # constructor and its options
+```
+
+The generated `doc/` and `.yardoc/` directories are ignored by Git.
+
+To update the [hosted documentation](https://premailer.github.io/premailer/), a maintainer
+regenerates the reference for the desired version and copies the contents of `doc/` to
+the root of the [`gh-pages` branch](https://github.com/premailer/premailer/tree/gh-pages).
+After reviewing, committing, and pushing those changes, GitHub Pages publishes that branch's root.
 
 ## Credits and code
 
