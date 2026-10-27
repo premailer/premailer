@@ -11,9 +11,6 @@ class Premailer
       # can hide a "." that is not a class.
       PLAIN_SELECTOR = /\A[\w\s.#>+~*:-]+\z/
       CLASS_IN_SELECTOR = /\.([\w-]+)/
-      # Indexing the document's classes costs about two selector searches: only
-      # pay for it once the stylesheet has shown it names elements that are absent.
-      EMPTY_SEARCHES_BEFORE_INDEXING_CLASSES = 2
 
       include AdapterHelper::RgbToHex
       # Merge CSS into the HTML document.
@@ -41,8 +38,7 @@ class Premailer
         end
         # A selector requiring a class that no element carries cannot match:
         # skip its (costly) document-wide search.
-        classes_in_doc = nil
-        empty_searches = 0
+        classes_in_doc = doc.xpath('.//@class').flat_map { |attribute| attribute.value.split }.to_set
 
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
@@ -62,7 +58,7 @@ class Premailer
                 @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration))
               end
 
-              next if classes_in_doc && selector_requires_absent_class?(selector, classes_in_doc)
+              next if selector_requires_absent_class?(selector, classes_in_doc)
 
               # Change single ID CSS selectors into xpath so that we can match more
               # than one element.  Added to work around dodgy generated code.
@@ -70,11 +66,7 @@ class Premailer
 
               rule_set = nil
               rule_set_missing = false
-              matches = doc.search(selector)
-              if matches.empty? && (empty_searches += 1) == EMPTY_SEARCHES_BEFORE_INDEXING_CLASSES
-                classes_in_doc = doc.xpath('.//@class').map(&:value).join(' ').split.to_set
-              end
-              matches.each do |el|
+              doc.search(selector).each do |el|
                 if el.elem? && ((el.name != 'head') && (el.parent.name != 'head'))
                   # Enroll the element even when the rule below fails to build:
                   # the marker implementation wrote the style attribute before
