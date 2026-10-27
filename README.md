@@ -133,6 +133,8 @@ Premailer.new(
 
 [available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
 
+To read the API documentation for your checkout, [generate it locally](#generating-api-documentation).
+
 ### Loading CSS from local/private hosts
 
 css_parser 3+ blocks fetching remote CSS (`<link>`, `@import`) from hosts that resolve to loopback/private IPs
@@ -224,6 +226,25 @@ A few areas that are particularly in need of love:
 
 * Improved test coverage
 * Move un-repeated background images defined in CSS for Outlook
+
+## Generating API documentation
+
+The API reference is generated from the Ruby source with [YARD](https://yardoc.org/).
+From a checkout of the version you want to document, install the documentation tools and run:
+
+```sh
+gem install yard redcarpet --no-document
+yard doc
+```
+
+Run `yard doc` from the repository root so it reads `.yardopts`. That file selects
+Markdown rendering with Redcarpet, includes this README and the license, and excludes private methods.
+Open `doc/index.html` in a browser, or `doc/Premailer.html` for the constructor and its options.
+Regenerate the documentation after changing source comments.
+
+YARD and Redcarpet are documentation tools, not additional runtime requirements for using Premailer.
+The generated `doc/` and `.yardoc/` directories are ignored by Git and should not be committed.
+These commands build a local reference; they do not update the hosted documentation site.
 
 ## Credits and code
 
