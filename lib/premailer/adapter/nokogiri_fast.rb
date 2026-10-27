@@ -86,6 +86,7 @@ class Premailer
           if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
               next if css_gradient?(css_attr, merged)
+              next if css_float_without_alignment?(css_attr, merged)
 
               if el[html_attr].nil? && !merged[css_attr].empty?
                 new_val = merged[css_attr].dup

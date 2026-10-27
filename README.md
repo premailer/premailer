@@ -56,6 +56,10 @@ Picking an adapter:
 Premailer::Adapter.use = :nokogiri_fast
 ```
 
+When converting image CSS to HTML attributes, only `float: left` and
+`float: right` become `align` attributes. Other values, such as `float: none`,
+remain in the inline style because they have no equivalent HTML alignment.
+
 ## Ruby Compatibility
 
 See .github/workflows/actions.yml for which ruby versions are tested. JRuby support is close, contributors are welcome.

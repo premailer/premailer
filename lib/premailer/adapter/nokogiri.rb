@@ -177,6 +177,7 @@ class Premailer
         if related_el_name
           Premailer::RELATED_ATTRIBUTES[related_el_name].each do |css_attr, html_attr|
             next if css_gradient?(css_attr, merged)
+            next if css_float_without_alignment?(css_attr, merged)
 
             unless merged[css_attr].empty?
               new_val = merged[css_attr].dup
