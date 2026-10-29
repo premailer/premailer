@@ -6,6 +6,11 @@ class Premailer
     # Nokogiri adapter
     module Nokogiri
       WIDTH_AND_HIGHT = ['width', 'height'].freeze
+      # Selectors made only of element names, classes, ids, combinators and
+      # pseudo-classes without arguments: no attribute, string, function or escape
+      # can hide a "." that is not a class.
+      PLAIN_SELECTOR = /\A[\w\s.#>+~*:-]+\z/
+      CLASS_IN_SELECTOR = /\.([\w-]+)/
 
       include AdapterHelper::RgbToHex
       # Merge CSS into the HTML document.
@@ -31,6 +36,10 @@ class Premailer
           rs = rule_set_cache.fetch(style) { rule_set_cache[style] = build_rule_set(style, 1000) }
           rules_by_node[el] = rs ? [rs] : []
         end
+        # A selector requiring a class that no element carries cannot match:
+        # skip its (costly) document-wide search.
+        classes_in_doc = doc.xpath('.//@class').flat_map { |attribute| attribute.value.split }.to_set
+
         # Iterate through the rules and merge them into the HTML
         @css_parser.each_selector(:all) do |selector, declaration, specificity, media_types|
           # Save un-mergable rules separately
@@ -48,6 +57,8 @@ class Premailer
                 # however, this doesn't mean for testing pur
                 @unmergable_rules.add_rule_set!(CssParser::RuleSet.new(selectors: selector, block: declaration))
               end
+
+              next if selector_requires_absent_class?(selector, classes_in_doc)
 
               # Change single ID CSS selectors into xpath so that we can match more
               # than one element.  Added to work around dodgy generated code.
@@ -210,6 +221,11 @@ class Premailer
 
         # write the inline STYLE attribute
         [merged.declarations_to_s, attributes]
+      end
+
+      def selector_requires_absent_class?(selector, classes_in_doc) # :nodoc:
+        PLAIN_SELECTOR.match?(selector) &&
+          selector.scan(CLASS_IN_SELECTOR).any? { |(name)| !classes_in_doc.include?(name) }
       end
 
       # Build an expanded rule set for folding. Returns nil (and optionally
