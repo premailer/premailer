@@ -139,6 +139,8 @@ Premailer.new(
 
 For the current options, see the [constructor source](https://github.com/premailer/premailer/blob/master/lib/premailer/premailer.rb).
 
+Verbose diagnostics are written to stderr. The command-line tool keeps its generated HTML on stdout, including when `--verbose` is enabled.
+
 ### Loading CSS from local/private hosts
 
 css_parser 3+ blocks fetching remote CSS (`<link>`, `@import`) from hosts that resolve to loopback/private IPs
