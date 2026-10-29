@@ -458,6 +458,57 @@ END_HTML
     end
   end
 
+  def test_float_none_is_preserved_without_an_align_attribute
+    preserve_options = [false, true]
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      preserve_options.each do |preserve|
+        html = '<img src="#" style="display:inline;float:none !important">'
+        pm = Premailer.new(html, :with_html_string => true, :adapter => adapter, :preserve_style_attribute => preserve)
+        pm.to_inline_css
+        img = pm.processed_doc.at('img')
+        assert_nil img['align'], "Using: #{adapter}, preserve: #{preserve}"
+        assert_match /float: none !important;/, img['style']
+        assert_match /display: inline;/, img['style']
+      end
+    end
+  end
+
+  def test_float_alignment_keeps_supported_values
+    alignments = ['left', 'right']
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      alignments.each do |alignment|
+        html = "<img style='float: #{alignment} !important'>"
+        pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+        pm.to_inline_css
+        img = pm.processed_doc.at('img')
+        assert_equal alignment, img['align'], "Using: #{adapter}"
+        refute_match /float:/, img['style']
+      end
+    end
+  end
+
+  def test_unmappable_float_preserves_existing_alignment
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      html = '<style>img { float: none; }</style><img align="right">'
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter)
+      pm.to_inline_css
+      img = pm.processed_doc.at('img')
+      assert_equal 'right', img['align'], "Using: #{adapter}"
+      assert_equal 'float: none;', img['style']
+    end
+  end
+
+  def test_float_conversion_can_be_disabled
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      html = '<img style="float: left">'
+      pm = Premailer.new(html, :with_html_string => true, :adapter => adapter, :css_to_attributes => false)
+      pm.to_inline_css
+      img = pm.processed_doc.at('img')
+      assert_nil img['align'], "Using: #{adapter}"
+      assert_equal 'float: left;', img['style']
+    end
+  end
+
   def test_css_to_attributes_only_applies_to_related_elements
     html = <<-END_HTML
       <html><head><style>
@@ -517,6 +568,32 @@ END_HTML
       premailer.to_inline_css
       styles = premailer.processed_doc.search('p').map { |p| p['style'] }
       assert_equal expected, styles, "Using: #{adapter}"
+    end
+  end
+
+  def test_selectors_requiring_a_class_absent_from_the_document_are_not_searched
+    html = <<~END_HTML
+      <html><body>
+      <p class="intro lead">Intro</p>
+      <a href="doc.pdf">PDF</a>
+      </body></html>
+    END_HTML
+    css = '.missing p { color: red; } p.intro.missing { color: red; } .intro.lead { color: blue; } ' \
+          'a[href$=".pdf"] { color: green; } p .x, p.lead { font-weight: bold; }'
+
+    [false, true].each do |html_fragment|
+      premailer = Premailer.new(html, adapter: :nokogiri, with_html_string: true, css_string: css, html_fragment: html_fragment)
+      searched = []
+      premailer.processed_doc.define_singleton_method(:search) do |*args|
+        searched << args.first
+        super(*args)
+      end
+      premailer.to_inline_css
+
+      assert_empty searched.grep(/missing/)
+
+      assert_equal 'color: blue; font-weight: bold;', premailer.processed_doc.at('p')['style']
+      assert_equal 'color: green;', premailer.processed_doc.at('a')['style']
     end
   end
 end

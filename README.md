@@ -56,6 +56,10 @@ Picking an adapter:
 Premailer::Adapter.use = :nokogiri_fast
 ```
 
+When converting image CSS to HTML attributes, only `float: left` and
+`float: right` become `align` attributes. Other values, such as `float: none`,
+remain in the inline style because they have no equivalent HTML alignment.
+
 ## Ruby Compatibility
 
 See .github/workflows/actions.yml for which ruby versions are tested. JRuby support is close, contributors are welcome.
@@ -132,6 +136,10 @@ Premailer.new(
 ```
 
 [available options](https://premailer.github.io/premailer/Premailer.html#initialize-instance_method)
+
+For the current options, see the [constructor source](https://github.com/premailer/premailer/blob/master/lib/premailer/premailer.rb).
+
+Verbose diagnostics are written to stderr. The command-line tool keeps its generated HTML on stdout, including when `--verbose` is enabled.
 
 ### Loading CSS from local/private hosts
 
@@ -229,6 +237,29 @@ A few areas that are particularly in need of love:
 
 * Improved test coverage
 * Move un-repeated background images defined in CSS for Outlook
+
+## Generating API documentation
+
+Generate the API reference with [YARD](https://yardoc.org/) from the repository root:
+
+```sh
+bundle install
+bundle exec yard doc
+```
+
+Open the generated files in a browser. On macOS:
+
+```sh
+open doc/index.html # all docs
+open doc/Premailer.html # constructor and its options
+```
+
+The generated `doc/` and `.yardoc/` directories are ignored by Git.
+
+To update the [hosted documentation](https://premailer.github.io/premailer/), a maintainer
+regenerates the reference for the desired version and copies the contents of `doc/` to
+the root of the [`gh-pages` branch](https://github.com/premailer/premailer/tree/gh-pages).
+After reviewing, committing, and pushing those changes, GitHub Pages publishes that branch's root.
 
 ## Credits and code
 

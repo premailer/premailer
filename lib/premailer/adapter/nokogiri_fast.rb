@@ -86,6 +86,7 @@ class Premailer
           if Premailer::RELATED_ATTRIBUTES.key?(el.name) && @options[:css_to_attributes]
             Premailer::RELATED_ATTRIBUTES[el.name].each do |css_attr, html_attr|
               next if css_gradient?(css_attr, merged)
+              next if css_float_without_alignment?(css_attr, merged)
 
               if el[html_attr].nil? && !merged[css_attr].empty?
                 new_val = merged[css_attr].dup
@@ -247,7 +248,9 @@ class Premailer
         end
         encoding = @options[:input_encoding] || (RUBY_PLATFORM == 'java' ? nil : 'BINARY')
         doc = if @options[:html_fragment]
-          ::Nokogiri::HTML.fragment(thing, encoding)
+          # libxml2 cannot serialize a fragment parsed as binary (sparklemotion/nokogiri#553):
+          # without an encoding, Nokogiri uses the string's own, or UTF-8 if it is binary.
+          ::Nokogiri::HTML.fragment(thing, (encoding unless encoding.to_s.match?(/\A(ASCII-8BIT|BINARY)\z/i)))
         else
           ::Nokogiri::HTML(thing, nil, encoding, &:recover)
         end

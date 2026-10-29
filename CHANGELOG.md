@@ -2,8 +2,12 @@
 
 ### Unreleased
 
+* Nokogiri adapter: skip the document search of selectors requiring a class no element carries, which cannot match
+* Send verbose skipped-link diagnostics to stderr so command-line HTML output stays clean.
+* Preserve unmappable image float values in CSS instead of creating invalid align attributes (#179).
 * Omit style and script metadata content from plain-text output (#255).
 * Preserve gradient backgrounds in inline CSS instead of moving them to the URL-only HTML `background` attribute.
+* Fix `html_fragment` returning an empty string with the default `input_encoding` in the `nokogiri` and `nokogiri_fast` adapters: fragments without an explicit encoding now use the string's own encoding, or UTF-8 when it is binary (#487).
 * Verify Subresource Integrity of `<link rel="stylesheet" integrity="...">` stylesheets before inlining them (requires css_parser 3.1+)
 
 ### Version 1.32.0

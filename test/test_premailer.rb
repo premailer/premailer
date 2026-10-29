@@ -483,6 +483,14 @@ END_HTML
     assert_match /#{html_special_characters}/, pm.to_inline_css
   end
 
+  def test_html_fragment_with_default_encoding
+    [:nokogiri, :nokogiri_fast, :nokogumbo].each do |adapter|
+      pm = Premailer.new('<p class="a">é</p>', with_html_string: true, css_string: '.a { color: red }', html_fragment: true, adapter: adapter)
+      assert_equal '<p class="a" style="color: red;">é</p>', pm.to_inline_css, "Using: #{adapter}"
+      assert_equal 'é', pm.to_plain_text, "Using: #{adapter}"
+    end
+  end
+
   # output_encoding option should return HTML Entities when set to US-ASCII
   def test_output_encoding
     html_special_characters = "©"

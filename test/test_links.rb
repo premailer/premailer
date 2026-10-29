@@ -59,6 +59,26 @@ class TestLinks < Premailer::TestCase
     end
   end
 
+  def test_skipped_link_diagnostics_use_stderr
+    links = ['mailto:premailer@example.com', 'tel:5555551212', 'ftp://example.com', 'https://example.com/test']
+    html = links.collect { |href| "<a href='#{href}'>Link</a>" }.join
+    opts = { :adapter => :nokogiri, :with_html_string => true, :link_query_string => 'source=email' }
+
+    [false, true].each do |verbose|
+      premailer = nil
+      stdout, stderr = capture_io do
+        premailer = Premailer.new(html, opts.merge(:verbose => verbose))
+        premailer.to_inline_css
+      end
+
+      assert_equal '', stdout
+      expected = verbose ? "Attempting to append_query_string: source=email\n" + links[0...3].collect { |href| "Skipping append_query_string for: #{href} because scheme is no good\n" }.join : ''
+      assert_equal expected, stderr
+      actual_links = premailer.processed_doc.search('a').collect { |a| a['href'] }
+      assert_equal links[0...3] + ['https://example.com/test?source=email'], actual_links
+    end
+  end
+
   def test_stripping_extra_question_marks_from_query_string
     qs = '??utm_source=1234'
 

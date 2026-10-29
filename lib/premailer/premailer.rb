@@ -287,6 +287,13 @@ class Premailer
     )
   end
 
+  # Only left/right floats have an equivalent legacy image alignment.
+  def css_float_without_alignment?(css_attr, merged) # :nodoc:
+    return false unless css_attr == 'float'
+
+    !merged[css_attr].match?(/\A\s*(?:left|right)\s*(?:!important\s*)?;?\s*\z/i)
+  end
+
   def load_css_from_local_file!(path)
     css_block = +''
     path.delete_prefix!('file:')
@@ -430,7 +437,7 @@ class Premailer
         end
 
         if href.scheme && (href.scheme != 'http') && (href.scheme != 'https')
-          puts "Skipping append_query_string for: #{href} because scheme is no good" if @options[:verbose]
+          warn "Skipping append_query_string for: #{href} because scheme is no good" if @options[:verbose]
           next
         end
 
