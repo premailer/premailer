@@ -437,7 +437,7 @@ class Premailer
         end
 
         if href.scheme && (href.scheme != 'http') && (href.scheme != 'https')
-          puts "Skipping append_query_string for: #{href} because scheme is no good" if @options[:verbose]
+          warn "Skipping append_query_string for: #{href} because scheme is no good" if @options[:verbose]
           next
         end
 
