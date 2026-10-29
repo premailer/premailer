@@ -8,6 +8,7 @@
 * Omit style and script metadata content from plain-text output (#255).
 * Preserve gradient backgrounds in inline CSS instead of moving them to the URL-only HTML `background` attribute.
 * Fix `html_fragment` returning an empty string with the default `input_encoding` in the `nokogiri` and `nokogiri_fast` adapters: fragments without an explicit encoding now use the string's own encoding, or UTF-8 when it is binary (#487).
+* Verify Subresource Integrity of `<link rel="stylesheet" integrity="...">` stylesheets before inlining them (requires css_parser 3.1+)
 
 ### Version 1.32.0
 
