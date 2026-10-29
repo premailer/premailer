@@ -75,6 +75,10 @@ END_HTML
     assert_plaintext 'cédille garçon & à ñ', 'c&eacute;dille gar&#231;on &amp; &agrave; &ntilde;'
   end
 
+  def test_specialchars_next_to_unclosed_angle_brackets
+    assert_plaintext 'if a < b & c <d', 'if a &lt; b &amp; c <d'
+  end
+
   def test_stripping_whitespace
     assert_plaintext "text\ntext", "  \ttext\ntext\n"
     assert_plaintext "a\na", "  \na \n a \t"
