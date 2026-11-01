@@ -4,7 +4,6 @@ PATH
     premailer (1.32.0)
       addressable
       css_parser (>= 1.19.0)
-      htmlentities (>= 4.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -27,7 +26,6 @@ GEM
     drb (2.2.3)
     ffi (1.17.3-java)
     hashdiff (1.2.1)
-    htmlentities (4.4.2)
     io-console (0.8.2)
     io-console (0.8.2-java)
     jruby-openssl (0.15.5-java)
