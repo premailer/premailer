@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'htmlentities'
+require 'nokogiri'
 
 # Support functions for Premailer
 module HtmlToPlainText
@@ -101,9 +101,8 @@ module HtmlToPlainText
     # strip remaining tags
     txt.gsub!(/<\/?[^>]*>/, '')
 
-    # decode HTML entities
-    he = HTMLEntities.new
-    txt = he.decode(txt)
+    # decode HTML entities; a textarea context parses as RCDATA, so a stray "<" stays text
+    txt = Nokogiri::HTML5::DocumentFragment.new(Nokogiri::HTML5::Document.new, txt, "textarea").text
 
     # word wrap
     txt = word_wrap(txt, line_length)
