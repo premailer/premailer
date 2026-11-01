@@ -2,6 +2,9 @@
 
 ### Unreleased
 
+### Version 1.33.0
+
+* Remote `<link rel="stylesheet">` tags with an `integrity` attribute are verified before inlining
 * Drop the archived `htmlentities` dependency: plain-text output decodes entities with Nokogiri's HTML5 parser, like browsers do
 * Nokogiri adapter: skip the document search of selectors requiring a class no element carries, which cannot match
 * Send verbose skipped-link diagnostics to stderr so command-line HTML output stays clean.
