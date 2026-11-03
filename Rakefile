@@ -57,6 +57,11 @@ Rake::TestTask.new do |t|
   t.warning = false
 end
 
+desc 'Time premailer on the real-world emails in benchmark/emails.'
+task :benchmark do
+  ruby 'benchmark/run.rb'
+end
+
 task :rubocop do
   sh "rubocop --parallel"
 end
